@@ -1,11 +1,12 @@
 {
-  "name": "DataStructure-Algorithm-TS",
+  "name": "datastructure-algorithm-ts",
   "version": "1.0.0",
   "description": "DataStructure-Algorithm-TS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc --build tsconfig.json"
+    "tsc": "tsc --build tsconfig.json",
+    "dev": "nodemon --watch src/**/*.ts --exec \"tsc\" --build tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -20,12 +21,14 @@
   "author": "",
   "license": "GNU",
   "devDependencies": {
+    "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",
     "eslint-config-google": "^0.14.0",
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
+    "nodemon": "^2.0.7",
     "typescript": "^4.2.4"
   },
   "husky": {

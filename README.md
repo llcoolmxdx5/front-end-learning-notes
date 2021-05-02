@@ -1,3 +1,5 @@
 # DataStructure-Algorithm-TS
 
-DataStructure-Algorithm-TS
+```bash
+yarn dev
+```
