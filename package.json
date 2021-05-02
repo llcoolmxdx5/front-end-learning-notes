@@ -1,0 +1,43 @@
+{
+  "name": "DataStructure-Algorithm-TS",
+  "version": "1.0.0",
+  "description": "DataStructure-Algorithm-TS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc --build tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/llcoolmxdx5/DataStructure-Algorithm-TS.git"
+  },
+  "keywords": [
+    "leetcode",
+    "datastructure",
+    "algorithm",
+    "typescript"
+  ],
+  "author": "",
+  "license": "GNU",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "typescript": "^4.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
+  },
+  "bugs": {
+    "url": "https://github.com/llcoolmxdx5/DataStructure-Algorithm-TS/issues"
+  },
+  "homepage": "https://github.com/llcoolmxdx5/DataStructure-Algorithm-TS#readme"
+}
