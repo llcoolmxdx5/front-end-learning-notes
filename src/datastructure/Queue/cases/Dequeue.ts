@@ -1,4 +1,4 @@
-export = class Deque<T> {
+export = class Dequeue<T> {
   private count: number;
   private lowestCount: number;
   private items: Record<number, T>;
@@ -87,4 +87,4 @@ export = class Deque<T> {
     }
     return objString;
   }
-}
+};

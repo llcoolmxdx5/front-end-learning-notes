@@ -16,8 +16,6 @@ var findDisappearedNumbers = function (nums) {
 
 /**
  * 解法二
- * @param {number[]} nums
- * @return {number[]}
  */
 var findDisappearedNumbers = function (nums) {
   let result = [];
@@ -30,3 +28,5 @@ var findDisappearedNumbers = function (nums) {
   }
   return result.filter(Boolean);
 };
+
+console.log(findDisappearedNumbers([4, 3, 2, 7, 8, 2, 3, 1])); // [5,6]

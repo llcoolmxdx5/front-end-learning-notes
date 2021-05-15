@@ -23,13 +23,13 @@ weight: 1
 ## 栈和队列 Stack & Queue
 
 1. 广义表 Generalized List/GList
-2. 双端队列 Deque
+2. 双端队列 Dequeue
 
 ## 队列 Queue
 
 1. 链表实现 Linked List Implementation
 2. 循环数组实现 ArrayQueue
-3. 双端队列 Deque
+3. 双端队列 Dequeue
 4. 优先队列 Priority Queue
 5. 循环队列 Circular Queue
 
@@ -60,7 +60,7 @@ weight: 1
 1. 左堆 Leftist Tree/Leftist Heap
 2. 扁堆
 3. 二项式堆
-4. 斐波那契堆 Fibonacco Heap
+4. 斐波那契堆 Fibonacci Heap
 5. 配对堆 Pairing Heap
 
 ## 查找 Search
@@ -69,7 +69,7 @@ weight: 1
 2. 跳跃表 Skip List
 3. 排序二叉树 Binary Sort Tree
 4. AVL 树
-5. B 树 / B+ 树 / B* 树
+5. B 树 / B+ 树 / B\* 树
 6. AA 树
 7. 红黑树 Red Black Tree
 8. 排序二叉堆 Binary Heap

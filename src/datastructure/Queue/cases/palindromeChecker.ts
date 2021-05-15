@@ -1,4 +1,4 @@
-import Deque = require("./Deque");
+import Dequeue = require("./Dequeue");
 
 // 回文
 const palindromeChecker = (aString: string) => {
@@ -8,16 +8,16 @@ const palindromeChecker = (aString: string) => {
   ) {
     return false;
   }
-  const deque = new Deque<string>();
-  aString.split("").forEach(item => {
-    deque.addFront(item)
-  })
-  while (deque.size() > 1) {
-    if (deque.peekBack() !== deque.peekFront()) {
+  const dequeue = new Dequeue<string>();
+  aString.split("").forEach((item) => {
+    dequeue.addFront(item);
+  });
+  while (dequeue.size() > 1) {
+    if (dequeue.peekBack() !== dequeue.peekFront()) {
       return false;
     }
-    deque.removeFront();
-    deque.removeBack();
+    dequeue.removeFront();
+    dequeue.removeBack();
   }
   return true;
 };
