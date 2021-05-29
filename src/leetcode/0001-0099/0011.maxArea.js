@@ -19,3 +19,6 @@ var maxArea = function (height) {
   }
   return area;
 };
+
+console.log(maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])); // 49
+console.log(maxArea([4, 3, 2, 1, 4])); // 16
