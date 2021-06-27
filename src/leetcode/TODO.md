@@ -23,7 +23,7 @@
 - [ ] 存在重复元素 leetcode 217 简单
 - [ ] 螺旋矩阵 leetcode 0054 中等
 - [ ] 螺旋矩阵 II leetcode 0059 中等
-- [ ] 合并两个有序数组 leetcode 88 简单
+- [x] 合并两个有序数组 leetcode 88 简单
 
 ### 链表突击
 
