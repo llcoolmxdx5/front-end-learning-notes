@@ -20,7 +20,7 @@
 - [x] 反转字符串 leetcode 0344 简单
 - [ ] 反转字符串中的单词 III leetcode 0557 简单
 - [ ] 除自身以外数组的乘积 leetcode 0238 中等
-- [ ] 存在重复元素 leetcode 217 简单
+- [x] 存在重复元素 leetcode 217 简单
 - [ ] 螺旋矩阵 leetcode 0054 中等
 - [ ] 螺旋矩阵 II leetcode 0059 中等
 - [x] 合并两个有序数组 leetcode 88 简单
