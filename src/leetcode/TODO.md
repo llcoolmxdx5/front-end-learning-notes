@@ -14,7 +14,7 @@
 - [ ] 三数之和 leetcode 0015 中等
 - [x] 最接近的三数之和 leetcode 0016 中等
 - [x] 有效的括号 leetcode 0020 简单
-- [ ] 删除排序数组中的重复项 leetcode 0026 简单
+- [x] 删除排序数组中的重复项 leetcode 0026 简单
 - [x] 盛最多水的容器 leetcode 0011 中等
 - [ ] 字符串相乘 leetcode 0043 中等
 - [x] 反转字符串 leetcode 0344 简单
