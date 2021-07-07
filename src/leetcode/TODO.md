@@ -11,7 +11,7 @@
 - [ ] 最长回文子串 leetcode 0005 中等
 - [x] 字符串转换整数 (atoi) leetcode 0008 中等
 - [ ] 最长公共前缀 leetcode 0014 简单
-- [ ] 三数之和 leetcode 0015 中等
+- [x] 三数之和 leetcode 0015 中等
 - [x] 最接近的三数之和 leetcode 0016 中等
 - [x] 有效的括号 leetcode 0020 简单
 - [x] 删除排序数组中的重复项 leetcode 0026 简单
