@@ -49,7 +49,7 @@ edge：blink
   
 ```html
 <meta http-equive="Content-Type" content="text/html; charset=utf-8">指定编码
-<meta name="keyword" content="java培训,ui培训,php培训">关键字
+<meta name="keyword" content="javascript">关键字
 <meta name="description" content="">网页描述
 <meta http-equiv="refresh" content="5；http://www.baidu.com">重定向
 ```
