@@ -1,7 +1,7 @@
 {
-  "name": "datastructure-algorithm-ts",
+  "name": "front-end-learning-notes",
   "version": "1.0.0",
-  "description": "DataStructure-Algorithm-TS",
+  "description": "front-end-learning-notes",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,16 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/llcoolmxdx5/DataStructure-Algorithm-TS.git"
+    "url": "git+https://github.com/llcoolmxdx5/front-end-learning-notes.git"
   },
   "keywords": [
     "leetcode",
-    "datastructure",
-    "algorithm",
-    "typescript"
+    "react",
+    "js"
   ],
   "author": "",
-  "license": "GNU",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -40,7 +39,7 @@
     "*.ts": "eslint --fix"
   },
   "bugs": {
-    "url": "https://github.com/llcoolmxdx5/DataStructure-Algorithm-TS/issues"
+    "url": "https://github.com/llcoolmxdx5/front-end-learning-notes/issues"
   },
-  "homepage": "https://github.com/llcoolmxdx5/DataStructure-Algorithm-TS#readme"
+  "homepage": "https://github.com/llcoolmxdx5/front-end-learning-notes#readme"
 }

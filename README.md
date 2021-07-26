@@ -1,10 +1,3 @@
-# DataStructure-Algorithm-TS
+# front-end-learning-notes
 
-```bash
-# 如果要引入其他包, dev 后进入 dist 执行
-yarn dev
-# or 单 ts 文件
-ts-node test.ts
-# or js 文件
-node test.js
-```
+前端の学习 ☁ 整理笔记 `front-end-learning-notes` 整理好前端知识体系、更高效地吸收经验成果
