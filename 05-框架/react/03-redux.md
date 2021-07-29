@@ -45,8 +45,8 @@ Action 创建函数 就是生成 action 的方法。在 Redux 中的 action 创�
 
   ```js
   // actionTypes.js
-  export const ADD = "todolist/add";
-  export const DEL = "todolist/del";
+  export const ADD = "todoList/add";
+  export const DEL = "todoList/del";
   ```
 
 ### Reducer
