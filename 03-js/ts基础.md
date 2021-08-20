@@ -1,7 +1,7 @@
 # typeScript
 
 tsc ./src/app.ts --outfile ./dist/app.js
-tsc ./src/* --outdir ./dist --watch
+tsc ./src/\* --outdir ./dist --watch
 
 ## 基础类型
 
@@ -11,25 +11,25 @@ tsc ./src/* --outdir ./dist --watch
 
 1. 变量的值会动态改变时，比如来自用户的输入，任意值类型可以让这些变量跳过编译阶段的类型检查
 
-    ```js
-    let x: any = 4
-    x = 'I am who I am'
-    ```
+   ```js
+   let x: any = 4;
+   x = "I am who I am";
+   ```
 
 2. 改写现有代码时，任意值允许在编译时可选择地包含或移除类型检查
 
-    ```js
-    let x: any = 4;
-    x.ifItExists();    // 正确，ifItExists方法在运行时可能存在，但这里并不会检查
-    x.toFixed();    // 正确
-    ```
+   ```js
+   let x: any = 4;
+   x.ifItExists(); // 正确，ifItExists方法在运行时可能存在，但这里并不会检查
+   x.toFixed(); // 正确
+   ```
 
 3. 定义存储各种类型数据的数组时
 
-    ```js
-    let arrayList: any[] = [1, false, 'fine']
-    arrayList[1] = 100
-    ```
+   ```js
+   let arrayList: any[] = [1, false, "fine"];
+   arrayList[1] = 100;
+   ```
 
 ### 数据类型 number
 
@@ -51,34 +51,42 @@ let arr: number[] = [1, 2];
 // 或者使用数组泛型
 let arr: Array<number> = [1, 2];
 // 定义存储各种类型数据的数组
-let arrayList: any[] = [1, false, 'fine']
+let arrayList: any[] = [1, false, "fine"];
 ```
 
 ### 元组
 
 ```js
 // 元组类型用来表示已知元素数量和类型的数组，各元素的类型不必相同，对应位置的类型需要相同。
-let x: [string, number]
-x = ['Runoob', 1]   // 运行正常
-x = [1, 'Runoob']  // 报错
-console.log(x[0])    // 输出 Runoob
+let x: [string, number];
+x = ["Runoob", 1]; // 运行正常
+x = [1, "Runoob"]; // 报错
+console.log(x[0]); // 输出 Runoob
 ```
 
 ### 枚举 enum
 
 ```ts
 // 枚举类型用于定义数值集合
-enum Color {Red, Green, Blue};
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
 let c: Color = Color.Blue;
-console.log(c);    // 输出 2
+console.log(c); // 输出 2
 ```
 
 ```ts
 // 枚举类型用于定义数值集合
-enum Color {Red = 1, Green, Blue};
+enum Color {
+  Red = 1,
+  Green,
+  Blue,
+}
 let c: Color = Color.Blue;
-console.log(c);    // 输出 3
-console.log(Color[3]);    // 输出 Blue
+console.log(c); // 输出 3
+console.log(Color[3]); // 输出 Blue
 ```
 
 ### void
@@ -87,13 +95,13 @@ console.log(Color[3]);    // 输出 Blue
 
 ```js
 function hello(): void {
-    alert("Hello Runoob");
+  alert("Hello Runoob");
 }
 ```
 
 ### null
 
-表示对象值缺失。null是一个只有一个值的特殊类型。表示一个空对象引用。
+表示对象值缺失。null 是一个只有一个值的特殊类型。表示一个空对象引用。
 
 用 typeof 检测 null 返回是 object。
 
@@ -101,14 +109,14 @@ function hello(): void {
 
 用于初始化变量为一个未定义的值 typeof 一个没有值的变量会返回 undefined。
 
-Null 和 Undefined 是其他任何类型（包括 void）的子类型，可以赋值给其它类型，如数字类型，此时，赋值后的类型会变成 null 或 undefined。而在TypeScript中启用严格的空校验（--strictNullChecks）特性，就可以使得null 和 undefined 只能被赋值给 void 或本身对应的类型，示例代码如下：
+Null 和 Undefined 是其他任何类型（包括 void）的子类型，可以赋值给其它类型，如数字类型，此时，赋值后的类型会变成 null 或 undefined。而在 TypeScript 中启用严格的空校验（--strictNullChecks）特性，就可以使得 null 和 undefined 只能被赋值给 void 或本身对应的类型，示例代码如下：
 
 ```js
 // 启用 --strictNullChecks
 let x: number;
 x = 1; // 运行正确
-x = undefined;    // 运行错误
-x = null;    // 运行错误
+x = undefined; // 运行错误
+x = null; // 运行错误
 ```
 
 ### never
@@ -123,19 +131,23 @@ let y: number;
 x = 123;
 
 // 运行正确，never 类型可以赋值给 never类型
-x = (()=>{ throw new Error('exception')})();
+x = (() => {
+  throw new Error("exception");
+})();
 
 // 运行正确，never 类型可以赋值给 数字类型
-y = (()=>{ throw new Error('exception')})();
+y = (() => {
+  throw new Error("exception");
+})();
 
 // 返回值为 never 的函数可以是抛出异常的情况
 function error(message: string): never {
-    throw new Error(message);
+  throw new Error(message);
 }
 
 // 返回值为 never 的函数可以是无法被执行到的终止点的情况
 function loop(): never {
-    while (true) {}
+  while (true) {}
 }
 ```
 
@@ -147,19 +159,19 @@ function loop(): never {
 
 ```ts
 function getLength(something: string | number): number {
-    if (something.length) {
-        return something.length;
-    } else {
-        return something.toString().length;
-    }
+  if (something.length) {
+    return something.length;
+  } else {
+    return something.toString().length;
+  }
 }
 // Property 'length' does not exist on type 'string | number'.Property 'length' does not exist on type 'number'.
 function getLength(something: string | number): number {
-    if ((something as string).length) {
-        return (something as string).length;
-    } else {
-        return something.toString().length;
-    }
+  if ((something as string).length) {
+    return (something as string).length;
+  } else {
+    return something.toString().length;
+  }
 }
 ```
 
@@ -177,11 +189,11 @@ function toBoolean(something: string | number): boolean {
 联合类型（Union Types）可以通过管道(|)将变量设置多种类型，赋值时可以根据设置的类型来赋值。
 
 ```js
-var val: string|number
-val = 12
-console.log("数字为 "+ val)
-val = "Runoob"
-console.log("字符串为 " + val)
+var val: string | number;
+val = 12;
+console.log("数字为 " + val);
+val = "Runoob";
+console.log("字符串为 " + val);
 ```
 
 ## 函数
@@ -192,14 +204,12 @@ console.log("字符串为 " + val)
 
 ```js
 function buildName(firstName: string, lastName?: string) {
-    if (lastName)
-        return firstName + " " + lastName;
-    else
-        return firstName;
+  if (lastName) return firstName + " " + lastName;
+  else return firstName;
 }
-let result1 = buildName("Bob");  // 正确
-let result2 = buildName("Bob", "Adams", "Sr.");  // 错误，参数太多了
-let result3 = buildName("Bob", "Adams");  // 正确
+let result1 = buildName("Bob"); // 正确
+let result2 = buildName("Bob", "Adams", "Sr."); // 错误，参数太多了
+let result3 = buildName("Bob", "Adams"); // 正确
 ```
 
 ### 默认参数
@@ -207,12 +217,12 @@ let result3 = buildName("Bob", "Adams");  // 正确
 我们也可以设置参数的默认值，这样在调用函数的时候，如果不传入该参数的值，则使用默认参数
 
 ```js
-function calculate_discount(price:number,rate:number = 0.50) {
-    var discount = price * rate
-    console.log("计算结果: ",discount)
+function calculate_discount(price: number, rate: number = 0.5) {
+  var discount = price * rate;
+  console.log("计算结果: ", discount);
 }
-calculate_discount(1000)
-calculate_discount(1000,0.30)
+calculate_discount(1000);
+calculate_discount(1000, 0.3);
 ```
 
 ### 剩余参数
@@ -221,9 +231,9 @@ calculate_discount(1000,0.30)
 
 ```js
 function buildName(firstName: string, ...restOfName: string[]) {
-    return firstName + " " + restOfName.join(" ");
+  return firstName + " " + restOfName.join(" ");
 }
-let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKenzie")
+let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKenzie");
 ```
 
 ## 接口
@@ -232,38 +242,38 @@ let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKenzie")
 
 需要注意接口不能转换为 JavaScript。 它只是 TypeScript 的一部分
 
-TypeScript的核心原则之一是对值所具有的结构进行类型检查。接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
+TypeScript 的核心原则之一是对值所具有的结构进行类型检查。接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
 
 ```ts
 interface testType {
-    name: string;
-    age: number;
-}　　
-function test(obj: testType): void {
-    console.log(obj.name);
-    console.log(obj.age);
+  name: string;
+  age: number;
 }
-test({name:"fred", age:20, height:180}) //错误
+function test(obj: testType): void {
+  console.log(obj.name);
+  console.log(obj.age);
+}
+test({ name: "fred", age: 20, height: 180 }); //错误
 ```
 
 ### 可选属性（接口定义中加“？”）
 
 ```ts
 interface testType {
-    name: string;
-    age?: number;
+  name: string;
+  age?: number;
 }
 ```
 
 ### 字符串索引签名
 
-SquareConfig可以有任意数量的属性，并且只要它们不是color和width，那么就无所谓它们的类型是什么。
+SquareConfig 可以有任意数量的属性，并且只要它们不是 color 和 width，那么就无所谓它们的类型是什么。
 
 ```ts
 interface SquareConfig {
-    color?: string;
-    width?: number;
-    [propName: string]: any; // 必须写any
+  color?: string;
+  width?: number;
+  [propName: string]: any; // 必须写any
 }
 ```
 
@@ -271,10 +281,10 @@ interface SquareConfig {
 
 ```ts
 interface testType {
-    readonly name: string;
-    readonly age: number;
+  readonly name: string;
+  readonly age: number;
 }
-let test1:testType = {name:"fred",age:20}
+let test1: testType = { name: "fred", age: 20 };
 test1.name = "Bob"; //error
 
 let a: number[] = [1, 2, 3, 4];
@@ -289,13 +299,13 @@ a = ro; // error!
 
 ```ts
 interface nameFace {
-    name: string;
+  name: string;
 }
 interface ageFace {
-    age: number;
+  age: number;
 }
 interface heightFace extends nameFace, ageFace {
-    height: number;
+  height: number;
 }
 let person = <heightFace>{};
 person.name = "fred";
@@ -309,11 +319,11 @@ person.height = 180;
 
 ```ts
 interface Fun {
-  (x: string, y:string): string
+  (x: string, y: string): string;
 }
 let fun: Fun = (x, z) => {
-  return x + z
-}
+  return x + z;
+};
 ```
 
 ## 类
@@ -322,17 +332,18 @@ let fun: Fun = (x, z) => {
 
 ```js
 class Car {
-    engine: string;  // 字段
-    constructor(engine: string) {
-        this.engine = engine // 构造函数
-    }  
-    dips(): void { // 方法
-        console.log("函数中显示发动机型号  :   "+this.engine)
-    }
+  engine: string; // 字段
+  constructor(engine: string) {
+    this.engine = engine; // 构造函数
+  }
+  dips(): void {
+    // 方法
+    console.log("函数中显示发动机型号  :   " + this.engine);
+  }
 }
-var obj = new Car("BMW") // 创建一个对象
-console.log("读取发动机型号 :  "+obj.engine)  // 访问字段
-obj.dips() // 访问方法
+var obj = new Car("BMW"); // 创建一个对象
+console.log("读取发动机型号 :  " + obj.engine); // 访问字段
+obj.dips(); // 访问方法
 ```
 
 ### 继承
@@ -345,15 +356,15 @@ obj.dips() // 访问方法
 
 ```js
 class PrinterClass {
-    doPrint():void {
-       console.log("父类的 doPrint() 方法。")
-    }
+  doPrint(): void {
+    console.log("父类的 doPrint() 方法。");
+  }
 }
 class StringPrinter extends PrinterClass {
-    doPrint():void {
-        super.doPrint() // 调用父类的函数
-        console.log("子类的 doPrint()方法。")
-    }
+  doPrint(): void {
+    super.doPrint(); // 调用父类的函数
+    console.log("子类的 doPrint()方法。");
+  }
 }
 ```
 
@@ -362,14 +373,14 @@ class StringPrinter extends PrinterClass {
 static 关键字用于定义类的数据成员（属性和方法）为静态的，静态成员可以直接通过类名调用。
 
 ```js
-class StaticMem {  
-    static num: number
-    static dips(): void {
-        console.log("num 值为 " + StaticMem.num)
-    }
+class StaticMem {
+  static num: number;
+  static dips(): void {
+    console.log("num 值为 " + StaticMem.num);
+  }
 }
-StaticMem.num = 12     // 初始化静态变量
-StaticMem.dips()       // 调用静态方法
+StaticMem.num = 12; // 初始化静态变量
+StaticMem.dips(); // 调用静态方法
 ```
 
 ### 访问控制修饰符
@@ -396,27 +407,27 @@ class Encapsulate {
 
 ### 抽象类
 
-抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 abstract关键字是用于定义抽象类和在抽象类内部定义抽象方法。
+抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 abstract 关键字是用于定义抽象类和在抽象类内部定义抽象方法。
 
-抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名但不包含方法体。 然而，抽象方法必须包含 abstract关键字并且可以包含访问修饰符。
+抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名但不包含方法体。 然而，抽象方法必须包含 abstract 关键字并且可以包含访问修饰符。
 
 ```ts
 abstract class Department {
   constructor(public name: string) {}
   printName(): void {
-    console.log('Department name: ' + this.name);
+    console.log("Department name: " + this.name);
   }
   abstract printMeeting(): void; // 必须在派生类中实现
 }
 class AccountingDepartment extends Department {
   constructor() {
-    super('Accounting and Auditing'); // 在派生类的构造函数中必须调用 super()
+    super("Accounting and Auditing"); // 在派生类的构造函数中必须调用 super()
   }
   printMeeting(): void {
-    console.log('The Accounting Department meets each Monday at 10am.');
+    console.log("The Accounting Department meets each Monday at 10am.");
   }
   generateReports(): void {
-    console.log('Generating accounting reports...');
+    console.log("Generating accounting reports...");
   }
 }
 let department: Department; // 允许创建一个对抽象类型的引用
@@ -433,18 +444,18 @@ department.printMeeting();
 
 ```ts
 interface ILoan {
-    interest:number
+  interest: number;
 }
 class AgricLoan implements ILoan {
-    interest:number
-    rebate:number
-    constructor(interest:number,rebate:number) {
-       this.interest = interest
-       this.rebate = rebate
-    }
- }
- var obj = new AgricLoan(10,1)
- console.log("利润为 : "+obj.interest+"，抽成为 : "+obj.rebate )
+  interest: number;
+  rebate: number;
+  constructor(interest: number, rebate: number) {
+    this.interest = interest;
+    this.rebate = rebate;
+  }
+}
+var obj = new AgricLoan(10, 1);
+console.log("利润为 : " + obj.interest + "，抽成为 : " + obj.rebate);
 ```
 
 ## 命名空间
@@ -453,8 +464,8 @@ TypeScript 中命名空间使用 namespace 来定义，语法格式如下
 
 ```ts
 namespace SomeNameSpaceName {
-   export interface ISomeInterfaceName {      }  
-   export class SomeClassName {      }  
+  export interface ISomeInterfaceName {}
+  export class SomeClassName {}
 }
 ```
 
@@ -467,34 +478,34 @@ namespace SomeNameSpaceName {
 ```ts
 // IShape.ts 文件代码：
 namespace Drawing {
-    export interface IShape {
-        draw();
-    }
+  export interface IShape {
+    draw();
+  }
 }
 // Circle.ts 文件代码：
 /// <reference path = "IShape.ts" />
 namespace Drawing {
-    export class Circle implements IShape {
-        public draw() {
-            console.log("Circle is drawn");
-        }  
+  export class Circle implements IShape {
+    public draw() {
+      console.log("Circle is drawn");
     }
+  }
 }
 // Triangle.ts 文件代码：
 /// <reference path = "IShape.ts" />
 namespace Drawing {
-    export class Triangle implements IShape {
-        public draw() {
-            console.log("Triangle is drawn");
-        }
+  export class Triangle implements IShape {
+    public draw() {
+      console.log("Triangle is drawn");
     }
+  }
 }
 // TestShape.ts 文件代码：
-/// <reference path = "IShape.ts" />  
+/// <reference path = "IShape.ts" />
 /// <reference path = "Circle.ts" />
 /// <reference path = "Triangle.ts" />
-function drawAllShapes(shape:Drawing.IShape) {
-    shape.draw();
+function drawAllShapes(shape: Drawing.IShape) {
+  shape.draw();
 }
 drawAllShapes(new Drawing.Circle());
 drawAllShapes(new Drawing.Triangle());
@@ -506,13 +517,13 @@ drawAllShapes(new Drawing.Triangle());
 ```ts
 // Invoice.ts 文件代码：
 namespace Runoob {
-   export namespace invoiceApp {
-      export class Invoice {
-         public calculateDiscount(price: number) {
-            return price * 0.40;
-         }
+  export namespace invoiceApp {
+    export class Invoice {
+      public calculateDiscount(price: number) {
+        return price * 0.4;
       }
-   }
+    }
+  }
 }
 // InvoiceTest.ts 文件代码：
 /// <reference path = "Invoice.ts" />
@@ -527,7 +538,7 @@ console.log(invoice.calculateDiscount(500)); // 200
 ```ts
 // 文件名 : SomeInterface.ts
 export interface SomeInterface {
-   // 代码部分
+  // 代码部分
 }
 ```
 
@@ -539,28 +550,28 @@ export interface SomeInterface {
 // IShape.ts 文件代码：
 /// <reference path = "IShape.ts" />
 export interface IShape {
-   draw();
+  draw();
 }
 // Circle.ts 文件代码：
 import shape = require("./IShape");
 export class Circle implements shape.IShape {
-   public draw() {
-      console.log("Circle is drawn (external module)");
-   }
+  public draw() {
+    console.log("Circle is drawn (external module)");
+  }
 }
 // Triangle.ts 文件代码：
 import shape = require("./IShape");
 export class Triangle implements shape.IShape {
-   public draw() {
-      console.log("Triangle is drawn (external module)");
-   }
+  public draw() {
+    console.log("Triangle is drawn (external module)");
+  }
 }
 // TestShape.ts 文件代码：
 import shape = require("./IShape");
 import circle = require("./Circle");
-import triangle = require("./Triangle");  
+import triangle = require("./Triangle");
 function drawAllShapes(shapeToDraw: shape.IShape) {
-   shapeToDraw.draw();
+  shapeToDraw.draw();
 }
 drawAllShapes(new circle.Circle());
 drawAllShapes(new triangle.Triangle());
@@ -573,7 +584,7 @@ drawAllShapes(new triangle.Triangle());
 
 ```ts
 declare var jQuery: (selector: string) => any;
-jQuery('#foo');
+jQuery("#foo");
 ```
 
 ### 声明文件或模块

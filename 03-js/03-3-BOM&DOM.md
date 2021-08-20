@@ -5,12 +5,12 @@
 ### 1. 获取元素
 
 ```js
-document.getElementById()
-document.getElementsByTagName()
-document.getElementsByClassName()
-document.querySelector()
-document.getElementsByName() // 用于表单元素查找，返回NodeList列表可以用forEach遍历
-document.querySelectorAll() // 返回NodeList列表可以用forEach遍历
+document.getElementById();
+document.getElementsByTagName();
+document.getElementsByClassName();
+document.querySelector();
+document.getElementsByName(); // 用于表单元素查找，返回NodeList列表可以用forEach遍历
+document.querySelectorAll(); // 返回NodeList列表可以用forEach遍历
 ```
 
 ### 2. 事件
@@ -18,10 +18,10 @@ document.querySelectorAll() // 返回NodeList列表可以用forEach遍历
 #### 1. 注册/移除事件的三种方式
 
 ```js
-var box = document.getElementById('box');
-box.onclick = function(e) {
-    console.log('代码会在box被点击后执行');
-    // IE6时没有e
+var box = document.getElementById("box");
+box.onclick = function (e) {
+  console.log("代码会在box被点击后执行");
+  // IE6时没有e
 };
 box.onclick = null;
 // 不能使用捕获阶段
@@ -29,38 +29,38 @@ box.onclick = null;
 
 ```js
 // IE9及以上
-box.addEventListener('click', eventCode, false);
-box.removeEventListener('click', eventCode, false);
+box.addEventListener("click", eventCode, false);
+box.removeEventListener("click", eventCode, false);
 // 第三个参数为true时是捕获阶段触发，为false时为冒泡阶段触发，默认是false
 ```
 
 ```js
 // IE8及以下
-box.attachEvent('onclick', eventCode);
-box.detachEvent('onclick', eventCode);
+box.attachEvent("onclick", eventCode);
+box.detachEvent("onclick", eventCode);
 ```
 
 #### 2. 事件注册/移除的兼容代码
 
 ```js
 function addEventListener(element, type, fn) {
-    if (element.addEventListener) {
-        element.addEventListener(type, fn, false);
-    } else if (element.attachEvent){
-        element.attachEvent('on' + type,fn);
-    } else {
-        element['on'+type] = fn;
-    }
+  if (element.addEventListener) {
+    element.addEventListener(type, fn, false);
+  } else if (element.attachEvent) {
+    element.attachEvent("on" + type, fn);
+  } else {
+    element["on" + type] = fn;
+  }
 }
 
 function removeEventListener(element, type, fn) {
-    if (element.removeEventListener) {
-        element.removeEventListener(type, fn, false);
-    } else if (element.detachEvent) {
-        element.detachEvent('on' + type, fn);
-    } else {
-        element['on'+type] = null;
-    }
+  if (element.removeEventListener) {
+    element.removeEventListener(type, fn, false);
+  } else if (element.detachEvent) {
+    element.detachEvent("on" + type, fn);
+  } else {
+    element["on" + type] = null;
+  }
 }
 ```
 
@@ -77,19 +77,19 @@ function removeEventListener(element, type, fn) {
 #### 4. 事件对象的属性和方法
 
 ```js
-e || window.event  // 兼容IE6
-event.type //获取事件类型
-clientX/clientY     //所有浏览器都支持，窗口位置
-pageX/pageY       //IE8以前不支持，页面位置
-event.target || event.srcElement //用于获取触发事件的元素
-event.preventDefault() //取消默认行为
-event.returnValue=false  // 返回值=false 阻止默认时间 IE兼容  return false
-e.stopPropagation() // 阻止冒泡/捕获
-e.cancelBubble = true // IE8阻止冒泡
-function clickHandler (e) {
-    e.currentTarget // 就是默认的this，被监听的对象
-    e.target // chrome支持 目标对象，实际监听到的对象
-    e.srcElement // ie支持 chrome支持等同于e.target
+e || window.event; // 兼容IE6
+event.type; //获取事件类型
+clientX / clientY; //所有浏览器都支持，窗口位置
+pageX / pageY; //IE8以前不支持，页面位置
+event.target || event.srcElement; //用于获取触发事件的元素
+event.preventDefault(); //取消默认行为
+event.returnValue = false; // 返回值=false 阻止默认时间 IE兼容  return false
+e.stopPropagation(); // 阻止冒泡/捕获
+e.cancelBubble = true; // IE8阻止冒泡
+function clickHandler(e) {
+  e.currentTarget; // 就是默认的this，被监听的对象
+  e.target; // chrome支持 目标对象，实际监听到的对象
+  e.srcElement; // ie支持 chrome支持等同于e.target
 }
 ```
 
@@ -106,28 +106,28 @@ event.returnValue=false  // 返回值=false 阻止默认时间 IE兼容  return 
 
 #### 6. 事件类型
 
-#### Event事件
+#### Event 事件
 
 ```js
-var e = new Event() //事件基类
-change // 修改,一般用于表单元素改变
+var e = new Event(); //事件基类
+change; // 修改,一般用于表单元素改变
 // 如果用于文本框,如果输入的内容在失焦后判断改变了,则会触发事件,如果没有改变不会触发事件
-error // 错误 如果加载错误时触发error事件
-load // 加载 图片,script,css,视频,音频,通信都是加载
-reset // 针对表单的事件
-submit // 针对表单的事件
-resize // 更改大小,一般应用于window对象
-select // 针对input文本框内容的选择事件 selectionStart selectionEnd 选择的内容开始/结束下标
-scroll // 滚动条事件
+error; // 错误 如果加载错误时触发error事件
+load; // 加载 图片,script,css,视频,音频,通信都是加载
+reset; // 针对表单的事件
+submit; // 针对表单的事件
+resize; // 更改大小,一般应用于window对象
+select; // 针对input文本框内容的选择事件 selectionStart selectionEnd 选择的内容开始/结束下标
+scroll; // 滚动条事件
 ```
 
-#### focus事件
+#### focus 事件
 
 ```js
-var e = new FocusEvent()
+var e = new FocusEvent();
 // focus  blur   针对表单的子元素和超链接使用
-focus // 汇聚焦距时 e.relatedTarget 上一次当前事件的目标对象
-blur // 失去焦距时
+focus; // 汇聚焦距时 e.relatedTarget 上一次当前事件的目标对象
+blur; // 失去焦距时
 ```
 
 #### 鼠标事件
@@ -161,11 +161,11 @@ e.x: 51
 e.y: 27
 ```
 
-#### input事件
+#### input 事件
 
 ```js
-var e = new InputEvent()
-input // input事件 针对input文本框输入做事件侦听，输入内容时触发事件
+var e = new InputEvent();
+input; // input事件 针对input文本框输入做事件侦听，输入内容时触发事件
 ```
 
 #### 键盘事件
@@ -187,7 +187,7 @@ e.which: 83   //键码
 #### 滚轮事件
 
 ```js
-var e = new WheelEvent()
+var e = new WheelEvent();
 ```
 
 ### 3. 属性操作
@@ -197,35 +197,37 @@ var e = new WheelEvent()
 > href、title、id、src、className
 
 ```js
-var pic = document.getElementById('pic');
+var pic = document.getElementById("pic");
 console.log(pic.src);
 ```
 
-#### 2. innerHTML和innerText
+#### 2. innerHTML 和 innerText
 
 ```js
-innerText兼容处理
+innerText兼容处理;
 function getInnerText(element) {
-    return (typeof element.textContent === "string") ? element.textContent : element.innerText;
+  return typeof element.textContent === "string"
+    ? element.textContent
+    : element.innerText;
 }
 ```
 
 #### 3. 表单元素属性
 
 ```js
-ele.value // 用于大部分表单元素的内容获取(option除外)
-ele.type // 可以获取input标签的类型(输入框或复选框等)
-ele.disabled // 禁用属性
-ele.checked // 复选框选中属性
-ele.selected // 下拉菜单选中属性
+ele.value; // 用于大部分表单元素的内容获取(option除外)
+ele.type; // 可以获取input标签的类型(输入框或复选框等)
+ele.disabled; // 禁用属性
+ele.checked; // 复选框选中属性
+ele.selected; // 下拉菜单选中属性
 ```
 
 #### 4. 自定义属性操作
 
 ```js
-element.getAttribute("属性名") // 获取标签行内属性
-element.setAttribute("属性名","值") // 设置标签行内属性
-element.removeAttribute("属性名") // 移除标签行内属性
+element.getAttribute("属性名"); // 获取标签行内属性
+element.setAttribute("属性名", "值"); // 设置标签行内属性
+element.removeAttribute("属性名"); // 移除标签行内属性
 // 与element.属性的区别: 上述三个方法用于获取任意的行内属性。
 ```
 
@@ -233,15 +235,15 @@ element.removeAttribute("属性名") // 移除标签行内属性
 
 ```js
 // ele.style是行内样式
-element.style.width = "123px"
-getComputedStyle(ele).width // 获取计算后样式 IE不支持
-ele.currentStyle.width // 获取计算后样式 仅支持IE
+element.style.width = "123px";
+getComputedStyle(ele).width; // 获取计算后样式 IE不支持
+ele.currentStyle.width; // 获取计算后样式 仅支持IE
 ```
 
 #### 6. 类名操作
 
 ```js
-element.className = "box"
+element.className = "box";
 ```
 
 #### 7. 自定义标签属性
@@ -251,38 +253,38 @@ element.className = "box"
 ### 4. 创建元素
 
 ```js
-document.write()
-obj.innerHTML
-document.createElement()
-document.createDocumentFragment() // 创建碎片容器 需要插入多个节点时，插入该碎片容器
-document.createTextNode(文本内容) // 创建文本节点
+document.write();
+obj.innerHTML;
+document.createElement();
+document.createDocumentFragment(); // 创建碎片容器 需要插入多个节点时，插入该碎片容器
+document.createTextNode(文本内容); // 创建文本节点
 ```
 
-innerHTML属性由于会对字符串进行解析，需要避免在循环内多次使用。
-可以借助字符串或数组的方式进行替换，再设置给innerHTML
-优化后与document.createElement性能相近
+innerHTML 属性由于会对字符串进行解析，需要避免在循环内多次使用。
+可以借助字符串或数组的方式进行替换，再设置给 innerHTML
+优化后与 document.createElement 性能相近
 
 ### 5. 节点操作
 
 #### 1. 节点操作，方法
 
 ```js
-element.appendChild()
-element.insertBefore(child1,child2) // 将child1插入到child2之前
-element.removeChild()
-element.remove()
-element.replaceChild(newChild, oldChild) // 替换元素
-element.cloneNode(false/true) // 复制元素，为true时为深复制 浅复制时不会复制节点的子节点
+element.appendChild();
+element.insertBefore(child1, child2); // 将child1插入到child2之前
+element.removeChild();
+element.remove();
+element.replaceChild(newChild, oldChild); // 替换元素
+element.cloneNode(false / true); // 复制元素，为true时为深复制 浅复制时不会复制节点的子节点
 ```
 
 #### 2. 节点层次，属性
 
 ```js
-element.parentNode
-element.childNodes
-element.children
-element.nextSibling/previousSibling
-element.firstChild/lastChild
+element.parentNode;
+element.childNodes;
+element.children;
+element.nextSibling / previousSibling;
+element.firstChild / lastChild;
 ```
 
 #### 3. 注意
@@ -290,11 +292,11 @@ element.firstChild/lastChild
 `childNodes`和`children`的区别，`childNodes`获取的是子节点，`children`获取的是子元素
 `nextSibling`和`previousSibling`获取的是节点
 获取元素对应的属性是`nextElementSibling`和`previousElementSibling`
-`nextElementSibling`和`previousElementSibling`有兼容性问题，IE9以后才支持
+`nextElementSibling`和`previousElementSibling`有兼容性问题，IE9 以后才支持
 
 ## BOM
 
-window是浏览器的顶级对象，当调用window下的属性和方法时，可以省略window
+window 是浏览器的顶级对象，当调用 window 下的属性和方法时，可以省略 window
 
 ### 1. 对话框
 
@@ -308,70 +310,70 @@ confirm()
 window.onload = function () {
   // 当页面加载完成执行
   // 当页面完全加载所有内容（包括图像、脚本文件、CSS 文件等）执行
-}
+};
 ```
 
 ### 3.定时器
 
-#### 1.setTimeout()和clearTimeout()
+#### 1.setTimeout()和 clearTimeout()
 
 在指定的毫秒数到达之后执行指定的函数，只执行一次
 
 ```js
 var timerId = setTimeout(function () {
-    console.log('Hello World');
+  console.log("Hello World");
 }, 1000);
-clearTimeout(timerId);// 取消定时器的执行
+clearTimeout(timerId); // 取消定时器的执行
 ```
 
-#### 2.setInterval()和clearInterval()
+#### 2.setInterval()和 clearInterval()
 
 定时调用的函数，可以按照给定的时间(单位毫秒)周期调用函数
 
 ```js
 // 创建一个定时器，每隔1秒调用一次
 var timerId = setInterval(function () {
-    var date = new Date();
-    console.log(date.toLocaleTimeString());
+  var date = new Date();
+  console.log(date.toLocaleTimeString());
 }, 1000);
-clearInterval(timerId);// 取消定时器的执行
+clearInterval(timerId); // 取消定时器的执行
 ```
 
-### 4. location对象
+### 4. location 对象
 
-location可以获取或者设置浏览器地址栏的URL 使用的时候可以省略window对象
+location 可以获取或者设置浏览器地址栏的 URL 使用的时候可以省略 window 对象
 scheme://host:port/path?query#fragment
 
 ```js
-location.href = "https://www.baidu.com" // 交互后执行有历史记录
-location.assign("https://www.baidu.com") // 交互后执行有历史记录
-location.replace("https://www.baidu.com") // 无历史记录
-location.reload() // 重载页面，不会在http请求头中携带缓存标记 和ctrl+r类似
-location.hash // 获取地址栏中#标志后的内容包括#
-location.search // 获取地址栏中？后的内容包括？
+location.href = "https://www.baidu.com"; // 交互后执行有历史记录
+location.assign("https://www.baidu.com"); // 交互后执行有历史记录
+location.replace("https://www.baidu.com"); // 无历史记录
+location.reload(); // 重载页面，不会在http请求头中携带缓存标记 和ctrl+r类似
+location.hash; // 获取地址栏中#标志后的内容包括#
+location.search; // 获取地址栏中？后的内容包括？
 ```
 
-### 5. history对象
+### 5. history 对象
 
 ```js
-history.back() // 后退
-history.forward() // 前进
-history.go(0) // 刷新当前页面
-history.go(1) // 前进一个页面
+history.back(); // 后退
+history.forward(); // 前进
+history.go(0); // 刷新当前页面
+history.go(1); // 前进一个页面
 ```
 
-### 6. navigator对象
+### 6. navigator 对象
 
 ```js
-navigator.userAgent  // 通过userAgent可以判断用户浏览器的类型
-navigator.platform  // 通过platform可以判断浏览器所在的系统平台类型.
+navigator.userAgent; // 通过userAgent可以判断用户浏览器的类型
+navigator.platform; // 通过platform可以判断浏览器所在的系统平台类型.
 ```
 
-### 7. window对象 使用时可以省去window
+### 7. window 对象 使用时可以省去 window
 
 ```js
-window.innerWidth // 文档宽度
-window.innerHeight // 文档高度
+window.innerWidth; // 文档宽度
+window.innerHeight; // 文档高度
 ```
 
 ## offset client scroll
@@ -379,23 +381,23 @@ window.innerHeight // 文档高度
 ### 1. 滚动偏移
 
 ```js
-var box = document.getElementById('box');
+var box = document.getElementById("box");
 // 兼容问题 高版本浏览器获取/设置scrollLeft/Top 使用HTML document.documentElement
 // 低版本浏览器获取/设置scrollLeft/Top 使用body document.body
-console.log(box.scrollLeft) //
-console.log(box.scrollTop) // 获取位于元素顶部边界与元素中当前可见内容的最顶端之间的距离
-                           // scrollTop=scrollHeight-clientHeight
-                           // 包含内容的完全高度-自身高度+滚动条（不会在上方出现，为0）
-console.log(box.scrollWidth) // 内容宽度+2内容border+1padding
-console.log(box.scrollHeight) // 内容高度+2内容border+1padding
+console.log(box.scrollLeft); //
+console.log(box.scrollTop); // 获取位于元素顶部边界与元素中当前可见内容的最顶端之间的距离
+// scrollTop=scrollHeight-clientHeight
+// 包含内容的完全高度-自身高度+滚动条（不会在上方出现，为0）
+console.log(box.scrollWidth); // 内容宽度+2内容border+1padding
+console.log(box.scrollHeight); // 内容高度+2内容border+1padding
 ```
 
 ### 2.偏移量即外边距
 
-offsetParent用于获取定位的父级元素 不能设置
+offsetParent 用于获取定位的父级元素 不能设置
 
 ```js
-var box = document.getElementById('box');
+var box = document.getElementById("box");
 console.log(box.offsetParent); // 获取距离当前元素最近的定位父元素
 console.log(box.offsetLeft); // 获取box的坐标 到最近一个定位的父元素的距离
 console.log(box.offsetTop);
@@ -408,7 +410,7 @@ console.log(box.offsetHeight); // 高度+2padding+2border
 不能设置
 
 ```js
-var box = document.getElementById('box');
+var box = document.getElementById("box");
 console.log(box.clientLeft); // border-left的宽度
 console.log(box.clientTop); // border-top的宽度
 console.log(box.clientWidth); // 宽度+2padding-滚动条宽度
