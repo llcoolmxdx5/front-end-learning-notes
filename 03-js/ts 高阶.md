@@ -111,26 +111,26 @@ let func: (params: S) => void = fn;
 
 ```ts
 interface Animal {
-  Eat(): void
+  Eat(): void;
 }
 interface Dog extends Animal {
-  Bark(): void
+  Bark(): void;
 }
 
-function foo<T>(arg:T): T {
-  return arg
+function foo<T>(arg: T): T {
+  return arg;
 }
 var dog: Dog = {
-  Eat: () => { },
-  Bark: () => { }
-}
+  Eat: () => {},
+  Bark: () => {},
+};
 var animal: Animal = {
-  Eat: () => { },
-}
-let derived = foo(dog)
-let base = foo(animal)
-base = derived
-derived = base // 错误
+  Eat: () => {},
+};
+let derived = foo(dog);
+let base = foo(animal);
+base = derived;
+derived = base; // 错误
 ```
 
 在赋值过程中类型收敛了, 即只能将派生类赋值给基类
@@ -145,62 +145,26 @@ derived = base // 错误
 
 ```ts
 interface Animal {
-  Eat(): void
+  Eat(): void;
 }
 interface Dog extends Animal {
-  Bark(): void
+  Bark(): void;
 }
 
-function foo(type: Animal) {
-
-}
+function foo(type: Animal) {}
 var dog: Dog = {
-  Eat: () => { },
-  Bark: () => { }
-}
+  Eat: () => {},
+  Bark: () => {},
+};
 var animal: Animal = {
-  Eat: () => { },
-}
+  Eat: () => {},
+};
 
-foo(dog)
-foo(animal)
+foo(dog);
+foo(animal);
 ```
 
 在传参过程中类型发散了,即你可以传入函数参数类型的派生类
-
-### 类型安全和不变性
-
-最后来聊一下不变性 (Invariant) 的应用。上面我们提到 `Array<T>` 这一复合类型是协变。但是对于可变数组，协变并不安全。同样，逆变也不安全（不过一般逆变不存在于数组）。
-
-下面这个例子中运行便会报错：
-
-```ts
-class Animal {}
-class Cat extends Animal {
-  meow() {
-    console.log("cat meow");
-  }
-}
-class Dog extends Animal {
-  wow() {
-    console.log("dog wow");
-  }
-}
-
-let catList: Cat[] = [new Cat()];
-let animalList: Animal[] = [new Animal()];
-let dog = new Dog();
-
-// covariance is not type safe
-animalList = catList;
-animalList.push(dog);
-catList.forEach((cat) => cat.meow()); // cat.meow is not a function
-
-// contravariance is also not type safe, if it exist here
-catList = animalList;
-animalList.push(dog);
-catList.forEach((cat) => cat.meow());
-```
 
 ## 类型别名
 
