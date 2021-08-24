@@ -98,55 +98,44 @@ let func: (params: S) => void = fn;
 
 变型规则主要有四种：
 
-- 协变(Covariant)：协变表示`Complex<T>`类型兼容和 T 的一致
-- 逆变(Contravariant)：逆变表示`Complex<T>`类型兼容和 T 相反。
-- 双变(Bivariant) = 协变 + 逆变：双向协变表示`Complex<T>`类型双向兼容。
-- 不变(Invariant)：不变表示`Complex<T>`双向都不兼容。
+- 协变(Covariant)
+- 逆变(Contravariant)
+- 双变(Bivariant) = 协变 + 逆变
+- 不变(Invariant)
 
 ### 协变
 
-假设复杂类型 Complex(A) 和 Complex(B)，如果由 Complex(A) 是 Complex(B) 的子类型能够得出 A 是 B 的子类型，我们将这种变型称作 **协变**。
+使你能够使用比原始指定的类型派生程度更大的类型
+
+在 ts 中，对象、类、数组和函数的返回值类型都是协变关系
 
 ```ts
-Complex(A) <: Complex(B)  ->  A <: B
+interface Animal {
+  Eat(): void
+}
+interface Dog extends Animal {
+  Bark(): void
+}
+
+function foo<T>(arg:T): T {
+  return arg
+}
+var dog: Dog = {
+  Eat: () => { },
+  Bark: () => { }
+}
+var animal: Animal = {
+  Eat: () => { },
+}
+let derived = foo(dog)
+let base = foo(animal)
+base = derived
+derived = base // 错误
 ```
 
-协变是指：子集能赋值给其超集。
-
-```ts
-class Chordate {
-  hasSpine(): boolean {
-    return true;
-  }
-}
-class Mammal extends Chordate {
-  canBreastFeed(): boolean {
-    return true;
-  }
-}
-function foo(animal: Chordate) {
-  animal.hasSpine();
-}
-foo(new Chordate());
-foo(new Mammal());
-```
-
-以上代码证明了 Typescript 支持协变，Mammal 是 Chordate 的子集，方法 foo 接受参数类型为 Chordate，而 Mammal 实例也能赋值给 Chordate 参数。
+在赋值过程中类型收敛了, 即只能将派生类赋值给基类
 
 ### 逆变
-
-如果由 Complex(A) 是 Complex(B) 的子类型能够得出 B 是 A 的子类型，我们将这种变型称为 逆变。
-
-```ts
-Complex(A) <: Complex(B)  ->  B <: A
-```
-
-根据上面的举例说明，函数类型 fn 是 func 的子类型，fn 参数 T 是 func 参数 S 的父类型，函数参数类型在 TypeScript 类型系统中遵守一种 **逆变** 的规则。
-
-```ts
-fn <: func
-T :> S
-```
 
 在 TypeScript 中，复杂类型的成员都会进行协变，包括对象、类、数组和函数的返回值类型。但是，函数的参数类型进行逆变。
 
@@ -155,21 +144,29 @@ T :> S
 逆变(Contravariance)与双变(Bivariance)只针对函数有效。 --strictFunctionTypes 开启时只支持逆变，关闭时支持双变。
 
 ```ts
-class Chordate {
-  hasSpine(): boolean {
-    return true;
-  }
+interface Animal {
+  Eat(): void
 }
-class Mammal extends Chordate {
-  canBreastFeed(): boolean {
-    return true;
-  }
+interface Dog extends Animal {
+  Bark(): void
 }
-declare let f1: (x: Chordate) => void;
-declare let f2: (x: Mammal) => void;
-f2 = f1;
-f1 = f2; //Error: Mammal is incompatible with Chordate
+
+function foo(type: Animal) {
+
+}
+var dog: Dog = {
+  Eat: () => { },
+  Bark: () => { }
+}
+var animal: Animal = {
+  Eat: () => { },
+}
+
+foo(dog)
+foo(animal)
 ```
+
+在传参过程中类型发散了,即你可以传入函数参数类型的派生类
 
 ### 类型安全和不变性
 
