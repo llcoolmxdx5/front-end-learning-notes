@@ -1,3 +1,4 @@
+// @ts-ignore
 class ListNode {
   val: number;
   next: ListNode | null;
