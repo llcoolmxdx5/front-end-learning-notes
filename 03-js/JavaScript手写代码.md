@@ -656,6 +656,37 @@ function deepCopy(obj){
 
 ![alt](https://user-gold-cdn.xitu.io/2019/3/29/169c514cb98f9532?w=335&h=223&f=png&s=116564)
 
+### 10.3 手写深克隆
+
+```js
+const clone = (source, target = {}) => {
+  let names = Object.getOwnPropertyNames(source);
+  for (let i = 0; i < names.length; i++) {
+    let desc = Object.getOwnPropertyDescriptor(source, names[i]);
+    if (typeof desc.value === "object" && desc.value !== null) {
+      let value;
+      if (desc.value.constructor === Date) {
+        value = new desc.value.constructor(desc.value);
+      } else if (desc.value.constructor === RegExp) {
+        value = new desc.value.constructor(desc.value, desc.value.flags);
+      } else {
+        value = new desc.value.constructor();
+      }
+      Object.defineProperties(target, names[i], {
+        configurable: desc.configurable,
+        enumerable: desc.enumerable,
+        writable: desc.writable,
+        value,
+      });
+      clone(desc.value, value);
+    } else {
+      Object.defineProperties(target, names[i], desc);
+    }
+  }
+  return target;
+};
+```
+
 ## 11.实现一个`instanceOf`
 
 ```js

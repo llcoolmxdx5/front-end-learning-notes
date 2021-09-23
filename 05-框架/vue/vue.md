@@ -1,13 +1,13 @@
 # vue
 
-## computed和watch的区别
+## computed 和 watch 的区别
 
-1. computed和watch都是观察页面的数据变化的。
-2. computed只有当页面数据变化时才会计算，当数据没有变化时，它会读取缓存。而watch每次都需要执行函数，methods也是每次都需要执行
-3. 数据变化时执行异步操作或开销较大的操作，这个时候使用watch是合适的
-4. 先执行computed,后执行watch
+1. computed 和 watch 都是观察页面的数据变化的。
+2. computed 只有当页面数据变化时才会计算，当数据没有变化时，它会读取缓存。而 watch 每次都需要执行函数，methods 也是每次都需要执行
+3. 数据变化时执行异步操作或开销较大的操作，这个时候使用 watch 是合适的
+4. 先执行 computed,后执行 watch
 
-## watch实现原理 有几种写法
+## watch 实现原理 有几种写法
 
 `vm` 调用 `$watch` 后，首先调用 `observe` 函数 创建 `Observer` 实例观察数据，`Observer` 又创建 `Dep` , `Dep` 用来维护订阅者。然后创建 `Watcher` 实例提供 `update`函数。一旦数据变动，就层层执行回调函数。
 
@@ -48,29 +48,28 @@ const vm = {
   obj: {
     get a() {
       // this 指向 vm 对象。
-      this.dependencies.push('a');
+      this.dependencies.push("a");
       return this.obj.b;
     },
     get b() {
-      this.dependencies.push('b');
+      this.dependencies.push("b");
       return 1;
-    }
+    },
   },
   computed: {
     c: {
       get() {
         // this 指向 vm 对象。
         return this.obj.a;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 vm.dependencies = [];
 console.log(vm.c);
-console.log('vm.c 依赖项：', vm.dependencies); // 输出： vm.c 依赖项： a, b
+console.log("vm.c 依赖项：", vm.dependencies); // 输出： vm.c 依赖项： a, b
 ```
 
 访问 vm.c 之前，清空了一下 vm.dependencies 数组，访问 vm.c 的时候，会调用相应的 get() 方法，在 get() 方法中，访问了 this.obj.a ，而对于 this.obj.a 的访问，又会调用相应的 get 方法，在该 get 方法中，有一句代码 this.dependencies.push('a') ，往 vm.dependencies 中放置了当前执行流程中依赖到的属性，然后以此类推，在 vm.c 访问结束之后， vm.dependencies 里面就记录了 vm.c 的依赖 ['a', 'b'] 了
 
 链接：`https://www.jianshu.com/p/b38f826f42bc`
-
