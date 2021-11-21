@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json", // 继承 web 目录下的 typescript 配置
+  "compilerOptions": {
+    "esModuleInterop": true // 需配置此项，ts-jest 从 v23 起不支持 allowSyntheticDefaultImports，因此会出现不能书写 import React from 'react'、必须书写 import * as React from 'react' 的问题，所以必须配置 esModuleInterop 来覆盖
+    // 详见 https://github.com/umijs/umi/issues/964
+  }
+}
