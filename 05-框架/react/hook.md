@@ -18,7 +18,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       count: 0,
-      name: "alife",
+      name: "ali-fe",
     };
   }
   render() {
@@ -41,7 +41,7 @@ import React, { useState } from "react";
 function App() {
   const [obj, setObject] = useState({
     count: 0,
-    name: "alife",
+    name: "ali-fe",
   });
   return (
     <div className="App">
@@ -133,7 +133,7 @@ function App() {
 
 我们使用 useEffect 重写了上面的例子，useEffect 第一个参数传递函数，可以用来做一些副作用比如异步请求，修改外部参数等行为，而第二个参数是个数组，如果数组中的值才会触发 useEffect 第一个参数中的函数。返回值(如果有)则在组件销毁或者调用函数前调用。
 
-比如第一个 useEffect 中，理解起来就是一旦 count 值发生改变，则修改 documen.title 值
+比如第一个 useEffect 中，理解起来就是一旦 count 值发生改变，则修改 document.title 值
 而第二个 useEffect 中数组没有传值，代表不监听任何参数变化，即只有在组件初始化或销毁的时候才会触发，用来代替 componentDidMount 和 componentWillUnmount
 基于这个强大 Hooks，我们可以模拟封装出其他生命周期函数，比如 componentDidUpdate 代码十分简单
 
@@ -228,7 +228,7 @@ function HeaderBar() {
 }
 ```
 
-## useReducer miniredux
+## useReducer mini-redux
 
 useReducer 这个 Hooks 在使用上几乎跟 Redux/React-Redux 一模一样，唯一缺少的就是无法使用 redux 提供的中间件。我们将上述的计时器组件改写为 useReducer，
 
@@ -328,7 +328,7 @@ function App() {
 
 老规矩，第二个参数传入一个数组，数组中的每一项一旦值或者引用发生改变，useCallback 就会重新返回一个新的记忆函数提供给后面进行渲染。
 
-这样只要子组件继承了 PureComponent 或者使用 React.memo 就可以有效避免不必要的 VDOM 渲染。
+这样只要子组件继承了 PureComponent 或者使用 React.memo 就可以有效避免不必要的 V-DOM 渲染。
 
 ## useMemo 记忆组件
 
