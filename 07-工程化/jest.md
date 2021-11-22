@@ -3,7 +3,7 @@
 ## jest 基本介绍以及原理
 
 1. 若需测试 ES6 的 MODULE 模块化时需要安装 `yarn add @babel/core @babel/preset-env jest@24.8.0 -D`
-2. 配置.babelrc
+2. 配置 `.babelrc`
 
    ```js
    {
@@ -15,8 +15,42 @@
    }
    ```
 
-3. jest 会自动进行.test.js 文件的检测
-4. jest@24.8.0 版本匹配 axios@0.19.0
+3. jest 会自动进行 `.test.js` 文件的检测
+4. `jest@24.8.0` 版本匹配 `axios@0.19.0`
+
+## jest config
+
+```js
+// jest.config.js
+module.exports = {
+  moduleFileExtensions: [
+    "ts", // 增加 ts、tsx，以支持单测文件中引入 typescript 模块
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node",
+  ],
+  globals: {
+    "ts-jest": {
+      tsConfig: "./tsconfig.jest.json", // 此处指明 ts-jest 编译 typescript 时的配置文件
+      diagnostics: false,
+    },
+    document: {},
+  },
+  // 只跑 util 进行单测覆盖率
+  collectCoverageFrom: ["**/__test__/**"],
+  // 此外，若你使用 typescript 书写单测，则需配置 testRegex 正则，保证匹配你的 ts、tsx 结尾的测试文件，并配置 testMatch 为 null
+  testRegex: "/.*\\.(test)\\.(ts|tsx|js|jsx)$",
+  testMatch: null,
+  // 在执行每个测试文件前执行一次
+  // setupFiles: ['./tests/setup.ts'],
+  // 配置别名
+  // 会在此递归的寻找需要的模块地址
+  moduleDirectories: ["node_modules", "src"],
+  // transformIgnorePatterns: ['/node_modules/(?!\\/react)'],
+};
+```
 
 ## jest 匹配器
 
@@ -52,9 +86,9 @@ test.only("仅测试当前用例"，() => {
 
 ## 命令行操作
 
-jest --watchAll 自动测试所有后缀为.test.js 的文件
-jest --watch 自动测试当前文件
-jest --coverage 生成测试覆盖率报告
+`jest --watchAll` 自动测试所有后缀为.test.js 的文件
+`jest --watch` 自动测试当前文件
+`jest --coverage` 生成测试覆盖率报告
 
 - 按 f 仅运行失败的测试。
 - 按 o 仅运行与更改的文件相关的测试。
