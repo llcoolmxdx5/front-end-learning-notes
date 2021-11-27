@@ -12,15 +12,9 @@ export = class Dequeue<T> {
   addFront(element: T) {
     if (this.isEmpty()) {
       this.addBack(element);
-    } else if (this.lowestCount > 0) {
+    } else {
       this.lowestCount--;
       this.items[this.lowestCount] = element;
-    } else {
-      for (let i = this.count; i > 0; i--) {
-        this.items[i] = this.items[i - 1];
-      }
-      this.count++;
-      this.items[0] = element;
     }
   }
 

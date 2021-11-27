@@ -20,10 +20,9 @@ weight: 1
 1. 散列函数 Hash Function
 2. 解决碰撞/填充因子 Collision Resolution
 
-## 栈和队列 Stack & Queue
+## 栈 Stack
 
-1. 广义表 Generalized List/GList
-2. 双端队列 Dequeue
+1. 单调栈 Monotone stack
 
 ## 队列 Queue
 
@@ -32,6 +31,7 @@ weight: 1
 3. 双端队列 Dequeue
 4. 优先队列 Priority Queue
 5. 循环队列 Circular Queue
+6. 单调队列 Monotone Queue
 
 ## 字符串 String
 
