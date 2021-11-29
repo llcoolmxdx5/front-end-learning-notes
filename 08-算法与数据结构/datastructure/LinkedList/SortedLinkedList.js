@@ -1,5 +1,5 @@
-const { defaultEquals } = require("./utils");
-const LinkedList = require("./LinkedList");
+import { defaultEquals } from "./utils";
+import LinkedList from "./LinkedList";
 
 const Compare = {
   LESS_THAN: -1,
@@ -14,7 +14,7 @@ function defaultCompare(a, b) {
 }
 
 // 有序链表
-class SortedLinkedList extends LinkedList {
+export default class SortedLinkedList extends LinkedList {
   constructor(equalsFn = defaultEquals, compareFn = defaultCompare) {
     super(equalsFn);
     this.compareFn = compareFn;
@@ -39,5 +39,3 @@ class SortedLinkedList extends LinkedList {
     return i;
   }
 }
-
-module.exports = SortedLinkedList;

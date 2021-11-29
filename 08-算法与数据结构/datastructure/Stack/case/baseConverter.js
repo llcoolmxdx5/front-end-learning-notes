@@ -1,24 +1,24 @@
-const Stack = require('./stackWeakMap')
+import Stack from "./stackWeakMap";
 
 function baseConverter(decNumber, base) {
-  let remStack = new Stack()
-  let digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  let number = decNumber
-  let rem
-  let baseString = ''
+  let remStack = new Stack();
+  let digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let number = decNumber;
+  let rem;
+  let baseString = "";
   if (base < 2 || base > 36) {
-    return ''
+    return "";
   }
   while (number > 0) {
-    rem = Math.floor(number % base)
-    remStack.push(rem)
-    number = Math.floor(number / base)
+    rem = Math.floor(number % base);
+    remStack.push(rem);
+    number = Math.floor(number / base);
   }
   while (remStack.isEmpty() === false) {
-    baseString += digits[remStack.pop()]
+    baseString += digits[remStack.pop()];
   }
-  return baseString
+  return baseString;
 }
 
-let result = baseConverter(100345, 16)
-console.log(result)
+let result = baseConverter(100345, 16);
+console.log(result);

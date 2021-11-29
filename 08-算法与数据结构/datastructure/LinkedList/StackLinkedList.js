@@ -1,6 +1,6 @@
-const DoublyLinkedList = require("./DoublyLinkedList");
+import DoublyLinkedList from "./DoublyLinkedList";
 
-class StackLinkedList {
+export default class StackLinkedList {
   constructor() {
     this.items = new DoublyLinkedList();
   }
@@ -32,5 +32,3 @@ class StackLinkedList {
     return this.items.toString();
   }
 }
-
-module.exports = StackLinkedList;

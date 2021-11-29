@@ -1,7 +1,7 @@
 const _items = new WeakMap();
 const _count = new WeakMap();
 // 真正的私有属性，无法继承
-class Stack {
+export default class Stack {
   constructor() {
     _count.set(this, 0);
     _items.set(this, {});
@@ -47,7 +47,7 @@ class Stack {
   }
   toString() {
     if (this.isEmpty()) {
-      return '';
+      return "";
     }
     const items = _items.get(this);
     const count = _count.get(this);
@@ -58,7 +58,3 @@ class Stack {
     return objString;
   }
 }
-
-// export default Stack
-
-module.exports = Stack

@@ -1,4 +1,4 @@
-export = class Dequeue<T> {
+export default class Dequeue<T> {
   private count: number;
   private lowestCount: number;
   private items: Record<number, T>;

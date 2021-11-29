@@ -1,6 +1,6 @@
-const LinkedList = require("./LinkedList");
-const Node = require("./Node");
-const { defaultEquals } = require("./utils");
+import LinkedList from "./LinkedList";
+import Node from "./Node";
+import { defaultEquals } from "./utils";
 
 class DoublyNode extends Node {
   constructor(element, next, prev) {

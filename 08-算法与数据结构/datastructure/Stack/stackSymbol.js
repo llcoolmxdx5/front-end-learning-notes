@@ -1,6 +1,6 @@
-const _items = Symbol('stackItems');
+const _items = Symbol("stackItems");
 
-class Stack {
+export default class Stack {
   constructor() {
     this[_items] = [];
   }

@@ -1,9 +1,9 @@
-const { defaultEquals } = require("./utils");
-const Node = require("./Node");
-const LinkedList = require("./LinkedList");
+import { defaultEquals } from "./utils";
+import Node from "./Node";
+import LinkedList from "./LinkedList";
 
 // 循环链表
-class CircularLinkedList extends LinkedList {
+export default class CircularLinkedList extends LinkedList {
   constructor(equalsFn = defaultEquals) {
     super(equalsFn);
   }
@@ -56,5 +56,3 @@ class CircularLinkedList extends LinkedList {
     return current.element;
   }
 }
-
-module.exports = CircularLinkedList;

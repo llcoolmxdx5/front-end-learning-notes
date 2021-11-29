@@ -1,4 +1,4 @@
-function defaultEquals(a, b) {
+export function defaultEquals(a, b) {
   if (Object.prototype.toString.call(a) !== Object.prototype.toString.call(b)) {
     return false;
   }
@@ -7,10 +7,6 @@ function defaultEquals(a, b) {
   }
   return JSON.stringify(a) === JSON.stringify(b);
 }
-
-module.exports = {
-  defaultEquals,
-};
 
 // console.log(defaultEquals("", ""));
 // console.log(defaultEquals(true, false));

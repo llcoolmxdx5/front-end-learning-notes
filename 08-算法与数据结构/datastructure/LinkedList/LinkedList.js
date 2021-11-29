@@ -1,7 +1,7 @@
-const { defaultEquals } = require("./utils");
-const Node = require("./Node");
+import { defaultEquals } from "./utils";
+import Node from "./Node";
 
-class LinkedList {
+export default class LinkedList {
   constructor(equalsFn = defaultEquals) {
     this._head = null;
     this.count = 0;
@@ -116,8 +116,6 @@ class LinkedList {
     return objString;
   }
 }
-
-module.exports = LinkedList;
 
 // const list = new LinkedList();
 // list.push(1);

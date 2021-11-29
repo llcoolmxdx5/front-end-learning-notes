@@ -1,4 +1,4 @@
-class Queue {
+export default class Queue {
   constructor() {
     this.count = 0;
     this.lowestCount = 0;
@@ -43,8 +43,6 @@ class Queue {
       .join(",");
   }
 }
-
-module.exports = Queue;
 
 // const queue = new Queue();
 // queue.enqueue(1, 2, 3);

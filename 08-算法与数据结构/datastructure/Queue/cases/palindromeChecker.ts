@@ -1,4 +1,4 @@
-import Dequeue = require("./Dequeue");
+import Dequeue from "../Dequeue";
 
 // 回文
 const palindromeChecker = (aString: string) => {
