@@ -20,3 +20,4 @@ bin-release/
 node_modules
 yarn.lock
 dist
+*.log
