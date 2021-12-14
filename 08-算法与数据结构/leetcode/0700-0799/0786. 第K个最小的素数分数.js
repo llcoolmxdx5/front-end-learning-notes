@@ -11,14 +11,14 @@ var kthSmallestPrimeFraction = function (arr, k) {
   );
   const { length } = arr;
   for (let i = 1; i < length; i++) {
-    pq.insert([0, i]);
+    pq.offer([0, i]);
   }
   let cur;
   for (let r = 0; r < k; r++) {
-    cur = pq.remove();
+    cur = pq.poll();
     const [i, j] = cur;
     if (i < j - 1) {
-      pq.insert([i + 1, j]);
+      pq.offer([i + 1, j]);
     }
   }
   return [arr[cur[0]], arr[cur[1]]];
