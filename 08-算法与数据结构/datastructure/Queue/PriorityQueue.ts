@@ -1,24 +1,42 @@
 export default class PriorityQueue<T = number> {
   private heap: T[] = [];
-  private size = 0;
   private compare: (a: T, b: T) => boolean;
   constructor(compare: (a: T, b: T) => boolean = (a, b) => a < b) {
     this.compare = compare;
   }
 
-  public insert(item: T) {
+  /** 添加元素 */
+  public offer(item: T) {
     this.heap.push(item);
-    this.size += 1;
-    this.up(this.size - 1);
+    this.up(this.heap.length - 1);
   }
 
-  public remove() {
+  /** 返回队首元素, 队首元素出队列 */
+  public poll() {
     const delItem = this.heap[0];
-    this.swap(this.size - 1, 0);
-    this.size -= 1;
+    this.swap(this.heap.length - 1, 0);
     this.heap.length -= 1;
     this.down(0);
     return delItem;
+  }
+
+  /** 判断队列是否为空, 为空返回 true */
+  public isEmpty() {
+    return this.heap.length === 0;
+  }
+
+  /** 返回队首元素 */
+  public peek() {
+    return this.heap[0];
+  }
+
+  /** 返回队列元素个数 */
+  public size() {
+    return this.heap.length
+  }
+
+  public toString() {
+    return this.heap.join(",");
   }
 
   private down(k: number) {
@@ -26,12 +44,12 @@ export default class PriorityQueue<T = number> {
       right = k * 2 + 2,
       largest = k;
 
-    if (left < this.size && this.compare(this.heap[left], this.heap[largest])) {
+    if (left < this.heap.length && this.compare(this.heap[left], this.heap[largest])) {
       largest = left;
     }
 
     if (
-      right < this.size &&
+      right < this.heap.length &&
       this.compare(this.heap[right], this.heap[largest])
     ) {
       largest = right;
@@ -58,24 +76,3 @@ export default class PriorityQueue<T = number> {
     this.heap[j] = tmp;
   }
 }
-
-const kthSmallestPrimeFraction = function (arr: number[], k: number) {
-  const pq = new PriorityQueue<[number, number]>(
-    (a, b) => arr[a[0]] * arr[b[1]] < arr[a[1]] * arr[b[0]]
-  );
-  const { length } = arr;
-  for (let i = 1; i < length; i++) {
-    pq.insert([0, i]);
-  }
-  let cur: [number, number] = [0, length - 1];
-  for (let r = 0; r < k; r++) {
-    cur = pq.remove();
-    const [i, j] = cur;
-    if (i < j - 1) {
-      pq.insert([i + 1, j]);
-    }
-  }
-  return [arr[cur[0]], arr[cur[1]]];
-};
-
-console.log(kthSmallestPrimeFraction([1, 13, 17, 59], 6).join() === "13,17", 3);

@@ -48,3 +48,11 @@
 - `isFull()`: 检查循环队列是否已满。
 
 [设计循环队列](https://leetcode-cn.com/problems/design-circular-queue/)
+
+## 优先队列
+
+### 题目
+
+- [x] 0407 接雨水II 困难
+- [x] 0630 课程表III 困难
+- [x] 0786 第K个最小的素数分数 困难
