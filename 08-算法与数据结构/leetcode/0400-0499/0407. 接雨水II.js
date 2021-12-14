@@ -1,26 +1,5 @@
-class PriorityQueue {
-  constructor() {
-    this.data = [];
-  }
-  isEmpty() {
-    return !this.data.length;
-  }
-  enqueue(item) {
-    this.data.push(item);
-  }
-  dequeue() {
-    let entry = 0;
-    for (let i = 0; i < this.data.length; i++) {
-      if (this.data[i].height < this.data[entry].height) {
-        entry = i;
-      }
-    }
-    return this.data.splice(entry, 1)[0];
-  }
-  getData() {
-    return this.data;
-  }
-}
+import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
+
 /**
  * @param {number[][]} heightMap
  * @return {number}
@@ -32,20 +11,20 @@ var trapRainWater = function (heightMap) {
     return 0;
   }
   let ans = 0;
-  const pq = new PriorityQueue();
+  const pq = new PriorityQueue((a, b) => a.height - b.height < 0);
   const visited = new Array(m).fill(0).map((_) => new Array(n).fill(false));
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
       if (i === 0 || i === m - 1 || j === 0 || j === n - 1) {
         visited[i][j] = true;
-        pq.enqueue({ height: heightMap[i][j], row: i, col: j });
+        pq.offer({ height: heightMap[i][j], row: i, col: j });
       }
     }
   }
   const dirX = [0, 0, 1, -1];
   const dirY = [1, -1, 0, 0];
   while (!pq.isEmpty()) {
-    const { height, row, col } = pq.dequeue();
+    const { height, row, col } = pq.poll();
     for (let k = 0; k < 4; k++) {
       const nx = row + dirX[k];
       const ny = col + dirY[k];
@@ -54,7 +33,7 @@ var trapRainWater = function (heightMap) {
           ans += height - heightMap[nx][ny];
         }
         visited[nx][ny] = true;
-        pq.enqueue({
+        pq.offer({
           height: Math.max(heightMap[nx][ny], height),
           row: nx,
           col: ny,
