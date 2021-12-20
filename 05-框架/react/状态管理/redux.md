@@ -1,6 +1,6 @@
 # Redux
 
-![alt](./media/redux.jpeg)
+![redux](./media/redux.gif)
 
 ## **Redux 的使用的三大原则**
 
