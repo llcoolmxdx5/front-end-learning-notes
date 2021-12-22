@@ -166,6 +166,24 @@ export default store;
 
 ### redux-saga
 
+#### 阻塞与非阻塞
+
+```js
+import { call, cancel, join, take, put, fork, select } from "redux-saga/effects";
+
+function* saga() {
+  yield take("ACTION"); // 阻塞: 会一直等待,直到 Action 被触发
+  yield call(ApiFn, ...args); // 阻塞: 会等待 ApiFn 执行完成(如果ApiFn是个 返回的是 Promise)
+  yield call(otherSaga, ...args); // 阻塞: 会等待 otherSaga 函数执行完成
+  yield put("ACTION"); // 非阻塞, 会 dispatch 一个 action, 但不等待这个 action 后续的 effects 完成
+  yield select(somethingFromState) // 阻塞: 获取 store 中的 state
+  const task = yield fork(otherSaga, ...args); // 非阻塞, 不会等待 otherSaga 完成 fork指的是新开一个协程,与父协程并行执行
+  yield cancel(task); // 非阻塞: 立即返回
+  // or
+  yield join(task); // 阻塞: 会等待 task 执行结束
+}
+```
+
 ```jsx
 // /src/sagas.js
 import { sagas as homeSaga } from "pages/index/home/";
