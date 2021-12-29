@@ -1,24 +1,19 @@
-# 「真香警告」重学TCPIP 协议 与三次握手
+# `TCP/IP` 协议与三次握手
 
 ## 前言
 
-最近刚看完电影`「无敌破坏王2:大闹互联网」`，觉得里面有些动画蛮有意思的，于是想起前不久看的《图解HTTP》和`TCP/IP`相关的文章。嗯，是时候展示真正的技术了。
+本文目录
 
-如果你还对各类协议归属、作用也都傻傻分不清，那么你有必要详尽了解下`TCP/IP`。
-
-![alt](https://user-gold-cdn.xitu.io/2019/4/20/16a3886725fc4e39?w=335&h=215&f=jpeg&s=17274)
-**本文目录**
-
-* [TCP/IP协议族](#heading-1)
-* [应用层, Application Layer](#heading-3)
-* [三次握手详解：SEQ和ACK，序列号与确认号, SYN同步序列号)](#heading-7)
-* [网络层, Network Layer(地址和路由相关知识)](#heading-9)
-* [链路层，Link Layer(如何查看MAC地址)](#heading-12)
-* [运行在传输层中的 TCP 和 UDP的协议](#heading-15)
+* TCP/IP协议族
+* 应用层, Application Layer
+* 三次握手详解：SEQ和ACK，序列号与确认号, SYN同步序列号
+* 网络层, Network Layer(地址和路由相关知识)
+* 链路层，Link Layer(如何查看MAC地址)
+* 运行在传输层中的 TCP 和 UDP的协议
 
 ## 1. `TCP/IP`协议族
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/7/169f6966c24af345?w=768&h=528&f=png&s=93054)
+![alt](./imgs/TCP-IP协议族.jpeg)
 
 > 互联网协议套件（英语：Internet Protocol Suite，缩写`IPS`）是一个网络通讯模型，以及一整个网络传输协议家族，为网际网络的基础通讯架构。它常被通称为TCP/IP协议族（英语：`TCP/IP Protocol Suite`，或`TCP/IP Protocols`），简称`TCP/IP`。因为该协定家族的两个核心协定：`TCP（传输控制协议）和IP（网际协议）`，为该家族中最早通过的标准。
 
@@ -30,7 +25,7 @@
 
 `TCP/IP`协议族中有一个很重要一点就是分层管理，依次为以下四层，应用层，传输层，网络层，数据链路层。
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a34f720514bb18?w=640&h=332&f=png&s=50301)
+![alt](./imgs/TCP-IP分层管理.jpeg)
 `TCP/IP`分层管理是有好处的，假如互联网只有一个协议统筹，某一个地方改变设计时，就需要把所有部分都替换掉，而分层只需要把变动的层替换掉即可。
 
 而且分层管理，设计也相对简单，处于应用层的应用只需要考虑分派自己的任务而不需要考虑对方的传输线路是怎样的，能否保证传输送达。
@@ -49,9 +44,6 @@
 * 以及许多[其他协议](https://zh.wikipedia.org/wiki/Category:%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE)
 
 一旦从应用程序来的数据被编码成一个标准的应用层协议，它将被传送到IP栈的下一层。
-![alt](https://user-gold-cdn.xitu.io/2019/4/7/169f71499b03960b?w=554&h=268&f=gif&s=1504406)
-
-<center>图中用到HTTP和DNS</center>
 
 ## 3. 传输层，`Transport Layer`
 
@@ -104,7 +96,7 @@ TCP连接由源和目标IP地址（来自网络层）以及源和目标端口号
 TCP网络中，为了保障每个连接提供有保证和有序的字节传递，使用了`Sequence Number` (,序列号)和 `Acknowledgment Number` (确认号)，即`Seq`和`Ack`。
 
 `TCP` 每次发送与接受的单位为： `TCP`头部 + 数据, TCP数据段 (`TCP Segment`)；
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a348448710e404?w=734&h=373&f=png&s=40023)
+![alt](./imgs/序列号.png)
 
 每个数据段的大小不尽相同，有可能数百～数万。
 
@@ -119,13 +111,10 @@ TCP网络中，为了保障每个连接提供有保证和有序的字节传递�
 
 ### 3.4 `SYN`，同步序列号
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a3537206bb4c3f?w=2600&h=1891&f=png&s=364755)
-
 * 为了避免与先前连线的数据段混淆，当次连线建立时，序列号 并非从 0 开始。
 * 两端会使用 `ISN`产生器，产生各自的 初始序列号 (`Initial Sequence Number, ISN`)，
 通常两者并不相等。
 * 连线建立时，透过 控制位元 (Control Bits) 中的 `SYN`，让两端的 `TCP` 必须进行 `ISN`的交换 (同步)。
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a34bb0faf1520d?w=1218&h=758&f=png&s=99962)
 
 好吧，说人话。就是**TCP三次握手**：
 
@@ -134,12 +123,10 @@ TCP网络中，为了保障每个连接提供有保证和有序的字节传递�
 
 于是便有下图：
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a34bcd5ec29036?w=566&h=590&f=png&s=72915)
+![alt](./imgs/TCP三次握手.png)
 
 且第三次握手中 (`Client — — > Server`)，
 其 `SEQ`為 第一段的值 + 1 (ISN + 1)。
-
-![alt](https://user-gold-cdn.xitu.io/2019/4/28/16a637cbe3de5196?w=500&h=265&f=gif&s=1242583)
 
 ## 4. 网络层, `Network Layer`
 
@@ -147,11 +134,8 @@ TCP网络中，为了保障每个连接提供有保证和有序的字节传递�
 
 网络层规定在众多选项中通过怎样的路径（传输线路）到达对方的计算机，把数据包传输给对方。
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/7/169f7031f577ab2c?w=554&h=228&f=gif&s=2084111)
-<center>流动中的数据包</center>
 该层中最突出的协议是`Internet协议（IP）`，因此该层也称为`IP`层。`IP`的核心是两个主要功能：**地址和路由**。
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a34f64a1b49b7e?w=500&h=269&f=png&s=43749)
 `IP`的原始版本是 `IPV4`，后来扩展了`IPV6`：
 
 * `IPv4`中规定`IP`地址长度为32,即有2^32-1个节点(40亿)。
@@ -200,17 +184,13 @@ fe80::%lo0/64 fe80::1%lo0   UcI           lo0
 
 互联网上的所有节点都有这些路由表，这就是IP数据包路由到达目的地的方式。
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a34dcf3a11edf9?w=960&h=540&f=png&s=67312)
+![alt](./imgs/路由表.jpeg)
 
 如果您想了解如何在网络中将数据包路由到掘金`juejin.im`，请运行以下命令：
 
 ```sh
 traceroute juejin.im
 ```
-
-就会得到下图：
-
-![alt](https://user-gold-cdn.xitu.io/2019/4/19/16a34e04d4e930ec?w=1170&h=730&f=png&s=274542)
 
 ## 5.链路层，`Link Layer`
 
@@ -223,8 +203,6 @@ traceroute juejin.im
 * NIC（Network interface Card 网络适配器：网卡 ）
 * 光纤等物理可见部分
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/7/169f6e764c1ac18b?w=554&h=229&f=gif&s=725715)
-<center>主机，线路，路由器</center>
 ### 5.1 `ifconfig`: 查看`MAC`地址
 
 在任何网络中，每个节点都具有  “邻居”。链路层协议提供通过链路直接连接的“邻居”之间通信所需的功能（例如，像CAT5电缆的物理链路，或WiFi中的无线电链路）。
@@ -261,11 +239,11 @@ en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 
 ## 6. TCP/IP 通信传输流
 
-![alt](https://user-gold-cdn.xitu.io/2019/4/7/169f728143e5e288?w=1000&h=783&f=png&s=183022)
+![alt](./imgs/TCP-IP通信传输流.jpeg)
 TCP/IP 通过分层管理进行网络通信，发送端从应用层往下走，接收端则往应用层上层走。
 
 然后便一层层包裹，解析。
-![alt](https://user-gold-cdn.xitu.io/2019/4/7/169f7289e149898b?w=1000&h=915&f=png&s=399281)
+![alt](./imgs/TCP-IP通信传输流2.jpeg)
 
 * 发送端，每经过一层会打上该层所属的首部信息。
 * 接收端，每经过一层会把对应的首部信息解析。
