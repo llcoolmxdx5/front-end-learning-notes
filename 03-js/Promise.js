@@ -72,8 +72,7 @@ class MyPromise {
             throw reason;
           };
 
-    // 为了链式调用这里直接 return MyPromise
-    return new MyPromise((resolve, reject) => {
+    const promise2 = new MyPromise((resolve, reject) => {
       const fulfilledMicrotask = () => {
         // 创建一个微任务等待 promise2 完成初始化
         queueMicrotask(() => {
@@ -114,6 +113,9 @@ class MyPromise {
         this.onRejectedCallbacks.push(rejectedMicrotask);
       }
     });
+
+    // 为了链式调用这里直接 return promise2
+    return promise2
   }
 
   catch(onRejected) {
@@ -169,7 +171,7 @@ class MyPromise {
       promiseList.forEach((promise, index) => {
         MyPromise.resolve(promise).then(
           (value) => {
-            count++;
+            count += 1;
             result[index] = value;
             if (count === length) {
               resolve(result);
@@ -187,37 +189,24 @@ class MyPromise {
     return new MyPromise((resolve) => {
       const length = promiseList.length;
       const result = [];
-      let count = 0;
 
-      if (length === 0) {
-        return resolve(result);
-      } else {
-        for (let i = 0; i < length; i++) {
-          const currentPromise = MyPromise.resolve(promiseList[i]);
-          currentPromise.then(
-            (value) => {
-              count++;
-              result[i] = {
-                status: "fulfilled",
-                value: value,
-              };
-              if (count === length) {
-                return resolve(result);
-              }
-            },
-            (reason) => {
-              count++;
-              result[i] = {
-                status: "rejected",
-                reason: reason,
-              };
-              if (count === length) {
-                return resolve(result);
-              }
-            }
-          );
-        }
+      for (let i = 0; i < length; i++) {
+        MyPromise.resolve(promiseList[i]).then(
+          (value) => {
+            result[i] = {
+              status: FULFILLED,
+              value,
+            };
+          },
+          (reason) => {
+            result[i] = {
+              status: REJECTED,
+              reason,
+            };
+          }
+        );
       }
+      return resolve(result);
     });
   };
 
