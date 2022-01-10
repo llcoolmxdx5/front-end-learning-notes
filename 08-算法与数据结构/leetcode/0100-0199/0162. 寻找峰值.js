@@ -13,7 +13,7 @@ var findPeakElement = function (nums) {
       return right;
     }
     left += 1;
-    right += 1;
+    right -= 1;
   }
   return left;
 };
