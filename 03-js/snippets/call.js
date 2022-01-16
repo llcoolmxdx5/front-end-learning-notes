@@ -1,11 +1,10 @@
-const call =
-  (func, ...args) =>
-  (context = globalThis) => {
-    const fn = Symbol("fn");
-    context[fn] = func;
-    context[fn](...args);
-    delete context[fn];
-  };
+const call = (func, context = globalThis, ...args) => {
+  const fn = Symbol("fn");
+  context[fn] = func;
+  const result = context[fn](...args);
+  delete context[fn];
+  return result;
+};
 
 Function.prototype._call = function (context, ...args) {
   // 按规范非undefined和null 才转化为对象,其他都是全局对象
@@ -26,5 +25,5 @@ function bar(name, age) {
   console.log(age);
   console.log(this.value, this.fn);
 }
-call(bar, "black", "18")(foo); // black 18 1 1
+call(bar, foo, "black", "18"); // black 18 1 1
 bar._call(foo, "black", "18");
