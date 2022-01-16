@@ -4,13 +4,10 @@
 // - 否则，用 Function.prototype.bind() 返回一个柯里化函数 fn，该函数需要其余参数。
 // - 如果要生成接受可变数量参数的函数（可变函数，例如Math.min（）），可以选择将参数数量传递给第二个参数 arity。
 
-function curry(fn, arity = fn.length, ...args) {
-  return arity <= args.length
-    ? fn(...args)
-    : curry.bind(null, fn, arity, ...args);
-}
+const curry1 = (fn, arity = fn.length, ...args) =>
+  arity <= args.length ? fn(...args) : curry1.bind(null, fn, arity, ...args);
 
-function curry(fn, arity = fn.length) {
+function curry2(fn, arity = fn.length) {
   function _curry(fn, arity, ...args) {
     return function (...params) {
       let _args = [...args, ...params];
@@ -24,6 +21,12 @@ function curry(fn, arity = fn.length) {
   return _curry.call(this, fn, arity);
 }
 
-const curry1 = curry(Math.pow)(2)(10); // 1024
-const curry2 = curry(Math.min, 3)(10)(50)(2); // 2
-console.log(curry1, curry2);
+const curry3 = (fn, arity = fn.length) => {
+  const _curry = (fn, arity, ...args) =>
+    arity <= args.length ? fn(...args) : _curry.bind(null, fn, arity, ...args);
+  return _curry.call(this, fn, arity);
+};
+
+const res1 = curry2(Math.pow)(2)(10); // 1024
+const res2 = curry2(Math.min, 3)(10)(50)(2); // 2
+console.log(res1, res2);
