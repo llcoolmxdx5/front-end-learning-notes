@@ -5,52 +5,51 @@ react hook 使用的是 `Object.is` 来进行的比较，这个比较是一个�
 ## 从一个 🌰 来看问题
 
 ```jsx
-import React, { useEffect, useMemo, useState } from 'react';
-import update from 'immutability-helper';
-import { Button } from 'antd';
-import Child from './Child';
-import { cloneDeep } from 'lodash';
-​
+import React, { useEffect, useMemo, useState } from "react";
+import update from "immutability-helper";
+import { Button } from "antd";
+import Child from "./Child";
+import { cloneDeep } from "lodash";
+
 const Test = () => {
-  const [data, setData] = useState({
-    info: {
-      name: 'tom',
-      age: 12,
-    },
-    score: {
-      exam1: [99, 98, 89],
-      exam2: [78, 85, 33],
-    },
+  const [data, setData] = useState({
+    info: {
+      name: "tom",
+      age: 12,
+    },
+    score: {
+      exam1: [99, 98, 89],
+      exam2: [78, 85, 33],
+    },
   });
-​
-  function handleClick() {
-    // TODO: 点击按钮，更新第一个考试的英语成绩
+
+  function handleClick() {
+    // TODO: 点击按钮，更新第一个考试的英语成绩
   }
-​
-  const examStr = useMemo(() => {
-    const exam1 = data.score.exam1;
-    return (
-      <div>
-        <p>语文: {exam1[0]}</p>
-        <p>数学: {exam1[1]}</p>
-        <p>英语: {exam1[2]}</p>
-      </div>
-    );
+
+  const examStr = useMemo(() => {
+    const exam1 = data.score.exam1;
+    return (
+      <div>
+        <p>语文: {exam1[0]}</p>
+        <p>数学: {exam1[1]}</p>
+        <p>英语: {exam1[2]}</p>
+      </div>
+    );
   }, [data.score.exam1]);
-​
-  return (
-    <div>
-      <Button onClick={handleClick}>更新数据</Button>
-      <div>{examStr}</div>
-      <Child child={data.info}></Child>
-    </div>
+
+  return (
+    <div>
+      <Button onClick={handleClick}>更新数据</Button>
+      <div>{examStr}</div>
+      <Child child={data.info}></Child>
+    </div>
   );
 };
-​
+
 export default Test;
 ```
 
-​
 来看上面的代码，我们需要点击按钮的时候更新 exam1 数组的第三项数据，这时候应该如何实现呢？
 
 ### 实现方式一（失败）
@@ -73,7 +72,7 @@ setData({
 
 ```jsx
 import { cloneDeep } from 'lodash';
-​
+
 data.score.exam1[2] = Math.random() * 100;
 setData(cloneDeep(data));
 ```
@@ -103,14 +102,14 @@ setData({
 
 ```tsx
 setData((data) => {
- return update(data, {
-   score: {
-     exam1: {
-       2: {
-         $set: Math.random() _ 10,
-      },
-    },
-  },
+return update(data, {
+ score: {
+  exam1: {
+   2: {
+    $set: Math.random() _ 10,
+   },
+  },
+ },
 });
 });
 ```
@@ -120,13 +119,12 @@ setData((data) => {
 ### push 给数据末尾添加数据
 
 ```tsx
-const [data, setData] = useState<any[]>([1,2]);
-​
+const [data, setData] = useState<any[]>([1, 2]);
 setData((data) => {
-  // data 值为 [1,2,3,4]
-  return update(data, {
-    // $push的参数必须是一个数组
-    $push: [3, 4],
+  // data 值为 [1,2,3,4]
+  return update(data, {
+    // $push的参数必须是一个数组
+    $push: [3, 4],
   });
 });
 ```
@@ -134,13 +132,12 @@ setData((data) => {
 ### $unshift 给数组开头添加数据
 
 ```tsx
-const [data, setData] = useState<any[]>([3,4]);
-​
+const [data, setData] = useState<any[]>([3, 4]);
 setData((data) => {
-  // data 值为 [1,2,3,4]
-  return update(data, {
-    // $unshift的参数必须是一个数组
-    $unshift: [1,2],
+  // data 值为 [1,2,3,4]
+  return update(data, {
+    // $unshift的参数必须是一个数组
+    $unshift: [1, 2],
   });
 });
 ```
@@ -148,13 +145,13 @@ setData((data) => {
 ### $splice 修改数组数据，包括添加，删除数据
 
 ```tsx
-const [data, setData] = useState<any[]>([3,4]);
+const [data, setData] = useState<any[]>([3, 4]);
 
 setData((data) => {
   // data 值为 [3,6,5]
   return update(data, {
     // $splice的参数必须是一个二维数组
-    $splice: [[1,1,6,5]],
+    $splice: [[1, 1, 6, 5]],
   });
 });
 ```
@@ -195,8 +192,8 @@ const [data, setData] = useState<any[]>([
   {
     user: [
       {
-        name: 'super-deng',
-        sex: '男',
+        name: "super-deng",
+        sex: "男",
       },
     ],
   },
@@ -208,7 +205,7 @@ setData((data) => {
     0: {
       user: {
         0: {
-          $unset: ['sex'],
+          $unset: ["sex"],
         },
       },
     },
@@ -223,8 +220,8 @@ const [data, setData] = useState<any[]>([
   {
     user: [
       {
-        name: 'super-deng',
-        sex: '男',
+        name: "super-deng",
+        sex: "男",
       },
     ],
   },
@@ -252,8 +249,8 @@ const [data, setData] = useState<any[]>([
   {
     user: [
       {
-        name: 'super-deng',
-        sex: '男',
+        name: "super-deng",
+        sex: "男",
       },
     ],
   },
