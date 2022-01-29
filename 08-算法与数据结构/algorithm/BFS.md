@@ -12,15 +12,14 @@ BFS 问题的本质就是让你在一幅图中找到从起点 start 到终点 ta
 
 ```js
 const BFS = (start, target) => {
-  const queue = []; // 队列 核心数据结构
+  let queue = []; // 队列 核心数据结构
   const visited = new Set(); // 避免走回头路
   queue.push(start); // 将起点加入队列
   visited.add(start);
   let step = 0; // 记录扩散的步数
   while (queue.length) {
-    const { length } = queue;
-    for (let i = 0; i < length; i++) {
-      const cur = queue.shift()
+    const next = [];
+    for (const cur of queue) {
       /** 这里判断是否到达终点 */
       if(cur === target) {
         return step
@@ -28,11 +27,12 @@ const BFS = (start, target) => {
       /** 将 cur 的相邻节点加入队列 */
       for(x = 相邻cur) {
         if(!visited.has(x)) {
-          queue.push(x)
+          next.push(x)
           visited.add(x)
         }
       }
     }
+    queue = next;
     /** 这里更新步数 */
     step += 1
   }
