@@ -17,15 +17,60 @@
 //    当一个 WebSocket 连接成功时触发。
 //    也可以通过 onopen 属性来设置。
 
-// Create WebSocket connection.
-const socket = new WebSocket("ws://localhost:8080");
-
-// Connection opened
-socket.addEventListener("open", function (event) {
-  socket.send("Hello Server!");
-});
-
-// Listen for messages
-socket.addEventListener("message", function (event) {
-  console.log("Message from server ", event.data);
-});
+const ws = new WebSocket("ws://localhost:8080");
+// 初始化事件函数
+const initEventHandle = (wsUrl) => {
+  ws.onclose = () => {
+    reconnect(wsUrl);
+  };
+  ws.onerror = (err) => {
+    reconnect(wsUrl);
+  };
+  ws.onopen = () => {
+    heartCheck.reset().start(); // 心跳检测重置
+  };
+  ws.onmessage = (msg) => {
+    heartCheck.reset().start(); // 拿到任何消息都说明当前连接是正常的
+    console.log(msg.data);
+    ws.send("msg");
+  };
+};
+// 实例websocket
+const createWebSocket = (url) => {
+  try {
+    if ("WebSocket" in window) {
+      ws = new WebSocket(url);
+    } else if ("MozWebSocket" in window) {
+      ws = new MozWebSocket(url);
+    } else {
+      alert("当前浏览器不支持websocket协议,建议使用现代浏览器", 3000);
+    }
+    initEventHandle();
+  } catch (e) {
+    reconnect(url);
+  }
+};
+const reconnect = () => {
+  if (reconnect.lockReconnect) return;
+  reconnect.lockReconnect = true;
+  setTimeout(() => {
+    createWebSocket(url);
+    reconnect.lockReconnect = false;
+  }, 2000);
+};
+const heartCheck = {
+  timeout: 60000, //  心跳检测时长
+  timeoutObj: null, // 定时变量
+  reset: () => {
+    // 重置定时
+    clearTimeout(this.timeoutObj);
+    return this;
+  },
+  start: () => {
+    // 开启定时
+    this.timeoutObj = setTimeout(() => {
+      // 心跳时间内收不到消息，主动触发连接关闭，开始重连
+      ws.close();
+    }, this.timeout);
+  },
+};
