@@ -32,11 +32,15 @@ export default class PriorityQueue<T = number> {
 
   /** 返回队列元素个数 */
   public size() {
-    return this.heap.length
+    return this.heap.length;
   }
 
   public toString() {
     return this.heap.join(",");
+  }
+
+  public get values() {
+    return this.heap;
   }
 
   private down(k: number) {
@@ -44,7 +48,10 @@ export default class PriorityQueue<T = number> {
       right = k * 2 + 2,
       largest = k;
 
-    if (left < this.heap.length && this.compare(this.heap[left], this.heap[largest])) {
+    if (
+      left < this.heap.length &&
+      this.compare(this.heap[left], this.heap[largest])
+    ) {
       largest = left;
     }
 
