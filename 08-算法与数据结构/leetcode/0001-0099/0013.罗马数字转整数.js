@@ -27,12 +27,8 @@ var romanToInt = function (s) {
   return num;
 };
 
-console.log(romanToInt("III")); // 3
-
-console.log(romanToInt("IX")); // 9
-
-console.log(romanToInt("XLIX")); // 49
-
-console.log(romanToInt("LVIII")); // 58
-
-console.log(romanToInt("MCMXCIV")); // 1994
+console.assert(romanToInt("III") === 3, 1);
+console.assert(romanToInt("IX") === 9, 2);
+console.assert(romanToInt("XLIX") === 49, 3);
+console.assert(romanToInt("LVIII") === 58, 4);
+console.assert(romanToInt("MCMXCIV") === 1994, 5);
