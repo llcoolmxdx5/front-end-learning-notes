@@ -18,15 +18,12 @@ var findDisappearedNumbers = function (nums) {
  * 解法二
  */
 var findDisappearedNumbers = function (nums) {
-  let result = [];
-  for (let index = 0; index < nums.length; index++) {
-    result.push(index + 1);
+  const { length } = nums;
+  const res = Array.from({ length }, (_, index) => index + 1);
+  for (const num of nums) {
+    delete res[num - 1];
   }
-  for (let index = 0; index < nums.length; index++) {
-    const element = nums[index];
-    delete result[element - 1];
-  }
-  return result.filter(Boolean);
+  return res.filter(Boolean);
 };
 
 console.log(findDisappearedNumbers([4, 3, 2, 7, 8, 2, 3, 1])); // [5,6]
