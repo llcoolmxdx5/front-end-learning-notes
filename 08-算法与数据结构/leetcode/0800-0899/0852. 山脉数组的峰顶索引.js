@@ -5,12 +5,13 @@
 var peakIndexInMountainArray = function (arr) {
   let left = 0,
     right = arr.length - 1;
-  while (true) {
+  while (left <= right) {
     const mid = left + Math.floor((right - left) / 2);
     if (left === right) {
       return left;
     }
     if (arr[mid] < arr[mid + 1]) {
+      // 上坡 峰顶在 mid 之后
       left = mid + 1;
     } else if (arr[mid] > arr[mid + 1]) {
       right = mid;
