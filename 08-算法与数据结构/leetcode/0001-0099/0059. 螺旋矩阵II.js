@@ -31,6 +31,36 @@ var generateMatrix = function (n) {
   return matrix;
 };
 
+var generateMatrix = function (n) {
+  const matrix = Array.from({ length: n }, () => new Array(n).fill(0));
+  const max = n ** 2;
+  let start = 1;
+  let loop = 0;
+  while (start <= max) {
+    for (let i = loop; i < n - loop; i++) {
+      matrix[loop][i] = start;
+      start += 1;
+    }
+    for (let i = loop + 1; i < n - 1 - loop; i++) {
+      matrix[i][n - 1 - loop] = start;
+      start += 1;
+    }
+    for (let i = n - 1 - loop; i >= loop; i--) {
+      matrix[n - 1 - loop][i] = start;
+      start += 1;
+    }
+    for (let i = n - loop - 2; i > loop; i--) {
+      matrix[i][loop] = start;
+      start += 1;
+    }
+    loop += 1;
+  }
+  if (n % 2 === 1) {
+    matrix[Math.floor(n / 2)][Math.floor(n / 2)] = max;
+  }
+  return matrix;
+};
+
 /**
 1
 
