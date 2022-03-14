@@ -71,7 +71,7 @@ setData({
 ### 实现方式三（成功，但不推荐）
 
 ```jsx
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
 
 data.score.exam1[2] = Math.random() * 100;
 setData(cloneDeep(data));
@@ -102,15 +102,15 @@ setData({
 
 ```tsx
 setData((data) => {
-return update(data, {
- score: {
-  exam1: {
-   2: {
-    $set: Math.random() _ 10,
-   },
-  },
- },
-});
+  return update(data, {
+    score: {
+      exam1: {
+        2: {
+          $set: Math.random() _ 10,
+        },
+      },
+    },
+  });
 });
 ```
 
