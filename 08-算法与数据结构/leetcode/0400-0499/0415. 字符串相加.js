@@ -20,18 +20,18 @@ var addStrings = function (num1, num2) {
 };
 
 var addStrings = function (num1, num2) {
-  let i = num1.length - 1,
-    j = num2.length - 1,
-    add = 0;
   const ans = [];
-  while (i >= 0 || j >= 0 || add != 0) {
-    const x = i >= 0 ? num1[i] - "0" : 0;
-    const y = j >= 0 ? num2[j] - "0" : 0;
-    const result = x + y + add;
-    ans.push(result % 10);
-    add = Math.floor(result / 10);
-    i -= 1;
-    j -= 1;
+  let extra = 0;
+  let n = num1.length - 1;
+  let m = num2.length - 1;
+  while (n >= 0 || m >= 0 || extra) {
+    let x = +(num1[n] ?? "0");
+    let y = +(num2[m] ?? "0");
+    const sum = x + y + extra;
+    ans.push(sum % 10);
+    extra = Math.floor(sum / 10);
+    n--;
+    m--;
   }
   return ans.reverse().join("");
 };
