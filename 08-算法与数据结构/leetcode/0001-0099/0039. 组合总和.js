@@ -2,7 +2,7 @@
  * @param {number[]} candidates
  * @param {number} target
  * @return {number[][]}
- */combinationSum2
+ */
 var combinationSum = function (candidates, target) {
   const { length } = candidates;
   const ans = [];
