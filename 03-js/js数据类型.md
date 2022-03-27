@@ -111,18 +111,19 @@ a > -1; // true
 
 ### 1. typeof
 
-typeof 返回一个表示数据类型的字符串，返回结果包括：number、boolean、string、symbol、object、undefined、function 等 7 种数据类型，但不能判断 null、array 等
+typeof 返回一个表示数据类型的字符串，返回结果包括：number、boolean、string、symbol、bigint、object、undefined、function 8 种数据类型，但不能判断 null、array 等
 
 ```js
 typeof Symbol(); // symbol 有效
 typeof ""; // string 有效
 typeof 1; // number 有效
+typeof 1n; // bigint 有效
 typeof true; // boolean 有效
 typeof undefined; //undefined 有效
-typeof newFunction(); // function 有效
+typeof new Function(); // function 有效
 typeof null; // object 无效
 typeof []; // object 无效
-typeof newDate(); // object 无效
+typeof new Date(); // object 无效
 typeof new RegExp(); //object 无效
 ```
 
@@ -145,11 +146,13 @@ constructor 作用和 instanceof 非常相似。但 constructor 检测 Object �
 
 ### 4. Object.prototype.toString.call()
 
-Object.prototype.toString.call() 是最准确最常用的方式 返回一个字符串
+Object.prototype.toString.call() 是最准确最常用的方式 返回一个字符串, 不能检测 NaN
 
 ```js
 Object.prototype.toString.call("").slice(7, -1); // String
 Object.prototype.toString.call(1).slice(7, -1); // Number
+Object.prototype.toString.call(NaN).slice(7, -1); // Number
+Object.prototype.toString.call(1n).slice(7, -1); // BigInt
 Object.prototype.toString.call(true).slice(7, -1); // Boolean
 Object.prototype.toString.call(undefined).slice(7, -1); // Undefined
 Object.prototype.toString.call(null).slice(7, -1); // Null
