@@ -3,38 +3,47 @@
  * @param {string} num2
  * @return {string}
  */
-var multiply = function (num1, num2) {
-  if (num1 === "0" || num2 === "0") return "0";
-  // 保存溢位
+ var multiply = function (num1, num2) {
+  if (num1 === "0" || num2 === "0") {
+    return "0";
+  }
+  const arr = [];
+  const s1 = num1.split("").reverse();
+  const s2 = num2.split("").reverse();
+  const multiple = (str, index) => {
+    const res = [];
+    for (let i = 0; i < index; i++) {
+      res.push("0");
+    }
+    let sum = 0;
+    for (const s of s2) {
+      const m = parseInt(s) * parseInt(str) + sum;
+      res.push(String(m % 10));
+      sum = Math.floor(m / 10);
+    }
+    if (sum) {
+      res.push(String(sum));
+    }
+    return res;
+  };
+  let maxLength = 0;
+  for (let i = 0; i < s1.length; i++) {
+    const res = multiple(s1[i], i);
+    arr.push(res);
+    maxLength = Math.max(maxLength, res.length);
+  }
+  // console.log(arr);
+  const ans = [];
   let add = 0;
-  let arr = [];
-  for (let i = num1.length; i--; ) {
-    const s1 = num1[i];
-    const a1 = [];
-    for (let j = num2.length; j--; ) {
-      const s2 = num2[j];
-      const a = +s1 * s2 + add;
-      add = Math.floor(a / 10);
-      a1.push(a % 10);
+  for (let i = 0; i < maxLength; i++) {
+    let sum = add;
+    for (let j = 0; j < arr.length; j++) {
+      sum += parseInt(arr[j]?.[i] || 0);
     }
-    if (add) {
-      a1.push(add);
-      add = 0;
-    }
-    arr.push(a1.reverse().join("") + "0".repeat(num1.length - 1 - i));
-  }
-  let maxLength = Math.max(...arr.map((x) => x.length));
-  arr = arr.map((x) => "0".repeat(maxLength - x.length) + x);
-  // 加法
-  const arr1 = [];
-  add = 0;
-  while (maxLength > 0) {
-    const sum = eval(arr.map((x) => x[maxLength - 1]).join("+")) + add;
+    ans.push(String(sum % 10));
     add = Math.floor(sum / 10);
-    arr1.push(sum % 10);
-    maxLength -= 1;
   }
-  const res = arr1.reverse().join("");
+  const res = ans.reverse().join("");
   return add ? add + res : res;
 };
 
