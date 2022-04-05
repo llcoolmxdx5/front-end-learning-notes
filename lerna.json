@@ -1,6 +1,7 @@
 {
   "packages": [
-    "packages/*"
+    "03-js/array",
+    "05-框架/react/dva-demo"
   ],
   "version": "independent",
   "npmClient": "yarn",

@@ -18,7 +18,8 @@
     "js"
   ],
   "workspaces": [
-    "packages/*"
+    "03-js/array",
+    "05-框架/react/dva-demo"
   ],
   "private": true,
   "author": "",
