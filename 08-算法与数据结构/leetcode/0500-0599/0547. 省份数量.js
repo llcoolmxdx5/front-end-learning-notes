@@ -1,3 +1,5 @@
+import UnionFind from "../../algorithms/unionFind";
+
 /**
  * @param {number[][]} isConnected
  * @return {number}
@@ -44,6 +46,17 @@ var findCircleNum = function (isConnected) {
     }
   }
   return circles;
+};
+
+var findCircleNum = function (isConnected) {
+  const n = isConnected.length
+  const unionFind = new UnionFind(n);
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      isConnected[i][j] && unionFind.union(i, j)
+    }
+  }
+  return unionFind.size
 };
 
 console.assert(
