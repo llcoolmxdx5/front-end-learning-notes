@@ -359,27 +359,70 @@ txt: `hello webpack`, 实际显示为 `export default "hello webpack\n";`
 
 ### 加载 images 图像
 
-假如，现在我们正在下载 CSS，但是像 background 和 icon 这样的图像，要如何处理呢?在 webpack 5 中，可以使用内置的 Asset Modules，我们可以轻松地将这些 内容混入我们的系统中，这个我们在"资源模块"一节中已经介绍了。这里再补充一个 知识点，在 css 文件里也可以直接引用文件，修改 style.css 和入口 index.js :
+假如，现在我们正在下载 CSS，但是像 background 和 icon 这样的图像，要如何处理呢?在 webpack 5 中，可以使用内置的 Asset Modules，我们可以轻松地将这些 内容混入我们的系统中，这个我们在"资源模块"一节中已经介绍了。这里再补充一个知识点，在 css 文件里也可以直接引用文件，修改 style.css
+
+```css
+.block-bg {
+  background-image: url(./assets/webpack-logo.svg) ;
+}
+```
 
 ### 加载 fonts 字体
 
 那么，像字体这样的其他资源如何处理呢?使用 Asset Modules 可以接收并加载任 何文件，然后将其输出到构建目录。这就是说，我们可以将它们用于任何类型的文 件，也包括字体。让我们更新 webpack.config.js 来处理字体文件:
 
-   module: {
-    rules: [
-{
-test: /\.(woff|woff2|eot|ttf|otf)$/i, type: 'asset/resource',
-},
-] }
+```js
+module: {
+  rules: [
+    {
+      test: /\.(woff|woff2|eot|ttf|otf)$/i, 
+      type: 'asset/resource',
+    },
+  ] 
+}
+```
 
 在项目中添加一些字体文件:
 
-配置好 loader 并将字体文件放在合适的位置后，你可以通过一个 @font-face 声明 将其混合。本地的 url(...) 指令会被 webpack 获取处理，就像它处理图片一样:
+配置好 loader 并将字体文件放在合适的位置后，你可以通过一个 @font-face 声明 将其混合。本地的 url(...) 指令会被 webpack 获取处理，就像它处理图片一样
+
+```css
+@font-face {
+  font-family: "iconfont";
+  src: url("../assets/iconfont.ttf") format("truetype");
+}
+
+.icon {
+  font-family: "iconfont" !important;
+  font-size: 30px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+```
+
+```js
+const span = document.createElement("span");
+span.classList.add("icon");
+span.innerHTML = "&#xe668;";
+document.body.appendChild(span);
+```
+
+打包后在 `webpack/dist/images/65b194f1f711865371d1.ttf`
 
 ### 加载数据
 
 此外，可以加载的有用资源还有数据，如 JSON 文件，CSV、TSV 和 XML。类似于 NodeJS，JSON 支持实际上是内置的，也就是说
-默认将正常运行。要导入 CSV、TSV 和 XML，你可以使用 csv-loader 和 xml-loader。让我们处理加载这三类文件:
+默认将正常运行。要导入 CSV、TSV 和 XML，你可以使用 csv-loader 和 xml-loader。让我们处理加载这三类文件
+
+安装
+
+```bash
+npm install --save-dev csv-loader xml-loader
+# or
+yarn add -D csv-loader xml-loader
+```
+
 添加配置:
 
 ```js
@@ -391,108 +434,65 @@ module.exports = {
       { test: /\.(csv|tsv)$/i, use: ['csv-loader'] }, 
       {
         test: /\.xml$/i,
-        use: ['xml-loader'], },
+        use: ['xml-loader'], 
+      },
     ]
   }
 }
 ```
 
-现在，你可以 import 这四种类型的数据(JSON, CSV, TSV, XML)中的任何一种，所 导入的 Data 变量，将包含可直接使用的已解析 JSON:
+现在，你可以 import 这四种类型的数据(JSON, CSV, TSV, XML)中的任何一种，所导入的 Data 变量，将包含可直接使用的已解析 JSON
 
-由此可见，data.xml 文件转化为一个JS对象， data.cvs 转化为一个数组。
+data.xml 文件转化为一个JS对象， data.cvs 转化为一个二维数组。
 
 ### 自定义 JSON 模块 parser
 
-通过使用 自定义 parser 替代特定的 webpack loader，可以将任何 toml 、 yaml 或 json5 文件作为 JSON 模块导入。
-假设你在 src 文件夹下有一个 data.toml 、一个 data.yaml 以及一个 data.json5 文件:
-07-manage-assets/src/assets/json/data.toml
-  [felix] 07-manage-assets $ npx webpack serve
-           // 导入模块 //...
-import Data from './assets/data.xml' import Notes from './assets/data.csv'
-//...
-console.log(Data) console.log(Notes)
+通过使用自定义 parser 替代特定的 webpack loader，可以将任何 toml 、 yaml 或 json5 文件作为 JSON 模块导入。
 
+假设你在 src 文件夹下有一个 data.toml 、一个 data.yaml 以及一个 data.json5 文件
 
-   07-manage-assets/src/assets/json/data.yaml
- title: YAML Example owner:
-name: Tom Preston-Werner organization: GitHub bio: |-
-GitHub Cofounder & CEO
-Likes tater tots and beer. dob: 1979-05-27T07:32:00.000Z
-  07-manage-assets/src/assets/json/data.json5
-  {
-// comment
-title: 'JSON5 Example',
-owner: {
-name: 'Tom Preston-Werner', organization: 'GitHub',
-bio: 'GitHub Cofounder & CEO\n\
-Likes tater tots and beer.',
-dob: '1979-05-27T07:32:00.000Z',
-}, }
-首先安装 toml ， yamljs 和 json5 的 packages:
-并在你的 webpack 中配置它们:
-     [felix] webpack5 $ npm install toml yamljs json5 --save-dev
-title = "TOML Example"
-[owner]
-name = "Tom Preston-Werner"
-organization = "GitHub"
-bio = "GitHub Cofounder & CEO\nLikes tater tots and beer." dob = 1979-05-27T07:32:00Z
- const toml = require('toml');
+首先安装 toml ， yamljs 和 json5 的 packages
+
+```bash
+npm install toml yamljs json5 --save-dev
+# or
+yarn add -D toml yamljs json5
+```
+
+并在你的 webpack 中配置它们
+
+```js
+const toml = require('toml');
 const yaml = require('yamljs');
 const json5 = require('json5');
 module.exports = {
- 
- 
- 07-manage-assets/webpack.config.js
-   module: {
+  module: {
     rules: [
-{
-test: /\.toml$/i, type: 'json', parser: {
-parse: toml.parse, },
-}, {
-test: /\.yaml$/i, type: 'json', parser: {
-parse: yaml.parse, },
-}, {
-test: /\.json5$/i, type: 'json', parser: {
-parse: json5.parse, },
-}, ]
-} }
- //...
-const toml = require('toml')
-const yaml = require('yamljs')
-const json5 = require('json5')
-module.exports = { //...
-// 配置资源文件 module: {
-rules: [ //...
-{
-test: /\.toml$/i,
-  
-
- 在主文件中引入模块，并打印内容:
-  import toml from './data.toml'; import yaml from './data.yaml'; import json from './data.json5';
-console.log(toml.title); // output `TOML Example` console.log(toml.owner.name); // output `Tom Preston-Werner`
-console.log(yaml.title); // output `YAML Example` console.log(yaml.owner.name); // output `Tom Preston-Werner`
-console.log(json.title); // output `JSON5 Example` console.log(json.owner.name); // output `Tom Preston-Werner`
- 07-manage-assets/src/index.js
-         type: 'json',
+      {
+        test: /\.toml$/i,
+        type: "json",
+        parser: { parse: toml.parse },
+      },
+      {
+        test: /\.yaml$/i,
+        type: "json",
         parser: {
-parse: toml.parse, },
-}, {
-test: /\.yaml$/i, type: 'json', parser: {
-parse: yaml.parse, },
-}, {
-test: /\.json5$/i, type: 'json', parser: {
-parse: json5.parse, },
-}, ],
-},
-//...
+          parse: yaml.parse,
+        },
+      },
+      {
+        test: /\.json5$/i,
+        type: "json",
+        parser: {
+          parse: json5.parse,
+        },
+      }, 
+    ]
+  } 
 }
- // 导入模块
-//...
-import toml from './assets/json/data.toml'
- 
- 
- 启动服务，打开浏览器:
-现在， toml 、 yaml 和 json5 几个类型的文件都正常输出了结果。 
+```
+
+现在，toml、 yaml 和 json5 几个类型的文件都正常输出了结果。
 
 ## 加载CSS
 
@@ -816,9 +816,9 @@ return _helloWorld.apply(this, arguments); }
 此时执行编译，在浏览器里打开项目发现报了一个致命错误:
    regeneratorRuntime 是webpack打包生成的全局辅助函数，由babel生成，用于兼 容async/await的语法。
 regeneratorRuntime is not defined 这个错误显然是未能正确配置babel。 正确的做法需要添加以下的插件和配置:
-    # 这个包中包含了regeneratorRuntime，运行时需要 npm install --save @babel/runtime
-# 这个插件会在需要regeneratorRuntime的地方自动require导包，编译时需要 npm install --save-dev @babel/plugin-transform-runtime
-# 更多参考这里 https://babeljs.io/docs/en/babel-plugin-transform-runtime
+    这个包中包含了regeneratorRuntime，运行时需要 npm install --save @babel/runtime
+这个插件会在需要regeneratorRuntime的地方自动require导包，编译时需要 npm install --save-dev @babel/plugin-transform-runtime
+更多参考这里 https://babeljs.io/docs/en/babel-plugin-transform-runtime
 接着改一下babel的配置:
  const __WEBPACK_DEFAULT_EXPORT__ = (helloWorld);
 /***/
@@ -862,7 +862,9 @@ presets: ['@babel/preset-env'], plugins: [
 
  启动服务，打开浏览器:
  成功运行。
-1.8 代码分离
+
+## 代码分离
+
 代码分离是 webpack 中最引人注目的特性之一。此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
 常用的代码分离方法有三种:
 入口起点:使用 entry 配置手动地分离代码。
@@ -1250,7 +1252,9 @@ print()
 
 
   print.bundle.js 被加载下来，是和当前 index.bundle.js 并行加载的。
-1.9 缓存
+
+## 缓存
+
 以上，我们使用 webpack 来打包我们的模块化后的应用程序，webpack 会生成一个 可部署的 /dist 目录，然后把打包后的内容放置在此目录中。只要 /dist 目录中 的内容部署到 server 上，client(通常是浏览器)就能够访问此 server 的网站及其 资源。而最后一步获取资源是比较耗费时间的，这就是为什么浏览器使用一种名为 缓存 的技术。可以通过命中缓存，以降低网络流量，使网站加载速度更快，然而， 如果我们在部署新版本时不更改资源的文件名，浏览器可能会认为它没有被更新，就 会使用它的缓存版本。由于缓存的存在，当你需要获取新的代码时，就会显得很棘 手。
 本节通过必要的配置，以确保 webpack 编译生成的文件能够被客户端缓存，而在文 件内容变化后，能够请求到新的文件。
 1.9.1 输出文件的文件名
@@ -1316,7 +1320,9 @@ asset app.html 530 bytes [emitted] ...
 
    我们在输出配置中修改 filename ，在前面加上路径即可。执行编译:
 截止目前，我们已经把 JS 文件、样式文件及图片等资源文件分别放到了 scripts 、 styles 、 images 三个文件夹中。
-1.10 拆分开发环境和生产环境配置
+
+## 拆分开发环境和生产环境配置
+
 现在，我们只能手工的来调整 mode 选项，实现生产环境和开发环境的切换，且很多 配置在生产环境和开发环境中存在不一致的情况，比如开发环境没有必要设置缓存， 生产环境还需要设置公共路径等等。
 本节介绍拆分开发环境和生产环境，让打包更灵活。
        //...
