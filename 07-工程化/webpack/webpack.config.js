@@ -12,9 +12,21 @@ const devMode = process.env.NODE_ENV !== "production";
  * @type {import('webpack').Configuration}
  */
 const config = {
-  entry: "./src/index.js",
+  entry: {
+    // index: {
+    //   import: "./src/index.js",
+    //   dependOn: "shared",
+    // },
+    // another: {
+    //   import: "./src/split/another-module",
+    //   dependOn: "shared",
+    // },
+    // shared: "lodash",
+    index: "./src/index.js",
+    another: "./src/split/another-module.js",
+  },
   output: {
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist"),
     clean: true,
     assetModuleFilename: "images/[contenthash][ext][query]",
@@ -155,6 +167,9 @@ const config = {
   ),
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
+    splitChunks: {
+      chunks: "all",
+    },
   },
 };
 
