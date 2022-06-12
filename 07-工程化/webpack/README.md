@@ -149,9 +149,17 @@ module.exports = {
 
 当 webpack 打包源代码时，可能会很难追踪到 error(错误) 和 warning(警告) 在源代码中的原始位置。例如，如果将三个源文件(a.js, b.js 和 c.js)打包到一个 bundle( bundle.js )中，而其中一个源文件包含一个错误，那么堆栈跟踪就会直接指向到 bundle.js 。你可能需要准确地知道错误来自于哪个源文件，所以这种提示这通常不会提供太多帮助。
 
-为了更容易地追踪 error 和 warning，JavaScript 提供了 source maps 功能，可以 将编译后的代码映射回原始源代码。如果一个错误来自于 b.js ，source map 就会 明确的告诉你。
+为了更容易地追踪 error 和 warning，JavaScript 提供了 source maps 功能，可以将编译后的代码映射回原始源代码。如果一个错误来自于 b.js ，source map 就会明确的告诉你。
 
 devtool: 'inline-source-map',
+
+- eval 每个 module 会封装到 eval 里包裹起来执行，并且会在末尾追加注释 // @ sourceURL.
+- source-map 生成一个 SourceMap文件. 默认
+- hidden-source-map 和 source-map 一样，但不会在 bundle 末尾追加注释.
+- inline-source-map 生成一个 DataUrl 形式的 SourceMap 文件.
+- eval-source-map 每个 module 会通过 eval() 来执行，并且生成一个 DataUrl 形式的 SourceMap.
+- cheap-source-map 生成一个没有列信息(column-mappings)的 SourceMaps 文件，不包含 loader 的 sourcemap(譬如 babel 的 sourcemap)
+- cheap-module-source-map 生成一个没有列信息(column-mappings)的 SourceMaps 文件，同时 loader 的 sourcemap 也被简化为只包含对应行的。
 
 ### 使用 watch mode(观察模式)
 
@@ -192,6 +200,51 @@ module.exports = { //...
 webpack serve --open
 
 这时我们不用刷新浏览器页面，在控制台上能看到 Hello world~~~ 自动更新了。
+
+额外的配置
+
+```js
+devServer: { 
+  static: './dist'
+  // 添加响应头
+  headers: {
+    'X-Fast-Id': 'p3fdg42njghm34gi9ukj',
+    }, 
+  },
+  // 开启代理
+  proxy: {
+    '/api': 'http://localhost:4001',
+  },
+  proxy: {
+    '/api': {
+      target: 'http://localhost:4001',
+      // 重写路径
+      pathRewrite: { '^/api': '' },
+      // 接受在 HTTPS 上运行且证书无效的后端服务器
+      secure: false,
+      // 我们的本地http服务变成https服务
+      https: true,
+      http2: true,
+    },
+  },
+  // spa 404
+  historyApiFallback: true,
+  // 根据不同的访问路径定制替代的页面
+  historyApiFallback: {
+    rewrites: [
+      { from: /^\/$/, to: '/views/landing.html' },
+      { from: /^\/subPage/, to: '/views/subPage.html' },
+      { from: /./, to: '/views/404.html' },
+    ],
+  },
+  // 同一局域网下，就可以通过局域网ip来访问你的服务
+  host: '0.0.0.0',
+  // 模块热替换
+  hot: true,
+  // 热加载(文件更新时，自动刷新我们的服务和页面)
+  liveReload: false, // 默认为true，即开启热更新功能
+}
+```
 
 ## 资源模块
 
@@ -1153,648 +1206,242 @@ webpack.config.prod.js (生产环境配置)。在项目根目录下创建一个�
 2. 如果两者都是数组的话就会把两个数组进行合并
 3. 如果两者都是对象, 例如在a对象和b对象合并的过程中，a和b的键值对key如果不同，当然都会保留下来，到最终合并后的对象中
 
-二、高级应用篇
+## 模块解析(resolve)
 
-上述我们基于webpack构建了我们的基础工程化环境，将我们认为需要的功能配置 了上去。 除开公共基础配置之外，我们意识到两点:
+webpack通过Resolvers实现了模块之间的依赖和引用。举个例子:所引用的模块可以是来自应用程序的代码，也可以是第三方库。 resolver 帮助 webpack 从每个 require/import 语句中，找到需要引入到 bundle 中的模块代码。 当打包模块时，webpack 使用 enhanced-resolve 来解析文件路径。(webpack_resolver的代码实现很有思想，webpack 基于此进行 tree-shaking，这个概念我们后面会讲到)。
 
-1. 开发环境(mode=development),追求强大的开发功能和效率，配置各种方便开 发的功能;
-2. 生产环境(mode=production),追求更小更轻量的bundle(即打包产物); 接下来基于我们的开发需求，完善我们的工程化配置的同时，来介绍一些常用并强大
-的工具。
-2.1 提高开发效率，完善团队开发规范 2.1.1 source-map
-作为一个开发工程师——无论是什么开发，要求开发环境最不可少的一点功能就是 ——debug功能。 之前我们通过webpack, 将我们的源码打包成了 bundle.js 。 试 想:实际上客户端(浏览器)读取的是打包后的 bundle.js ,那么当浏览器执行代码报 错的时候，报错的信息自然也是bundle的内容。 我们如何将报错信息(bundle错误 的语句及其所在行列)映射到源码上?
-是的，source-map。 webpack已经内置了sourcemap的功能，我们只需要通过简单的配置，将可以开启
-它。
-       module.exports = {
-// 开启 source map
-// 开发中推荐使用 'source-map' // 生产环境一般不开启 sourcemap devtool: 'source-map',
-}
-当我们执行打包命令之后，我们发现bundle的最后一行总是会多出一个注释，指向 打包出的bundle.map.js(sourcemap文件)。 sourcemap文件用来描述 源码文件和 bundle文件的代码位置映射关系。基于它，我们将bundle文件的错误信息映射到源 码文件上。
-除开'source-map'外，还可以基于我们的需求设置其他值，webpack——devtool一 共提供了7种SourceMap模式:
+### resolve alias
 
-    模式 解释
-   eval
-每个module会封装到 eval 里包裹起来执行，并且会在末尾追 加注释 //@ sourceURL.
-  source-map 生成一个SourceMap文件.
-     hidden- source-map
-和 source-map 一样，但不会在 bundle 末尾追加注释.
-      inline- source-map
-生成一个 DataUrl 形式的 SourceMap 文件.
-   eval-source- map
-每个module会通过eval()来执行，并且生成一个DataUrl形式的 SourceMap.
-     cheap- source-map
-生成一个没有列信息(column-mappings)的SourceMaps文 件，不包含loader的 sourcemap(譬如 babel 的 sourcemap)
-   cheap- module- source-map
-生成一个没有列信息(column-mappings)的SourceMaps文 件，同时 loader 的 sourcemap 也被简化为只包含对应行的。
- 要注意的是，生产环境我们一般不会开启sourcemap功能，主要有两点原因:
-1. 通过bundle和sourcemap文件，可以反编译出源码————也就是说，线上产 物有sourcemap文件的话，就意味着有暴漏源码的风险。
-2. 我们可以观察到，sourcemap文件的体积相对比较巨大,这跟我们生产环境的追 求不同(生产环境追求更小更轻量的bundle)。
-一道思考题: 有时候我们期望能第一时间通过线上的错误信息，来追踪到源码位 置，从而快速解决掉bug以减轻损失。但又不希望sourcemap文件报漏在生产 环境，有比较好的方案吗?
-2.1.2 devServer
-开发环境下，我们往往需要启动一个web服务，方便我们模拟一个用户从浏览器中访 问我们的web服务，读取我们的打包产物，以观测我们的代码在客户端的表现。 webpack内置了这样的功能，我们只需要简单的配置就可以开启它。
-在此之前，我们需要安装它
-   yarn add -D webpack-dev-server
-
-devServer.proxy基于强大的中间件 http-proxy-middleware 实现的，因此它支持 很多的配置项，我们基于此，可以做应对绝大多数开发场景的定制化配置。
-基础使用:
-   const path = require('path'); module.exports = {
-//... devServer: {
-// static: {
-// directory: path.join(__dirname, 'dist'),
-// }, // 默认是把/dist目录当作web服务的根目录
-compress: true, //可选择开启gzips压缩功能，对应静态资源请求的响应头里的
-Content-Encoding: gzip port: 3000, // 端口号
-}, };
-为了方便，我们配置一下工程的脚本命令，在package.json的scripts里。
-  { //...
-"scripts": { //...
-"dev": "webpack serve --mode development"
-} }
-注意!如果您需要指定配置文件的路径，请在命令的后面添加 --config [path], 比如:
-这时，当我们yarn dev(或者npm run dev)时，就可以在日志里看到————它启动 了一个http服务。 (webpack-dev-server的最底层实现是源自于node的http模块。)
-  webpack serve --mode development --config webpack.config.js
- > webpack serve --mode development
-<i> [webpack-dev-server] Project is running at:
-<i> [webpack-dev-server] Loopback: <http://localhost:3000/> <i> [webpack-dev-server] On Your Network (IPv4): <http://192.168.0.107:3000/>
-<i> [webpack-dev-server] On Your Network (IPv6): <http://[fe80::1>]:3000/
-  
-上述是一个基本的示例，我们可以根据自己的需求定制化devServer的参数对象，比 如添加响应头，开启代理来解决跨域问题, http2, https等功能。
-添加响应头
-有些场景需求下，我们需要为所有响应添加headers,来对资源的请求和响应打入 标志，以便做一些安全防范，或者方便发生异常后做请求的链路追踪。比如:
-  // webpack-config module.exports = {
-//... devServer: {
-headers: {
-'X-Fast-Id': 'p3fdg42njghm34gi9ukj',
-}, },
-};
-这时，在浏览器中右键检查(或者使用f12快捷键)，在Network一栏查看任意资源访 问，我们发现响应头里成功打入了一个FastId。
-  Response Headers
-/**some others**/
-X-Fast-Id: p3fdg42njghm34gi9ukj
- <i> [webpack-dev-server] Content not from webpack is served from '/Users/wxy/codeWorks/githubPros/demos/webpack5demo/public' directory
-asset bundle.js 289 KiB [emitted] (name: main) 1 related asset asset index.html 161 bytes [emitted]
-runtime modules 27.2 KiB 13 modules
-modules by path ./node_modules/ 207 KiB 36 modules modules by path ./src/ 6.06 KiB
-modules by path ./src/*.css 2.92 KiB
-./src/styles.css 2.25 KiB [built] [code generated] ./node_modules/css-loader/dist/cjs.js!./src/styles.css 684
-bytes [built] [code generated]
-modules by path ./src/*.less 3.07 KiB
-./src/styles.less 2.37 KiB [built] [code generated]
-./node_modules/css-loader/dist/cjs.js!./node_modules/less- loader/dist/cjs.js!./src/styles.less 717 bytes [built] [code generated]
-./src/index.js 75 bytes [built] [code generated] webpack 5.60.0 compiled successfully in 1004 ms
-  
- headers的配置也可以传一个函数:
-  module.exports = { //...
-  devServer: {
-    headers: () => {
-return { 'X-Bar': ['key1=value1', 'key2=value2'] }; },
-}, };
-比如我们的标志ID(X-Fast-Id)，很明显这个id不应该写死，而是随机生成的———— 这时候你就可以用函数实现这个功能。
-开启代理
-我们打包出的js bundle里有时会含有一些对特定接口的网络请求(ajax/fetch). 要注意，此时客户端地址是在 <http://localhost:3000/> 下，假设我们的接口来自 <http://localhost:4001/> ，那么毫无疑问，此时控制台里会报错并提示你跨域。 如何解决这个问题? 在开发环境下，我们可以使用devServer自带的proxy功 能:
-     module.exports = { //...
-  devServer: {
-    proxy: {
-      '/api': 'http://localhost:4001',
-    },
-}, };
-现在，对 /api/users 的请求会将请求代理到 <http://localhost:4001/api/users> 。 如 果不希望传递/api，则需要重写路径:
-  module.exports = { //...
-  devServer: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:4001',
-        pathRewrite: { '^/api': '' },
-}, },
-}, };
-
- 默认情况下，将不接受在 HTTPS 上运行且证书无效的后端服务器。 如果需要，可以 这样修改配置:
-  module.exports = { //...
-  devServer: {
-    proxy: {
-'/api': {
-target: 'https://other-server.example.com', secure: false,
-}, },
-}, };
-https
-如果想让我们的本地http服务变成https服务，我们只需要这样配置:
-  module.exports = { //...
-devServer: {
-https: true, // https//localhost...
-}, };
-注意，此时我们访问<http://localhost:port> 是无法访问我们的服务的，我们需要在地 址栏里加前缀:https: 注意:由于默认配置使用的是自签名证书，所以有得浏览器会 告诉你是不安全的，但我们依然可以继续访问它。 当然我们也可以提供自己的证书 ——如果有的话:
-   module.exports = { devServer: {
-https: {
-cacert: './server.pem',
-pfx: './server.pfx',
-key: './server.key',
-cert: './server.crt',
-passphrase: 'webpack-dev-server', requestCert: true,
-}, },
-};
-http2
-
- 如果想要配置http2，那么直接设置:
-  devServer: {
-http2: true, // https//localhost...
+```js
+resolve: {
+  alias: {
+    "@utils": path.resolve(__dirname, 'src/utils/') 
+  },
 },
-即可，http2默认自带https自签名证书，当然我们仍然可以通过https配置项来使用 自己的证书。
-historyApiFallback
-如果我们的应用是个SPA(单页面应用)，当路由到/some时(可以直接在地址栏里 输入)，会发现此时刷新页面后，控制台会报错。
-此时打开network，刷新并查看，就会发现问题所在———浏览器把这个路由当作了 静态资源地址去请求，然而我们并没有打包出/some这样的资源，所以这个访问无疑 是404的。 如何解决它? 这种时候，我们可以通过配置来提供页面代替任何404的静 态资源响应:
-  GET <http://localhost:3000/some> 404 (Not Found)
-  module.exports = { //...
-  devServer: {
-    historyApiFallback: true,
-}, };
-此时重启服务刷新后发现请求变成了index.html。 当然，在多数业务场景下，我们 需要根据不同的访问路径定制替代的页面，这种情况下，我们可以使用rewrites这个 配置项。 类似这样:
-  module.exports = { //...
-  devServer: {
-    historyApiFallback: {
-rewrites: [
-{ from: /^\/$/, to: '/views/landing.html' },
-{ from: /^\/subpage/, to: '/views/subpage.html' }, { from: /./, to: '/views/404.html' },
-], },
-}, };
+```
 
- 开发服务器主机
-如果你在开发环境中起了一个devserve服务，并期望你的同事能访问到它，你只 需要配置:
-  module.exports = { //...
-devServer: { host: '0.0.0.0',
-}, };
-这时候，如果你的同事跟你处在同一局域网下，就可以通过局域网ip来访问你的服务 啦。
-2.1.3 模块热替换与热加载 模块热替换
-模块热替换(HMR - hot module replacement)功能会在应用程序运行过程中， 替换、添加或删除 模块，而无需重新加载整个页面。
-启用 webpack 的 热模块替换 特性，需要配置devServer.hot参数:
-  module.exports = { //...
-  devServer: {
-    hot: true,
-}, };
-此时我们实现了基本的模块热替换功能。
-HMR 加载样式 如果你配置了style-loader，那么现在已经同样支持样式文件的 热替换功能了。
- module.exports={ module: {
-rules: [ {
-test: /\.css$/,
-use: ['style-loader', 'css-loader'], },
-], },
-}
+### extensions
 
- 这是因为style-loader的实现使用了module.hot.accept，在CSS依赖模块更新之后， 会对 style 标签打补丁。从而实现了这个功能。
-热加载(文件更新时，自动刷新我们的服务和页面) 新版的webpack-dev-server 默认已经开启了热加载的功能。 它对应的参数是devServer.liveReload，默认为 true。 注意，如果想要关掉它，要将liveReload设置为false的同时，也要关掉 hot
-  module.exports = { //...
-devServer: {
-liveReload: false, //默认为true，即开启热更新功能。
-}, };
-2.1.4 eslint
-eslint是用来扫描我们所写的代码是否符合规范的工具。 往往我们的项目是多人协作 开发的，我们期望统一的代码规范，这时候可以让eslint来对我们进行约束。 严格意 义上来说，eslint配置跟webpack无关，但在工程化开发环境中，它往往是不可或缺 的。
-配置eslint，只需要在根目录下添加一个.eslintrc文件(或者.eslintrc.json, .js等)。 当 然，我们可以使用eslint工具来自动生成它:
-我们可以看到控制台里的展示:
-  yarn add eslint -D
-  npx eslint --init
-  wxy@melodyWxydeMacBook-Pro webpack5demo % npx eslint --init ✔ How would you like to use ESLint? · syntax
-✔ What type of modules does your project use? · esm
-✔ Which framework does your project use? · react
-✔ Does your project use TypeScript? · No / Yes
-✔ Where does your code run? · browser
-✔ What format do you want your config file to be in? · JSON
-并生成了一个配置文件(.eslintrc.json)，这样我们就完成了eslint的基本规则配置。 eslint配置文件里的配置项含义如下:
+```js
+resolve: {
+  extensions: ['.js', '.json', '.wasm'],
+},
+```
 
-1. env 指定脚本的运行环境。每种环境都有一组特定的预定义全局变量。此处使用 的 browser 预定义了浏览器环境中的全局变量，es6 启用除了 modules 以外的
+webpack会按照数组顺序去解析这些后缀名，对于同名的文件，webpack总是会先 解析列在数组首位的后缀名的文件。
 
- 所有 ECMAScript 6 特性(该选项会自动设置 ecmaVersion 解析器选项为 6)。 2. globals 脚本在执行期间访问的额外的全局变量。也就是 env 中未预定义，但我
-们又需要使用的全局变量。
-3. extends 检测中使用的预定义的规则集合。
-4. rules 启用的规则及其各自的错误级别，会合并 extends 中的同名规则，定义冲
-突时优先级更高。
-5. parserOptions ESLint 允许你指定你想要支持的 JavaScript 语言选项。
-ecmaFeatures 是个对象，表示你想使用的额外的语言特性，这里 jsx 代表启用 JSX。ecmaVersion 用来指定支持的 ECMAScript 版本 。默认为 5，即仅支持 es5，你可以使用 6、7、8、9 或 10 来指定你想要使用的 ECMAScript 版本。你 也可以用使用年份命名的版本号指定为 2015(同 6)，2016(同 7)，或 2017(同 8)或 2018(同 9)或 2019 (same as 10)。上面的 env 中启用了 es6，自动设置了ecmaVersion 解析器选项为 6。 plugins plugins 是一个 npm 包，通常输出 eslint 内部未定义的规则实现。rules 和 extends 中定义的规则， 并不都在 eslint 内部中有实现。比如 extends 中的 plugin:react/recommended，其中定义了规则开关和等级，但是这些规则如何 生效的逻辑是在其对应的插件 ‘react’ 中实现的。
-接下来，我们在这个配置文件里额外添加一个规则:
-  {
-} }
-// ...others
-"rules": {
-"no-console": "warn" // 我们在rules里自定义我们的约束规范
-我们通过命令来让elisnt检测代码——在我们的package.scripts里添加一个脚本命令:
-  // package.json
-{
-  "scripts": {
-// ...others
-"eslint": "eslint ./src" }
-}
-然后执行它:
+### 外部扩展(Externals)
 
-  果然，因为代码中含有console.log,所以被警告了。 结合webpack使用
-我们期望eslint能够实时提示报错而不必等待执行命令。 这个功能可以通过给自己的 IDE(代码编辑器)安装对应的eslint插件来实现。 然而，不是每个IDE都有插件，如果 不想使用插件，又想实时提示报错，那么我们可以结合 webpack 的打包编译功能来 实现。
+有时候我们为了减小bundle的体积，从而把一些不变的第三方库用cdn的形式引入进来，比如 jQuery
+
+这个时候我们想在我们的代码里使用引入的jquery———但似乎三种模块引入方式都不行，这时候怎么办呢? webpack给我们提供了 Externals 的配置属性，让我们可以配置外部扩展模块:
+
+```html
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+```
+
+```js
+module.exports = { 
   //...
-{
-},
-// ...
-test: /\.(js|jsx)$/,
-exclude: /node-modules/,
-use: ['babel-loader', 'eslint-loader']
-因为我们使用了devServer，因此需要在devServer下添加一个对应的配置参数:
-  module.exports = { //...
-devServer: {
-liveReload: false, //默认为true，即开启热更新功能。
-}, };
-现在我们就可以实时地看到代码里的不规范报错啦。
-2.1.5 git-hooks 与 husky
-为了保证团队里的开发人员提交的代码符合规范，我们可以在开发者上传代码时进行 校验。 我们常用 husky 来协助进行代码提交时的 eslint 校验。在使用husky之前， 我们先来研究一下 git-hooks 。
- git-hooks
-xxx@MacBook-Pro webpack5demo % npm run eslint > eslint src
-/Users/wxy/codeWorks/githubPros/demos/webpack5demo/src/index.js 3:1 warning Unexpected console statement no-console
-4:1 warning Unexpected console statement no-console
-✖ 2 problems (0 errors, 2 warnings)
-
- 我们回到项目的根目录下。运行 ls -a 命令 ———— “-a”可以显示隐藏目录(目录名的 第一位是.)。
-我们可以看到，存在一个".git"名称的文件夹。
-事实上，在我们项目中根目录下运行git命令时，git会根据它来工作。 接来下我们进入到这个文件夹，进一步查看它内部的内容。
-我们发现它内部还挺有料!不慌，我们这节课仅仅只讲到其中的一个内容 ———— hooks，可以看到，当前目录下存在一个hooks文件夹，顾名思义，这个文件夹提供 了git 命令相关的钩子。
-继续往里看。
-ok，那我们可以看到有很多git命令相关的文件名。比如"pre-commit.sample pre- push.sample"。 回到正题——我们期望在git提交(commit)前，对我们的代码进行检测，如果不能通 过检测，就无法提交我们的代码。
-自然而然的，这个动作的时机应该是?————"pre commit",也就是 commit之 前。
-现在，我们查看一下pre-commit.sample的内容。
-OK，它返回了这样的内容，是一串shell注释。翻译过来大概意思是，这是个示例钩 子，然后我们看到了这一句话
-意思是要启用这个钩子的话，我们就把这个文件的后缀名去掉。
-虽然这样对我们本地来讲是可行的，但要注意，.git文件夹的改动无法同步到远端仓 库。
-所以我们期望将git-hook的执行权移交到外面来。
-  cd .git ls -a
- cd hooks ls -a
-
-# cat命令可以查看一个文件的内容 cat pre-commit.sample
-
-# To enable this hook, rename this file to "pre-commit"
-
- 好的，我们回到项目的根目录下，然后我们新建一个文件夹，暂时命名 为".mygithooks" 然后在此文件夹下，新增一个git-hook文件,命名为"pre-commit"，并写入以下内 容:
-好了，我们新建了自己的git-hook，但此时git并不能识别。下面我们执行这行命令:
-上述命令给我们自己的文件，配置了git-hook的执行权限。
-但这个时候我们git commit的话，可能会报这样的waring，并且没有执行我们的
-shell:
-这是因为我们的操作系统没有给出这个文件的可执行权限。 因此我们得再执行这样一句命令:
-ok!现在我们尝试执行git add . && git commit -m "any meesage"。 我们发现控制台日志会先打印 “pre-commit执行啦”。 这意味着成功啦!
-总结:
-也就是说，我们搞git-hook的话，要分三步走:
-
-1. 新增任意名称文件夹以及文件pre-commit(这个文件名字比如跟要使用的git- hook名字一致)!
-2. 执行以下命令来移交git-hook的配置权限
-  echo pre-commit执行啦
-
-# 项目根目录下
-
-git config core.hooksPath .mygithooks
- hint: The 'pre-commit' hook was ignored because it's not set as executable.
-hint: You can disable this warning with `git config advice.ignoredHook false`
-   chmod +x .mygithooks/pre-commit
-  git config core.hooksPath .mygithooks
-3. 给这个文件添加可执行权限:
-
-  然后就成功啦。 这时候我们可以在pre-commit里写任意脚本，比如:
-当eslint扫描代码，出现error时，会在结束扫描时将退出码设为大于0的数字。 也就是会报错，这时候commit就无法往下执行啦，我们成功的拦截了此次错误操 作。
-husky
-husky在升级到7.x后，做了跟我们上述同样的事。 安装它之前，我们需要在package.json中的script里，先添加
-prepare是一个npm钩子，意思是安装依赖的时候，会先执行husky install命令。 这个命令就做了上述的123这三件事! 我们安装了7.x的husky会发现，项目根目录下生成了.husky的文件夹。 当然，7.x的husky似乎是有bug的，如果不能正常使用，那么我们只需要验证两件 事:
-
-1. 是否移交了git-hook的配置权限?
-执行命令 "git config --list"查看core.hooksPath配置是否存在，是否正确指向 了.husky。
-如果没有，我们只需要手动的给加上就行:
-2. 是否是可执行文件? 参考上述总结中的3即可 这时我们的husky就正常了。
-2.2 模块与依赖
-  eslint src
- "sctript": { //...others
-    "prepare": "husky install"
-}
-   git config core.hooksPath .husky
- chmod +x .mygithooks/pre-commit
-
- 在模块化编程中，开发者将程序分解为功能离散的文件，并称之为模块。 每个模块 都拥有小于完整程序的体积，使得验证、调试及测试变得轻而易举。 精心编写的模 块提供了可靠的抽象和封装界限，使得应用程序中每个模块都具备了条理清晰的设计 和明确的目的。
-Node.js 从一开始就支持模块化编程。 但，浏览器端的模块化还在缓慢支持中——截 止到2021，大多主流浏览器已支持ESM模块化，因此基于ESM的打包工具生态逐渐 开始活跃。
-在前端工程化圈子里存在多种支持 JavaScript 模块化的工具，这些工具各有优势和限 制。 Webpack从这些系统中汲取了经验和教训，并将 模块 的概念应用到项目的任何 文件中。
-2.2.1 Webpack 模块与解析原理 在讲webpack模块解析之前，我们先了解下webpack模块的概念，以及简单探究下
-webpack的具体实现。 1、webpack 模块
-何为 webpack 模块
-能在webpack工程化环境里成功导入的模块，都可以视作webpack模块。 与 Node.js 模块相比，webpack 模块 能以各种方式表达它们的依赖关系。下面是 一些示例:
-ES2015 import 语句
-CommonJS require() 语句
-AMD define 和 require 语句
-css/sass/less 文件中的 @import 语句
-stylesheet url(...) 或者 HTML <img src=...> 文件中的图片链接
-支持的模块类型 Webpack 天生支持如下模块类型:
-ECMAScript 模块 CommonJS 模块 AMD 模块
-Assets WebAssembly 模块
-而我们早就发现——通过 loader 可以使 webpack 支持多种语言和预处理器语法编 写的模块。loader 向 webpack 描述了如何处理非原生模块，并将相关依赖引入到你 的 bundles中。包括且不限于:
-TypeScript Sass
-Less
-JSON
-  
- YAML
-总的来讲，这些都可以被认为是webpack模块。
-2、compiler与Resolvers
-在我们运行webpack的时候(就是我们执行webpack命令进行打包时)，其实就是相当 于执行了下面的代码:
-webpack的执行会返回一个描述webpack打包编译整个流程的对象，我们将其称之 为compiler。 compiler对象描述整个webpack打包流程———它内置了一个打包状 态，随着打包过程的进行，状态也会实时变更，同时触发对应的webpack生命周期 钩子。 (简单点讲，我们可以将其类比为一个Promise对象，状态从打包前，打包中 到打包完成或者打包失败。) 每一次webpack打包，就是创建一个compiler对象，走 完整个生命周期的过程。
-而webpack中所有关于模块的解析，都是compiler对象里的内置模块解析器去工作 的————简单点讲，你可以理解为这个对象上的一个属性，我们称之为 Resolvers。 webpack的Resolvers解析器的主体功能就是模块解析，它是基于
-enhanced-resolve 这个包实现的。换句话讲，在webpack中，无论你使用怎样的 模块引入语句，本质其实都是在调用这个包的api进行模块路径解析。
-2.2.2 模块解析(resolve) webpack通过Resolvers实现了模块之间的依赖和引用。举个例子:
-所引用的模块可以是来自应用程序的代码，也可以是第三方库。 resolver 帮助 webpack 从每个 require/import 语句中，找到需要引入到 bundle 中的模块代码。 当打包模块时，webpack 使用 enhanced-resolve 来解析文件路径。 (webpack_resolver的代码实现很有思想，webpack基于此进行treeshaking，这个 概念我们后面会讲到)。
-1、webpack中的模块路径解析规则 通过内置的enhanced-resolve，webpack 能解析三种文件路径:
-  const webpack = require('webpack');
-const compiler = webpack({
-// ...这是我们配置的webpackconfig对象 })
-   import _ from 'lodash';
-// 或者
-const add = require('./utils/add');
-绝对路径
-
-  由于已经获得文件的绝对路径，因此不需要再做进一步解析。 相对路径
-这种情况下，使用 import 或 require 的资源文件所处的目录，被认为是上下文目 录。 在 import/require 中给定的相对路径，enhanced-resolve会拼接此上下文路 径，来生成模块的绝对路径(path.resolve(__dirname, RelativePath) 。 这也是我们 在写代码时最常用的方式之一，另一种最常用的方式则是模块路径。
-模块路径
-也就是在resolve.modules中指定的所有目录检索模块(node_modules里的模块已经 被默认配置了)。 你可以通过配置别名的方式来替换初始模块路径， 具体请参照下面
-resolve.alias 配置选项。 2、resolve
-alias
-上文中提到我们可以通过 resolve.alias 来自定义配置模块路径。现在我们来是实 现一下: 首先，我们src目录下新建一个utils文件夹，并新建一个add.js文件，对外暴 露出一个add函数。
-然后我们在src/index.js中基于相对路径引用并使用它:
-很好，代码跑起来了并且没有报错。 这时我们期望能用@utils/add的方式去引用 它，于是我们这样写了:
-  import '../utils/reqFetch'; import './styles.css';
- import 'module';
-import 'module/lib/file';
-     // src/utils/add.js
-export default function add(a, b){
-  return a + b;
-}
-  import add from './utils/add'; console.log(add);
-import '/home/me/file';
-import 'C:\\Users\\me\\file';
-
-  很明显它会报错，因为webpack会将其当做一个模块路径来识别———所以无法找 到@utils这个模块。 这时，我们配置下resolve:
-  // webpack.config.js
-const path = require('path'); module.exports = {
-//...
-  resolve: {
-    alias: {
-"@utils": path.resolve(__dirname, 'src/utils/') },
-}, };
-如代码所示，我们讲utils文件夹的绝对路径配置为一个模块路径，起一个别名为 “@utils”。 重启服务发现，代码跑起来了。模块识别成功了。
-extentions
-上述代码中我们发现，只需要“import add from '@utils/add'”, webpack就可以帮我 们找到add.js。 事实上，这与import add from '@utils/add.js' 的效果是一致的。 为 什么会这样? 原来webpack的内置解析器已经默认定义好了一些 文件/目录 的路径 解析规则。 比如当我们
-utils是一个文件目录而不是模块(文件)，但webpack在这种情况下默认帮我们添加了 后缀“/index.js”，从而将此相对路径指向到utils里的index.js。 这是webpack解析器 默认内置好的规则。 那么现在有一个问题: 当utils文件夹下同时拥有add.js add.json时，"@utils/add"会指向谁呢? @utils/add.json
-我们发现仍然指向到add.js。 当我们删掉add.js,会发现此时的引入的add变成了一个 json对象。 上述现象似乎表明了这是一个默认配置的优先级的问题。 而webpack对 外暴露了配置属性: resolve.extentions , 它的用法形如:
-  import utils from './utils';
-  {
-  "name": "add"
-}
- import add from '@utils/add'; console.log(add(a,b));
-
-  webpack会按照数组顺序去解析这些后缀名，对于同名的文件，webpack总是会先 解析列在数组首位的后缀名的文件。
-2.2.3 外部扩展(Externals) 有时候我们为了减小bundle的体积，从而把一些不变的第三方库用cdn的形式引入进
-来，比如jQuery: index.html
-这个时候我们想在我们的代码里使用引入的jquery———但似乎三种模块引入方式都 不行，这时候怎么办呢? webpack给我们提供了Externals的配置属性，让我们可以 配置外部扩展模块:
- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"
-></script>
-   module.exports = { //...
   externals: {
     jquery: 'jQuery',
-}, };
-我们尝试在代码中使用jQuery:
-发现打印成功，这说明我们已经在代码中使用它。 注意:我们如何得知 { jquery: 'jQuery'} 中的 'jQuery'? 其实就是cdn里打入到window中的变量名，比如jQuery不 仅有jQuery变量名，还有$，那么我们也可以写成这样子:
-  // index.js
-import $ from 'jquery'; console.log($);
-module.exports = { //...
-resolve: {
-extensions: ['.js', '.json', '.wasm'],
-}, };
+  },
+};
+```
 
-  重启服务后发现，效果是一样的。
-2.2.4 依赖图(dependency graph)
-每当一个文件依赖另一个文件时，webpack 会直接将文件视为存在依赖关系。 这使 得 webpack 可以获取非代码资源，如 images 或 web 字体等。并会把它们作为 依 赖 提供给应用程序。 当 webpack 开始工作时，它会根据我们写好的配置,从 入口 (entry) 开始，webpack 会递归的构建一个 依赖关系图，这个依赖图包含着应用程序 中所需的每个模块，然后将所有模块打包为bundle(也就是output的配置项)。
+注意:我们如何得知 { jquery: 'jQuery'} 中的 'jQuery'? 其实就是cdn里打入到window中的变量名，比如jQuery不仅有jQuery变量名，还有$，那么我们也可以写成这样子:
+
+```js
+import $ from 'jquery'; 
+console.log($);
+```
+
+### 依赖图(dependency graph)
+
+每当一个文件依赖另一个文件时，webpack 会直接将文件视为存在依赖关系。 这使得 webpack 可以获取非代码资源，如 images 或 web 字体等。并会把它们作为依赖提供给应用程序。 当 webpack 开始工作时，它会根据我们写好的配置,从入口 (entry) 开始，webpack 会递归的构建一个依赖关系图，这个依赖图包含着应用程序中所需的每个模块，然后将所有模块打包为bundle(也就是output的配置项)。
+
 单纯讲似乎很抽象，我们更期望能够可视化打包产物的依赖图，下边列示了一些 bundle分析工具。
+
 bundle 分析(bundle analysis) 工具:
-官方分析工具 是一个不错的开始。还有一些其他社区支持的可选项:
-webpack-chart: webpack stats 可交互饼图。
-webpack-visualizer: 可视化并分析你的 bundle，检查哪些模块占用空间，哪些 可能是重复使用的。
-webpack-bundle-analyzer:一个 plugin 和 CLI 工具，它将 bundle 内容展示为 一个便捷的、交互式、可缩放的树状图形式。
-webpack bundle optimize helper:这个工具会分析你的 bundle，并提供可操 作的改进措施，以减少 bundle 的大小。
-bundle-stats:生成一个 bundle 报告(bundle 大小、资源、模块)，并比较不 同构建之间的结果。
-我们来使用 webpack-bundle-analyzer 实现。
-然后我们配置它:
-         # 首先安装这个插件作为开发依赖
 
+- 官方分析工具 是一个不错的开始。还有一些其他社区支持的可选项:
+- webpack-chart: webpack stats 可交互饼图。
+- webpack-visualizer: 可视化并分析你的 bundle，检查哪些模块占用空间，哪些可能是重复使用的。
+- webpack-bundle-analyzer:一个 plugin 和 CLI 工具，它将 bundle 内容展示为一个便捷的、交互式、可缩放的树状图形式。
+- webpack bundle optimize helper:这个工具会分析你的 bundle，并提供可操 作的改进措施，以减少 bundle 的大小。
+- bundle-stats:生成一个 bundle 报告(bundle 大小、资源、模块)，并比较不同构建之间的结果。
+
+我们来使用 webpack-bundle-analyzer 实现。然后我们配置它:
+
+```bash
+# 首先安装这个插件作为开发依赖
 # NPM
-
-npm install --save-dev webpack-bundle-analyzer # Yarn
+npm install --save-dev webpack-bundle-analyzer 
+# Yarn
 yarn add -D webpack-bundle-analyzer
-module.exports = { //...
-  externals: {
-    jquery: '$',
-}, };
+```
 
-  const BundleAnalyzerPlugin = require('webpack-bundle- analyzer').BundleAnalyzerPlugin;
-module.exports = { plugins: [
-// ...others
+```js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+module.exports = { 
+  plugins: [
+    // ...others
     new BundleAnalyzerPlugin()
   ]
 }
- Webpack Bundle Analyzer is started at <http://127.0.0.1:8888> Use Ctrl+C to close it
-asset bundle.js 5.46 KiB [emitted] [minimized] (name: main) 1 related asset
-asset index.html 352 bytes [emitted] orphan modules 2.35 KiB [orphan] 3 modules ...
-       postcss-
- PosetCSS Webpack style-loader css-loader
- loader
-   module.exports = {
- 这时我们执行打包命令，发现控制台里打印出下面这样的日志:
- 我们在浏览器中打开<http://127.0.0.1:8888>，我们成功可视化了打包产物依赖图!
-注意: 对于 HTTP/1.1 的应用程序来说，由 webpack 构建的 bundle 非常强大。当 浏览器发起请求时，它能最大程度的减少应用的等待时间。 而对于 HTTP/2 来说， 我们还可以使用代码分割进行进一步优化。(开发环境观测的话需要在DevServer里 进行配置{http2:true, https:false})。这个我们会在之后的课程里讲。
-2.3 扩展功能
-2.3.1 PostCSS 与 CSS模块
-PostCSS 是一个用 JavaScript 工具和插件转换 CSS 代码的工具。比如可以使用 Autoprefixer 插件自动获取浏览器的流行度和能够支持的属性，并根据这些数据帮 我们自动的 为 CSS 规则添加前缀，将最新的 CSS 语法转换成大多数浏览器都能理解 的语法。
-CSS 模块 能让你永远不用担心命名太大众化而造成冲突，只要用最有意义的名字就 行了。
-PostCSS
-与 结合，需要安装 , , 三个loader:
+```
 
-然后在项目根目录下创建 postcss.config.js :
-   module.exports = { plugins: [
-    require('autoprefixer'),
-require('postcss-nested') ]
-}
-插件 autoprefixer 提供自动给样式加前缀去兼容浏览器，postcss-nested 提供 编写嵌套的样式语法。
-最后，在 package.json 内增加如下实例内容:
-     "browserslist": [
-  "> 1%",
-  "last 2 versions"
-]
-数组内的值对应的含义:
-  module: {
-    rules: [
-{
-test: /\.css$/,
-exclude: /node_modules/, use: [
-{
-loader: 'style-loader',
-}, {
-loader: 'css-loader', options: {
-              importLoaders: 1,
-            }
-}, {
-loader: 'postcss-loader' }
-] }
-] }
-}
+这时我们执行打包命令，发现控制台里打印出下面这样的日志: 我们在浏览器中打开 `http://127.0.0.1:8888` ，我们成功可视化了打包产物依赖图!
 
- 1. last 2 versions : 每个浏览器中最新的两个版本。
- 2. > 1% or >= 1% : 全球浏览器使用率大于1%或大于等于1%。
-CSS 模块
-目前还有一个问题，就是多人编写的样式可能会冲突，开启 CSS 模块可以解决这个
-问题。 webpack.config.js 配置:
-     module: {
-    rules: [
-{
-test: /\.css$/, use: [
-'style-loader', {
-loader: 'css-loader', options: {
-// 开启css模块
-              modules: true
-            }
-},
-'postcss-loader'
-] }
-] }
- 加入项目里有样式文件 style.css :
-   body {
-display: flex; flex-direction: column; .box {
-    width: 100px;
-    height: 100px;
-    background: red;
-} }
-在 js 文件里导入 css 文件:
+## 扩展功能
 
- 也可以部分开启 CSS 模块模式，比如全局样式可以冠以 .global 前缀，如: 1. *.global.css 普通模式
-2.*.css css module模式
-这里统一用 global 关键词进行识别。用正则表达式匹配文件:
- // 开启 css 模块后，可以导入模块 import style from './style.css'
-const div = document.createElement('div') div.textContent = 'hello webpack'
-// style 里可以识别 class 样式 div.classList.add(style.box) document.body.appendChild(div)
- // css module
-{
-test: new RegExp(`^(?!.*\\.global).*\\.css`), use: [
-{
-loader: 'style-loader'
-}， {
-loader: 'css-loader', options: {
-        modules: true,
-        localIdentName: '[hash:base64:6]'
-      }
-}, {
-loader: 'postcss-loader' }
-],
-exclude:[path.resolve(__dirname, '..', 'node_modules')] }
-// 普通模式 {
-test: new RegExp(`^(.*\\.global).*\\.css`), use: [
-{
-loader: 'style-loader'
-}， {
+### Web Works
 
-2.3.2 Web Works
-有时我们需要在客户端进行大量的运算，但又不想让它阻塞我们的js主线程。你可能 第一时间考虑到的是异步。 但事实上，运算量过大(执行时间过长)的异步也会阻塞js事件循环，甚至会导致浏览 器假死状态。
-这时候，HTML5的新特性 WebWorker就派上了用场。 在此之前，我们简单的了解下这个特性。
-html5之前，打开一个常规的网页，浏览器会启用几个线程? 一般而言，至少存在三个线程(公用线程不计入在内): 分别是js引擎线程(处理js)、GUI渲染线程(渲染页面)、浏览器事件触发线程(控制交 互)。
-当一段JS脚本长时间占用着处理机,就会挂起浏览器的GUI更新，而后面的事件响应也 被排在队列中得不到处理，从而造成了浏览器被锁定进入假死状态。
-现在如果遇到了这种情况，我们可以做的不仅仅是优化代码————html5提供了解 决方案，webworker。
-webWorkers提供了js的后台处理线程的API，它允许将复杂耗时的单纯js逻辑处理放 在浏览器后台线程中进行处理，让js线程不阻塞UI线程的渲染。 多个线程间也是可以通过相同的方法进行数据传递。
+有时我们需要在客户端进行大量的运算，但又不想让它阻塞我们的js主线程。你可能第一时间考虑到的是异步。 但事实上，运算量过大(执行时间过长)的异步也会阻塞js事件循环，甚至会导致浏览器假死状态。
+
+这时候，HTML5的新特性 WebWorker 就派上了用场。 在此之前，我们简单的了解下这个特性。
+
+html5之前，打开一个常规的网页，浏览器会启用几个线程? 一般而言，至少存在三个线程(公用线程不计入在内): 分别是js引擎线程(处理js)、GUI渲染线程(渲染页面)、浏览器事件触发线程(控制交互)。
+
+当一段JS脚本长时间占用着处理机,就会挂起浏览器的GUI更新，而后面的事件响应也被排在队列中得不到处理，从而造成了浏览器被锁定进入假死状态。现在如果遇到了这种情况，我们可以做的不仅仅是优化代码————html5提供了解决方案，webworker。webWorkers提供了js的后台处理线程的API，它允许将复杂耗时的单纯js逻辑处理放 在浏览器后台线程中进行处理，让js线程不阻塞UI线程的渲染。 多个线程间也是可以通过相同的方法进行数据传递。
+
 它的使用方式如下:
-也就是说，需要单独写一个js脚本，然后使用new Worker来创建一个Work线程实 例。 这意味着并不是将这个脚本当做一个模块引入进来，而是单独开一个线程去执行这个 脚本。
-  //new Worker(scriptURL: string | URL, options?: WorkerOptions)
+
+```js
+// new Worker(scriptURL: string | URL, options?: WorkerOptions)
 new Worker("someWorker.js");
- loader: 'css-loader', },
-{
-loader: 'postcss-loader'
-} ],
-exclude:[path.resolve(__dirname, '..', 'node_modules')] }
-  
- 我们知道，常规模式下，我们的webpack工程化环境只会打包出一个bundle.js，那 我们的worker脚本怎么办? 也许你会想到设置多入口(Entry)多出口(ouotput)的方式。 事实上不需要那么麻烦，webpack4的时候就提供了worker-loader专门配置 webWorker。 令人开心的是，webpack5之后就不需要用loader啦，因为webpack5内置了这个功 能。
-我们来试验一下:
-第一步
-创建一个work脚本 work.js,我们甚至不需要写任何内容，我们的重点不是 webWorker的使用，而是在webpack环境中使用这个特性。 当然，也可以写点什么，比如:
-在 index.js 中使用它
- self.onmessage = ({ data: { question } }) => { self.postMessage({
+```
+
+也就是说，需要单独写一个js脚本，然后使用new Worker来创建一个Work线程实 例。 这意味着并不是将这个脚本当做一个模块引入进来，而是单独开一个线程去执行这个脚本。
+
+我们知道，常规模式下，我们的webpack工程化环境只会打包出一个bundle.js，那 我们的worker脚本怎么办? 也许你会想到设置多入口(Entry)多出口(output)的方式。 事实上不需要那么麻烦，webpack4 的时候就提供了 worker-loader 专门配置 webWorker。 令人开心的是，webpack5之后就不需要用 loader 啦，因为 webpack5 内置了这个功能。
+
+```js
+// work.js
+self.onmessage = ({ data: { question } }) => {
+  self.postMessage({
     answer: 42,
-  })
-}
-    // 下面的代码属于业务逻辑
-const worker = new Worker(new URL('./work.js', import.meta.url)); worker.postMessage({
-question: 'hi，那边的workder线程，请告诉我今天的幸运数字是多少?',
+  });
+};
+```
+
+```js
+// 下面的代码属于业务逻辑
+const worker = new Worker(new URL("./work.js", import.meta.url));
+
+worker.postMessage({
+  question: "hi, 那边的 worker 线程，请告诉我今天的幸运数字是多少?",
 });
+
 worker.onmessage = ({ data: { answer } }) => {
-console.log(answer); };
-(import.meta.url这个参数能够锁定我们当前的这个模块——注意，它不能在 commonjs中使用。)
+  console.log(answer);
+};
+```
+
+> import.meta.url这个参数能够锁定我们当前的这个模块——注意，它不能在 commonjs中使用。
+
 这时候我们执行打包命令，会发现,dist目录下除了bundle.js之外，还有另外一个 xxx.bundle.js!
-这说明我们的webpack5自动的将被new Work使用的脚本单独打出了一个bundle。
-我们加上刚才的问答代码，执行npm run dev，发现它是能够正常工作。 并且在network里也可以发现多了一个src_worker_js.bundle.js。
-总结: webpack5以来内置了很多功能，让我们不需要过多的配置，比如之前讲过的hot模 式，和现在的web workder。
 
-2.3.3 TypeScript
+这说明我们的 webpack5 自动的将被 new Work 使用的脚本单独打出了一个bundle。
+
+我们加上刚才的问答代码，执行 npm run start，发现它是能够正常工作。 并且在 network 里也可以发现多了一个 src_worker_js.bundle.js。
+
+总结: webpack5以来内置了很多功能，让我们不需要过多的配置，比如之前讲过的hot模 式，和现在的 web worker。
+
+### TypeScript
+
 在前端生态里，TS扮演着越来越重要的角色。 我们直入正题，讲下如何在webpack工程化环境中集成TS。
+
 首先，当然是安装我们的ts和对应的loader。
-接下来我们需要在项目根目录下添加一个ts的配置文件————tsconfig.json，我们 可以用ts自带的工具来自动化生成它。
+
+```bash
+npm install --save-dev typescript ts-loader
+```
+
+接下来我们需要在项目根目录下添加一个 ts 的配置文件————tsconfig.json，我们可以用 ts 自带的工具来自动化生成它。
+
+```bash
+npx tsc --init
+```
+
 我们发现生成了一个tsconfig.json，里面注释掉了绝大多数配置。 现在，根据我们想要的效果来打开对应的配置。
-  npm install --save-dev typescript ts-loader
-  npx tsc --init
-  {
-  "compilerOptions": {
-"outDir": "./dist/", "noImplicitAny": true, "sourceMap": true, "module": "es6",
-"target": "es5",
-"jsx": "react",
-"allowJs": true, "moduleResolution": "node"
-} }
- 好了，接下来我们新增一个src/index.ts，内置一些内容。 然后我们别忘了更改我们的entry及配置对应的loder。 当然，还有resolve.extensions，将.ts放在.js之前，这样它会先找.ts。 注意，如果我们使用了sourceMap，一定记得和上面的ts配置一样，设置 sourcemap为true。 也别忘记在我们的webpack.config.js里，添加sourcemap,就像我们之前课程里讲的 那样。
-更改如下:
- const path = require('path');
-module.exports = {
-entry: './src/index.ts', devtool: 'inline-source-map',
 
-运行我们的项目，我们发现完全没有问题呢! 使用第三方类库
-在从 npm 上安装第三方库时，一定要记得同时安装这个库的类型声明文件(typing definition)。
-我们可以从 TypeSearch中找到并安装这些第三方库的类型声明文件(<https://www.ty> pescriptlang.org/dt/search?search=) 。
-举个例子，如果想安装 lodash 类型声明文件，我们可以运行下面的命令:
-eslint & ts 注意，如果要使用eslint，使用初始化命令的时候，记得选择“使用了typesctipt”。
-如果已经配置了eslint，但没有配置ts相关的配置，那么我们需要先安装对应的 plugin
-    npm install --save-dev @types/lodash
-  npx eslint --init
-
-# 往下选择的时候选择使用了typesctipt
-
-  yarn add -D @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
-注意如果需要用到react的话，记得也要安装
-   module: {
-    rules: [
+```json
 {
-test: /\.(ts|tsx)$/, use: 'ts-loader', exclude: /node_modules/,
-}, ],
-}, resolve: {
-extensions: [ '.tsx', '.ts', '.js' ], },
-output: {
-filename: 'bundle.js',
-path: path.resolve(__dirname, 'dist'),
-}, };
-  
-  vue或者其他常用框架同样如此，一般都会有专门的plugin。 然后我们队.esilntrc进行更改~
- {
-"env": {
-        "browser": true,
-        "es2021": true
+  "compilerOptions": {
+    "outDir": "./dist/", 
+    "sourceMap": true, 
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true, 
+    "moduleResolution": "node"
+  } 
+}
+```
+
+ 好了，接下来我们新增一个src/index.ts，内置一些内容。 然后我们别忘了更改我们的 entry 及配置对应的 loader。 当然，还有resolve extensions，将 .ts 放在 .js 之前，这样它会先找 .ts。 注意，如果我们使用了sourceMap，一定记得和上面的ts配置一样，设置 sourcemap为true。 也别忘记在我们的webpack.config.js里，添加 sourcemap ,就像我们之前讲的那样。
+
+```js
+resolve: {
+  extensions: [".tsx", ".ts", ".js"],
+},
+module: {
+  rules: [
+    {
+      test: /\.(ts|tsx)$/,
+      use: "ts-loader",
+      exclude: /node_modules/,
     },
-"extends": [
-"eslint:recommended", // 如果需要react的话 "plugin:react/recommended", "plugin:@typescript-eslint/recommended"
-],
-"parser": "@typescript-eslint/parser", "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-}, // 如果需要react的话 "ecmaVersion": 13, "sourceType": "module"
+```
+
+eslint & ts 注意，如果要使用eslint，使用初始化命令的时候，记得选择 “使用了 typescript ”。
+
+如果已经配置了eslint，但没有配置ts相关的配置，那么我们需要先安装对应的 plugin
+
+```bash
+yarn add -D @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
+```
+
+注意如果需要用到react的话，记得也要安装
+
+```bash
+yarn add -D eslint-plugin-react@latest
+```
+
+vue或者其他常用框架同样如此，一般都会有专门的plugin。 然后我们对 .esilntrc 进行更改~
+
+```js
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended", 
+    // 如果需要react的话 "plugin:react/recommended", 
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser", 
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }, 
+    // 如果需要 react 的话 "ecmaVersion": 13, "sourceType": "module"
     },
-    "plugins": [
-"react",
-"@typescript-eslint"
-], "rules": {
-// ...一些自定义的rules "no-console": "error"
-} };
-执行npm run eslint试一下! 大功告成!
-2.4 多页面应用 2.4.1 entry 配置
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ], 
+  "rules": {
+    // ...一些自定义的rules "no-console": "error"
+  } 
+};
+```
+
+## 多页面应用
+
+2.4.1 entry 配置
 单个入口(简写)语法
  用法:entry: string | [string]
  yarn add -D eslint-plugin-react@latest
@@ -1893,7 +1540,9 @@ pageOne: './src/pageOne/index.js', pageTwo: './src/pageTwo/index.js', pageThree:
  ] }
   
  为什么? 在多页面应用程序中，server 会拉取一个新的 HTML 文档给你的客户端。 页面重新加载此新文档，并且资源被重新下载。然而，这给了我们特殊的机会去做很 多事，例如使用 optimization.splitChunks 为页面间共享的应用程序代码创建 bundle。由于入口起点数量的增多，多页应用能够复用多个入口起点之间的大量代 码/模块，从而可以极大地从这些技术中受益。
-2.5 Tree shaking
+
+## Tree shaking
+
 tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码 (dead-code)。它依赖于 ES2015 模块语法的 静态结构 特性，例如 import 和
 export 。这个术语和概念实际上是由 ES2015 模块打包工具 rollup 普及起来的。
 webpack 2 正式版本内置支持 ES2015 模块(也叫做 harmony modules)和未使用 模块检测能力。新的 webpack 4 正式版本扩展了此检测能力，通过 package.json 的 "sideEffects" 属性作为标记，向 compiler 提供提示，表明项目中的哪些文件 是 "pure(纯正 ES2015 模块)"，由此可以安全地删除文件中未使用的部分。
@@ -2057,7 +1706,9 @@ index.js
 
   再次运行 npx webpack 来构建包含注册代码版本的应用程序。然后用 npm start 启动服务。访问 <http://localhost:8080> 并查看 console 控制台。在那里你应该 看到:
 现在来进行测试。停止 server 并刷新页面。如果浏览器能够支持 Service Worker， 应该可以看到你的应用程序还在正常运行。然而，server 已经停止 serve 整个 dist 文件夹，此刻是 Service Worker 在进行 serve。
-2.7 shimming 预置依赖
+
+## shimming 预置依赖
+
 webpack compiler 能够识别遵循 ES2015 模块语法、CommonJS 或 AMD 规范编写 的模块。然而，一些 third party(第三方库) 可能会引用一些全局依赖(例如 jQuery 中的 $ )。因此这些 library 也可能会创建一些需要导出的全局变量。这些 "broken modules(不符合规范的模块)" 就是 shimming( ) 发挥作用的地方。
 shim 另外一个极其有用的使用场景就是:当你希望 polyfill 扩展浏览器能力，来支持 到更多用户时。在这种情况下，你可能只是想要将这些 polyfills 提供给需要修补 (patch)的浏览器(也就是实现按需加载)。
     SW registered
@@ -2246,7 +1897,9 @@ presets: [ [
                   useBuiltIns: 'usage',
 
 成功优化!
-2.8 创建 library
+
+## 创建 library
+
 除了打包应用程序，webpack 还可以用于打包 JavaScript library。
 2.8.1 创建一个 library
 假设我们正在编写一个名为 webpack-numbers 的小的 library，可以将数字 1 到 5
@@ -2409,7 +2062,9 @@ package.json 中的 main 字段中。 package.json
 2.8.7 发布为 npm package
 现在，你可以 将其发布为一个 npm package，并且在 unpkg.com 找到它，并分发
 给你的用户。
-2.9 模块联邦
+
+## 模块联邦
+
 2.9.1 什么是模块联邦
 多个独立的构建可以组成一个应用程序，这些独立的构建之间不应该存在依赖关系， 因此可以单独开发和部署它们。
 这通常被称作微前端，但并不仅限于此。
@@ -2532,7 +2187,10 @@ name: 'search',
 filename: 'remoteEntry.js',
 
 应用 webpack 运行服务:
-2.10 提升构建性能 2.10.1 通用环境
+
+## 提升构建性能
+
+2.10.1 通用环境
 无论你是在 开发环境 还是在 生产环境 下运行构建脚本，以下最佳实践都会有所帮 助。
 1、更新到最新版本
 使用最新的 webpack 版本。我们会经常进行性能优化。webpack 的最新稳定版本
@@ -2664,13 +2322,5 @@ loader: 'ts-loader', options: {
 以下步骤对于 特别有帮助。
 Source Maps
 source map 相当消耗资源。你真的需要它们?
---本篇完-- #三、项目实战篇
-module.exports = { // ...
-  output: {
-    pathinfo: false,
-}, };
-境环产生
 
- Webpack与React Webpack与Vue Webpack与jQuery Webpck与Node/Express
-
-# 四、内部原理篇 webpack原理 开发loader plugin
+--本篇完--

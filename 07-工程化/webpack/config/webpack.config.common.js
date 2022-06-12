@@ -5,6 +5,8 @@ const toml = require("toml");
 const yaml = require("yaml");
 const json5 = require("json5");
 
+// const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
 /**
  * @type {import('webpack').Configuration}
  */
@@ -18,8 +20,16 @@ const config = {
     clean: true,
     assetModuleFilename: "images/[contenthash][ext][query]",
   },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
       {
         test: /\.png$/,
         type: "asset/resource",
@@ -96,6 +106,7 @@ const config = {
       filename: "index.html",
       inject: "body",
     }),
+    // new BundleAnalyzerPlugin(),
   ],
   optimization: {
     splitChunks: {

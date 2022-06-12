@@ -9,3 +9,7 @@ import helloWorld from "./babelLoader";
 helloWorld();
 
 import "./split";
+
+import "./work";
+
+import "./ts";
