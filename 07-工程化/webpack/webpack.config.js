@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
@@ -7,6 +8,8 @@ const yaml = require("yaml");
 const json5 = require("json5");
 
 const devMode = process.env.NODE_ENV !== "production";
+// 尝试使用环境变量，否则使用根路径
+// const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 /**
  * @type {import('webpack').Configuration}
@@ -26,6 +29,8 @@ const config = {
     another: "./src/split/another-module.js",
   },
   output: {
+    // publicPath: ASSET_PATH,
+    publicPath: "auto",
     filename: "scripts/[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     clean: true,
@@ -151,6 +156,9 @@ const config = {
     ],
   },
   plugins: [
+    // new webpack.DefinePlugin({
+    //   "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH),
+    // }),
     new HtmlWebpackPlugin({
       template: "./index.html",
       filename: "html.html",

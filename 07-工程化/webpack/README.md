@@ -463,7 +463,7 @@ yarn add -D toml yamljs json5
 
 ```js
 const toml = require('toml');
-const yaml = require('yamljs');
+const yaml = require('yaml');
 const json5 = require('json5');
 module.exports = {
   module: {
@@ -1056,409 +1056,105 @@ output: {
 
 截止目前，我们已经把 JS 文件、样式文件及图片等资源文件分别放到了 scripts 、 styles 、 images 三个文件夹中。
 
-## 拆分开发环境和生产环境配置
+## 拆分配置文件
 
 现在，我们只能手工的来调整 mode 选项，实现生产环境和开发环境的切换，且很多 配置在生产环境和开发环境中存在不一致的情况，比如开发环境没有必要设置缓存， 生产环境还需要设置公共路径等等。
+
 本节介绍拆分开发环境和生产环境，让打包更灵活。
-       //...
-module.exports = { //...
-output: {
-filename: 'scripts/[name].[contenthash].js',
-//...
-},
-//...
-}
 
-1.10.1 公共路径
-publicPath 配置选项在各种场景中都非常有用。你可以通过它来指定应用程序中所
-有资源的基础路径。 基于环境设置
-在开发环境中，我们通常有一个 assets/ 文件夹，它与索引页面位于同一级 别。这没太大问题，但是，如果我们将所有静态资源托管至 CDN，然后想在生 产环境中使用呢?
-想要解决这个问题，可以直接使用一个 environment variable(环境变量)。假设 我们有一个变量 ASSET_PATH :
-     import webpack from 'webpack'; // 尝试使用环境变量，否则使用根路径
+### 公共路径
+
+publicPath 配置选项在各种场景中都非常有用。你可以通过它来指定应用程序中所有资源的基础路径。
+
+#### 基于环境设置
+
+在开发环境中，我们通常有一个 assets/ 文件夹，它与索引页面位于同一级别。这没太大问题，但是，如果我们将所有静态资源托管至 CDN，然后想在生产环境中使用呢?
+
+想要解决这个问题，可以直接使用一个 environment variable(环境变量)。假设我们有一个变量 ASSET_PATH :
+
+```js
+const webpack = require("webpack");
+// 尝试使用环境变量，否则使用根路径
 const ASSET_PATH = process.env.ASSET_PATH || '/';
-export default {
-  output: {
-    publicPath: ASSET_PATH,
-  },
+// ...
+output: {
+  publicPath: ASSET_PATH,
+},
 plugins: [
-// 这可以帮助我们在代码中安全地使用环境变量 new webpack.DefinePlugin({
-'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH), }),
-], };
-  11-multiple-env/webpack.config.js
- //...
-import webpack from 'webpack'; // 尝试使用环境变量，否则使用根路径
-const ASSET_PATH = process.env.ASSET_PATH || '/';
-export default {
-output: {
-//...
-publicPath: ASSET_PATH,
-  
- Automatic publicPath
-有可能你事先不知道 publicPath 是什么，webpack 会自动根据 import.meta.url、document.currentScript、script.src 或者 self.location 变量设置 publicPath。你需要做的是将 output.publicPath
-设为 'auto' :
-请注意在某些情况下不支持 document.currentScript ，例如:IE 浏览器，你 不得不引入一个 polyfill，例如 currentScript Polyfill 。
-1.10.2 环境变量
-想要消除 webpack.config.js 在 开发环境 和 生产环境 之间的差异，你可能需要
-环境变量(environment variable)。
-webpack 命令行 环境配置 的 --env 参数，可以允许你传入任意数量的环境变量。而 在 webpack.config.js 中可以访问到这些环境变量。例如， --env production 或
---env goal=local 。
-对于我们的 webpack 配置，有一个必须要修改之处。通常，module.exports 指向 配置对象。要使用 env 变量，你必须将 module.exports 转换成一个函数:
-           module.exports = { output: {
-    publicPath: 'auto',
-  },
-};
-             npx webpack --env goal=local --env production --progress
-   11-multiple-env/webpack.config.js
- },
-plugins: [
-// 这可以帮助我们在代码中安全地使用环境变量 new webpack.DefinePlugin({
-'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH), }),
-//...
-], };
-  
-  1.10.3 拆分配置文件
-目前，生产环境和开发环境使用的是一个配置文件，我们需要将这两个文件单独放到 不同的配置文件中。如 webpack.config.dev.js (开发环境配置)和
-webpack.config.prod.js (生产环境配置)。在项目根目录下创建一个配置文件 夹 config 来存放他们。
-webpack.config.dev.js 配置如下: 11-multiple-env/config/webpack.config.dev.js
-     //...
-module.exports = (env) => {
-return {
-//...
-// 根据命令行参数 env 来设置不同环境的 mode
-mode: env.production ? 'production' : 'development', //...
-} }
- const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin') const MiniCssExtractPlugin = require('mini-css-extract- plugin')
-const toml = require('toml')
-const yaml = require('yaml')
-const json5 = require('json5')
-module.exports = {
-entry: {
-index: './src/index.js',
-another: './src/another-module.js' },
-output: {
-filename: 'scripts/[name].js',
-path: path.resolve(__dirname, './dist'),
-clean: true,
-assetModuleFilename: 'images/[contenthash][ext]' },
-mode: 'development',
-  
-  devtool: 'inline-source-map',
-plugins: [
-new HtmlWebpackPlugin({
-template: './index.html', filename: 'app.html', inject: 'body'
-}),
-new MiniCssExtractPlugin({
-filename: 'styles/[contenthash].css'
-}) ],
-devServer: { static: './dist' },
-module: {
-rules: [
-{
-test: /\.png$/,
-type: 'asset/resource', generator: {
-     filename: 'images/[contenthash][ext]'
-   }
-}, {
-test: /\.svg$/,
-   type: 'asset/inline'
- },
-{
-test: /\.txt$/, type: 'asset/source'
-}, {
-test: /\.jpg$/, type: 'asset', parser: {
-     dataUrlCondition: {
-       maxSize: 4 _1024_ 1024
-}
-
-  } },
-{
-test: /\.(css|less)$/,
-use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-
-loader'] },
-{
-test: /\.(woff|woff2|eot|ttf|otf)$/, type: 'asset/resource'
-}, {
-test: /\.(csv|tsv)$/,
-use: 'csv-loader' },
-{
-test: /\.xml$/, use: 'xml-loader'
-}, {
-test: /\.toml$/, type: 'json', parser: {
-parse: toml.parse }
-}, {
-test: /\.yaml$/, type: 'json', parser: {
-parse: yaml.parse }
-}, {
-test: /\.json5$/, type: 'json', parser: {
-parse: json5.parse
-
- webpack.config.prod.js 配置如下: 11-multiple-env/config/webpack.config.prod.js
-   } },
-{
-test: /\.js$/,
-exclude: /node_modules/, use: {
-loader: 'babel-loader', options: {
-presets: ['@babel/preset-env'], plugins: [
-[
-] ]
-} }
-} ]
-},
-optimization: {
-splitChunks: {
- cacheGroups: {
-   vendor: {
-     test: /[\\/]node_modules[\\/]/,
-     name: 'vendors',
-     chunks: 'all'
-} }
-} } }
-'@babel/plugin-transform-runtime'
- const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin') const MiniCssExtractPlugin = require('mini-css-extract- plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack- plugin')
-
-  const toml = require('toml')
-const yaml = require('yaml')
-const json5 = require('json5')
-module.exports = {
-entry: {
-index: './src/index.js',
-another: './src/another-module.js' },
-output: {
-filename: 'scripts/[name].[contenthash].js',
-// 打包的dist文件夹要放到上一层目录
-path: path.resolve(__dirname, '../dist'),
-clean: true,
-assetModuleFilename: 'images/[contenthash][ext]', publicPath: 'http://localhost:8080/'
-},
-mode: 'production',
-plugins: [
-new HtmlWebpackPlugin({
-template: './index.html', filename: 'app.html', inject: 'body'
-}),
-new MiniCssExtractPlugin({
-filename: 'styles/[contenthash].css'
-}) ],
-module: {
-rules: [
-{
-test: /\.png$/,
-type: 'asset/resource', generator: {
-     filename: 'images/[contenthash][ext]'
-   }
-}, {
-test: /\.svg$/,
-
-     type: 'asset/inline'
- },
-{
-test: /\.txt$/, type: 'asset/source'
-}, {
-test: /\.jpg$/, type: 'asset', parser: {
-     dataUrlCondition: {
-       maxSize: 4 _1024_ 1024
-} }
-}, {
-test: /\.(css|less)$/,
-use: [MiniCssExtractPlugin.loader, 'css-loader', 'less- loader']
-}, {
-test: /\.(woff|woff2|eot|ttf|otf)$/,
-   type: 'asset/resource'
- },
-{
-test: /\.(csv|tsv)$/, use: 'csv-loader'
-}, {
-test: /\.xml$/,
-use: 'xml-loader' },
-{
-test: /\.toml$/, type: 'json', parser: {
-parse: toml.parse }
-
-  }, {
-test: /\.yaml$/, type: 'json', parser: {
-parse: yaml.parse }
-}, {
-test: /\.json5$/, type: 'json', parser: {
-parse: json5.parse }
-}, {
-test: /\.js$/,
-exclude: /node_modules/, use: {
-loader: 'babel-loader', options: {
-presets: ['@babel/preset-env'], plugins: [
-[
-] ]
-} }
-} ]
-},
-optimization: {
-minimizer: [
- new CssMinimizerPlugin()
-],
-splitChunks: {
- cacheGroups: {
-   vendor: {
-     test: /[\\/]node_modules[\\/]/,
-'@babel/plugin-transform-runtime'
-
- 拆分成两个配置文件后，分别运行这两个文件: 开发环境:
-生产环境:
-1.10.4 npm 脚本 每次打包或启动服务时，都需要在命令行里输入一长串的命令。我们将父目录的
-package.json、node_modules 与 package-lock.json拷贝到当前目录下，
-配置 npm 脚本来简化命令行的输入，这时可以省略 npx : 11-multiple-env/package.json
- [felix] 10-multiple-env $ npx webpack serve -c ./config/webpack.config.dev.js
-   [felix] 10-multiple-env $ npx webpack -c ./config/webpack.config.prod.js
-           name: 'vendors',
-     chunks: 'all'
-   }
-} }
-},
-//关闭 webpack 的性能提示 performance: { hints:false
-}
-}
-  
-  开发环境运行脚本:
-1.10.5 提取公共配置 这时，我们发现这两个配置文件里存在大量的重复代码，可以手动的将这些重复的代
-码单独提取到一个文件里，
-创建 webpack.config.common.js ，配置公共的内容:
-11-multiple-env/config/webpack.config.common.js
-  [felix] 10-multiple-env $ npm run start
-  [felix] 10-multiple-env $ npm run build
-  {
-"scripts": {
-"start": "webpack serve -c ./config/webpack.config.dev.js", "build": "webpack -c ./config/webpack.config.prod.js"
-}
-}
- const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin') const MiniCssExtractPlugin = require('mini-css-extract- plugin')
-const toml = require('toml')
-const yaml = require('yaml')
-const json5 = require('json5')
-module.exports = {
-entry: {
-index: './src/index.js',
-another: './src/another-module.js' },
-output: {
-// 注意这个dist的路径设置成上一级
-path: path.resolve(__dirname, '../dist'),
-clean: true,
-assetModuleFilename: 'images/[contenthash][ext]', },
-plugins: [
-  
-  new HtmlWebpackPlugin({ template: './index.html', filename: 'app.html', inject: 'body'
-}),
-new MiniCssExtractPlugin({
-filename: 'styles/[contenthash].css'
-}) ],
-module: {
-rules: [
-{
-test: /\.png$/,
-type: 'asset/resource', generator: {
-     filename: 'images/[contenthash][ext]'
-   }
-}, {
-test: /\.svg$/,
-   type: 'asset/inline'
- },
-{
-test: /\.txt$/, type: 'asset/source'
-}, {
-test: /\.jpg$/, type: 'asset', parser: {
-     dataUrlCondition: {
-       maxSize: 4 * 1024
-} }
-}, {
-test: /\.(css|less)$/,
-use: [MiniCssExtractPlugin.loader, 'css-loader', 'less- loader']
-
-  }, {
-test: /\.(woff|woff2|eot|ttf|otf)$/,
-  type: 'asset/resource'
-},
-{
-test: /\.(csv|tsv)$/, use: 'csv-loader'
-}, {
-test: /\.xml$/,
-use: 'xml-loader' },
-{
-test: /\.toml$/, type: 'json', parser: {
-parse: toml.parse }
-}, {
-test: /\.yaml$/, type: 'json', parser: {
-parse: yaml.parse }
-}, {
-test: /\.json5$/, type: 'json', parser: {
-parse: json5.parse }
-}, {
-test: /\.js$/,
-exclude: /node_modules/, use: {
-
- 改写 webpack.config.dev.js : 11-multiple-env/config/webpack.config.dev.js
-   loader: 'babel-loader', options: {
-presets: ['@babel/preset-env'], plugins: [
-[
-] ]
-} }
-} ]
-},
-optimization: {
-splitChunks: {
- cacheGroups: {
-   vendor: {
-     test: /[\\/]node_modules[\\/]/,
-     name: 'vendors',
-     chunks: 'all'
-} }
-} },
-//关闭 webpack 的性能提示 performance: { hints:false
-}
-}
-'@babel/plugin-transform-runtime'
- module.exports = {
-// 开发环境不需要配置缓存
-output: {
-filename: 'scripts/[name].js', },
-// 开发模式
-mode: 'development',
-  
- 修改 webpack.config.prod.js : 11-multiple-env/config/webpack.config.prod.js
-   const CssMinimizerPlugin = require('css-minimizer-webpack- plugin')
-module.exports = {
-// 生产环境需要缓存
-output: {
-filename: 'scripts/[name].[contenthash].js', publicPath: 'http://localhost:8080/'
-},
-// 生产环境模式
-mode: 'production',
-// 生产环境 css 压缩 optimization: { minimizer: [
- new CssMinimizerPlugin()
+  new webpack.DefinePlugin({
+    "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH),
+  }),
 ]
-} }
- 1.10.6 合并配置文件
-配置文件拆分好后，新的问题来了，如何保证配置合并没用问题呢?webpack- merge 这个工具可以完美解决这个问题。
-   // 配置 source-map
-devtool: 'inline-source-map',
-// 本地服务配置 devServer: { static: './dist' }
-}
+```
   
-  安装 webpack-merge :
-创建 webpack.config.js ，合并代码: 11-multiple-env/config/webpack.config.js
-   [felix] felixcourses $ npm install webpack-merge -D
-    const { merge } = require('webpack-merge')
-const commonConfig = require('./webpack.config.common.js') const productionConfig = require('./webpack.config.prod.js') const developmentConfig = require('./webpack.config.dev')
-module.exports = (env) => { switch(true) {
-case env.development:
-return merge(commonConfig, developmentConfig) case env.production:
- return merge(commonConfig, productionConfig)
-default:
- throw new Error('No matching configuration was found!');
+#### auto
+
+该值是默认项
+
+有可能你事先不知道 `publicPath` 是什么，webpack 会自动根据 `import.meta.url`、`document.currentScript`、`script.src` 或者 `self.location` 变量设置 publicPath。你需要做的是将 `output.publicPath` 设为 'auto'
+
+请注意在某些情况下不支持 `document.currentScript` ，例如:IE 浏览器，你不得不引入一个 polyfill，例如 currentScript Polyfill 。
+
+### 环境变量
+
+想要消除 webpack.config.js 在 开发环境 和 生产环境 之间的差异，你可能需要环境变量(environment variable)。
+
+webpack 命令行 环境配置 的 --env 参数，可以允许你传入任意数量的环境变量。而在 webpack.config.js 中可以访问到这些环境变量。例如， `--env production` 或 `--env goal=local` 。
+
+对于我们的 webpack 配置，有一个必须要修改之处。通常，module.exports 指向配置对象。要使用 env 变量，你必须将 module.exports 转换成一个函数:
+
+```js
+module.exports = (env) => {
+  return {
+    // 根据命令行参数 env 来设置不同环境的 mode
+    mode: env.production ? "production" : "development", 
+    //...
+  }
 }
+```
+
+或是 `webpack --node-env production`
+
+```js
+mode: process.env.NODE_ENV === "production" ? "production" : "development", 
+```
+
+### 拆分配置文件
+
+目前，生产环境和开发环境使用的是一个配置文件，我们需要将这两个文件单独放到不同的配置文件中。如 webpack.config.dev.js (开发环境配置)和
+webpack.config.prod.js (生产环境配置)。在项目根目录下创建一个配置文件夹 config 来存放他们。
+
+拆分成两个配置文件后，分别运行这两个文件:
+
+- 开发环境: webpack serve -c ./config/webpack.config.dev.js
+- 生产环境: webpack -c ./config/webpack.config.prod.js
+
+### npm 脚本
+
+每次打包或启动服务时，都需要在命令行里输入一长串的命令。
+
+```json
+// package.json
+"scripts": {
+  "start": "webpack serve -c ./config/webpack.config.dev.js", 
+  "build": "webpack -c ./config/webpack.config.prod.js"
 }
--- 本篇完 --
+```
+
+### 提取公共配置
+
+这时，我们发现这两个配置文件里存在大量的重复代码，可以手动的将这些重复的代码单独提取到一个文件里，
+
+使用 webpack-merge 合并配置
+
+合并规则
+
+1. 如果数据类型不一样，后面的直接完全覆盖前面的，如果两者都是基础数据类型，后面的也会覆盖前面的
+2. 如果两者都是数组的话就会把两个数组进行合并
+3. 如果两者都是对象, 例如在a对象和b对象合并的过程中，a和b的键值对key如果不同，当然都会保留下来，到最终合并后的对象中
 
 二、高级应用篇
+
 上述我们基于webpack构建了我们的基础工程化环境，将我们认为需要的功能配置 了上去。 除开公共基础配置之外，我们意识到两点:
 
 1. 开发环境(mode=development),追求强大的开发功能和效率，配置各种方便开 发的功能;
@@ -1466,7 +1162,7 @@ default:
 的工具。
 2.1 提高开发效率，完善团队开发规范 2.1.1 source-map
 作为一个开发工程师——无论是什么开发，要求开发环境最不可少的一点功能就是 ——debug功能。 之前我们通过webpack, 将我们的源码打包成了 bundle.js 。 试 想:实际上客户端(浏览器)读取的是打包后的 bundle.js ,那么当浏览器执行代码报 错的时候，报错的信息自然也是bundle的内容。 我们如何将报错信息(bundle错误 的语句及其所在行列)映射到源码上?
-是的，souce-map。 webpack已经内置了sourcemap的功能，我们只需要通过简单的配置，将可以开启
+是的，source-map。 webpack已经内置了sourcemap的功能，我们只需要通过简单的配置，将可以开启
 它。
        module.exports = {
 // 开启 source map
@@ -1490,7 +1186,7 @@ default:
    cheap- module- source-map
 生成一个没有列信息(column-mappings)的SourceMaps文 件，同时 loader 的 sourcemap 也被简化为只包含对应行的。
  要注意的是，生产环境我们一般不会开启sourcemap功能，主要有两点原因:
-1. 通过bundle和sourcemap文件，可以反编译出源码————也就是说，线上产 物有soucemap文件的话，就意味着有暴漏源码的风险。
+1. 通过bundle和sourcemap文件，可以反编译出源码————也就是说，线上产 物有sourcemap文件的话，就意味着有暴漏源码的风险。
 2. 我们可以观察到，sourcemap文件的体积相对比较巨大,这跟我们生产环境的追 求不同(生产环境追求更小更轻量的bundle)。
 一道思考题: 有时候我们期望能第一时间通过线上的错误信息，来追踪到源码位 置，从而快速解决掉bug以减轻损失。但又不希望sourcemap文件报漏在生产 环境，有比较好的方案吗?
 2.1.2 devServer
