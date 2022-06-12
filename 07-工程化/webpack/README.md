@@ -1001,66 +1001,59 @@ import(/* webpackChunkName: 'print', webpackPreload: true */ "./print.js").then(
 
 ## 缓存
 
-以上，我们使用 webpack 来打包我们的模块化后的应用程序，webpack 会生成一个 可部署的 /dist 目录，然后把打包后的内容放置在此目录中。只要 /dist 目录中 的内容部署到 server 上，client(通常是浏览器)就能够访问此 server 的网站及其 资源。而最后一步获取资源是比较耗费时间的，这就是为什么浏览器使用一种名为 缓存 的技术。可以通过命中缓存，以降低网络流量，使网站加载速度更快，然而， 如果我们在部署新版本时不更改资源的文件名，浏览器可能会认为它没有被更新，就 会使用它的缓存版本。由于缓存的存在，当你需要获取新的代码时，就会显得很棘 手。
-本节通过必要的配置，以确保 webpack 编译生成的文件能够被客户端缓存，而在文 件内容变化后，能够请求到新的文件。
-1.9.1 输出文件的文件名
-我们可以通过替换 output.filename 中的 substitutions 设置，来定义输出文件的 名称。webpack 提供了一种使用称为 substitution(可替换模板字符串) 的方式，通 过带括号字符串来模板化文件名。其中， [contenthash] substitution 将根据资源 内容创建出唯一 hash。当资源内容发生变化时， [contenthash] 也会发生变化。
+以上，我们使用 webpack 来打包我们的模块化后的应用程序，webpack 会生成一个可部署的 /dist 目录，然后把打包后的内容放置在此目录中。只要 /dist 目录中的内容部署到 server 上，client(通常是浏览器)就能够访问此 server 的网站及其 资源。而最后一步获取资源是比较耗费时间的，这就是为什么浏览器使用一种名为**缓存**的技术。可以通过命中缓存，以降低网络流量，使网站加载速度更快，然而，如果我们在部署新版本时不更改资源的文件名，浏览器可能会认为它没有被更新，就会使用它的缓存版本。由于缓存的存在，当你需要获取新的代码时，就会显得很棘手。
 
- 修改配置文件:
-  module.exports = { output: {
-filename: '[name].[contenthash].js', },
-};
- 10-caching/webpack.config.js
- //...
-module.exports = { //...
+本节通过必要的配置，以确保 webpack 编译生成的文件能够被客户端缓存，而在文件内容变化后，能够请求到新的文件。
+
+### 输出文件的文件名
+
+我们可以通过替换 output.filename 中的 substitutions 设置，来定义输出文件的名称。webpack 提供了一种使用称为**substitution(可替换模板字符串)**的方式，通过带括号字符串来模板化文件名。其中， `[contenthash]` substitution 将根据资源内容创建出唯一hash。当资源内容发生变化时， `[contenthash]` 也会发生变化。
+
+修改配置文件:
+
+```js
 output: {
-filename: '[name].[contenthash].js', //...
+  filename: "[name].[contenthash].js",
+  // ...
 },
-//...
-}
- 执行打包编译:
-可以看到，bundle 的名称是它内容(通过 hash)的映射。如果我们不做修改，然后 再次运行构建，文件名会保持不变。
+```
 
- 1.9.2 缓存第三方库
-将第三方库(library)(例如 lodash )提取到单独的 vendor chunk 文件中，是比较 推荐的做法，这是因为，它们很少像本地的源代码那样频繁修改。因此通过实现以上 步骤，利用 client 的长效缓存机制，命中缓存来消除请求，并减少向 server 获取资 源，同时还能保证 client 代码和 server 代码版本一致。 我们在
-optimization.splitChunks 添加如下 cacheGroups 参数并构建:
-     splitChunks: {
-  cacheGroups: {
-    vendor: {
-      test: /[\\/]node_modules[\\/]/,
-      name: 'vendors',
-      chunks: 'all',
-}, },
+执行打包编译: 可以看到，bundle 的名称是它内容(通过 hash)的映射。如果我们不做修改，然后再次运行构建，文件名会保持不变。
+
+### 缓存第三方库
+
+将第三方库(library)(例如 `lodash` )提取到单独的 vendor chunk 文件中，是比较推荐的做法，这是因为，它们很少像本地的源代码那样频繁修改。因此通过实现以上步骤，利用 client 的长效缓存机制，命中缓存来消除请求，并减少向 server 获取资源，同时还能保证 client 代码和 server 代码版本一致。
+
+我们在 optimization.splitChunks 添加如下 cacheGroups 参数并构建:
+
+```js
+optimization: {
+  splitChunks: {
+    cacheGroups: {
+      vendor: {
+        test: /[\\/]node_modules[\\/]/,
+        name: "vendors",
+        chunks: "all",
+      },
+    },
+  },
 },
-  10-caching/webpack.config.js
-  //...
-module.exports = { //...
-optimization: { //...
-splitChunks: {
- cacheGroups: {
-   vendor: {
-     test: /[\\/]node_modules[\\/]/,
-     name: 'vendors',
-     chunks: 'all',
-}, },
-} }, }
-执行编译:
+```
 
-   1.9.3 将 js 文件放到一个文件夹中
+### 将 js 文件放到一个文件夹中
+
 目前，全部 js 文件都在 dist 文件夹根目录下，我们尝试把它们放到一个文件夹中，
-这个其实也简单，修改配置文件:
-10-caching/webpack.config.js
-   output: {
-filename: 'scripts/[name].[contenthash].js',
-},
- [felix] 10-caching $ npx webpack
-assets by status 746 KiB [cached] 6 assets assets by status 1.55 MiB [emitted]
-asset vendors.cc405abb852d5860354f.js 1.46 MiB [emitted] [immutable] (name: vendors) (id hint: vendor)
-asset index.ac97de18bcd04fe84ceb.js 67.4 KiB [emitted] [immutable] (name: index)
-asset another.e82e921ba518380decce.js 17.2 KiB [emitted] [immutable] (name: another)
-asset app.html 530 bytes [emitted] ...
 
-   我们在输出配置中修改 filename ，在前面加上路径即可。执行编译:
+这个其实也简单，修改配置文件:
+
+```js
+output: {
+  filename: 'scripts/[name].[contenthash].js',
+},
+```
+
+我们在输出配置中修改 filename ，在前面加上路径即可。执行编译
+
 截止目前，我们已经把 JS 文件、样式文件及图片等资源文件分别放到了 scripts 、 styles 、 images 三个文件夹中。
 
 ## 拆分开发环境和生产环境配置

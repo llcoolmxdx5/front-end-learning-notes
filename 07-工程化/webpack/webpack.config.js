@@ -26,7 +26,7 @@ const config = {
     another: "./src/split/another-module.js",
   },
   output: {
-    filename: "[name].bundle.js",
+    filename: "scripts/[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     clean: true,
     assetModuleFilename: "images/[contenthash][ext][query]",
@@ -168,7 +168,14 @@ const config = {
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
     splitChunks: {
-      chunks: "all",
+      // chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
     },
   },
 };
