@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const toml = require("toml");
-const yaml = require("yamljs");
+const yaml = require("yaml");
 const json5 = require("json5");
 
 const devMode = process.env.NODE_ENV !== "production";
@@ -123,6 +123,17 @@ const config = {
         type: "json",
         parser: {
           parse: json5.parse,
+        },
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+            plugins: [["@babel/plugin-transform-runtime"]],
+          },
         },
       },
     ],

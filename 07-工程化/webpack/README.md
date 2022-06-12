@@ -672,208 +672,113 @@ autoprefixer 添加厂商前缀。postcss-preset-env 帮助 postcss 找到 packa
 
 ## 使用 babel-loader
 
-前面的章节里，我们应用 less-loader 编译过 less 文件，应用 xml-loader 编译过 xml 文件，那 js 文件需要编译吗?我们来做一个实验，修改 hello-world.js 文 件:
-08-babel-loader/src/hello-world.js
-  [felix] 07-manage-assets $ npx webpack serve
-          function getString() {
-return new Promise((resolve, reject) => {
-setTimeout(() => { resolve('Hello world~~~')
-}, 2000) })
-}
-async function helloWorld() { let string = await getString() console.log(string)
-}
-// 导出函数模块
-export default helloWorld
- import yaml from './assets/json/data.yaml' import json from './assets/json/data.json5'
-//...
-console.log(toml.title); // output `TOML Example`
-console.log(toml.owner.name); // output `Tom Preston-Werner` console.log(yaml.title); // output `YAML Example`
-console.log(yaml.owner.name); // output `Tom Preston-Werner`
-console.log(json.title); // output `JSON5 Example` console.log(json.owner.name); // output `Tom Preston-Werner`
-  
+前面的章节里，我们应用 less-loader 编译过 less 文件，应用 xml-loader 编译过 xml 文件，那 js 文件需要编译吗? 我们来做一个实验
 
-执行编译:
-  [felix] 08-babel-loader $ npx webpack
- 查看 bundle.js 文件: 08-babel-loader/dist/bundle.js
-  //...
-/***/
-"./src/hello-world.js": /*!****************************!*\
-!*** ./src/hello-world.js ***! \****************************/
-/***/
-((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-"use strict"; __webpack_require__.r(__webpack_exports__); /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-   /* harmony export */
-   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-   /* harmony export */
-});
+```js
+// src/babelLoader/index.js
 function getString() {
-   return new Promise((resolve, reject) => {
-setTimeout(() => { resolve('Hello world~~~')
-}, 2000) })
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Hello world~~~");
+    }, 2000);
+  });
 }
+
 async function helloWorld() {
- 
+  let string = await getString();
+  console.log(string);
+}
 
- 我们发现，编写的ES6代码原样输出了。启动服务，打开浏览器:
-  [felix] 08-babel-loader $ npx webpack serve
- Hello world~~ 两秒后正常输出，说明浏览器能够运行我们的ES6代码。但如果浏 览器版本过低，就很难保证代码正常运行了。
-1.7.1 为什么需要 babel-loader
-     let string = await getString()
-console.log(string) }
 // 导出函数模块
-/* harmony default export */
-const __WEBPACK_DEFAULT_EXPORT__ = (helloWorld);
-/***/
-}),
-//...
-  
+export default helloWorld;
 
-webpack 自身可以自动加载JS文件，就像加载JSON文件一样，无需任何 loader。可 是，加载的JS文件会原样输出，即使你的JS文件里包含ES6+的代码，也不会做任何的 转化。这时我们就需要Babel来帮忙。Babel 是一个 JavaScript 编译器，可以将 ES6+转化成ES5。在Webpack里使用Babel，需要使用 babel-loader 。
-1.7.2 使用 babel-loader 安装:
-babel-loader : 在webpack里应用 babel 解析ES6的桥梁 @babel/core: babel核心模块
-@babel/preset-env: babel预设，一组babel插件的集合
-在 webpack 配置中，需要将 babel-loader 添加到 module 列表中，就像下面这 样:
-   npm install -D babel-loader @babel/core @babel/preset-env
-       module: {
-  rules: [
+```
+
+执行编译: npm run build 我们发现，编写的ES6代码原样输出了。启动服务，打开浏览器:
+
+npm run start Hello world~~ 两秒后正常输出，说明浏览器能够运行我们的ES6代码。但如果浏览器版本过低，就很难保证代码正常运行了。
+
+### 为什么需要 babel-loader
+
+webpack 自身可以自动加载 JS 文件，就像加载JSON文件一样，无需任何 loader。可是，加载的JS文件会原样输出，即使你的 JS 文件里包含 ES6+ 的代码，也不会做任何的转化。这时我们就需要 Babel 来帮忙。Babel 是一个 JavaScript 编译器，可以将 ES6+ 转化成 ES5。在 Webpack 里使用 Babel，需要使用 babel-loader 。
+
+### 使用 babel-loader
+
+安装:
+
+```bash
+npm install -D babel-loader @babel/core @babel/preset-env
+```
+
+- babel-loader : 在webpack里应用 babel 解析ES6的桥梁
+- @babel/core: babel核心模块
+- @babel/preset-env: babel预设，一组babel插件的集合
+
+在 webpack 配置中，需要将 babel-loader 添加到 module 列表中，就像下面这样:
+
+```js
 {
-test: /\.js$/,
-exclude: /node_modules/, use: {
-loader: 'babel-loader', options: {
-presets: ['@babel/preset-env'] }
-} }
-] }
-执行编译:
-查看 bundle.js 文件: 08-babel-loader/dist/bundle.js
-  [felix] 08-babel-loader $ npx webpack
-  /***/
-"./src/hello-world.js": /*!****************************!*\ !*** ./src/hello-world.js ***!
- 
- 
-  \****************************/
-/***/
-((__unused_webpack_module, __webpack_exports__,
-__webpack_require__) => {
-"use strict"; __webpack_require__.r(__webpack_exports__); /* harmony export */ __webpack_require__.d(__webpack_exports__, { /* harmony export */
-"default": () => (__WEBPACK_DEFAULT_EXPORT__) /* harmony export */
-});
-function asyncGeneratorStep(gen, resolve, reject, _next,
-_throw, key, arg) {
-try {
- var info = gen[key](arg);
-var value = info.value; } catch (error) {
- reject(error);
-return; }
-if (info.done) { resolve(value);
-} else {
-Promise.resolve(value).then(_next, _throw);
-} }
-function _asyncToGenerator(fn) {
-return function () {
- var self = this,
-   args = arguments;
-return new Promise(function (resolve, reject) { var gen = fn.apply(self, args);
-   function _next(value) {
-     asyncGeneratorStep(gen, resolve, reject, _next, _throw,
-"next", value);
-   }
-   function _throw(err) {
-     asyncGeneratorStep(gen, resolve, reject, _next, _throw,
-"throw", err);
- 
-
-  }
-   _next(undefined);
- });
-}; }
-function getString() {
-return new Promise(function (resolve, reject) {
-setTimeout(function () { resolve('Hello world~~~');
-}, 2000); });
-}
-function helloWorld() {
-return _helloWorld.apply(this, arguments); } // 导出函数模块
-function _helloWorld() {
-_helloWorld = _asyncToGenerator( /*#__PURE__*/ regeneratorRuntime.mark(function _callee() {
-var string;
-return regeneratorRuntime.wrap(function _callee$(_context) {
-while (1) {
-switch (_context.prev = _context.next) {
-case 0: _context.next = 2; return getString();
-case 2:
-string = _context.sent; console.log(string);
-       case 4:
-       case "end":
-return _context.stop(); }
-   }
- }, _callee);
-}));
-return _helloWorld.apply(this, arguments); }
-/* harmony default export */
- 
-
- 从编译完的结果可以看出，async/await 的ES6语法被 babel编译了。 1.7.3 regeneratorRuntime 插件
-此时执行编译，在浏览器里打开项目发现报了一个致命错误:
-   regeneratorRuntime 是webpack打包生成的全局辅助函数，由babel生成，用于兼 容async/await的语法。
-regeneratorRuntime is not defined 这个错误显然是未能正确配置babel。 正确的做法需要添加以下的插件和配置:
-    这个包中包含了regeneratorRuntime，运行时需要 npm install --save @babel/runtime
-这个插件会在需要regeneratorRuntime的地方自动require导包，编译时需要 npm install --save-dev @babel/plugin-transform-runtime
-更多参考这里 https://babeljs.io/docs/en/babel-plugin-transform-runtime
-接着改一下babel的配置:
- const __WEBPACK_DEFAULT_EXPORT__ = (helloWorld);
-/***/
-}),
- module: {
-  rules: [
-{
-test: /\.js$/,
-exclude: /node_modules/, use: {
-loader: 'babel-loader',
-  
- 
- 08-babel-loade/webpack.config.js
-  //...
-module.exports = { //...
-// 配置资源文件 module: { rules: [{
-test: /\.js$/,
-exclude: /node_modules/,
-use: {
-loader: 'babel-loader',
-options: {
-presets: ['@babel/preset-env'],
-plugins: [ [
-'@babel/plugin-transform-runtime'
-] ]
-} }
+  test: /\.js$/,
+  exclude: /node_modules/,
+  use: {
+    loader: "babel-loader",
+    options: {
+      presets: ["@babel/preset-env"],
+    },
+  },
 },
-//...
-], },
-//...
-}
- options: {
-presets: ['@babel/preset-env'], plugins: [
-[
-] ]
-} }
-} ]
-}
-'@babel/plugin-transform-runtime'
-  
+```
 
- 启动服务，打开浏览器:
- 成功运行。
+执行编译: 从编译完的结果可以看出，async/await 的ES6语法被 babel编译了。
+
+### regeneratorRuntime 插件
+
+此时执行编译，在浏览器里打开项目发现报了一个致命错误: regeneratorRuntime is not defined
+
+regeneratorRuntime 是 webpack 打包生成的全局辅助函数，由 babel 生成，用于兼容 async/await 的语法。
+
+这个错误显然是未能正确配置 babel。 正确的做法需要添加以下的插件和配置:
+
+```bash
+# 这个包中包含了 regeneratorRuntime，运行时需要 
+npm install --save @babel/runtime
+# 这个插件会在需要 regeneratorRuntime 的地方自动 require 导包，编译时需要 
+npm install --save-dev @babel/plugin-transform-runtime
+# 更多参考这里 <https://babeljs.io/docs/en/babel-plugin-transform-runtime>
+```
+
+接着改一下 webpack 的配置:
+
+```js
+{
+  test: /\.js$/,
+  exclude: /node_modules/,
+  use: {
+    loader: "babel-loader",
+    options: {
+      presets: ["@babel/preset-env"],
+      plugins: [["@babel/plugin-transform-runtime"]],
+    },
+  },
+},
+```
+
+启动服务，打开浏览器: 成功运行。
 
 ## 代码分离
 
 代码分离是 webpack 中最引人注目的特性之一。此特性能够把代码分离到不同的 bundle 中，然后可以按需加载或并行加载这些文件。代码分离可以用于获取更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大影响加载时间。
+
 常用的代码分离方法有三种:
-入口起点:使用 entry 配置手动地分离代码。
-防止重复:使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk。
-动态导入:通过模块的内联函数调用来分离代码。
-1.8.1 入口起点
+
+1. 入口起点: 使用 entry 配置手动地分离代码。
+2. 防止重复: 使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk。
+3. 动态导入: 通过模块的内联函数调用来分离代码。
+
+### 入口起点
+
 这是迄今为止最简单直观的分离代码的方式。不过，这种方式手动配置较多，并有一 些隐患，我们将会解决这些问题。先来看看如何从 main bundle 中分离 another module(另一个模块):
 在 src 目录下创建 another-module.js 文件: 09-code-splitting/src/another-module.js
-      
 
   这个模块依赖了 lodash ，需要安装一下:
 修改配置文件:
@@ -896,12 +801,11 @@ filename: '[name].bundle.js'
 //...
 }
 执行编译:
-import _ from 'lodash'
+import _from 'lodash'
 console.log(_.join(['Another', 'module', 'loaded!'], ' '))
  [felix] 09-code-splitting $ npx webpack assets by status 744 KiB [cached] 4 assets assets by status 1.44 MiB [emitted]
 asset another.bundle.js 1.38 MiB [emitted] (name: another)
- 
- 
+
 asset another.bundle.js 1.38 MiB [emitted] (name: another) , 我们发现 lodash.js 也被打包到 another.bundle.js 中。
    查看 app.html :
   asset index.bundle.js 65.1 KiB [emitted] (name: index)
@@ -924,7 +828,6 @@ generated]
 ./src/assets/json/data.json5 189 bytes [built] [code generated]
 css ../node_modules/css-loader/dist/cjs.js!./src/style.css 2.65 KiB [built] [code generated]
 webpack 5.54.0 compiled successfully in 854 ms
- 
 
  09-code-splitting/dist/app
  <!DOCTYPE html>
@@ -943,17 +846,16 @@ webpack 5.54.0 compiled successfully in 854 ms
 defer src="index.bundle.js"></script> defer src="another.bundle.js"></script>
  两个入口的 bundle 文件都被链接到了 app.html 中。 我们再来修改一下 index.js 文件:
 09-code-splitting/src/index.js
-     import _ from 'lodash'
+     import _from 'lodash'
 console.log(_.join(['index', 'module', 'loaded!'], ' '))
    // 导入模块
 //...
-import _ from 'lodash'
+import _from 'lodash'
 //...
 console.log(_.join(['index', 'module', 'loaded!'], ' '))
 执行编译:
  [felix] 09-code-splitting $ npx webpack assets by status 744 KiB [cached] 4 assets assets by path . 2.82 MiB
- 
- 
+
 观察一下:
 我们发现:index.bundle.js 文件大小也骤然增大了，可以 lodash.js也被打包 到了 index.bundle.js 中了。
 正如前面提到的，这种方式的确存在一些隐患:
@@ -982,7 +884,6 @@ generated]
 ./src/assets/json/data.json5 189 bytes [built] [code generated]
 css ../node_modules/css-loader/dist/cjs.js!./src/style.css 2.65 KiB [built] [code generated]
 webpack 5.54.0 compiled successfully in 898 ms
- 
 
  如果入口 chunk 之间包含一些重复的模块，那些重复模块都会被引入到各个 bundle 中。 这种方法不够灵活，并且不能动态地将核心应用程序逻辑中的代码拆分出来。
 以上两点中，第一点对我们的示例来说无疑是个问题，因为之前我们在
@@ -1013,7 +914,6 @@ import: './src/another-module.js',
     shared: 'lodash',
   },
 //...
- 
 
  执行编译:
    [felix] 09-code-splitting $ npx webpack
@@ -1037,7 +937,6 @@ webpack 5.54.0 compiled successfully in 1237 ms
 观察一下:
  }
   
-
  index.bundle.js 与 another.bundle.js 共享的模块 lodash.js 被打包到一 个单独的文件 shared.bundle.js 中。
 SplitChunksPlugin
 SplitChunksPlugin 插件可以将公共的依赖模块提取到已有的入口 chunk 中，或者提取到一个新生成的 chunk。让我们使用这个插件，将之前的示例中重 复的 lodash 模块去除:
@@ -1072,7 +971,6 @@ entry: {
 index: './src/index.js',
 another: './src/another-module.js'
   
-
  执行编译:
  },
 //...
@@ -1096,7 +994,6 @@ generated]
 ./src/assets/example.txt 25 bytes [built] [code generated] ./src/assets/qianfeng-sem.jpg 42 bytes (javascript) 637
 KiB (asset) [built] [code generated]
   json modules 565 bytes
-   
 
 观察一下:
  assets by status 1.46 MiB [emitted]
@@ -1114,7 +1011,6 @@ asset index.bundle.js 75.3 KiB [emitted] (name: index) asset another.bundle.js 1
 css ../node_modules/css-loader/dist/cjs.js!./src/style.css 2.65 KiB [built] [code generated]
 webpack 5.54.0 compiled successfully in 914 ms
   
-
   内容如下:
 09-code-splitting/src/async-module.js
   function getComponent() {
@@ -1122,7 +1018,7 @@ webpack 5.54.0 compiled successfully in 914 ms
 .then(({ default: _
 }) => {
 const element = document.createElement('div')
-element.innerHTML = _.join(['Hello', 'webpack'], ' ')
+element.innerHTML =_.join(['Hello', 'webpack'], ' ')
       return element
     })
 .catch((error) => 'An error occurred while loading the component')
@@ -1132,7 +1028,6 @@ getComponent().then((component) => { document.body.appendChild(component)
  在入口文件中导入:
 09-code-splitting/src/index.js
   import './async-module'
- 
 
   // 导入模块
 //...
@@ -1157,7 +1052,6 @@ runtime modules 9.21 KiB 18 modules
  从打印的结果看，除了公共的 代码被单独打包到一个文件外，还生成了一 个
 文件。
 
-
   我们看到，静态和动态载入的模块都正常工作了。
 1.8.4 懒加载
 懒加载或者按需加载，是一种很好的优化网页或应用的方式。这种方式实际上是先把 你的代码在一些逻辑断点处分离开，然后在一些代码块中完成某些操作后，立即引用 或即将引用另外一些新的代码块。这样加快了应用的初始加载速度，减轻了它的总体 体积，因为某些代码块可能永远不会被加载。
@@ -1168,7 +1062,6 @@ runtime modules 9.21 KiB 18 modules
 export const minus = () => { return x - y
 }
 编辑 index.js 文件:
- 
 
   这里有句注释，我们把它称为 webpack 魔法注释: webpackChunkName: 'math' , 告诉webpack打包生成的文件名为 math 。
 启动服务，在浏览器上查看:
@@ -1177,15 +1070,14 @@ export const minus = () => { return x - y
 Webpack v4.6.0+ 增加了对预获取和预加载的支持。
 在声明 import 时，使用下面这些内置指令，可以让 webpack 输出 "resource hint(资源提示)"，来告知浏览器:
   const button = document.createElement('button') button.textContent = '点击执行加法运算' button.addEventListener('click', () => {
-import(/* webpackChunkName: 'math' */ './math.js').then(({ add }) => {
+import(/_webpackChunkName: 'math'_/ './math.js').then(({ add }) => {
 console.log(add(4, 5)) })
 }) document.body.appendChild(button)
-
 
  prefetch(预获取):将来某些导航下可能需要的资源 preload(预加载):当前导航下可能需要资源
 下面这个 prefetch 的简单示例中，编辑 index.js 文件:
    const button = document.createElement('button') button.textContent = '点击执行加法运算' button.addEventListener('click', () => {
-import(/* webpackChunkName: 'math', webpackPrefetch: true */ './math.js').then(({ add }) => {
+import(/_webpackChunkName: 'math', webpackPrefetch: true_/ './math.js').then(({ add }) => {
 console.log(add(4, 5)) })
 }) document.body.appendChild(button)
 添加第二句魔法注释:webpackPrefetch: true
@@ -1196,17 +1088,15 @@ console.log(add(4, 5)) })
 import './async-module'
 //...
 const button = document.createElement('button') button.textContent = '点击执行加法运算' button.addEventListener('click', () => {
-import( /* webpackChunkName: 'math', webpackPrefetch: true */ './math.js').then(({
+import( /_webpackChunkName: 'math', webpackPrefetch: true_/ './math.js').then(({
 add
 }) => { console.log(add(4, 5))
 })
 }) document.body.appendChild(button)
 启动服务，在浏览器上查看:
 
-
   我们发现，在还没有点击按钮时， math.bundle.js 就已经下载下来了。同时，在 app.html 里webpack自动添加了一句:
    点击按钮，会立即调用已经下载好的 math.bundle.js 文件中的 add 方法:
- 
 
  点击按钮，执行 4+5 的加法运算。
 与 prefetch 指令相比，preload 指令有许多不同之处:
@@ -1218,13 +1108,12 @@ preload chunk 会在父 chunk 中立即请求，用于当下时刻。prefetch ch
 修改 index.js 文件:
    export const print = () => { console.log('preload chunk.')
 }
- 
 
    09-code-splitting/src/index.js
  // 导入模块 //...
 import './async-module' //...
 const button2 = document.createElement('button') button2.textContent = '点击执行字符串打印' button2.addEventListener('click', () => {
-import( /* webpackChunkName: 'print', webpackPreload: true */ './print.js').then(({
+import( /_webpackChunkName: 'print', webpackPreload: true_/ './print.js').then(({
 print
 }) => {
    print()
@@ -1232,24 +1121,22 @@ print
 }) document.body.appendChild(button2)
  启动服务，打开浏览器:
 const button2 = document.createElement('button') button2.textContent = '点击执行字符串打印' button2.addEventListener('click', () => {
-import(/* webpackChunkName: 'print', webpackPreload: true */ './print.js').then(({ print }) => {
+import(/_webpackChunkName: 'print', webpackPreload: true_/ './print.js').then(({ print }) => {
     print(4, 5)
   })
 }) document.body.appendChild(button2)
-
 
   仔细观察，发现 print.bundle.js 未被下载，因为我们配置的是
 webpackPreload , 是在父 chunk 加载时，以并行方式开始加载。点击按钮才加载的
 模块不会事先加载的。 我们修改一下引入方式:
 09-code-splitting/src/index.js
      //...
-import( /* webpackChunkName: 'print', webpackPreload: true */ './print.js').then(({
+import( /_webpackChunkName: 'print', webpackPreload: true_/ './print.js').then(({
 print
 }) => {
 print()
 })
 再次刷新浏览器页面:
-
 
   print.bundle.js 被加载下来，是和当前 index.bundle.js 并行加载的。
 
@@ -1259,7 +1146,6 @@ print()
 本节通过必要的配置，以确保 webpack 编译生成的文件能够被客户端缓存，而在文 件内容变化后，能够请求到新的文件。
 1.9.1 输出文件的文件名
 我们可以通过替换 output.filename 中的 substitutions 设置，来定义输出文件的 名称。webpack 提供了一种使用称为 substitution(可替换模板字符串) 的方式，通 过带括号字符串来模板化文件名。其中， [contenthash] substitution 将根据资源 内容创建出唯一 hash。当资源内容发生变化时， [contenthash] 也会发生变化。
-         
 
  修改配置文件:
   module.exports = { output: {
@@ -1275,7 +1161,6 @@ filename: '[name].[contenthash].js', //...
 }
  执行打包编译:
 可以看到，bundle 的名称是它内容(通过 hash)的映射。如果我们不做修改，然后 再次运行构建，文件名会保持不变。
- 
 
  1.9.2 缓存第三方库
 将第三方库(library)(例如 lodash )提取到单独的 vendor chunk 文件中，是比较 推荐的做法，这是因为，它们很少像本地的源代码那样频繁修改。因此通过实现以上 步骤，利用 client 的长效缓存机制，命中缓存来消除请求，并减少向 server 获取资 源，同时还能保证 client 代码和 server 代码版本一致。 我们在
@@ -1302,7 +1187,6 @@ splitChunks: {
 } }, }
 执行编译:
 
-
    1.9.3 将 js 文件放到一个文件夹中
 目前，全部 js 文件都在 dist 文件夹根目录下，我们尝试把它们放到一个文件夹中，
 这个其实也简单，修改配置文件:
@@ -1316,7 +1200,6 @@ asset vendors.cc405abb852d5860354f.js 1.46 MiB [emitted] [immutable] (name: vend
 asset index.ac97de18bcd04fe84ceb.js 67.4 KiB [emitted] [immutable] (name: index)
 asset another.e82e921ba518380decce.js 17.2 KiB [emitted] [immutable] (name: another)
 asset app.html 530 bytes [emitted] ...
-
 
    我们在输出配置中修改 filename ，在前面加上路径即可。执行编译:
 截止目前，我们已经把 JS 文件、样式文件及图片等资源文件分别放到了 scripts 、 styles 、 images 三个文件夹中。
@@ -1333,7 +1216,6 @@ filename: 'scripts/[name].[contenthash].js',
 },
 //...
 }
-
 
 1.10.1 公共路径
 publicPath 配置选项在各种场景中都非常有用。你可以通过它来指定应用程序中所
@@ -1359,7 +1241,6 @@ output: {
 //...
 publicPath: ASSET_PATH,
   
-
  Automatic publicPath
 有可能你事先不知道 publicPath 是什么，webpack 会自动根据 import.meta.url、document.currentScript、script.src 或者 self.location 变量设置 publicPath。你需要做的是将 output.publicPath
 设为 'auto' :
@@ -1383,7 +1264,6 @@ plugins: [
 //...
 ], };
   
-
   1.10.3 拆分配置文件
 目前，生产环境和开发环境使用的是一个配置文件，我们需要将这两个文件单独放到 不同的配置文件中。如 webpack.config.dev.js (开发环境配置)和
 webpack.config.prod.js (生产环境配置)。在项目根目录下创建一个配置文件 夹 config 来存放他们。
@@ -1411,7 +1291,6 @@ clean: true,
 assetModuleFilename: 'images/[contenthash][ext]' },
 mode: 'development',
   
-
   devtool: 'inline-source-map',
 plugins: [
 new HtmlWebpackPlugin({
@@ -1437,9 +1316,8 @@ test: /\.txt$/, type: 'asset/source'
 }, {
 test: /\.jpg$/, type: 'asset', parser: {
      dataUrlCondition: {
-       maxSize: 4 * 1024 * 1024
+       maxSize: 4 _1024_ 1024
 }
- 
 
   } },
 {
@@ -1462,7 +1340,6 @@ parse: yaml.parse }
 }, {
 test: /\.json5$/, type: 'json', parser: {
 parse: json5.parse
- 
 
  webpack.config.prod.js 配置如下: 11-multiple-env/config/webpack.config.prod.js
    } },
@@ -1489,8 +1366,7 @@ splitChunks: {
  const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin') const MiniCssExtractPlugin = require('mini-css-extract- plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack- plugin')
- 
- 
+
   const toml = require('toml')
 const yaml = require('yaml')
 const json5 = require('json5')
@@ -1522,7 +1398,6 @@ type: 'asset/resource', generator: {
    }
 }, {
 test: /\.svg$/,
- 
 
      type: 'asset/inline'
  },
@@ -1531,7 +1406,7 @@ test: /\.txt$/, type: 'asset/source'
 }, {
 test: /\.jpg$/, type: 'asset', parser: {
      dataUrlCondition: {
-       maxSize: 4 * 1024 * 1024
+       maxSize: 4 _1024_ 1024
 } }
 }, {
 test: /\.(css|less)$/,
@@ -1548,7 +1423,6 @@ use: 'xml-loader' },
 {
 test: /\.toml$/, type: 'json', parser: {
 parse: toml.parse }
- 
 
   }, {
 test: /\.yaml$/, type: 'json', parser: {
@@ -1575,7 +1449,6 @@ splitChunks: {
    vendor: {
      test: /[\\/]node_modules[\\/]/,
 '@babel/plugin-transform-runtime'
- 
 
  拆分成两个配置文件后，分别运行这两个文件: 开发环境:
 生产环境:
@@ -1593,7 +1466,6 @@ package.json、node_modules 与 package-lock.json拷贝到当前目录下，
 }
 }
   
-
   开发环境运行脚本:
 1.10.5 提取公共配置 这时，我们发现这两个配置文件里存在大量的重复代码，可以手动的将这些重复的代
 码单独提取到一个文件里，
@@ -1622,7 +1494,6 @@ clean: true,
 assetModuleFilename: 'images/[contenthash][ext]', },
 plugins: [
   
-
   new HtmlWebpackPlugin({ template: './index.html', filename: 'app.html', inject: 'body'
 }),
 new MiniCssExtractPlugin({
@@ -1649,7 +1520,6 @@ test: /\.jpg$/, type: 'asset', parser: {
 }, {
 test: /\.(css|less)$/,
 use: [MiniCssExtractPlugin.loader, 'css-loader', 'less- loader']
- 
 
   }, {
 test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -1672,7 +1542,6 @@ parse: json5.parse }
 }, {
 test: /\.js$/,
 exclude: /node_modules/, use: {
- 
 
  改写 webpack.config.dev.js : 11-multiple-env/config/webpack.config.dev.js
    loader: 'babel-loader', options: {
@@ -1702,7 +1571,6 @@ filename: 'scripts/[name].js', },
 // 开发模式
 mode: 'development',
   
-
  修改 webpack.config.prod.js : 11-multiple-env/config/webpack.config.prod.js
    const CssMinimizerPlugin = require('css-minimizer-webpack- plugin')
 module.exports = {
@@ -1723,7 +1591,6 @@ devtool: 'inline-source-map',
 // 本地服务配置 devServer: { static: './dist' }
 }
   
-
   安装 webpack-merge :
 创建 webpack.config.js ，合并代码: 11-multiple-env/config/webpack.config.js
    [felix] felixcourses $ npm install webpack-merge -D
@@ -1739,9 +1606,9 @@ default:
 }
 -- 本篇完 --
 
-
 二、高级应用篇
 上述我们基于webpack构建了我们的基础工程化环境，将我们认为需要的功能配置 了上去。 除开公共基础配置之外，我们意识到两点:
+
 1. 开发环境(mode=development),追求强大的开发功能和效率，配置各种方便开 发的功能;
 2. 生产环境(mode=production),追求更小更轻量的bundle(即打包产物); 接下来基于我们的开发需求，完善我们的工程化配置的同时，来介绍一些常用并强大
 的工具。
@@ -1755,7 +1622,6 @@ default:
 }
 当我们执行打包命令之后，我们发现bundle的最后一行总是会多出一个注释，指向 打包出的bundle.map.js(sourcemap文件)。 sourcemap文件用来描述 源码文件和 bundle文件的代码位置映射关系。基于它，我们将bundle文件的错误信息映射到源 码文件上。
 除开'source-map'外，还可以基于我们的需求设置其他值，webpack——devtool一 共提供了7种SourceMap模式:
-
 
     模式 解释
    eval
@@ -1780,7 +1646,6 @@ default:
 在此之前，我们需要安装它
    yarn add -D webpack-dev-server
 
-
 devServer.proxy基于强大的中间件 http-proxy-middleware 实现的，因此它支持 很多的配置项，我们基于此，可以做应对绝大多数开发场景的定制化配置。
 基础使用:
    const path = require('path'); module.exports = {
@@ -1801,10 +1666,9 @@ Content-Encoding: gzip port: 3000, // 端口号
   webpack serve --mode development --config webpack.config.js
  > webpack serve --mode development
 <i> [webpack-dev-server] Project is running at:
-<i> [webpack-dev-server] Loopback: http://localhost:3000/ <i> [webpack-dev-server] On Your Network (IPv4): http://192.168.0.107:3000/
-<i> [webpack-dev-server] On Your Network (IPv6): http://[fe80::1]:3000/
+<i> [webpack-dev-server] Loopback: <http://localhost:3000/> <i> [webpack-dev-server] On Your Network (IPv4): <http://192.168.0.107:3000/>
+<i> [webpack-dev-server] On Your Network (IPv6): <http://[fe80::1>]:3000/
   
-
 上述是一个基本的示例，我们可以根据自己的需求定制化devServer的参数对象，比 如添加响应头，开启代理来解决跨域问题, http2, https等功能。
 添加响应头
 有些场景需求下，我们需要为所有响应添加headers,来对资源的请求和响应打入 标志，以便做一些安全防范，或者方便发生异常后做请求的链路追踪。比如:
@@ -1816,7 +1680,7 @@ headers: {
 };
 这时，在浏览器中右键检查(或者使用f12快捷键)，在Network一栏查看任意资源访 问，我们发现响应头里成功打入了一个FastId。
   Response Headers
-/** some others**/
+/**some others**/
 X-Fast-Id: p3fdg42njghm34gi9ukj
  <i> [webpack-dev-server] Content not from webpack is served from '/Users/wxy/codeWorks/githubPros/demos/webpack5demo/public' directory
 asset bundle.js 289 KiB [emitted] (name: main) 1 related asset asset index.html 161 bytes [emitted]
@@ -1830,7 +1694,6 @@ modules by path ./src/*.less 3.07 KiB
 ./node_modules/css-loader/dist/cjs.js!./node_modules/less- loader/dist/cjs.js!./src/styles.less 717 bytes [built] [code generated]
 ./src/index.js 75 bytes [built] [code generated] webpack 5.60.0 compiled successfully in 1004 ms
   
-
  headers的配置也可以传一个函数:
   module.exports = { //...
   devServer: {
@@ -1839,14 +1702,14 @@ return { 'X-Bar': ['key1=value1', 'key2=value2'] }; },
 }, };
 比如我们的标志ID(X-Fast-Id)，很明显这个id不应该写死，而是随机生成的———— 这时候你就可以用函数实现这个功能。
 开启代理
-我们打包出的js bundle里有时会含有一些对特定接口的网络请求(ajax/fetch). 要注意，此时客户端地址是在 http://localhost:3000/ 下，假设我们的接口来自 http://localhost:4001/ ，那么毫无疑问，此时控制台里会报错并提示你跨域。 如何解决这个问题? 在开发环境下，我们可以使用devServer自带的proxy功 能:
+我们打包出的js bundle里有时会含有一些对特定接口的网络请求(ajax/fetch). 要注意，此时客户端地址是在 <http://localhost:3000/> 下，假设我们的接口来自 <http://localhost:4001/> ，那么毫无疑问，此时控制台里会报错并提示你跨域。 如何解决这个问题? 在开发环境下，我们可以使用devServer自带的proxy功 能:
      module.exports = { //...
   devServer: {
     proxy: {
       '/api': 'http://localhost:4001',
     },
 }, };
-现在，对 /api/users 的请求会将请求代理到 http://localhost:4001/api/users 。 如 果不希望传递/api，则需要重写路径:
+现在，对 /api/users 的请求会将请求代理到 <http://localhost:4001/api/users> 。 如 果不希望传递/api，则需要重写路径:
   module.exports = { //...
   devServer: {
     proxy: {
@@ -1855,7 +1718,6 @@ return { 'X-Bar': ['key1=value1', 'key2=value2'] }; },
         pathRewrite: { '^/api': '' },
 }, },
 }, };
-
 
  默认情况下，将不接受在 HTTPS 上运行且证书无效的后端服务器。 如果需要，可以 这样修改配置:
   module.exports = { //...
@@ -1871,7 +1733,7 @@ https
 devServer: {
 https: true, // https//localhost...
 }, };
-注意，此时我们访问http://localhost:port 是无法访问我们的服务的，我们需要在地 址栏里加前缀:https: 注意:由于默认配置使用的是自签名证书，所以有得浏览器会 告诉你是不安全的，但我们依然可以继续访问它。 当然我们也可以提供自己的证书 ——如果有的话:
+注意，此时我们访问<http://localhost:port> 是无法访问我们的服务的，我们需要在地 址栏里加前缀:https: 注意:由于默认配置使用的是自签名证书，所以有得浏览器会 告诉你是不安全的，但我们依然可以继续访问它。 当然我们也可以提供自己的证书 ——如果有的话:
    module.exports = { devServer: {
 https: {
 cacert: './server.pem',
@@ -1883,7 +1745,6 @@ passphrase: 'webpack-dev-server', requestCert: true,
 };
 http2
 
-
  如果想要配置http2，那么直接设置:
   devServer: {
 http2: true, // https//localhost...
@@ -1892,7 +1753,7 @@ http2: true, // https//localhost...
 historyApiFallback
 如果我们的应用是个SPA(单页面应用)，当路由到/some时(可以直接在地址栏里 输入)，会发现此时刷新页面后，控制台会报错。
 此时打开network，刷新并查看，就会发现问题所在———浏览器把这个路由当作了 静态资源地址去请求，然而我们并没有打包出/some这样的资源，所以这个访问无疑 是404的。 如何解决它? 这种时候，我们可以通过配置来提供页面代替任何404的静 态资源响应:
-  GET http://localhost:3000/some 404 (Not Found)
+  GET <http://localhost:3000/some> 404 (Not Found)
   module.exports = { //...
   devServer: {
     historyApiFallback: true,
@@ -1906,7 +1767,6 @@ rewrites: [
 { from: /^\/subpage/, to: '/views/subpage.html' }, { from: /./, to: '/views/404.html' },
 ], },
 }, };
-
 
  开发服务器主机
 如果你在开发环境中起了一个devserve服务，并期望你的同事能访问到它，你只 需要配置:
@@ -1930,7 +1790,6 @@ use: ['style-loader', 'css-loader'], },
 ], },
 }
 
-
  这是因为style-loader的实现使用了module.hot.accept，在CSS依赖模块更新之后， 会对 style 标签打补丁。从而实现了这个功能。
 热加载(文件更新时，自动刷新我们的服务和页面) 新版的webpack-dev-server 默认已经开启了热加载的功能。 它对应的参数是devServer.liveReload，默认为 true。 注意，如果想要关掉它，要将liveReload设置为false的同时，也要关掉 hot
   module.exports = { //...
@@ -1950,8 +1809,8 @@ eslint是用来扫描我们所写的代码是否符合规范的工具。 往往�
 ✔ Where does your code run? · browser
 ✔ What format do you want your config file to be in? · JSON
 并生成了一个配置文件(.eslintrc.json)，这样我们就完成了eslint的基本规则配置。 eslint配置文件里的配置项含义如下:
-1. env 指定脚本的运行环境。每种环境都有一组特定的预定义全局变量。此处使用 的 browser 预定义了浏览器环境中的全局变量，es6 启用除了 modules 以外的
 
+1. env 指定脚本的运行环境。每种环境都有一组特定的预定义全局变量。此处使用 的 browser 预定义了浏览器环境中的全局变量，es6 启用除了 modules 以外的
 
  所有 ECMAScript 6 特性(该选项会自动设置 ecmaVersion 解析器选项为 6)。 2. globals 脚本在执行期间访问的额外的全局变量。也就是 env 中未预定义，但我
 们又需要使用的全局变量。
@@ -1974,7 +1833,6 @@ ecmaFeatures 是个对象，表示你想使用的额外的语言特性，这里 
 "eslint": "eslint ./src" }
 }
 然后执行它:
-
 
   果然，因为代码中含有console.log,所以被警告了。 结合webpack使用
 我们期望eslint能够实时提示报错而不必等待执行命令。 这个功能可以通过给自己的 IDE(代码编辑器)安装对应的eslint插件来实现。 然而，不是每个IDE都有插件，如果 不想使用插件，又想实时提示报错，那么我们可以结合 webpack 的打包编译功能来 实现。
@@ -1999,7 +1857,6 @@ xxx@MacBook-Pro webpack5demo % npm run eslint > eslint src
 4:1 warning Unexpected console statement no-console
 ✖ 2 problems (0 errors, 2 warnings)
 
-
  我们回到项目的根目录下。运行 ls -a 命令 ———— “-a”可以显示隐藏目录(目录名的 第一位是.)。
 我们可以看到，存在一个".git"名称的文件夹。
 事实上，在我们项目中根目录下运行git命令时，git会根据它来工作。 接来下我们进入到这个文件夹，进一步查看它内部的内容。
@@ -2014,9 +1871,10 @@ OK，它返回了这样的内容，是一串shell注释。翻译过来大概意�
 所以我们期望将git-hook的执行权移交到外面来。
   cd .git ls -a
  cd hooks ls -a
-   # cat命令可以查看一个文件的内容 cat pre-commit.sample
-  # To enable this hook, rename this file to "pre-commit".
 
+# cat命令可以查看一个文件的内容 cat pre-commit.sample
+
+# To enable this hook, rename this file to "pre-commit"
 
  好的，我们回到项目的根目录下，然后我们新建一个文件夹，暂时命名 为".mygithooks" 然后在此文件夹下，新增一个git-hook文件,命名为"pre-commit"，并写入以下内 容:
 好了，我们新建了自己的git-hook，但此时git并不能识别。下面我们执行这行命令:
@@ -2027,10 +1885,13 @@ shell:
 ok!现在我们尝试执行git add . && git commit -m "any meesage"。 我们发现控制台日志会先打印 “pre-commit执行啦”。 这意味着成功啦!
 总结:
 也就是说，我们搞git-hook的话，要分三步走:
+
 1. 新增任意名称文件夹以及文件pre-commit(这个文件名字比如跟要使用的git- hook名字一致)!
 2. 执行以下命令来移交git-hook的配置权限
   echo pre-commit执行啦
-  # 项目根目录下
+
+# 项目根目录下
+
 git config core.hooksPath .mygithooks
  hint: The 'pre-commit' hook was ignored because it's not set as executable.
 hint: You can disable this warning with `git config advice.ignoredHook false`
@@ -2038,12 +1899,12 @@ hint: You can disable this warning with `git config advice.ignoredHook false`
   git config core.hooksPath .mygithooks
 3. 给这个文件添加可执行权限:
 
-
   然后就成功啦。 这时候我们可以在pre-commit里写任意脚本，比如:
 当eslint扫描代码，出现error时，会在结束扫描时将退出码设为大于0的数字。 也就是会报错，这时候commit就无法往下执行啦，我们成功的拦截了此次错误操 作。
 husky
 husky在升级到7.x后，做了跟我们上述同样的事。 安装它之前，我们需要在package.json中的script里，先添加
 prepare是一个npm钩子，意思是安装依赖的时候，会先执行husky install命令。 这个命令就做了上述的123这三件事! 我们安装了7.x的husky会发现，项目根目录下生成了.husky的文件夹。 当然，7.x的husky似乎是有bug的，如果不能正常使用，那么我们只需要验证两件 事:
+
 1. 是否移交了git-hook的配置权限?
 执行命令 "git config --list"查看core.hooksPath配置是否存在，是否正确指向 了.husky。
 如果没有，我们只需要手动的给加上就行:
@@ -2055,7 +1916,6 @@ prepare是一个npm钩子，意思是安装依赖的时候，会先执行husky i
 }
    git config core.hooksPath .husky
  chmod +x .mygithooks/pre-commit
-
 
  在模块化编程中，开发者将程序分解为功能离散的文件，并称之为模块。 每个模块 都拥有小于完整程序的体积，使得验证、调试及测试变得轻而易举。 精心编写的模 块提供了可靠的抽象和封装界限，使得应用程序中每个模块都具备了条理清晰的设计 和明确的目的。
 Node.js 从一开始就支持模块化编程。 但，浏览器端的模块化还在缓慢支持中——截 止到2021，大多主流浏览器已支持ESM模块化，因此基于ESM的打包工具生态逐渐 开始活跃。
@@ -2077,7 +1937,6 @@ TypeScript Sass
 Less
 JSON
   
-
  YAML
 总的来讲，这些都可以被认为是webpack模块。
 2、compiler与Resolvers
@@ -2095,7 +1954,6 @@ const compiler = webpack({
 // 或者
 const add = require('./utils/add');
 绝对路径
-
 
   由于已经获得文件的绝对路径，因此不需要再做进一步解析。 相对路径
 这种情况下，使用 import 或 require 的资源文件所处的目录，被认为是上下文目 录。 在 import/require 中给定的相对路径，enhanced-resolve会拼接此上下文路 径，来生成模块的绝对路径(path.resolve(__dirname, RelativePath) 。 这也是我们 在写代码时最常用的方式之一，另一种最常用的方式则是模块路径。
@@ -2117,7 +1975,6 @@ export default function add(a, b){
 import '/home/me/file';
 import 'C:\\Users\\me\\file';
 
-
   很明显它会报错，因为webpack会将其当做一个模块路径来识别———所以无法找 到@utils这个模块。 这时，我们配置下resolve:
   // webpack.config.js
 const path = require('path'); module.exports = {
@@ -2136,7 +1993,6 @@ utils是一个文件目录而不是模块(文件)，但webpack在这种情况下
   "name": "add"
 }
  import add from '@utils/add'; console.log(add(a,b));
-
 
   webpack会按照数组顺序去解析这些后缀名，对于同名的文件，webpack总是会先 解析列在数组首位的后缀名的文件。
 2.2.3 外部扩展(Externals) 有时候我们为了减小bundle的体积，从而把一些不变的第三方库用cdn的形式引入进
@@ -2157,7 +2013,6 @@ resolve: {
 extensions: ['.js', '.json', '.wasm'],
 }, };
 
-
   重启服务后发现，效果是一样的。
 2.2.4 依赖图(dependency graph)
 每当一个文件依赖另一个文件时，webpack 会直接将文件视为存在依赖关系。 这使 得 webpack 可以获取非代码资源，如 images 或 web 字体等。并会把它们作为 依 赖 提供给应用程序。 当 webpack 开始工作时，它会根据我们写好的配置,从 入口 (entry) 开始，webpack 会递归的构建一个 依赖关系图，这个依赖图包含着应用程序 中所需的每个模块，然后将所有模块打包为bundle(也就是output的配置项)。
@@ -2172,7 +2027,9 @@ bundle-stats:生成一个 bundle 报告(bundle 大小、资源、模块)，并�
 我们来使用 webpack-bundle-analyzer 实现。
 然后我们配置它:
          # 首先安装这个插件作为开发依赖
+
 # NPM
+
 npm install --save-dev webpack-bundle-analyzer # Yarn
 yarn add -D webpack-bundle-analyzer
 module.exports = { //...
@@ -2180,14 +2037,13 @@ module.exports = { //...
     jquery: '$',
 }, };
 
-
   const BundleAnalyzerPlugin = require('webpack-bundle- analyzer').BundleAnalyzerPlugin;
 module.exports = { plugins: [
 // ...others
     new BundleAnalyzerPlugin()
   ]
 }
- Webpack Bundle Analyzer is started at http://127.0.0.1:8888 Use Ctrl+C to close it
+ Webpack Bundle Analyzer is started at <http://127.0.0.1:8888> Use Ctrl+C to close it
 asset bundle.js 5.46 KiB [emitted] [minimized] (name: main) 1 related asset
 asset index.html 352 bytes [emitted] orphan modules 2.35 KiB [orphan] 3 modules ...
        postcss-
@@ -2195,7 +2051,7 @@ asset index.html 352 bytes [emitted] orphan modules 2.35 KiB [orphan] 3 modules 
  loader
    module.exports = {
  这时我们执行打包命令，发现控制台里打印出下面这样的日志:
- 我们在浏览器中打开http://127.0.0.1:8888，我们成功可视化了打包产物依赖图!
+ 我们在浏览器中打开<http://127.0.0.1:8888>，我们成功可视化了打包产物依赖图!
 注意: 对于 HTTP/1.1 的应用程序来说，由 webpack 构建的 bundle 非常强大。当 浏览器发起请求时，它能最大程度的减少应用的等待时间。 而对于 HTTP/2 来说， 我们还可以使用代码分割进行进一步优化。(开发环境观测的话需要在DevServer里 进行配置{http2:true, https:false})。这个我们会在之后的课程里讲。
 2.3 扩展功能
 2.3.1 PostCSS 与 CSS模块
@@ -2203,7 +2059,6 @@ PostCSS 是一个用 JavaScript 工具和插件转换 CSS 代码的工具。比�
 CSS 模块 能让你永远不用担心命名太大众化而造成冲突，只要用最有意义的名字就 行了。
 PostCSS
 与 结合，需要安装 , , 三个loader:
-      
 
 然后在项目根目录下创建 postcss.config.js :
    module.exports = { plugins: [
@@ -2233,10 +2088,9 @@ loader: 'postcss-loader' }
 ] }
 ] }
 }
-   
 
  1. last 2 versions : 每个浏览器中最新的两个版本。
-2. > 1% or >= 1% : 全球浏览器使用率大于1%或大于等于1%。
+ 2. > 1% or >= 1% : 全球浏览器使用率大于1%或大于等于1%。
 CSS 模块
 目前还有一个问题，就是多人编写的样式可能会冲突，开启 CSS 模块可以解决这个
 问题。 webpack.config.js 配置:
@@ -2262,9 +2116,8 @@ display: flex; flex-direction: column; .box {
 } }
 在 js 文件里导入 css 文件:
 
-
  也可以部分开启 CSS 模块模式，比如全局样式可以冠以 .global 前缀，如: 1. *.global.css 普通模式
-2. *.css css module模式
+2.*.css css module模式
 这里统一用 global 关键词进行识别。用正则表达式匹配文件:
  // 开启 css 模块后，可以导入模块 import style from './style.css'
 const div = document.createElement('div') div.textContent = 'hello webpack'
@@ -2288,7 +2141,6 @@ test: new RegExp(`^(.*\\.global).*\\.css`), use: [
 {
 loader: 'style-loader'
 }， {
- 
 
 2.3.2 Web Works
 有时我们需要在客户端进行大量的运算，但又不想让它阻塞我们的js主线程。你可能 第一时间考虑到的是异步。 但事实上，运算量过大(执行时间过长)的异步也会阻塞js事件循环，甚至会导致浏览 器假死状态。
@@ -2307,7 +2159,6 @@ loader: 'postcss-loader'
 } ],
 exclude:[path.resolve(__dirname, '..', 'node_modules')] }
   
-
  我们知道，常规模式下，我们的webpack工程化环境只会打包出一个bundle.js，那 我们的worker脚本怎么办? 也许你会想到设置多入口(Entry)多出口(ouotput)的方式。 事实上不需要那么麻烦，webpack4的时候就提供了worker-loader专门配置 webWorker。 令人开心的是，webpack5之后就不需要用loader啦，因为webpack5内置了这个功 能。
 我们来试验一下:
 第一步
@@ -2329,7 +2180,6 @@ console.log(answer); };
 我们加上刚才的问答代码，执行npm run dev，发现它是能够正常工作。 并且在network里也可以发现多了一个src_worker_js.bundle.js。
 总结: webpack5以来内置了很多功能，让我们不需要过多的配置，比如之前讲过的hot模 式，和现在的web workder。
 
-
 2.3.3 TypeScript
 在前端生态里，TS扮演着越来越重要的角色。 我们直入正题，讲下如何在webpack工程化环境中集成TS。
 首先，当然是安装我们的ts和对应的loader。
@@ -2349,17 +2199,18 @@ console.log(answer); };
  const path = require('path');
 module.exports = {
 entry: './src/index.ts', devtool: 'inline-source-map',
- 
- 
+
 运行我们的项目，我们发现完全没有问题呢! 使用第三方类库
 在从 npm 上安装第三方库时，一定要记得同时安装这个库的类型声明文件(typing definition)。
-我们可以从 TypeSearch中找到并安装这些第三方库的类型声明文件(https://www.ty pescriptlang.org/dt/search?search=) 。
+我们可以从 TypeSearch中找到并安装这些第三方库的类型声明文件(<https://www.ty> pescriptlang.org/dt/search?search=) 。
 举个例子，如果想安装 lodash 类型声明文件，我们可以运行下面的命令:
 eslint & ts 注意，如果要使用eslint，使用初始化命令的时候，记得选择“使用了typesctipt”。
 如果已经配置了eslint，但没有配置ts相关的配置，那么我们需要先安装对应的 plugin
     npm install --save-dev @types/lodash
   npx eslint --init
+
 # 往下选择的时候选择使用了typesctipt
+
   yarn add -D @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
 注意如果需要用到react的话，记得也要安装
    module: {
@@ -2374,7 +2225,6 @@ filename: 'bundle.js',
 path: path.resolve(__dirname, 'dist'),
 }, };
   
-
   vue或者其他常用框架同样如此，一般都会有专门的plugin。 然后我们队.esilntrc进行更改~
  {
 "env": {
@@ -2401,7 +2251,6 @@ path: path.resolve(__dirname, 'dist'),
  用法:entry: string | [string]
  yarn add -D eslint-plugin-react@latest
 
-
  webpack.config.js
   module.exports = {
 entry: './path/to/my/entry/file.js',
@@ -2423,7 +2272,6 @@ filename: 'bundle.js', },
 app: './src/app.js',
 adminApp: './src/adminApp.js', },
 };
-
 
  对象语法会比较繁琐。然而，这是应用程序中定义入口的最可扩展的方式。
 描述入口的对象:
@@ -2447,7 +2295,6 @@ runtime: 'x2', dependOn: 'a2', import: './b',
 }, },
 };
 确保 runtime 不能指向已存在的入口名称，例如下面配置会抛出一个错误:
- 
 
  另外 dependOn 不能是循环引用的，下面的例子也会出现错误:
   module.exports = { entry: {
@@ -2474,7 +2321,6 @@ new HtmlWebpackPlugin(), // Generates default index.html new HtmlWebpackPlugin({
 filename: 'test.html',
 template: 'src/assets/test.html' })
   
-
 编写自己的模板
 如果默认生成的HTML不能满足您的需要，您可以提供自己的模板。最简单的方法是 使用 template 选项并传递自定义HTML文件。html 网页包插件将自动将所有必要的 CSS、JS、manifest和favicon文件注入标记中。
    plugins: [
@@ -2498,7 +2344,6 @@ pageOne: './src/pageOne/index.js', pageTwo: './src/pageTwo/index.js', pageThree:
 这是什么? 我们告诉 webpack 需要三个独立分离的依赖图(如上面的示例)。
  ] }
   
-
  为什么? 在多页面应用程序中，server 会拉取一个新的 HTML 文档给你的客户端。 页面重新加载此新文档，并且资源被重新下载。然而，这给了我们特殊的机会去做很 多事，例如使用 optimization.splitChunks 为页面间共享的应用程序代码创建 bundle。由于入口起点数量的增多，多页应用能够复用多个入口起点之间的大量代 码/模块，从而可以极大地从这些技术中受益。
 2.5 Tree shaking
 tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码 (dead-code)。它依赖于 ES2015 模块语法的 静态结构 特性，例如 import 和
@@ -2506,14 +2351,13 @@ export 。这个术语和概念实际上是由 ES2015 模块打包工具 rollup 
 webpack 2 正式版本内置支持 ES2015 模块(也叫做 harmony modules)和未使用 模块检测能力。新的 webpack 4 正式版本扩展了此检测能力，通过 package.json 的 "sideEffects" 属性作为标记，向 compiler 提供提示，表明项目中的哪些文件 是 "pure(纯正 ES2015 模块)"，由此可以安全地删除文件中未使用的部分。
 2.5.1 tree-shaking实验 src/math.js
              export function square(x) {
-  return x * x;
+  return x *x;
 }
 export function cube(x) {
-  return x * x * x;
+return x* x * x;
 }
 需要将 mode 配置设置成development，以确定 bundle 不会被压缩: webpack.config.js
   
-
   配置完这些后，更新入口脚本，使用其中一个新方法:
  import { cube } from './math.js'; function component() {
 const element = document.createElement('pre');
@@ -2538,7 +2382,6 @@ path: path.resolve(__dirname, 'dist'), },
 };
 erauqs tropmi sj.htam/crs
 
-
  注意，上面的 unused harmony export square 注释。如果你观察它下面的代 码，你会注意到虽然我们没有引用 square ，但它仍然被包含在 bundle 中。
 mode: production
 如果此时修改配置:
@@ -2554,11 +2397,11 @@ path: path.resolve(__dirname, 'dist'), },
 很简单:就是 Webpack 没看到你使用的代码。Webpack 跟踪整个应用程序的 import/export 语句，因此，如果它看到导入的东西最终没有被使用，它会认为那
 是未引用代码(或叫做“死代码”—— dead-code )，并会对其进行 tree-shaking 。 死代码并不总是那么明确的。下面是一些死代码和“活”代码的例子:
   /* 1 */
-/***/ (function (module, __webpack_exports__,
-__webpack_require__) {
+/***/ (function (module, **webpack_exports**,
+**webpack_require**) {
   'use strict';
   /* unused harmony export square */
-  /* harmony export (immutable) */ __webpack_exports__['a'] =
+  /* harmony export (immutable) */ **webpack_exports**['a'] =
 cube;
   function square(x) {
 return x * x; }
@@ -2566,8 +2409,7 @@ return x * x; }
     return x * x * x;
 } });
  // 这会被看作“活”代码，不会做 tree-shaking import { add } from './math'
- 
- 
+
 2.5.2 sideEffects
 注意 Webpack 不能百分百安全地进行 tree-shaking。有些模块导入，只要被引入， 就会对应用程序产生重要的影响。一个很好的例子就是全局样式表，或者设置全局配 置的JavaScript 文件。
 Webpack 认为这样的文件有“副作用”。具有副作用的文件不应该做 tree-shaking， 因为这将破坏整个应用程序。
@@ -2589,7 +2431,6 @@ import { add, minus } from './math'
 import 'lodash'
 console.log('hello webpack')
   
-
  是文件路径数组。它告诉 webpack，除了数组中包含的文件外，你的任何文件 都没有副作用。因此，除了指定的文件之外，其他文件都可以安全地进行 tree- shaking。
 webpack4 曾经不进行对 CommonJs 导出和 require() 调用时的导出使用分析。 webpack 5 增加了对一些 CommonJs 构造的支持，允许消除未使用的 CommonJs 导出，并从 require() 调用中跟踪引用的导出名称。
 2.6 渐进式网络应用程序 PWA
@@ -2607,14 +2448,13 @@ package.json 的 scripts 部分，来添加一个 start script: package.json
 "scripts": {
 "start": "http-server dist"
 注意:默认情况下，webpack DevServer 会写入到内存。我们需要启用 devserverdevmiddleware.writeToDisk 配置项，来让 http-server 处理 ./dist 目 录中的文件。
-   
 
  如果你之前没有操作过，先得运行命令 npm run build 来构建你的项目。然后运行 命令 npm start 。应该产生以下输出:
    > http-server dist
 Starting up http-server, serving dist Available on:
-http://xx.x.x.x:8080 http://127.0.0.1:8080 http://xxx.xxx.x.x:8080
+<http://xx.x.x.x:8080> <http://127.0.0.1:8080> <http://xxx.xxx.x.x:8080>
 Hit CTRL-C to stop the server
- 如果你打开浏览器访问 http://localhost:8080 (即 http://127.0.0.1 )，你应 该会看到 webpack 应用程序被 serve 到 dist 目录。如果停止 server 然后刷新， 则 webpack 应用程序不再可访问。
+ 如果你打开浏览器访问 <http://localhost:8080> (即 <http://127.0.0.1> )，你应 该会看到 webpack 应用程序被 serve 到 dist 目录。如果停止 server 然后刷新， 则 webpack 应用程序不再可访问。
 这就是我们为实现离线体验所需要的改变。在本章结束时，我们应该要实现的是，停 止 server 然后刷新，仍然可以看到应用程序正常运行。
 2.6.2 添加 Workbox
 添加 workbox-webpack-plugin 插件，然后调整 webpack.config.js 文件:
@@ -2633,7 +2473,6 @@ app: './src/index.js', },
   plugins: [
     new HtmlWebpackPlugin(),
   
-
  new WorkboxPlugin.GenerateSW({
 // 这些选项帮助快速启用 ServiceWorkers // 不允许遗留任何“旧的” ServiceWorkers clientsClaim: true,
 skipWaiting: true,
@@ -2668,8 +2507,7 @@ webpack 5.61.0 compiled successfully in 1140 ms
 完成此操作:
 index.js
 
-
-  再次运行 npx webpack 来构建包含注册代码版本的应用程序。然后用 npm start 启动服务。访问 http://localhost:8080 并查看 console 控制台。在那里你应该 看到:
+  再次运行 npx webpack 来构建包含注册代码版本的应用程序。然后用 npm start 启动服务。访问 <http://localhost:8080> 并查看 console 控制台。在那里你应该 看到:
 现在来进行测试。停止 server 并刷新页面。如果浏览器能够支持 Service Worker， 应该可以看到你的应用程序还在正常运行。然而，server 已经停止 serve 整个 dist 文件夹，此刻是 Service Worker 在进行 serve。
 2.7 shimming 预置依赖
 webpack compiler 能够识别遵循 ES2015 模块语法、CommonJS 或 AMD 规范编写 的模块。然而，一些 third party(第三方库) 可能会引用一些全局依赖(例如 jQuery 中的 $ )。因此这些 library 也可能会创建一些需要导出的全局变量。这些 "broken modules(不符合规范的模块)" 就是 shimming( ) 发挥作用的地方。
@@ -2706,7 +2544,6 @@ new webpack.ProvidePlugin({
 ../../../../../node_modules/lodash/lodash.js 528 KiB [built] [code generated]
 webpack 5.61.0 compiled successfully in 275 ms
 
-
 还可以使用 ProvidePlugin 暴露出某个模块中单个导出，通过配置一个“数组路径” (例如 [module, child, ...children?] )实现此功能。所以，我们假想如下， 无论 join 方法在何处调用，我们都只会获取到 lodash 中提供的 join 方法。
 src/index.js
 webpack.config.js
@@ -2729,8 +2566,7 @@ new webpack.ProvidePlugin({
 const HtmlWebpackPlugin = require('html-webpack-plugin') module.exports = {
 mode: 'production', entry: './src/index.js',
 module: {
- 
- 
+
 2.7.3 全局 Exports
 让我们假设，某个 library 创建出一个全局变量，它期望 consumer(使用者) 使用这
 个变量。为此，我们可以在项目配置中，添加一个小模块来演示说明:
@@ -2760,7 +2596,6 @@ mode: 'production', entry: './src/index.js',
     rules: [
 {
 test: require.resolve('./src/index.js'),
-   
 
  use: 'imports-loader?wrapper=window', },
 {
@@ -2790,7 +2625,6 @@ file, parse } = require('./globals.js');
 然后，使用 将其引入到我们的主 bundle 文件:
 注意，这种方式优先考虑正确性，而不考虑 bundle 体积大小。为了安全和可靠， polyfill/shim 必须运行于所有其他代码之前，而且需要同步加载，或者说，需要在所 有 polyfill/shim 加载之后，再去加载所有应用程序代码。 社区中存在许多误解，即 现代浏览器“不需要”polyfill，或者 polyfill/shim 仅用于添加缺失功能 - 实际上，它们 通常用于修复损坏实现(repair broken implementation)，即使是在最现代的浏览 器中，也会出现这种情况。 因此，最佳实践仍然是，不加选择地和同步地加载所有 polyfill/shim，尽管这会导致额外的 bundle 体积成本。
   
-
 2.7.5 进一步优化 Polyfills
 不建议使用 import @babel/polyfilll 。因为这样做的缺点是会全局引入整个 polyfill包，比如 Array.from 会全局引入，不但包的体积大，而且还会污染全局环 境。
 babel-preset-env package 通过 browserslist 来转译那些你浏览器中不支持的特 性。这个 preset 使用 useBuiltIns 选项，默认值是 false ，这种方式可以将全局
@@ -2816,7 +2650,6 @@ presets: [ [
                     "last 1 version",
                     "> 1%",
   
-
 useBuiltIns: 参数有 “entry”、”usage”、false 三个值
 默认值是 false ，此参数决定了babel打包时如何处理@babel/polyfilll 语句。
 “entry”: 会将文件中 import @babel/polyfilll 语句 结合 targets ，转换为一系 列引入语句，去掉目标浏览器已支持的 polyfilll 模块，不管代码里有没有用到，只要 目标浏览器不支持都会引入对应的 polyfilll 模块。
@@ -2835,14 +2668,13 @@ useBuiltIns 配置任何转换处理。 由于@babel/polyfill在7.4.0中被弃�
  [felix] 02-polyfill $ npx webpack
 WARNING (@babel/preset-env): We noticed you're using the `useBuiltIns` option without declaring a core-js version. Currently, we assume version 2.x when no version is passed. Since this default version will likely change in future versions of Babel, we recommend explicitly setting the core-js version you are using via the `corejs` option.
 You should also be sure that the version you pass to the `corejs` option matches the version specified in your `package.json`'s `dependencies` section. If it doesn't, you need to run one of the following commands:
-   
 
 提示我们需要安装 core-js 。
 此时还需要 添加一个配置:
   npm i core-js@3 -S
   npm install --save core-js@2 npm install --save core-js@3 yarn add core-js@2 yarn add core-js@3
-More info about useBuiltIns: https://babeljs.io/docs/en/babel- preset-env#usebuiltins
-More info about core-js: https://babeljs.io/docs/en/babel-preset- env#corejs
+More info about useBuiltIns: <https://babeljs.io/docs/en/babel>- preset-env#usebuiltins
+More info about core-js: <https://babeljs.io/docs/en/babel-preset>- env#corejs
 asset main.js 16.7 KiB [emitted] [minimized] (name: main) asset index.html 214 bytes [compared for emit]
 runtime modules 663 bytes 3 modules
 modules by path ./node_modules/core-js/modules/*.js 38.9 KiB 68 modules
@@ -2864,7 +2696,6 @@ presets: [ [
                     "> 1%",
                   ],
                   useBuiltIns: 'usage',
-   
 
 成功优化!
 2.8 创建 library
@@ -2893,12 +2724,11 @@ corejs: 3, }
     "word": "Three"
   },
 "num": 1,
-   
 
 src/index.js
- import _ from 'lodash';
+ import _from 'lodash';
 import numRef from './ref.json';
-export function numToWord(num) { return _.reduce(
+export function numToWord(num) { return_.reduce(
     numRef,
     (accum, ref) => {
 return ref.num === num ? ref.word : accum; },
@@ -2923,7 +2753,6 @@ return ref.word === word && word.toLowerCase() ? ref.num : accum;
     "word": "Zero"
 } ]
   
-
  const path = require('path');
 module.exports = {
 entry: './src/index.js', output: {
@@ -2949,7 +2778,6 @@ webpack.config.js
 配置项暴露从入口导出的内容。
 webpack.config.js
  我们暴露了 ，以便用户可以通过 标签使用。
- 
 
  然而它只能通过被 script 标签引用而发挥作用，它不能运行在 CommonJS、AMD、 Node.js 等环境中。
 作为一个库作者，我们希望它能够兼容不同的环境，也就是说，用户应该能够通过以 下方式使用打包后的库:
@@ -2971,7 +2799,6 @@ webpackNumbers.wordToNum('Two'); });
   </script>
 </html>
 我们更新 output.library 配置项，将其 type 设置为 'umd' :
-   
 
  现在 webpack 将打包一个库，其可以与 CommonJS、AMD 以及 script 标签使用。 2.8.4 外部化 lodash
 现在，如果执行 webpack ，你会发现创建了一个体积相当大的文件。如果你查看这 个文件，会看到 lodash 也被打包到代码中。在这种场景中，我们更倾向于把
@@ -3000,7 +2827,6 @@ path: path.resolve(__dirname, 'dist'), filename: 'webpack-numbers.js', library: 
     lodash: {
 commonjs: 'lodash',
   
-
 这意味着你的 library 需要一个名为 lodash 的依赖，这个依赖在 consumer 环境中 必须存在且可用。
 2.8.5 外部化限制 对于想要实现从一个依赖中调用多个文件的那些 library:
 无法通过在 externals 中指定整个 library 的方式，将它们从 bundle 中排除。而 是需要逐个或者使用一个正则表达式，来排除它们。
@@ -3026,7 +2852,6 @@ package.json 中的 main 字段中。 package.json
 }, },
 };
   
-
  或者，按照这个 指南，将其添加为标准模块:
   {
 }
@@ -3049,7 +2874,6 @@ img
 对于项目 Home 与 Search，需要共享一个模块时，最常见的办法就是将其抽成通用
 依赖并分别安装在各自项目中。
 虽然 Monorepo 可以一定程度解决重复安装和修改困难的问题，但依然需要走本地 编译。
-        
 
  UMD 方式共享模块
 真正 Runtime 的方式可能是 UMD 方式共享代码模块，即将模块用 Webpack UMD
@@ -3061,6 +2885,7 @@ img
 微前端:micro-frontends (MFE) 也是最近比较火的模块共享管理方式，微前端就是 要解决多项目并存问题，多项目并存的最大问题就是模块共享，不能有冲突。
 img
 由于微前端还要考虑样式冲突、生命周期管理，所以本文只聚焦在资源加载方式上。 微前端一般有两种打包方式:
+
 1. 子应用独立打包，模块更解耦，但无法抽取公共依赖等。
 2. 整体应用一起打包，很好解决上面的问题，但打包速度实在是太慢了，不具备水
 平扩展能力。
@@ -3072,7 +2897,6 @@ img
 本案例模拟三个应用:Nav、Search 及 Home。每个应用都是独立的，又通过模块
 联邦联系到了一起。
 1、Nav 导航 src/header.js
-     
 
   src/index.js
 webpack.config.js
@@ -3103,7 +2927,6 @@ return header
 }
 export default Header
 
-
 应用 webpack 运行服务:
   [felix] nav $ npx webpack serve --port 3003
 2、Home 首页 src/HomeList
@@ -3131,7 +2954,6 @@ mode: 'production', entry: './src/index.js', plugins: [
 name: "home",
 filename: "remoteEntry.js",
   
-
 应用 webpack 运行服务:
 3、search 搜索 src/index
   [felix] nav $ npx webpack serve --port 3001
@@ -3144,7 +2966,7 @@ document.body.appendChild(Header())
 document.body.innerHTML += HomeList(4) })
 webpack.config.js
  remotes: {
-nav: "nav@http://localhost:3003/remoteEntry.js",
+nav: "nav@<http://localhost:3003/remoteEntry.js>",
 }, exposes: {
 './HomeList': './src/HomeList.js', },
       shared: {},
@@ -3160,7 +2982,6 @@ mode: 'production', entry: './src/index.js', plugins: [
     new ModuleFederationPlugin({
 name: 'search',
 filename: 'remoteEntry.js',
-   
 
 应用 webpack 运行服务:
 2.10 提升构建性能 2.10.1 通用环境
@@ -3173,14 +2994,13 @@ filename: 'remoteEntry.js',
 将 loader 应用于最少数量的必要模块。而非如下:
   [felix] nav $ npx webpack serve --port 3002
      remotes: {
-nav: "nav@http://localhost:3003/remoteEntry.js", home: "home@http://localhost:3001/remoteEntry.js"
+nav: "nav@<http://localhost:3003/remoteEntry.js>", home: "home@<http://localhost:3001/remoteEntry.js>"
       },
       exposes: {},
       shared: {},
 }), ]
 }
   
-
   通过使用 include 字段，仅将 loader 应用在实际需要将其转换的模块:
   const path = require('path');
 module.exports = { //...
@@ -3208,7 +3028,6 @@ loader: 'babel-loader',
 }, ],
 }, };
 
-
  5、小即是快(smaller = faster) 减少编译结果的整体大小，以提高构建性能。尽量保持 chunk 体积小。
 使用数量更少/体积更小的 library。
 在多页面应用程序中使用 SplitChunksPlugin 。 在多页面应用程序中使用 SplitChunksPlugin ，并开启 async 模式。 移除未引用代码。
@@ -3231,7 +3050,6 @@ thread-loader 可以将非常消耗资源的 loader 分流给一个 worker pool�
 不要使用太多的 worker，因为 Node.js 的 runtime 和 loader 都有启动开销。 最小化 worker 和 main process(主进程) 之间的模块传输。进程间通讯(IPC, inter process communication)是非常消耗资源的。
 10、Progress plugin
 将 ProgressPlugin 从 webpack 中删除，可以缩短构建时间。请注意， ProgressPlugin 可能不会为快速构建提供太多价值，因此，请权衡利弊再使用。
-     
 
  2.10.2 开发环境
 以下步骤对于 特别有帮助。
@@ -3256,7 +3074,6 @@ TerserPlugin
 [fullhash] / [chunkhash] / [contenthash]
                   境环发开
 
-
       AggressiveSplittingPlugin
     AggressiveMergingPlugin
     ModuleConcatenationPlugin
@@ -3280,7 +3097,6 @@ Webpack 通过执行额外的算法任务，来优化输出结果的体积和加
 }, };
 8、输出结果不携带路径信息
 Webpack 会在输出的 bundle 中生成路径信息。然而，在打包数千个模块的项目 中，这会导致造成垃圾回收性能压力。在 options.output.pathinfo 设置中关 闭:
- 
 
   9、Node.js 版本 8.9.10-9.11.1
 Node.js v8.9.10 - v9.11.1 中的 ES2015 Map 和 Set 实现，存在 性能回退。
@@ -3307,7 +3123,6 @@ module.exports = { // ...
 }, };
 境环产生
 
-
  Webpack与React Webpack与Vue Webpack与jQuery Webpck与Node/Express
-#四、内部原理篇 webpack原理 开发loader plugin
 
+# 四、内部原理篇 webpack原理 开发loader plugin
