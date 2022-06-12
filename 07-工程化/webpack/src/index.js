@@ -3,4 +3,4 @@
 // hello();
 
 // import case2 from "./case2";
-import loader from "./loader/css";
+import loader from "./cssLoader/css";
