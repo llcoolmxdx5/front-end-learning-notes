@@ -6,17 +6,21 @@ const config = {
   devtool: "inline-source-map",
   output: {
     filename: "scripts/[name].js",
+    pathinfo: false,
   },
   /**
    * @type {import('webpack-dev-server').Configuration}
    */
   devServer: {
-    static: "./dist",
+    // static: "./dist",
     port: 8000,
     // devMiddleware: {
     //   index: true,
     //   writeToDisk: true,
     // },
+  },
+  cache: {
+    type: "memory",
   },
   module: {
     rules: [

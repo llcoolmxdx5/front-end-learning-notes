@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const toml = require("toml");
 const yaml = require("yaml");
 const json5 = require("json5");
@@ -24,13 +25,27 @@ const config = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
+  stats: {
+    hash: false,
+    assets: false,
+    modules: false,
+    logging: "error",
+    entrypoints: false,
+    timings: true,
+    runtimeModules: false,
+  },
   module: {
     rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
-      },
+      // {
+      //   test: /\.(ts|tsx)$/,
+      //   use: {
+      //     loader: "ts-loader",
+      //     options: {
+      //       transpileOnly: true,
+      //     },
+      //   },
+      //   exclude: /node_modules/,
+      // },
       {
         test: /\.png$/,
         type: "asset/resource",
@@ -89,7 +104,7 @@ const config = {
         },
       },
       {
-        test: /\.js$/,
+        test: /\.(js|ts|tsx|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -108,14 +123,15 @@ const config = {
                   corejs: 3,
                 },
               ],
+              ["@babel/preset-typescript"],
             ],
           },
         },
       },
-      {
-        test: require.resolve("../src/shimming/index.ts"),
-        use: "imports-loader?wrapper=window.console",
-      },
+      // {
+      //   test: require.resolve("../src/shimming/index.ts"),
+      //   use: "imports-loader?wrapper=window.console",
+      // },
     ],
   },
   plugins: [
@@ -133,6 +149,9 @@ const config = {
     new webpack.ProvidePlugin({
       // _: "lodash",
       join: ["lodash", "join"],
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      async: false,
     }),
     // new BundleAnalyzerPlugin(),
   ],

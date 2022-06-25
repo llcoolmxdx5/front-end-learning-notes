@@ -58,6 +58,8 @@
     "yaml": "^1.10.2"
   },
   "dependencies": {
+    "@babel/preset-typescript": "^7.17.12",
+    "fork-ts-checker-webpack-plugin": "^7.2.11",
     "raw-loader": "^4.0.2"
   },
   "browserslist": [
