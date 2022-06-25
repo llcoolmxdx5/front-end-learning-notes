@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 const toml = require("toml");
 const yaml = require("yaml");
 const json5 = require("json5");
@@ -105,6 +106,12 @@ const config = {
       template: "./index.html",
       filename: "index.html",
       inject: "body",
+    }),
+    new WorkboxPlugin.GenerateSW({
+      // 这些选项帮助快速启用 ServiceWorkers
+      // 不允许遗留任何“旧的” ServiceWorkers
+      clientsClaim: true,
+      skipWaiting: true,
     }),
     // new BundleAnalyzerPlugin(),
   ],

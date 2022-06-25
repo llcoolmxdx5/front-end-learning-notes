@@ -10,7 +10,7 @@ const config = {
   devtool: false,
   output: {
     filename: "scripts/[name].[contenthash].js",
-    publicPath: "http://localhost:8080/",
+    // publicPath: "http://localhost:8080/",
   },
   module: {
     rules: [

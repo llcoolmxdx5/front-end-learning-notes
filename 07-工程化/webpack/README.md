@@ -879,6 +879,104 @@ import "./split";
 
 以上两点中，第一点对我们的示例来说无疑是个问题，因为之前我们在 ./src/index.js 中也引入过 lodash ，这样就在两个 bundle 中造成重复引用。
 
+#### entry 配置
+
+```ts
+interface EntryObject {
+  [index: string]: string | string[] | EntryDescription;
+}
+interface EntryDescription {
+  // 当前入口所依赖的入口。它们必须在该入口被加载前被加载。
+  dependOn?: string | string[];
+  // 指定要输出的文件名称。
+  filename?: string | (pathData, assetInfo) => string;
+  // 启动时需加载的模块。
+  import: string | string[];
+  // 当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址
+  publicPath?: string | (pathData, assetInfo) => string;
+}
+```
+
+- runtime 和 dependOn 不应在同一个入口上同时使用，配置无效，并且会抛出错误
+- 确保 runtime 不能指向已存在的入口名称
+- dependOn 不能是循环引用的
+
+1. 单个入口(简写)语法
+
+   用法: `entry: string | [string]`
+
+   ```js
+   entry: './path/to/my/entry/file.js',
+   entry: ['./src/file_1.js', './src/file_2.js'],
+   ```
+
+   将一个文件路径数组传递给 entry 属性，这将创建一个所谓的 "multi-main entry"。在你想要一次注入多个依赖文件，并且将它们的依赖关系绘制在一个 "chunk" 中时，这种方式就很有用。
+
+2. 对象语法
+
+   ```js
+   entry: {
+     a2: 'depending.js', 
+     b2: {
+       dependOn: 'a2',
+       import: './src/app.js', 
+     },
+   },
+   ```
+
+#### 配置 index.html 模板
+
+1. 生成多个HTML文件
+
+   要生成多个HTML文件，请在插件数组中多次声明插件。
+
+   ```js
+   plugins: [
+     new HtmlWebpackPlugin(), // Generates default index.html 
+     new HtmlWebpackPlugin({ // Also generate a test.html
+       filename: 'test.html',
+       template: 'src/assets/test.html' 
+     })
+   ]
+   ```
+
+2. 编写自己的模板
+
+   如果默认生成的HTML不能满足您的需要，您可以提供自己的模板。最简单的方法是 使用 template 选项并传递自定义HTML文件。html 网页包插件将自动将所有必要的 CSS、JS、manifest和favicon文件注入标记中。
+
+   ```js
+   plugins: [
+    new HtmlWebpackPlugin({
+       title: 'Custom template',
+       // Load a custom template (lodash by default) 
+       template: 'index.html'
+     })
+   ]
+   ```
+
+   ```html
+   <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8"/>
+        <title><%= htmlWebpackPlugin.options.title %></title> 
+      </head>
+      <body></body>
+   </html>
+   ```
+
+3. 多页面应用
+
+   ```js
+   entry: {
+     pageOne: './src/pageOne/index.js', 
+     pageTwo: './src/pageTwo/index.js',
+     pageThree: './src/pageThree/index.js',
+   },
+   ```
+
+   我们告诉 webpack 需要三个独立分离的依赖图
+
 ### 防止重复
 
 #### 入口依赖
@@ -1439,272 +1537,113 @@ vue或者其他常用框架同样如此，一般都会有专门的plugin。 然�
 };
 ```
 
-## 多页面应用
-
-2.4.1 entry 配置
-单个入口(简写)语法
- 用法:entry: string | [string]
- yarn add -D eslint-plugin-react@latest
-
- webpack.config.js
-  module.exports = {
-entry: './path/to/my/entry/file.js',
-};
-entry 属性的单个入口语法，参考下面的简写: webpack.config.js
-我们也可以将一个文件路径数组传递给 entry 属性，这将创建一个所谓的 "multi- main entry"。在你想要一次注入多个依赖文件，并且将它们的依赖关系绘制在一个 "chunk" 中时，这种方式就很有用。
-webpack.config.js
-   module.exports = { entry: {
-main: './path/to/my/entry/file.js', },
-};
-   module.exports = {
-entry: ['./src/file_1.js', './src/file_2.js'], output: {
-filename: 'bundle.js', },
-};
-当你希望通过一个入口(例如一个库)为应用程序或工具快速设置 webpack 配置 时，单一入口的语法方式是不错的选择。然而，使用这种语法方式来扩展或调整配置 的灵活性不大。
-对象语法
-用法: entry: { <entryChunkName> string | [string] } | {} webpack.config.js
-   module.exports = { entry: {
-app: './src/app.js',
-adminApp: './src/adminApp.js', },
-};
-
- 对象语法会比较繁琐。然而，这是应用程序中定义入口的最可扩展的方式。
-描述入口的对象:
-用于描述入口的对象。你可以使用如下属性:
-dependOn : 当前入口所依赖的入口。它们必须在该入口被加载前被加载。 filename : 指定要输出的文件名称。
-import : 启动时需加载的模块。
-library : 指定 library 选项，为当前 entry 构建一个 library。
-runtime : 运行时 chunk 的名字。如果设置了，就会创建一个新的运行时 chunk。在 webpack 5.43.0 之后可将其设为 false 以避免一个新的运行时 chunk。
-publicPath : 当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址。请查看 output.publicPath。
-webpack.config.js
-         module.exports = { entry: {
-a2: 'dependingfile.js', b2: {
-      dependOn: 'a2',
-import: './src/app.js', },
-}, };
- runtime 和 dependOn 不应在同一个入口上同时使用，所以如下配置无效，并且会 抛出错误:
-webpack.config.js
-    module.exports = { entry: {
-a2: './a', b2: {
-runtime: 'x2', dependOn: 'a2', import: './b',
-}, },
-};
-确保 runtime 不能指向已存在的入口名称，例如下面配置会抛出一个错误:
-
- 另外 dependOn 不能是循环引用的，下面的例子也会出现错误:
-  module.exports = { entry: {
-a3: {
-import: './a', dependOn: 'b3',
-}, b3: {
-import: './b',
-      dependOn: 'a3',
-    },
-}, };
- 2.4.2 配置 index.html 模板
-生成多个HTML文件 要生成多个HTML文件，请在插件数组中多次声明插件。 webpack.config.js
-module.exports = { entry: {
-a1: './a', b1: {
-      runtime: 'a1',
-import: './b', },
-}, };
- {
-entry: 'index.js', output: {
-    path: __dirname + '/dist',
-filename: 'index_bundle.js' },
-plugins: [
-new HtmlWebpackPlugin(), // Generates default index.html new HtmlWebpackPlugin({ // Also generate a test.html
-filename: 'test.html',
-template: 'src/assets/test.html' })
-  
-编写自己的模板
-如果默认生成的HTML不能满足您的需要，您可以提供自己的模板。最简单的方法是 使用 template 选项并传递自定义HTML文件。html 网页包插件将自动将所有必要的 CSS、JS、manifest和favicon文件注入标记中。
-   plugins: [
-  new HtmlWebpackPlugin({
-title: 'Custom template',
-// Load a custom template (lodash by default) template: 'index.html'
-}) ]
-index.html
-  <!DOCTYPE html>
-<html>
-  <head>
-<meta charset="utf-8"/>
-<title><%= htmlWebpackPlugin.options.title %></title> </head>
-<body>
-  </body>
-</html>
-2.4.3 多页面应用 webpack.config.js
-  module.exports = { entry: {
-pageOne: './src/pageOne/index.js', pageTwo: './src/pageTwo/index.js', pageThree: './src/pageThree/index.js',
-}, };
-这是什么? 我们告诉 webpack 需要三个独立分离的依赖图(如上面的示例)。
- ] }
-  
- 为什么? 在多页面应用程序中，server 会拉取一个新的 HTML 文档给你的客户端。 页面重新加载此新文档，并且资源被重新下载。然而，这给了我们特殊的机会去做很 多事，例如使用 optimization.splitChunks 为页面间共享的应用程序代码创建 bundle。由于入口起点数量的增多，多页应用能够复用多个入口起点之间的大量代 码/模块，从而可以极大地从这些技术中受益。
-
 ## Tree shaking
 
-tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码 (dead-code)。它依赖于 ES2015 模块语法的 静态结构 特性，例如 import 和
-export 。这个术语和概念实际上是由 ES2015 模块打包工具 rollup 普及起来的。
-webpack 2 正式版本内置支持 ES2015 模块(也叫做 harmony modules)和未使用 模块检测能力。新的 webpack 4 正式版本扩展了此检测能力，通过 package.json 的 "sideEffects" 属性作为标记，向 compiler 提供提示，表明项目中的哪些文件 是 "pure(纯正 ES2015 模块)"，由此可以安全地删除文件中未使用的部分。
-2.5.1 tree-shaking实验 src/math.js
-             export function square(x) {
-  return x *x;
-}
-export function cube(x) {
-return x* x * x;
-}
-需要将 mode 配置设置成development，以确定 bundle 不会被压缩: webpack.config.js
-  
-  配置完这些后，更新入口脚本，使用其中一个新方法:
- import { cube } from './math.js'; function component() {
-const element = document.createElement('pre');
-element.innerHTML = [
-'Hello webpack!',
-'5 cubed is equal to ' + cube(5)
-].join('\n\n'); return element;
-} document.body.appendChild(component());
- 注意，我们没有从 模块中 另外一个 方法。这个函 数就是所谓的“未引用代码(dead code)”，也就是说，应该删除掉未被引用的
-export 。
-现在运行 npm script npm run build ，并查看输出的 bundle:
-dist/bundle.js
-     const path = require('path');
-module.exports = {
-entry: './src/index.js', output: {
-filename: 'bundle.js',
-path: path.resolve(__dirname, 'dist'), },
- mode: 'development',
- optimization: {
-   usedExports: true,
- },
-};
-erauqs tropmi sj.htam/crs
+注意 Webpack 不能百分百安全地进行 tree-shaking。有些模块导入，只要被引入，就会对应用程序产生重要的影响。一个很好的例子就是全局样式表，或者设置全局配置的JavaScript 文件。
 
- 注意，上面的 unused harmony export square 注释。如果你观察它下面的代 码，你会注意到虽然我们没有引用 square ，但它仍然被包含在 bundle 中。
-mode: production
-如果此时修改配置:
-    const path = require('path');
-module.exports = {
-entry: './src/index.js', output: {
-filename: 'bundle.js',
-path: path.resolve(__dirname, 'dist'), },
- mode: 'production',
-};
-打包后发现无用的代码全部都消失了。
-处于好奇，webpack是如何完美的避开没有使用的代码的呢?
-很简单:就是 Webpack 没看到你使用的代码。Webpack 跟踪整个应用程序的 import/export 语句，因此，如果它看到导入的东西最终没有被使用，它会认为那
-是未引用代码(或叫做“死代码”—— dead-code )，并会对其进行 tree-shaking 。 死代码并不总是那么明确的。下面是一些死代码和“活”代码的例子:
-  /* 1 */
-/***/ (function (module, **webpack_exports**,
-**webpack_require**) {
-  'use strict';
-  /* unused harmony export square */
-  /* harmony export (immutable) */ **webpack_exports**['a'] =
-cube;
-  function square(x) {
-return x * x; }
-  function cube(x) {
-    return x * x * x;
-} });
- // 这会被看作“活”代码，不会做 tree-shaking import { add } from './math'
-
-2.5.2 sideEffects
-注意 Webpack 不能百分百安全地进行 tree-shaking。有些模块导入，只要被引入， 就会对应用程序产生重要的影响。一个很好的例子就是全局样式表，或者设置全局配 置的JavaScript 文件。
 Webpack 认为这样的文件有“副作用”。具有副作用的文件不应该做 tree-shaking， 因为这将破坏整个应用程序。
-Webpack 的设计者清楚地认识到不知道哪些文件有副作用的情况下打包代码的风 险，因此webpack4默认地将所有代码视为有副作用。这可以保护你免于删除必要的 文件，但这意味着 Webpack 的默认行为实际上是不进行 tree-shaking。值得注意的 是webpack5默认会进行 tree-shaking。
-如何告诉 Webpack 你的代码无副作用，可以通过 package.json 有一个特殊的属性 sideEffects，就是为此而存在的。
-它有三个可能的值:
-true
-如果不指定其他值的话。这意味着所有的文件都有副作用，也就是没有一个文件 可以 tree-shaking。
-false
-告诉 Webpack 没有文件有副作用，所有文件都可以 tree-shaking。 数组[...]
- console.log(add(5, 6))
-// 导入并赋值给 JavaScript 对象，但在接下来的代码里没有用到 // 这就会被当做“死”代码，会被 tree-shaking
-import { add, minus } from './math' console.log(add(5, 6))
-// 导入但没有赋值给 JavaScript 对象，也没有在代码里用到 // 这会被当做“死”代码，会被 tree-shaking
-import { add, minus } from './math' console.log('hello webpack')
-// 导入整个库，但是没有赋值给 JavaScript 对象，也没有在代码里用到
-// 非常奇怪，这竟然被当做“活”代码，因为 Webpack 对库的导入和本地代码导入的处理 方式不同。
-import { add, minus } from './math'
-import 'lodash'
-console.log('hello webpack')
-  
- 是文件路径数组。它告诉 webpack，除了数组中包含的文件外，你的任何文件 都没有副作用。因此，除了指定的文件之外，其他文件都可以安全地进行 tree- shaking。
-webpack4 曾经不进行对 CommonJs 导出和 require() 调用时的导出使用分析。 webpack 5 增加了对一些 CommonJs 构造的支持，允许消除未使用的 CommonJs 导出，并从 require() 调用中跟踪引用的导出名称。
-2.6 渐进式网络应用程序 PWA
-渐进式网络应用程序(progressive web application - PWA)，是一种可以提供类似于 native app(原生应用程序) 体验的 web app(网络应用程序)。PWA 可以用来做很多 事。其中最重要的是，在离线(offline)时应用程序能够继续运行功能。这是通过使用 名为 Service Workers 的 web 技术来实现的。
-2.6.1 非离线环境下运行
-到目前为止，我们一直是直接查看本地文件系统的输出结果。通常情况下，真正的用 户是通过网络访问 web app;用户的浏览器会与一个提供所需资源(例如， .html ,
-.js 和 .css 文件)的 server 通讯。
-我们通过搭建一个拥有更多基础特性的 server 来测试下这种离线体验。这里使用 http-server package: npm install http-server --save-dev 。还要修改
-package.json 的 scripts 部分，来添加一个 start script: package.json
-           {
-},
-...
-}
-...
-"scripts": {
-"start": "http-server dist"
-注意:默认情况下，webpack DevServer 会写入到内存。我们需要启用 devserverdevmiddleware.writeToDisk 配置项，来让 http-server 处理 ./dist 目 录中的文件。
 
- 如果你之前没有操作过，先得运行命令 npm run build 来构建你的项目。然后运行 命令 npm start 。应该产生以下输出:
-   > http-server dist
-Starting up http-server, serving dist Available on:
-<http://xx.x.x.x:8080> <http://127.0.0.1:8080> <http://xxx.xxx.x.x:8080>
-Hit CTRL-C to stop the server
- 如果你打开浏览器访问 <http://localhost:8080> (即 <http://127.0.0.1> )，你应 该会看到 webpack 应用程序被 serve 到 dist 目录。如果停止 server 然后刷新， 则 webpack 应用程序不再可访问。
-这就是我们为实现离线体验所需要的改变。在本章结束时，我们应该要实现的是，停 止 server 然后刷新，仍然可以看到应用程序正常运行。
-2.6.2 添加 Workbox
-添加 workbox-webpack-plugin 插件，然后调整 webpack.config.js 文件:
-webpack.config.js
-      npm install workbox-webpack-plugin --save-dev
+Webpack 的设计者清楚地认识到不知道哪些文件有副作用的情况下打包代码的风险，因此webpack4默认地将所有代码视为有副作用。这可以保护你免于删除必要的文件，但这意味着 Webpack 的默认行为实际上是不进行 tree-shaking。值得注意的是 webpack5 默认会进行 tree-shaking。
+
+如何告诉 Webpack 你的代码无副作用，可以通过 package.json 有一个特殊的属性 sideEffects，就是为此而存在的。
+
+它有三个可能的值:
+
+1. true
+  如果不指定其他值的话。这意味着所有的文件都有副作用，也就是没有一个文件可以 tree-shaking。
+
+2. false
+  告诉 Webpack 没有文件有副作用，所有文件都可以 tree-shaking。
+
+3. 数组[...]
+  是文件路径数组。它告诉 webpack，除了数组中包含的文件外，你的任何文件 都没有副作用。因此，除了指定的文件之外，其他文件都可以安全地进行 tree- shaking。
+
+webpack4 曾经不进行对 CommonJs 导出和 require() 调用时的导出使用分析。 webpack 5 增加了对一些 CommonJs 构造的支持，允许消除未使用的 CommonJs 导出，并从 require() 调用中跟踪引用的导出名称。
+
+## 渐进式网络应用程序 PWA
+
+渐进式网络应用程序(progressive web application - PWA)，是一种可以提供类似于 native app(原生应用程序) 体验的 web app(网络应用程序)。PWA 可以用来做很多事。其中最重要的是，在离线(offline)时应用程序能够继续运行功能。这是通过使用 名为 Service Workers 的 web 技术来实现的。
+
+### 非离线环境下运行
+
+到目前为止，我们一直是直接查看本地文件系统的输出结果。通常情况下，真正的用户是通过网络访问 web app;用户的浏览器会与一个提供所需资源(例如， .html ,.js 和 .css 文件)的 server 通讯。
+
+我们通过搭建一个拥有更多基础特性的 server 来测试下这种离线体验。这里使用 http-server package: `npm install http-server --save-dev` 。还要修改 package.json 的 scripts 部分，来添加一个 start script
+
+```js
+// package.json
+"scripts": {
+  "dev": "http-server dist"
+}
+```
+
+注意:默认情况下，webpack DevServer 会写入到内存。我们需要启用 devServer.devMiddleware.writeToDisk 配置项，来让 http-server 处理 ./dist 目 录中的文件。
+
+```js
 devServer: {
   devMiddleware: {
-index: true,
+    index: true,
     writeToDisk: true,
   },
 },
- const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin'); const WorkboxPlugin = require('workbox-webpack-plugin');
-module.exports = { entry: {
-app: './src/index.js', },
-  plugins: [
-    new HtmlWebpackPlugin(),
-  
- new WorkboxPlugin.GenerateSW({
-// 这些选项帮助快速启用 ServiceWorkers // 不允许遗留任何“旧的” ServiceWorkers clientsClaim: true,
-skipWaiting: true,
-}), ],
-output: {
-filename: '[name].bundle.js',
-path: path.resolve(__dirname, 'dist'), clean: true,
-}, }
- npx webpack
- [felix] 06-pwa $ npx webpack assets by status 121 KiB [emitted]
-asset workbox-718aa5be.js 118 KiB [emitted]
-asset service-worker.js 3.23 KiB [emitted] assets by status 1.44 KiB [compared for emit]
-asset app.bundle.js 1.21 KiB [compared for emit] (name: app)
-asset index.html 237 bytes [compared for emit] ./src/index.js 29 bytes [built] [code generated]
-LOG from GenerateSW
-<i> The service worker at service-worker.js will precache <i> 2 URLs, totaling 1.47 kB.
-webpack 5.61.0 compiled successfully in 1140 ms
- service-worker.js workbox-718aa5be.js service-worker.js
-   workbox-
-   718aa5be.js
-   service-worker.js
- service-worker.js
-  执行:
- 现在你可以看到，生成了两个额外的文件: 和名称冗长的
-是
-。
-是 Service Worker 文件， 引用的文件，所以它也可以运行。你本地生
-成的文件可能会有所不同;但是应该会有一个 文件。
-所以，值得高兴的是，我们现在已经创建出一个 Service Worker。接下来该做什 么?
-2.6.3 注册 Service Worker
-接下来我们注册 Service Worker，使其出场并开始表演。通过添加以下注册代码来
-完成此操作:
-index.js
+```
 
-  再次运行 npx webpack 来构建包含注册代码版本的应用程序。然后用 npm start 启动服务。访问 <http://localhost:8080> 并查看 console 控制台。在那里你应该 看到:
+如果你之前没有操作过，先得运行命令 npm run build 来构建你的项目。然后运行命令 npm start
+
+如果你打开浏览器访问 <http://localhost:8080> (即 <http://127.0.0.1> )，你应该会看到 webpack 应用程序被 serve 到 dist 目录。如果停止 server 然后刷新， 则 webpack 应用程序不再可访问。
+
+这就是我们为实现离线体验所需要的改变。在本章结束时，我们应该要实现的是，停止 server 然后刷新，仍然可以看到应用程序正常运行。
+
+### 添加 Workbox
+
+添加 workbox-webpack-plugin 插件，然后调整 webpack.config.js 文件
+
+```bash
+npm install workbox-webpack-plugin --save-dev
+# or
+yarn add workbox-webpack-plugin
+```
+
+```js
+// webpack.config.common.js
+const WorkboxPlugin = require("workbox-webpack-plugin");
+plugins: [
+  new WorkboxPlugin.GenerateSW({
+    // 这些选项帮助快速启用 ServiceWorkers
+    // 不允许遗留任何“旧的” ServiceWorkers
+    clientsClaim: true,
+    skipWaiting: true,
+  }),
+]
+```
+
+执行 yarn build
+
+现在你可以看到，生成了两个额外的文件: service-worker.js 和名称冗长的 workbox-6716fad7.js。service-worker.js 是 Service Worker 文件，workbox-6716fad7.js 是 service-worker.js 引用的文件，所以它也可以运行。你本地生成的文件可能会有所不同;但是应该会有一个 service-worker.js 文件。
+
+所以，值得高兴的是，我们现在已经创建出一个 Service Worker。接下来该做什么?
+
+### 注册 Service Worker
+
+接下来我们注册 Service Worker，使其出场并开始表演。通过添加以下注册代码来完成此操作:
+
+```js
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service- worker.js")
+      .then((registration) => {
+        console.log("SW registered: ", registration);
+      })
+      .catch((registrationError) => {
+        console.log("SW registration failed: ", registrationError);
+      });
+  });
+}
+```
+
+再次运行 npm run build 来构建包含注册代码版本的应用程序。然后用 npm dev 启动服务。访问 <http://localhost:8080> 并查看 console 控制台。在那里你应该 看到: SW registered
+
 现在来进行测试。停止 server 并刷新页面。如果浏览器能够支持 Service Worker， 应该可以看到你的应用程序还在正常运行。然而，server 已经停止 serve 整个 dist 文件夹，此刻是 Service Worker 在进行 serve。
 
 ## shimming 预置依赖
