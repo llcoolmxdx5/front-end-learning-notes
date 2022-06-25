@@ -13,10 +13,10 @@ const config = {
   devServer: {
     static: "./dist",
     port: 8000,
-    devMiddleware: {
-      index: true,
-      writeToDisk: true,
-    },
+    // devMiddleware: {
+    //   index: true,
+    //   writeToDisk: true,
+    // },
   },
   module: {
     rules: [

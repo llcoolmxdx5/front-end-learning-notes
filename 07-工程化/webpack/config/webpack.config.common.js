@@ -93,11 +93,28 @@ const config = {
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
+          // options: {
+          //   presets: ["@babel/preset-env"],
+          //   plugins: [["@babel/plugin-transform-runtime"]],
+          // },
           options: {
-            presets: ["@babel/preset-env"],
-            plugins: [["@babel/plugin-transform-runtime"]],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: ["last 1 version", "> 1%"],
+                  useBuiltIns: "usage",
+                  // 添加corejs配置
+                  corejs: 3,
+                },
+              ],
+            ],
           },
         },
+      },
+      {
+        test: require.resolve("../src/shimming/index.ts"),
+        use: "imports-loader?wrapper=window.console",
       },
     ],
   },
@@ -107,11 +124,15 @@ const config = {
       filename: "index.html",
       inject: "body",
     }),
-    new WorkboxPlugin.GenerateSW({
-      // 这些选项帮助快速启用 ServiceWorkers
-      // 不允许遗留任何“旧的” ServiceWorkers
-      clientsClaim: true,
-      skipWaiting: true,
+    // new WorkboxPlugin.GenerateSW({
+    //   // 这些选项帮助快速启用 ServiceWorkers
+    //   // 不允许遗留任何“旧的” ServiceWorkers
+    //   clientsClaim: true,
+    //   skipWaiting: true,
+    // }),
+    new webpack.ProvidePlugin({
+      // _: "lodash",
+      join: ["lodash", "join"],
     }),
     // new BundleAnalyzerPlugin(),
   ],
