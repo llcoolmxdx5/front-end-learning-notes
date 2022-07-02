@@ -15,7 +15,7 @@ var hammingWeight = function (n) {
   let ret = 0;
   while (n) {
     ret += n % 2;
-    n = Math.floor(n/2)
+    n = Math.floor(n / 2);
   }
   return ret;
 };

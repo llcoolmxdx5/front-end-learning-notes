@@ -49,16 +49,13 @@
 d3.select();
 d3.selectAll();
 
-d3.select("h1")
-  .style("color", "red")
-  .attr("class", "heading")
-  .text("Updated h1 tag");
+d3.select('h1').style('color', 'red').attr('class', 'heading').text('Updated h1 tag');
 
-d3.select("body").append("p").text("First Paragraph");
-d3.select("body").append("p").text("Second Paragraph");
-d3.select("body").append("p").text("Third Paragraph");
+d3.select('body').append('p').text('First Paragraph');
+d3.select('body').append('p').text('Second Paragraph');
+d3.select('body').append('p').text('Third Paragraph');
 
-d3.selectAll("p").style("");
+d3.selectAll('p').style('');
 ```
 
 ### 2.数据加载和绑定
@@ -69,12 +66,12 @@ d3.selectAll("p").style("");
 ```js
 let dataset = [1, 2, 3, 4, 5];
 
-d3.select("body")
-  .selectAll("p")
+d3.select('body')
+  .selectAll('p')
   .data(dataset)
   .enter()
-  .append("p") // appends paragraph for each data element
-  .text("D3 is awesome!!");
+  .append('p') // appends paragraph for each data element
+  .text('D3 is awesome!!');
 //.text(function(d) { return d; });
 ```
 
@@ -102,22 +99,22 @@ let svgWidth = 500,
 let barWidth = svgWidth / dataset.length;
 
 // 绘制图形
-let svg = d3.select("svg").attr("width", svgWidth).attr("height", svgHeight);
+let svg = d3.select('svg').attr('width', svgWidth).attr('height', svgHeight);
 
 // rect，长方形
 // 文档：http://www.w3school.com.cn/svg/svg_rect.asp
 
 let barChart = svg
-  .selectAll("rect")
+  .selectAll('rect')
   .data(dataset) //绑定数组
   .enter() // 指定选择集的enter部分
-  .append("rect") // 添加足够数量的矩形
-  .attr("y", (d) => svgHeight - d) // d为数据集每一项的值, 取y坐标
-  .attr("height", (d) => d) // 设定高度
-  .attr("width", barWidth - barPadding) // 设定宽度
-  .attr("transform", (d, i) => {
+  .append('rect') // 添加足够数量的矩形
+  .attr('y', (d) => svgHeight - d) // d为数据集每一项的值, 取y坐标
+  .attr('height', (d) => d) // 设定高度
+  .attr('width', barWidth - barPadding) // 设定宽度
+  .attr('transform', (d, i) => {
     let translate = [barWidth * i, 0];
-    return "translate(" + translate + ")";
+    return 'translate(' + translate + ')';
   }); // 实际是计算每一项值的x坐标
 ```
 
@@ -129,14 +126,14 @@ let barChart = svg
 
 ```js
 let text = svg
-  .selectAll("text")
+  .selectAll('text')
   .data(dataset)
   .enter()
-  .append("text")
+  .append('text')
   .text((d) => d)
-  .attr("y", (d, i) => svgHeight - d - 2)
-  .attr("x", (d, i) => barWidth * i)
-  .attr("fill", "#A64C38");
+  .attr('y', (d, i) => svgHeight - d - 2)
+  .attr('x', (d, i) => barWidth * i)
+  .attr('fill', '#A64C38');
 ```
 
 过程比较简单，就是返回文本，计算 x/y 坐标，并填充颜色。
@@ -183,7 +180,7 @@ let svgWidth = 500,
   barPadding = 5;
 let barWidth = svgWidth / dataset.length;
 
-let svg = d3.select("svg").attr("width", svgWidth).attr("height", svgHeight);
+let svg = d3.select('svg').attr('width', svgWidth).attr('height', svgHeight);
 
 let yScale = d3
   .scaleLinear()
@@ -191,16 +188,16 @@ let yScale = d3
   .range([0, svgHeight]);
 
 let barChart = svg
-  .selectAll("rect")
+  .selectAll('rect')
   .data(dataset)
   .enter()
-  .append("rect")
-  .attr("y", (d) => svgHeight - yScale(d))
-  .attr("height", (d) => yScale(d))
-  .attr("width", barWidth - barPadding)
-  .attr("transform", (d, i) => {
+  .append('rect')
+  .attr('y', (d) => svgHeight - yScale(d))
+  .attr('height', (d) => yScale(d))
+  .attr('width', barWidth - barPadding)
+  .attr('transform', (d, i) => {
     let translate = [barWidth * i, 0];
-    return "translate(" + translate + ")";
+    return 'translate(' + translate + ')';
   });
 ```
 
@@ -220,7 +217,7 @@ let data = [80, 100, 56, 120, 180, 30, 40, 120, 160];
 let svgWidth = 500,
   svgHeight = 300;
 
-let svg = d3.select("svg").attr("width", svgWidth).attr("height", svgHeight);
+let svg = d3.select('svg').attr('width', svgWidth).attr('height', svgHeight);
 
 // 首先是拿最大值构建x轴坐标
 let xScale = d3
@@ -243,13 +240,13 @@ let y_axis = d3.axisLeft().scale(yScale);
 // 在svg中提供了如g元素这样的将多个元素组织在一起的元素。
 // 由g元素编组在一起的可以设置相同的颜色，可以进行坐标变换等，类似于Vue中的 <template>
 
-svg.append("g").attr("transform", "translate(50, 10)").call(y_axis);
+svg.append('g').attr('transform', 'translate(50, 10)').call(y_axis);
 
 let xAxisTranslate = svgHeight - 20;
 
 svg
-  .append("g")
-  .attr("transform", "translate(50, " + xAxisTranslate + ")")
+  .append('g')
+  .attr('transform', 'translate(50, ' + xAxisTranslate + ')')
   .call(x_axis);
 ```
 
@@ -262,33 +259,33 @@ svg
 let svgWidth = 600,
   svgHeight = 500;
 let svg = d3
-  .select("svg")
-  .attr("width", svgWidth)
-  .attr("height", svgHeight)
-  .attr("class", "svg-container");
+  .select('svg')
+  .attr('width', svgWidth)
+  .attr('height', svgHeight)
+  .attr('class', 'svg-container');
 
 let line = svg
-  .append("line")
-  .attr("x1", 100)
-  .attr("x2", 500)
-  .attr("y1", 50)
-  .attr("y2", 50)
-  .attr("stroke", "red");
+  .append('line')
+  .attr('x1', 100)
+  .attr('x2', 500)
+  .attr('y1', 50)
+  .attr('y2', 50)
+  .attr('stroke', 'red');
 
 let rect = svg
-  .append("rect")
-  .attr("x", 100)
-  .attr("y", 100)
-  .attr("width", 200)
-  .attr("height", 100)
-  .attr("fill", "#9B95FF");
+  .append('rect')
+  .attr('x', 100)
+  .attr('y', 100)
+  .attr('width', 200)
+  .attr('height', 100)
+  .attr('fill', '#9B95FF');
 
 let circle = svg
-  .append("circle")
-  .attr("cx", 200)
-  .attr("cy", 300)
-  .attr("r", 80)
-  .attr("fill", "#7CE8D5");
+  .append('circle')
+  .attr('cx', 200)
+  .attr('cy', 300)
+  .attr('r', 80)
+  .attr('fill', '#7CE8D5');
 ```
 
 ### 8. 创建饼图
@@ -297,20 +294,18 @@ let circle = svg
 
 ```js
 let data = [
-  { platform: "Android", percentage: 40.11 },
-  { platform: "Windows", percentage: 36.69 },
-  { platform: "iOS", percentage: 13.06 },
+  { platform: 'Android', percentage: 40.11 },
+  { platform: 'Windows', percentage: 36.69 },
+  { platform: 'iOS', percentage: 13.06 },
 ];
 
 let svgWidth = 500,
   svgHeight = 300,
   radius = Math.min(svgWidth, svgHeight) / 2;
-let svg = d3.select("svg").attr("width", svgWidth).attr("height", svgHeight);
+let svg = d3.select('svg').attr('width', svgWidth).attr('height', svgHeight);
 
 //Create group element to hold pie chart
-let g = svg
-  .append("g")
-  .attr("transform", "translate(" + radius + "," + radius + ")");
+let g = svg.append('g').attr('transform', 'translate(' + radius + ',' + radius + ')');
 
 // d3.scaleOrdinal() 序数比例尺
 // schemeCategory10, 颜色比例尺
@@ -321,19 +316,19 @@ let pie = d3.pie().value((d) => d.percentage);
 
 let path = d3.arc().outerRadius(radius).innerRadius(0);
 
-let arc = g.selectAll("arc").data(pie(data)).enter().append("g");
+let arc = g.selectAll('arc').data(pie(data)).enter().append('g');
 
 arc
-  .append("path")
-  .attr("d", path)
-  .attr("fill", (d) => color(d.data.percentage));
+  .append('path')
+  .attr('d', path)
+  .attr('fill', (d) => color(d.data.percentage));
 
 let label = d3.arc().outerRadius(radius).innerRadius(0);
 
 arc
-  .append("text")
-  .attr("transform", (d) => `translate(${label.centroid(d)})`)
-  .attr("text-anchor", "middle")
+  .append('text')
+  .attr('transform', (d) => `translate(${label.centroid(d)})`)
+  .attr('text-anchor', 'middle')
   .text((d) => `${d.data.platform}:${d.data.percentage}%`);
 ```
 
@@ -345,13 +340,12 @@ arc
 
 ```js
 // 外部API,注意日期记得补零
-const api =
-  "https://api.coindesk.com/v1/bpi/historical/close.json?start=2019-03-31&end=2019-07-01";
+const api = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2019-03-31&end=2019-07-01';
 
 /**
  * dom内容加载完毕时，从API中加载数据
  */
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener('DOMContentLoaded', function (event) {
   fetch(api)
     .then((response) => response.json())
     .then((data) => {
@@ -385,11 +379,9 @@ drawChart = (data) => {
   let width = svgWidth - margin.left - margin.right;
   let height = svgHeight - margin.top - margin.bottom;
 
-  let svg = d3.select("svg").attr("width", svgWidth).attr("height", svgHeight);
+  let svg = d3.select('svg').attr('width', svgWidth).attr('height', svgHeight);
 
-  let g = svg
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  let g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   let x = d3.scaleTime().rangeRound([0, width]);
 
@@ -410,30 +402,30 @@ drawChart = (data) => {
     })
   );
 
-  g.append("g")
-    .attr("transform", "translate(0," + height + ")")
+  g.append('g')
+    .attr('transform', 'translate(0,' + height + ')')
     .call(d3.axisBottom(x))
-    .select(".domain")
+    .select('.domain')
     .remove();
 
-  g.append("g")
+  g.append('g')
     .call(d3.axisLeft(y))
-    .append("text")
-    .attr("fill", "#000")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
-    .attr("text-anchor", "end")
-    .text("Price ($)");
+    .append('text')
+    .attr('fill', '#000')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', 6)
+    .attr('dy', '0.71em')
+    .attr('text-anchor', 'end')
+    .text('Price ($)');
 
-  g.append("path")
+  g.append('path')
     .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 1.5)
-    .attr("d", line);
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('stroke-width', 1.5)
+    .attr('d', line);
 };
 ```
 
@@ -681,7 +673,7 @@ yScale() {
 在`AnimateLoad()`末尾添加：
 
 ```js
-selectAll("text").data(this.data).enter();
+selectAll('text').data(this.data).enter();
 ```
 
 最后在`<g>`元素中添加：

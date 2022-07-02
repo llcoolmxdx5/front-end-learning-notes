@@ -42,7 +42,7 @@ const addTask = (time, order) => {
 };
 
 addTask(4000, 2);
-scheduler.add(() => console.log("sync"));
+scheduler.add(() => console.log('sync'));
 addTask(2000, 1);
 addTask(3000, 4);
 addTask(900, 3);

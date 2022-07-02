@@ -30,20 +30,19 @@ export function debounce(func, wait, options) {
   let trailing = true; // 是否在等待时间的结束端触发函数调用
 
   // 如果没有传入wait参数，检测requestAnimationFrame方法是否可以，以便后面代替setTimeout,默认等待时间约16ms
-  const useRAF =
-    !wait && wait !== 0 && typeof requestAnimationFrame === "function";
+  const useRAF = !wait && wait !== 0 && typeof requestAnimationFrame === 'function';
 
-  if (typeof func != "function") {
+  if (typeof func != 'function') {
     // 必须传入函数
-    throw new TypeError("Expected a function");
+    throw new TypeError('Expected a function');
   }
   wait = +wait || 0; // wait参数转换成数字，或设置默认值0
   if (options) {
     // 规范化参数
     leading = !!options.leading;
-    maxing = "maxWait" in options;
+    maxing = 'maxWait' in options;
     maxWait = maxing ? Math.max(+options.maxWait || 0, wait) : maxWait;
-    trailing = "trailing" in options ? !!options.trailing : trailing;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
   // 调用真正的函数，入参是调用函数时间戳
   function invokeFunc(time) {
@@ -88,9 +87,7 @@ export function debounce(func, wait, options) {
     // 等待触发的时间
     const timeWaiting = wait - timeSinceLastCall;
     // 如果用户设置了最长等待时间，则需要取最小值
-    return maxing
-      ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke)
-      : timeWaiting;
+    return maxing ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
   }
   // 判断某个时刻是否允许调用真正的事件处理程序
   function shouldInvoke(time) {
@@ -170,21 +167,18 @@ export function debounce(func, wait, options) {
   return debounced;
 }
 
-export const throttle = (
-  fn,
-  wait,
-  options = { leading: true, trailing: false, maxWait: wait }
-) => debounce(fn, wait, options);
+export const throttle = (fn, wait, options = { leading: true, trailing: false, maxWait: wait }) =>
+  debounce(fn, wait, options);
 
 const print = throttle((msg) => {
   console.log(msg);
 }, 500);
 
-print("1");
-print("2");
-print("3");
+print('1');
+print('2');
+print('3');
 setTimeout(() => {
-  print("4");
-  print("5");
-  print("6");
+  print('4');
+  print('5');
+  print('6');
 }, 700);

@@ -4,7 +4,7 @@
  */
 var isPerfectSquare = function (num) {
   const sqrt = Math.pow(num, 1 / 2);
-  return parseInt(sqrt) === sqrt
+  return parseInt(sqrt) === sqrt;
 };
 
 var isPerfectSquare = function (num) {
@@ -20,10 +20,10 @@ var isPerfectSquare = function (num) {
     } else if (res < num) {
       left = mid + 1;
     } else {
-      right = mid - 1
+      right = mid - 1;
     }
   }
-  return false
+  return false;
 };
 
 console.assert(isPerfectSquare(16) === true, 1);

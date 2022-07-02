@@ -79,8 +79,5 @@ console.assert(findMaximumXOR([3, 10, 5, 25, 2, 8]) === 28, 1);
 console.assert(findMaximumXOR([0]) === 0, 2);
 console.assert(findMaximumXOR([2, 4]) === 6, 3);
 console.assert(findMaximumXOR([8, 10, 2]) === 10, 4);
-console.assert(
-  findMaximumXOR([14, 70, 53, 83, 49, 91, 36, 80, 92, 51, 66, 70]) === 127,
-  5
-);
+console.assert(findMaximumXOR([14, 70, 53, 83, 49, 91, 36, 80, 92, 51, 66, 70]) === 127, 5);
 console.assert(findMaximumXOR([5, 4]) === 1, 6);

@@ -23,12 +23,7 @@ var gridIllumination = function (n, lamps, queries) {
   }
   const ans = [];
   for (const [x, y] of queries) {
-    if (
-      row.get(x) ||
-      col.get(y) ||
-      diagonal.get(x - y) ||
-      antiDiagonal.get(x + y)
-    ) {
+    if (row.get(x) || col.get(y) || diagonal.get(x - y) || antiDiagonal.get(x + y)) {
       ans[ans.length] = 1;
     } else {
       ans[ans.length] = 0;
@@ -55,8 +50,7 @@ var gridIllumination = function (n, lamps, queries) {
       row.get(a) && row.set(a, row.get(a) - 1);
       col.get(b) && col.set(b, col.get(b) - 1);
       diagonal.get(a - b) && diagonal.set(a - b, diagonal.get(a - b) - 1);
-      antiDiagonal.get(a + b) &&
-        antiDiagonal.set(a + b, antiDiagonal.get(a + b) - 1);
+      antiDiagonal.get(a + b) && antiDiagonal.set(a + b, antiDiagonal.get(a + b) - 1);
     });
   }
   return ans;

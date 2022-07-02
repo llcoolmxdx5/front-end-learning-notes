@@ -42,11 +42,7 @@ var visiblePoints = function (points, angle, location) {
   let maxCnt = 0;
   const toDegree = (angle * Math.PI) / 180;
   for (let i = 0; i < m; ++i) {
-    const iteration = binarySearch(
-      polarDegrees,
-      polarDegrees[i] + toDegree,
-      false
-    );
+    const iteration = binarySearch(polarDegrees, polarDegrees[i] + toDegree, false);
     maxCnt = Math.max(maxCnt, iteration - i);
   }
   return maxCnt + sameCnt;

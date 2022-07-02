@@ -1,7 +1,7 @@
-import { sleep } from "../utils";
+import { sleep } from '../utils';
 
 export default {
-  namespace: "counter",
+  namespace: 'counter',
   state: {
     number: 0,
   },
@@ -19,7 +19,7 @@ export default {
       const a = yield select((state) => state.counter.number);
       console.log(a);
       yield call(sleep, 1000);
-      yield put({ type: "add" });
+      yield put({ type: 'add' });
     },
 
     // Only catch the last one.
@@ -30,7 +30,7 @@ export default {
         console.log(1);
         yield call(sleep, 120);
         console.log(2);
-        yield put({ type: "add", payload });
+        yield put({ type: 'add', payload });
       },
       // 只响应最后一次
       // { type: "takeLatest" },
@@ -44,14 +44,13 @@ export default {
     addWatcher: [
       function* ({ take, put, call }) {
         while (true) {
-          const { payload } = yield take("addWatcher");
+          const { payload } = yield take('addWatcher');
           yield call(sleep, 100);
-          yield put({ type: "add", payload });
+          yield put({ type: 'add', payload });
         }
       },
-      { type: "watcher" },
+      { type: 'watcher' },
     ],
-
   },
   subscriptions: {
     changeTitle({ dispatch, history }, done) {

@@ -13,7 +13,7 @@ var hasAlternatingBits = function (n) {
     }
     n = Math.floor(n / 2);
   }
-  return true
+  return true;
 };
 
 console.assert(hasAlternatingBits(5) === true, 1);

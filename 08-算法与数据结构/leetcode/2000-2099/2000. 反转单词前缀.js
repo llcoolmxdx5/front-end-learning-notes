@@ -9,10 +9,10 @@ var reversePrefix = function (word, ch) {
   return (
     word
       .slice(0, index + 1)
-      .split("")
+      .split('')
       .reverse()
-      .join("") + word.slice(index + 1)
+      .join('') + word.slice(index + 1)
   );
 };
 
-console.assert(reversePrefix("abcdefd", "d") === "dcbaefd", 1);
+console.assert(reversePrefix('abcdefd', 'd') === 'dcbaefd', 1);

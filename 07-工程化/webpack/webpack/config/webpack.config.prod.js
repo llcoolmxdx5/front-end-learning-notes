@@ -1,15 +1,15 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 /**
  * @type {import('webpack').Configuration}
  */
 const config = {
-  mode: "production",
+  mode: 'production',
   devtool: false,
   output: {
-    filename: "scripts/[name].[contenthash].js",
+    filename: 'scripts/[name].[contenthash].js',
     // publicPath: "http://localhost:8080/",
   },
   module: {
@@ -19,7 +19,7 @@ const config = {
         use: [
           { loader: MiniCssExtractPlugin.loader },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               /**
                * - 0 => no loaders (default);
@@ -30,33 +30,33 @@ const config = {
               modules: {
                 mode: (path) => {
                   if (/global\.((le|c)ss)$/.test(path)) {
-                    return "global";
+                    return 'global';
                   }
-                  return "local";
+                  return 'local';
                 },
-                localIdentName: "[local]_[hash:base64:4]",
+                localIdentName: '[local]_[hash:base64:4]',
                 /**
                  * - camelCase 增加一个驼峰命名的拷贝
                  * - camelCaseOnly 转为驼峰命名
                  */
-                exportLocalsConvention: "camelCaseOnly",
+                exportLocalsConvention: 'camelCaseOnly',
               },
             },
           },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
-              postcssOptions: { plugins: ["postcss-preset-env"] },
+              postcssOptions: { plugins: ['postcss-preset-env'] },
             },
           },
-          "less-loader",
+          'less-loader',
         ],
       },
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "styles/[contenthash].css",
+      filename: 'styles/[contenthash].css',
     }),
   ],
   optimization: {

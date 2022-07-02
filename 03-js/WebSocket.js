@@ -17,7 +17,7 @@
 //    当一个 WebSocket 连接成功时触发。
 //    也可以通过 onopen 属性来设置。
 
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket('ws://localhost:8080');
 // 初始化事件函数
 const initEventHandle = (wsUrl) => {
   ws.onclose = () => {
@@ -32,18 +32,18 @@ const initEventHandle = (wsUrl) => {
   ws.onmessage = (msg) => {
     heartCheck.reset().start(); // 拿到任何消息都说明当前连接是正常的
     console.log(msg.data);
-    ws.send("msg");
+    ws.send('msg');
   };
 };
 // 实例websocket
 const createWebSocket = (url) => {
   try {
-    if ("WebSocket" in window) {
+    if ('WebSocket' in window) {
       ws = new WebSocket(url);
-    } else if ("MozWebSocket" in window) {
+    } else if ('MozWebSocket' in window) {
       ws = new MozWebSocket(url);
     } else {
-      alert("当前浏览器不支持websocket协议,建议使用现代浏览器", 3000);
+      alert('当前浏览器不支持websocket协议,建议使用现代浏览器', 3000);
     }
     initEventHandle();
   } catch (e) {

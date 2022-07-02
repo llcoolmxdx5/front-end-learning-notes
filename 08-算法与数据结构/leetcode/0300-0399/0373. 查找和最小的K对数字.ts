@@ -1,13 +1,8 @@
-import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
+import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
 
-function kSmallestPairs(
-  nums1: number[],
-  nums2: number[],
-  k: number
-): [number, number][] {
+function kSmallestPairs(nums1: number[], nums2: number[], k: number): [number, number][] {
   // 大顶堆
-  const compare = (a: [number, number], b: [number, number]) =>
-    a[0] + a[1] > b[0] + b[1];
+  const compare = (a: [number, number], b: [number, number]) => a[0] + a[1] > b[0] + b[1];
   const pq = new PriorityQueue<[number, number]>(compare);
   for (let i = 0, len1 = nums1.length; i < len1; i++) {
     for (let j = 0, len2 = nums2.length; j < len2; j++) {

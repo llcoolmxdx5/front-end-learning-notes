@@ -53,8 +53,5 @@ var catMouseGame = function (graph) {
   return getResult(1, 2, 0);
 };
 
-console.assert(
-  catMouseGame([[2, 5], [3], [0, 4, 5], [1, 4, 5], [2, 3], [0, 2, 3]]) === 0,
-  1
-);
+console.assert(catMouseGame([[2, 5], [3], [0, 4, 5], [1, 4, 5], [2, 3], [0, 2, 3]]) === 0, 1);
 console.assert(catMouseGame([[1, 3], [0], [3], [0, 2]]) === 1, 2);

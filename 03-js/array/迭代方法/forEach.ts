@@ -36,7 +36,7 @@ function forEach<T>(
 }
 
 // @ts-ignore
-const arr = [1, 2, , "4", undefined];
+const arr = [1, 2, , '4', undefined];
 forEach(arr, (value, index, arr) => {
   console.log(value, index, arr);
 });
@@ -45,17 +45,17 @@ arr.forEach((value, index, arr) => {
   console.log(value, index, arr);
 });
 
-let words = ["one", "two", "three", "four"];
+let words = ['one', 'two', 'three', 'four'];
 forEach(words, function (word) {
   console.log(word);
-  if (word === "two") {
+  if (word === 'two') {
     words.shift();
   }
 });
-words = ["one", "two", "three", "four"];
+words = ['one', 'two', 'three', 'four'];
 words.forEach(function (word) {
   console.log(word);
-  if (word === "two") {
+  if (word === 'two') {
     words.shift();
   }
 });

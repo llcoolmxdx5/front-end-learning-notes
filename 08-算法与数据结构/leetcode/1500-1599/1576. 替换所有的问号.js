@@ -6,7 +6,7 @@ var modifyString = function (s) {
   const n = s.length;
   const arr = [...s];
   for (let i = 0; i < n; ++i) {
-    if (arr[i] === "?") {
+    if (arr[i] === '?') {
       for (let j = 0; j < 3; ++j) {
         if (
           (i > 0 && arr[i - 1] === String.fromCharCode(97 + j)) ||
@@ -19,7 +19,7 @@ var modifyString = function (s) {
       }
     }
   }
-  return arr.join("");
+  return arr.join('');
 };
 
-console.log(modifyString("???????"));
+console.log(modifyString('???????'));

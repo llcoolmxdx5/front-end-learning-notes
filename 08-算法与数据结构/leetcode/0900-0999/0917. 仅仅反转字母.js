@@ -9,7 +9,7 @@ var reverseOnlyLetters = function (s) {
   };
   let left = 0;
   let right = length - 1;
-  let ans = s.split("");
+  let ans = s.split('');
   while (left < right) {
     while (left < length && !isLetter(s[left])) {
       left += 1;
@@ -23,10 +23,7 @@ var reverseOnlyLetters = function (s) {
       right -= 1;
     }
   }
-  return ans.join("");
+  return ans.join('');
 };
 
-console.assert(
-  reverseOnlyLetters("Test1ng-Leet=code-Q!") === "Qedo1ct-eeLg=ntse-T!",
-  1
-);
+console.assert(reverseOnlyLetters('Test1ng-Leet=code-Q!') === 'Qedo1ct-eeLg=ntse-T!', 1);

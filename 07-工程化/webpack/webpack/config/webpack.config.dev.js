@@ -2,10 +2,10 @@
  * @type {import('webpack').Configuration}
  */
 const config = {
-  mode: "development",
-  devtool: "inline-source-map",
+  mode: 'development',
+  devtool: 'inline-source-map',
   output: {
-    filename: "scripts/[name].js",
+    filename: 'scripts/[name].js',
     pathinfo: false,
   },
   /**
@@ -20,16 +20,16 @@ const config = {
     // },
   },
   cache: {
-    type: "memory",
+    type: 'memory',
   },
   module: {
     rules: [
       {
         test: /\.((le|c)ss)$/i,
         use: [
-          "style-loader",
+          'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               /**
                * - 0 => no loaders (default);
@@ -40,26 +40,26 @@ const config = {
               modules: {
                 mode: (path) => {
                   if (/global\.((le|c)ss)$/.test(path)) {
-                    return "global";
+                    return 'global';
                   }
-                  return "local";
+                  return 'local';
                 },
-                localIdentName: "[local]_[hash:base64:4]",
+                localIdentName: '[local]_[hash:base64:4]',
                 /**
                  * - camelCase 增加一个驼峰命名的拷贝
                  * - camelCaseOnly 转为驼峰命名
                  */
-                exportLocalsConvention: "camelCaseOnly",
+                exportLocalsConvention: 'camelCaseOnly',
               },
             },
           },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
-              postcssOptions: { plugins: ["postcss-preset-env"] },
+              postcssOptions: { plugins: ['postcss-preset-env'] },
             },
           },
-          "less-loader",
+          'less-loader',
         ],
       },
     ],

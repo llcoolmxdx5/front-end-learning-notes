@@ -23,7 +23,7 @@ var convert = function (s, numRows) {
       row -= 1;
     }
   }
-  return arr.join("").split(",").join("");
+  return arr.join('').split(',').join('');
 };
 
 var convert = function (s, numRows) {
@@ -44,9 +44,9 @@ var convert = function (s, numRows) {
       }
     }
   }
-  return ans.join("");
+  return ans.join('');
 };
 
-console.assert(convert("PAYPALISHIRING", 3) === "PAHNAPLSIIGYIR", 1);
-console.assert(convert("PAYPALISHIRING", 4) === "PINALSIGYAHRPI", 2);
-console.assert(convert("PAYPALISHIRING", 1) === "PAYPALISHIRING", 3);
+console.assert(convert('PAYPALISHIRING', 3) === 'PAHNAPLSIIGYIR', 1);
+console.assert(convert('PAYPALISHIRING', 4) === 'PINALSIGYAHRPI', 2);
+console.assert(convert('PAYPALISHIRING', 1) === 'PAYPALISHIRING', 3);

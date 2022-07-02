@@ -1,4 +1,4 @@
-import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
+import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
 
 /**
  * @param {number[][]} heightMap

@@ -12,13 +12,13 @@ React 在 v16.8 的版本中推出了 React Hooks 新特性，虽然社区还没
 在类组件中，我们使用 this.state 来保存组件状态，并对其修改触发组件重新渲染。比如下面这个简单的计数器组件，很好诠释了类组件如何运行：
 
 ```jsx
-import React from "react";
+import React from 'react';
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       count: 0,
-      name: "ali-fe",
+      name: 'ali-fe',
     };
   }
   render() {
@@ -37,21 +37,17 @@ class App extends React.Component {
 一个简单的计数器组件就完成了，而在函数组件中，由于没有 this 这个黑魔法，React 通过 useState 来帮我们保存组件的状态。
 
 ```jsx
-import React, { useState } from "react";
+import React, { useState } from 'react';
 function App() {
   const [obj, setObject] = useState({
     count: 0,
-    name: "ali-fe",
+    name: 'ali-fe',
   });
   return (
     <div className="App">
       Count: {obj.count}
-      <button onClick={() => setObject({ ...obj, count: obj.count + 1 })}>
-        +
-      </button>
-      <button onClick={() => setObject({ ...obj, count: obj.count - 1 })}>
-        -
-      </button>
+      <button onClick={() => setObject({ ...obj, count: obj.count + 1 })}>+</button>
+      <button onClick={() => setObject({ ...obj, count: obj.count - 1 })}>-</button>
     </div>
   );
 }
@@ -66,14 +62,14 @@ function App() {
 函数组件能保存状态，但是对于异步请求，副作用的操作还是无能为力，所以 React 提供了 useEffect 来帮助开发者处理函数组件的副作用，在介绍新 API 之前，我们先来看看类组件是怎么做的：
 
 ```jsx
-import React, { Component } from "react";
+import React, { Component } from 'react';
 class App extends Component {
   state = {
     count: 1,
   };
   componentDidMount() {
     const { count } = this.state;
-    document.title = "componentDidMount" + count;
+    document.title = 'componentDidMount' + count;
     this.timer = setInterval(() => {
       this.setState(({ count }) => ({
         count: count + 1,
@@ -82,10 +78,10 @@ class App extends Component {
   }
   componentDidUpdate() {
     const { count } = this.state;
-    document.title = "componentDidMount" + count;
+    document.title = 'componentDidMount' + count;
   }
   componentWillUnmount() {
-    document.title = "componentWillUnmount";
+    document.title = 'componentWillUnmount';
     clearInterval(this.timer);
   }
   render() {
@@ -105,12 +101,12 @@ class App extends Component {
 从例子中可以看到，一些重复的功能开发者需要在 componentDidMount 和 componentDidUpdate 重复编写，而如果使用 useEffect 则完全不一样。
 
 ```jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 let timer = null;
 function App() {
   const [count, setCount] = useState(0);
   useEffect(() => {
-    document.title = "componentDidMount" + count;
+    document.title = 'componentDidMount' + count;
   }, [count]);
 
   useEffect(() => {
@@ -118,7 +114,7 @@ function App() {
       setCount((prevCount) => prevCount + 1);
     }, 1000);
     return () => {
-      document.title = "componentWillUnmount";
+      document.title = 'componentWillUnmount';
       clearInterval(timer);
     };
   }, []);
@@ -167,7 +163,7 @@ function Foo() {
 }
 function App() {
   return (
-    <Provider value={"grey"}>
+    <Provider value={'grey'}>
       <Foo />
     </Provider>
   );
@@ -177,7 +173,7 @@ function App() {
 通过 React createContext 的语法，在 APP 组件中可以跨过 Foo 组件给 Bar 传递数据。而在 React Hooks 中，我们可以使用 useContext 进行改造。
 
 ```jsx
-const colorContext = React.createContext("gray");
+const colorContext = React.createContext('gray');
 function Bar() {
   const color = useContext(colorContext);
   return <div>{color}</div>;
@@ -187,7 +183,7 @@ function Foo() {
 }
 function App() {
   return (
-    <colorContext.Provider value={"red"}>
+    <colorContext.Provider value={'red'}>
       <Foo />
     </colorContext.Provider>
   );
@@ -233,15 +229,15 @@ function HeaderBar() {
 useReducer 这个 Hooks 在使用上几乎跟 Redux/React-Redux 一模一样，唯一缺少的就是无法使用 redux 提供的中间件。我们将上述的计时器组件改写为 useReducer，
 
 ```jsx
-import React, { useReducer } from "react";
+import React, { useReducer } from 'react';
 const initialState = {
   count: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
-    case "increment":
+    case 'increment':
       return { count: state.count + action.payload };
-    case "decrement":
+    case 'decrement':
       return { count: state.count - action.payload };
     default:
       throw new Error();
@@ -252,12 +248,8 @@ function App() {
   return (
     <>
       Count: {state.count}
-      <button onClick={() => dispatch({ type: "increment", payload: 5 })}>
-        +
-      </button>
-      <button onClick={() => dispatch({ type: "decrement", payload: 5 })}>
-        -
-      </button>
+      <button onClick={() => dispatch({ type: 'increment', payload: 5 })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement', payload: 5 })}>-</button>
     </>
   );
 }
@@ -277,7 +269,7 @@ class App {
         <SomeComponent
           style={{ fontSize: 14 }}
           doSomething={() => {
-            console.log("do something");
+            console.log('do something');
           }}
         />
       </div>
@@ -292,7 +284,7 @@ class App {
 const fontSizeStyle = { fontSize: 14 };
 class App {
   doSomething = () => {
-    console.log("do something");
+    console.log('do something');
   };
   render() {
     return (
@@ -309,7 +301,7 @@ class App {
 ```jsx
 function App() {
   const handleClick = () => {
-    console.log("Click happened");
+    console.log('Click happened');
   };
   return <SomeComponent onClick={handleClick}>Click Me</SomeComponent>;
 }
@@ -320,7 +312,7 @@ function App() {
 ```jsx
 function App() {
   const memoizedHandleClick = useCallback(() => {
-    console.log("Click happened");
+    console.log('Click happened');
   }, []); // 空数组代表无论什么情况下该函数都不会发生改变
   return <SomeComponent onClick={memoizedHandleClick}>Click Me</SomeComponent>;
 }
@@ -341,7 +333,7 @@ useCallback 的功能完全可以由 useMemo 所取代，如果你想通过使�
 function App() {
   const memoizedHandleClick = useMemo(
     () => () => {
-      console.log("Click happened");
+      console.log('Click happened');
     },
     []
   ); // 空数组代表无论什么情况下该函数都不会发生改变
@@ -375,9 +367,9 @@ function Parent({ a, b }) {
 useRef 跟 createRef 类似，都可以用来生成对 DOM 对象的引用，看个简单的例子：
 
 ```jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 function App() {
-  let [name, setName] = useState("Nate");
+  let [name, setName] = useState('Nate');
   let nameRef = useRef();
   const submitButton = () => {
     setName(nameRef.current.value);
@@ -406,9 +398,9 @@ React Hooks 中存在 Capture Value 的特性：
 
 ```jsx
 function MessageThread() {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const showMessage = () => {
-    alert("You said: " + message);
+    alert('You said: ' + message);
   };
   const handleSendClick = () => {
     setTimeout(showMessage, 3000);
@@ -429,9 +421,9 @@ function MessageThread() {
 
 ```jsx
 function MessageThread() {
-  const latestMessage = useRef("");
+  const latestMessage = useRef('');
   const showMessage = () => {
-    alert("You said: " + latestMessage.current);
+    alert('You said: ' + latestMessage.current);
   };
   const handleSendClick = () => {
     setTimeout(showMessage, 3000);
@@ -449,12 +441,7 @@ function MessageThread() {
 通过 useImperativeHandle 用于让父组件获取子组件内的索引
 
 ```jsx
-import React, {
-  useRef,
-  useEffect,
-  useImperativeHandle,
-  forwardRef,
-} from "react";
+import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 function ChildInputComponent(props, ref) {
   const inputRef = useRef(null);
   // 自定义暴露给外部使用的东西, 没有暴露的不能使用
@@ -485,15 +472,15 @@ function App() {
 function App() {
   const [width, setWidth] = useState(0);
   useLayoutEffect(() => {
-    const title = document.querySelector("#title");
+    const title = document.querySelector('#title');
     const titleWidth = title.getBoundingClientRect().width;
-    console.log("useLayoutEffect");
+    console.log('useLayoutEffect');
     if (width !== titleWidth) {
       setWidth(titleWidth);
     }
   });
   useEffect(() => {
-    console.log("useEffect");
+    console.log('useEffect');
   });
   return (
     <div>
@@ -518,7 +505,7 @@ function useFriendStatus(friendID) {
   // ...
   // 在开发者工具中的这个 Hook 旁边显示标签
   // e.g. "FriendStatus: Online"
-  useDebugValue(isOnline ? "Online" : "Offline");
+  useDebugValue(isOnline ? 'Online' : 'Offline');
   return isOnline;
 }
 ```
@@ -573,8 +560,8 @@ function useState(initialState) {
   const reducer = useCallback((state, action) => action);
   const [state, dispatch] = useReducer(reducer, initialState);
   function setState(payload) {
-    dispatch(payload)
+    dispatch(payload);
   }
-  return [state, setState]
+  return [state, setState];
 }
 ```

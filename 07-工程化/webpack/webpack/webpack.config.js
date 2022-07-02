@@ -1,13 +1,13 @@
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const toml = require("toml");
-const yaml = require("yaml");
-const json5 = require("json5");
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const toml = require('toml');
+const yaml = require('yaml');
+const json5 = require('json5');
 
-const devMode = process.env.NODE_ENV !== "production";
+const devMode = process.env.NODE_ENV !== 'production';
 // 尝试使用环境变量，否则使用根路径
 // const ASSET_PATH = process.env.ASSET_PATH || "/";
 
@@ -25,24 +25,24 @@ const config = {
     //   dependOn: "shared",
     // },
     // shared: "lodash",
-    index: "./src/index.js",
-    another: "./src/split/another-module.js",
+    index: './src/index.js',
+    another: './src/split/another-module.js',
   },
   output: {
     // publicPath: ASSET_PATH,
-    publicPath: "auto",
-    filename: "scripts/[name].[contenthash].js",
-    path: path.resolve(__dirname, "./dist"),
+    publicPath: 'auto',
+    filename: 'scripts/[name].[contenthash].js',
+    path: path.resolve(__dirname, './dist'),
     clean: true,
-    assetModuleFilename: "images/[contenthash][ext][query]",
+    assetModuleFilename: 'images/[contenthash][ext][query]',
   },
-  mode: devMode ? "development" : "production",
-  devtool: devMode ? "inline-source-map" : false,
+  mode: devMode ? 'development' : 'production',
+  devtool: devMode ? 'inline-source-map' : false,
   /**
    * @type {import('webpack-dev-server').Configuration}
    */
   devServer: {
-    static: "./dist",
+    static: './dist',
     port: 8000,
     devMiddleware: {
       index: true,
@@ -53,23 +53,23 @@ const config = {
     rules: [
       {
         test: /\.png$/,
-        type: "asset/resource",
+        type: 'asset/resource',
         // 优先级高于 output.assetModuleFilename
         generator: {
-          filename: "images/[contenthash:8][ext][query]",
+          filename: 'images/[contenthash:8][ext][query]',
         },
       },
       {
         test: /\.svg$/,
-        type: "asset/inline",
+        type: 'asset/inline',
       },
       {
         test: /\.txt$/,
-        type: "asset/source",
+        type: 'asset/source',
       },
       {
         test: /\.jpg$/,
-        type: "asset",
+        type: 'asset',
         parser: {
           dataUrlCondition: {
             maxSize: 100 * 1024, // 默认 8kb
@@ -78,14 +78,14 @@ const config = {
       },
       {
         test: /\.txt$/,
-        use: "raw-loader",
+        use: 'raw-loader',
       },
       {
         test: /\.((le|c)ss)$/i,
         use: [
-          devMode ? "style-loader" : { loader: MiniCssExtractPlugin.loader },
+          devMode ? 'style-loader' : { loader: MiniCssExtractPlugin.loader },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               /**
                * - 0 => no loaders (default);
@@ -96,52 +96,52 @@ const config = {
               modules: {
                 mode: (path) => {
                   if (/global\.((le|c)ss)$/.test(path)) {
-                    return "global";
+                    return 'global';
                   }
-                  return "local";
+                  return 'local';
                 },
-                localIdentName: "[local]_[hash:base64:4]",
+                localIdentName: '[local]_[hash:base64:4]',
                 /**
                  * - camelCase 增加一个驼峰命名的拷贝
                  * - camelCaseOnly 转为驼峰命名
                  */
-                exportLocalsConvention: "camelCaseOnly",
+                exportLocalsConvention: 'camelCaseOnly',
               },
             },
           },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
-              postcssOptions: { plugins: ["postcss-preset-env"] },
+              postcssOptions: { plugins: ['postcss-preset-env'] },
             },
           },
-          "less-loader",
+          'less-loader',
         ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
       },
-      { test: /\.(csv|tsv)$/i, use: ["csv-loader"] },
+      { test: /\.(csv|tsv)$/i, use: ['csv-loader'] },
       {
         test: /\.xml$/i,
-        use: ["xml-loader"],
+        use: ['xml-loader'],
       },
       {
         test: /\.toml$/i,
-        type: "json",
+        type: 'json',
         parser: { parse: toml.parse },
       },
       {
         test: /\.yaml$/i,
-        type: "json",
+        type: 'json',
         parser: {
           parse: yaml.parse,
         },
       },
       {
         test: /\.json5$/i,
-        type: "json",
+        type: 'json',
         parser: {
           parse: json5.parse,
         },
@@ -150,10 +150,10 @@ const config = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env"],
-            plugins: [["@babel/plugin-transform-runtime"]],
+            presets: ['@babel/preset-env'],
+            plugins: [['@babel/plugin-transform-runtime']],
           },
         },
       },
@@ -164,16 +164,16 @@ const config = {
     //   "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH),
     // }),
     new HtmlWebpackPlugin({
-      template: "./index.html",
-      filename: "html.html",
-      inject: "body",
+      template: './index.html',
+      filename: 'html.html',
+      inject: 'body',
     }),
   ].concat(
     devMode
       ? []
       : [
           new MiniCssExtractPlugin({
-            filename: "styles/[name].[contenthash:8].css",
+            filename: 'styles/[name].[contenthash:8].css',
           }),
         ]
   ),
@@ -184,8 +184,8 @@ const config = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
+          name: 'vendors',
+          chunks: 'all',
         },
       },
     },

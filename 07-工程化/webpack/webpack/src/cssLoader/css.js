@@ -1,27 +1,27 @@
 // import "./css.less";
-import less from "./css.less";
-import "./global.less";
-import data from "../assets/data.csv";
-import xml from "../assets/data.xml";
-import toml from "../assets/data.toml";
-import yaml from "../assets/data.yaml";
-import json from "../assets/data.json5";
+import less from './css.less';
+import './global.less';
+import data from '../assets/data.csv';
+import xml from '../assets/data.xml';
+import toml from '../assets/data.toml';
+import yaml from '../assets/data.yaml';
+import json from '../assets/data.json5';
 
-console.log(data, "data.csv");
-console.log(xml, "data.xml");
+console.log(data, 'data.csv');
+console.log(xml, 'data.xml');
 
 console.log(less);
 
-const div = document.createElement("div");
-div.textContent = "hello webpack";
+const div = document.createElement('div');
+div.textContent = 'hello webpack';
 
 document.body.appendChild(div);
 
 document.body.classList.add(less.word);
 
-const span = document.createElement("span");
-span.classList.add("icon");
-span.innerHTML = "&#xe668;";
+const span = document.createElement('span');
+span.classList.add('icon');
+span.innerHTML = '&#xe668;';
 document.body.appendChild(span);
 
 console.group();

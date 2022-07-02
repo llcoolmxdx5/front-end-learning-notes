@@ -1,5 +1,5 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
   // draw a simple rectangle, but scale it.
@@ -10,7 +10,7 @@ function draw() {
 
   // mirror horizontally
   ctx.scale(-1, 1);
-  ctx.font = "48px serif";
-  ctx.fillText("MDN", -135, 120);
+  ctx.font = '48px serif';
+  ctx.fillText('MDN', -135, 120);
   ctx.restore();
 }

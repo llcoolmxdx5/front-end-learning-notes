@@ -9,8 +9,10 @@ const coinChange = (coins, amount) => {
   }
   const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER);
   dp[0] = 0;
-  for (let i = 0, len = coins.length; i < len; i++) { // 遍历物品
-    for (let j = coins[i]; j <= amount; j++) { // 遍历背包
+  for (let i = 0, len = coins.length; i < len; i++) {
+    // 遍历物品
+    for (let j = coins[i]; j <= amount; j++) {
+      // 遍历背包
       dp[j] = Math.min(dp[j - coins[i]] + 1, dp[j]);
     }
   }

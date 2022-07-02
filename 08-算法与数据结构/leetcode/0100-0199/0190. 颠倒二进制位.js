@@ -28,12 +28,6 @@ var reverseBits = function (n) {
   return ((n >>> 16) | (n << 16)) >>> 0;
 };
 
-console.assert(
-  reverseBits(0b00000010100101000001111010011100) === 964176192,
-  1
-);
+console.assert(reverseBits(0b00000010100101000001111010011100) === 964176192, 1);
 
-console.assert(
-  reverseBits(0b11111111111111111111111111111101) === 3221225471,
-  2
-);
+console.assert(reverseBits(0b11111111111111111111111111111101) === 3221225471, 2);

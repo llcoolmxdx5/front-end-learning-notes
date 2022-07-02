@@ -1,10 +1,10 @@
-import Stack from "../stackWeakMap.js";
+import Stack from '../stackWeakMap.js';
 
 function decimalToBinary(decNumber) {
   let remStack = new Stack();
   let number = decNumber;
   let rem;
-  let binaryString = "";
+  let binaryString = '';
   while (number > 0) {
     rem = Math.floor(number % 2);
     remStack.push(rem);

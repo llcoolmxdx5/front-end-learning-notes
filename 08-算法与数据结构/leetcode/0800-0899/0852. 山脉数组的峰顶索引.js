@@ -19,10 +19,7 @@ var peakIndexInMountainArray = function (arr) {
   }
 };
 
-console.assert(
-  peakIndexInMountainArray([24, 69, 100, 99, 79, 78, 67, 36, 26, 19]) === 2,
-  1
-);
+console.assert(peakIndexInMountainArray([24, 69, 100, 99, 79, 78, 67, 36, 26, 19]) === 2, 1);
 
 console.assert(peakIndexInMountainArray([0, 1, 0]) === 1, 2);
 

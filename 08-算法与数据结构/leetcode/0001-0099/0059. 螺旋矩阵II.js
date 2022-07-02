@@ -3,9 +3,7 @@
  * @return {number[][]}
  */
 var generateMatrix = function (n) {
-  const matrix = new Array(n)
-    .fill(undefined)
-    .map((_) => new Array(n).fill(undefined));
+  const matrix = new Array(n).fill(undefined).map((_) => new Array(n).fill(undefined));
   const max = n ** 2;
   let start = 1;
   let loop = 0;

@@ -3,7 +3,7 @@
  * @param {number} target
  * @return {number}
  */
- var search = function (nums, target) {
+var search = function (nums, target) {
   // [3,4,5,6,0,1,2]
   // [5,6,0,1,2,3,4]
   let left = 0;

@@ -25,5 +25,5 @@ var minDistance = function (word1, word2) {
   return dp[n][m];
 };
 
-console.assert(minDistance("horse", "ros") === 3, 1);
-console.assert(minDistance("intention", "execution") === 5, 2);
+console.assert(minDistance('horse', 'ros') === 3, 1);
+console.assert(minDistance('intention', 'execution') === 5, 2);

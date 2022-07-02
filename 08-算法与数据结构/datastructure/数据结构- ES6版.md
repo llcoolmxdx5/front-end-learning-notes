@@ -1,4 +1,4 @@
-# 「中高级前端」窥探数据结构的世界- ES6版
+# 「中高级前端」窥探数据结构的世界- ES6 版
 
 ## 1. 什么是数据结构
 
@@ -6,9 +6,9 @@
 
 ### 1.1 为什么我们需要数据结构
 
-* 数据是计算机科学当中最关键的实体，而数据结构则可以将数据以某种组织形式存储，因此，数据结构的价值不言而喻。
-* 无论你以何种方式解决何种问题，你都需要处理数据——无论是涉及员工薪水、股票价格、购物清单，还是只是简单的电话簿问题。
-* 数据需要根据不同的场景，按照特定的格式进行存储。有很多数据结构能够满足以不同格式存储数据的需求。
+- 数据是计算机科学当中最关键的实体，而数据结构则可以将数据以某种组织形式存储，因此，数据结构的价值不言而喻。
+- 无论你以何种方式解决何种问题，你都需要处理数据——无论是涉及员工薪水、股票价格、购物清单，还是只是简单的电话簿问题。
+- 数据需要根据不同的场景，按照特定的格式进行存储。有很多数据结构能够满足以不同格式存储数据的需求。
 
 ### 1.2 八大常见的数据结构
 
@@ -23,27 +23,27 @@
 
 在较高的层次上，基本上有三种类型的数据结构:
 
-* 堆栈和队列是类似于数组的结构，仅在项目的插入和删除方式上有所不同。
-* 链表，树，和图 结构的节点是引用到其他节点。
-* 散列表依赖于散列函数来保存和定位数据。
+- 堆栈和队列是类似于数组的结构，仅在项目的插入和删除方式上有所不同。
+- 链表，树，和图 结构的节点是引用到其他节点。
+- 散列表依赖于散列函数来保存和定位数据。
 
 在复杂性方面：
 
-* 堆栈和队列是最简单的，并且可以从中构建链表。
-* 树和图 是最复杂的，因为它们扩展了链表的概念。
-* 散列表和字典树 需要利用这些数据结构来可靠地执行。
+- 堆栈和队列是最简单的，并且可以从中构建链表。
+- 树和图 是最复杂的，因为它们扩展了链表的概念。
+- 散列表和字典树 需要利用这些数据结构来可靠地执行。
 
 就效率而已：
 
-* 链表是记录和存储数据的最佳选择
-* 而哈希表和字典树 在搜索和检索数据方面效果最佳。
+- 链表是记录和存储数据的最佳选择
+- 而哈希表和字典树 在搜索和检索数据方面效果最佳。
 
 ## 2. 数组 - 知识补充
 
 数组是最简单的数据结构，这里就不讲过多了。
-贴一张每个函数都运行10,000次迭代：
+贴一张每个函数都运行 10,000 次迭代：
 
-* 10,000个随机密钥在10,000个对象的数组中查找的执行效率对比图：
+- 10,000 个随机密钥在 10,000 个对象的数组中查找的执行效率对比图：
 
 ```js
 [
@@ -69,9 +69,9 @@
 
 ### 2.1 `for... in`为何这么慢
 
-`for... in`语法令人难以置信的缓慢。在测试中就已经比正常情况下慢近9倍的循环。
+`for... in`语法令人难以置信的缓慢。在测试中就已经比正常情况下慢近 9 倍的循环。
 
-这是因为`for ... in`语法是第一个能够迭代对象键的JavaScript语句。
+这是因为`for ... in`语法是第一个能够迭代对象键的 JavaScript 语句。
 
 循环对象键（`{}`）与在数组（`[]`）上进行循环不同，
 
@@ -82,9 +82,9 @@
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9378527b1654e?w=1284&h=556&f=png&s=50386)
 堆栈是元素的集合，可以在顶部添加项目，我们有几个实际的堆栈示例：
 
-* 浏览器历史记录
-* 撤消操作
-* 递归以及其它。
+- 浏览器历史记录
+- 撤消操作
+- 递归以及其它。
 
 三句话解释堆栈：
 
@@ -100,26 +100,24 @@
 
 ```js
 class Stack {
-    constructor(...items) {
-        this.reverse = false;
-        this.stack = [...items];
-    }
+  constructor(...items) {
+    this.reverse = false;
+    this.stack = [...items];
+  }
 
-    push(...items) {
-        return this.reverse
-            ? this.stack.unshift(...items)
-            : this.stack.push(...items);
-    }
+  push(...items) {
+    return this.reverse ? this.stack.unshift(...items) : this.stack.push(...items);
+  }
 
-    pop() {
-        return this.reverse ? this.stack.shift() : this.stack.pop();
-    }
+  pop() {
+    return this.reverse ? this.stack.shift() : this.stack.pop();
+  }
 }
 
 const stack = new Stack(4, 5);
 stack.reverse = true;
-console.log(stack.push(1, 2, 3) === 5) // true
-console.log(stack.stack ===[1, 2, 3, 4, 5]) // true
+console.log(stack.push(1, 2, 3) === 5); // true
+console.log(stack.stack === [1, 2, 3, 4, 5]); // true
 ```
 
 ## 4. 队列：`Queue`
@@ -127,14 +125,14 @@ console.log(stack.stack ===[1, 2, 3, 4, 5]) // true
 在计算机科学中，一个队列(queue)是一种特殊类型的抽象数据类型或集合。集合中的实体按顺序保存。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9546569260012?w=1420&h=564&f=png&s=54936)
-而在前端开发中，最著名的队列使用当属浏览器/NodeJs中 关于宏任务与微任务，任务队列的知识。这里就不再赘述了。
+而在前端开发中，最著名的队列使用当属浏览器/NodeJs 中 关于宏任务与微任务，任务队列的知识。这里就不再赘述了。
 
 在后端领域，用得最广泛的就是消息队列：`Message queue`：如`RabbitMQ`、`ActiveMQ`等。
 
 以编程思想而言，`Queue`可以用两句话描述：
 
-* 只是具有两个主要操作的数组：`unshift`和`pop`。
-* 遵循`"Fist In，first out"`即：`FIFO`，先进先出。
+- 只是具有两个主要操作的数组：`unshift`和`pop`。
+- 遵循`"Fist In，first out"`即：`FIFO`，先进先出。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a954b5e049bf62?w=773&h=540&f=png&s=41261)
 
@@ -146,20 +144,18 @@ console.log(stack.stack ===[1, 2, 3, 4, 5]) // true
 
 ```js
 class Queue {
-    constructor(...items) {
-        this.reverse = false;
-        this.queue = [...items];
-    }
+  constructor(...items) {
+    this.reverse = false;
+    this.queue = [...items];
+  }
 
-    enqueue(...items) {
-        return this.reverse
-            ? this.queue.push(...items)
-            : this.queue.unshift(...items);
-    }
+  enqueue(...items) {
+    return this.reverse ? this.queue.push(...items) : this.queue.unshift(...items);
+  }
 
-    dequeue() {
-        return this.reverse ? this.queue.shift() : this.queue.pop();
-    }
+  dequeue() {
+    return this.reverse ? this.queue.shift() : this.queue.pop();
+  }
 }
 ```
 
@@ -174,155 +170,154 @@ class Queue {
 
 **单链表与双向链表：**
 
-* 单链表是表示一系列节点的数据结构，其中每个节点指向列表中的下一个节点。
-* 链表通常需要遍历整个操作列表，因此性能较差。
-* 提高链表性能的一种方法是在每个节点上添加指向列表中上一个节点的第二个指针。
-* 双向链表具有指向其前后元素的节点。
+- 单链表是表示一系列节点的数据结构，其中每个节点指向列表中的下一个节点。
+- 链表通常需要遍历整个操作列表，因此性能较差。
+- 提高链表性能的一种方法是在每个节点上添加指向列表中上一个节点的第二个指针。
+- 双向链表具有指向其前后元素的节点。
 
 **链表的优点：**
 
-* 链接具有常量时间 插入和删除，因为我们可以只更改指针。
-* 与数组一样，链表可以作为堆栈运行。
+- 链接具有常量时间 插入和删除，因为我们可以只更改指针。
+- 与数组一样，链表可以作为堆栈运行。
 
 **链表的应用场景：**
 
 链接列表在客户端和服务器上都很有用。
 
-* 在客户端上，像`Redux`就以链表方式构建其中的逻辑。
-* `React` 核心算法 `React Fiber`的实现就是链表。
+- 在客户端上，像`Redux`就以链表方式构建其中的逻辑。
+- `React` 核心算法 `React Fiber`的实现就是链表。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a956f81804a1d4?w=720&h=405&f=png&s=218712)
 
-* * `React Fiber`之前的`Stack Reconciler`，是自顶向下的递归`mount/update`，无法中断(持续占用主线程)，这样主线程上的布局、动画等周期性任务以及交互响应就无法立即得到处理，影响体验。
-* * `React Fiber`解决过去`Reconciler`存在的问题的思路是把渲染/更新过程(递归diff)拆分成一系列小任务，每次检查树上的一小部分，做完看是否还有时间继续下一个任务，有的话继续，没有的话把自己挂起，主线程不忙的时候再继续。
-* 在服务器上，像`Express`这样的`Web`框架也以类似的方式构建其中间件逻辑。当请求被接收时，它从一个中间件管道输送到下一个，直到响应被发出。
+- - `React Fiber`之前的`Stack Reconciler`，是自顶向下的递归`mount/update`，无法中断(持续占用主线程)，这样主线程上的布局、动画等周期性任务以及交互响应就无法立即得到处理，影响体验。
+- - `React Fiber`解决过去`Reconciler`存在的问题的思路是把渲染/更新过程(递归 diff)拆分成一系列小任务，每次检查树上的一小部分，做完看是否还有时间继续下一个任务，有的话继续，没有的话把自己挂起，主线程不忙的时候再继续。
+- 在服务器上，像`Express`这样的`Web`框架也以类似的方式构建其中间件逻辑。当请求被接收时，它从一个中间件管道输送到下一个，直到响应被发出。
 
 ### 5.1 单链表实现
 
 单链表的操作核心有：
 
-* `push（value）` - 在链表的末尾/头部添加一个节点
-* `pop（）` - 从链表的末尾/头部删除一个节点
-* `get（index）` - 返回指定索引处的节点
-* `delete（index）` - 删除指定索引处的节点
-* `isEmpty（）` - 根据列表长度返回true或false
-* `print（）` - 返回链表的可见表示
+- `push（value）` - 在链表的末尾/头部添加一个节点
+- `pop（）` - 从链表的末尾/头部删除一个节点
+- `get（index）` - 返回指定索引处的节点
+- `delete（index）` - 删除指定索引处的节点
+- `isEmpty（）` - 根据列表长度返回 true 或 false
+- `print（）` - 返回链表的可见表示
 
 ```js
 class Node {
   constructor(data) {
-    this.data = data
-    this.next = null
+    this.data = data;
+    this.next = null;
   }
 }
 
 class LinkedList {
   constructor() {
-    this.head = null
-    this.tail = null
+    this.head = null;
+    this.tail = null;
     // 长度非必要
-    this.length = 0
+    this.length = 0;
   }
   push(data) {
     // 创建一个新节点
-    const node = new Node(data)
+    const node = new Node(data);
     // 检查头部是否为空
     if (this.head === null) {
-      this.head = node
-      this.tail = node
+      this.head = node;
+      this.tail = node;
     }
-    this.tail.next = node
-    this.tail = node
-    this.length++
+    this.tail.next = node;
+    this.tail = node;
+    this.length++;
   }
-  pop(){
+  pop() {
     // 先检查链表是否为空
-    if(this.isEmpty()) {
-      return null
+    if (this.isEmpty()) {
+      return null;
     }
     // 如果长度为1
     if (this.head === this.tail) {
-      this.head = null
-      this.tail = null
-      this.length--
-      return this.tail
+      this.head = null;
+      this.tail = null;
+      this.length--;
+      return this.tail;
     }
-    let node = this.tail
-    let currentNode = this.head
-    let penultimate
+    let node = this.tail;
+    let currentNode = this.head;
+    let penultimate;
 
     while (currentNode) {
       if (currentNode.next === this.tail) {
-        penultimate = currentNode
-        break
+        penultimate = currentNode;
+        break;
       }
-      currentNode = currentNode.next
+      currentNode = currentNode.next;
     }
 
-    penultimate.next = null
-    this.tail = penultimate
-    this.length --
-    return node
+    penultimate.next = null;
+    this.tail = penultimate;
+    this.length--;
+    return node;
   }
-  
-  get(index){
+
+  get(index) {
     // 处理边界条件
     if (index === 0) {
-      return this.head
+      return this.head;
     }
     if (index < 0 || index > this.length) {
-      return null
+      return null;
     }
 
-    let currentNode = this.head
-    let i = 0
-    while(i < index) {
-      i++
-      currentNode = currentNode.next
+    let currentNode = this.head;
+    let i = 0;
+    while (i < index) {
+      i++;
+      currentNode = currentNode.next;
     }
-    return currentNode
-
+    return currentNode;
   }
-  delete(index){
-    let currentNode = this.head
+  delete(index) {
+    let currentNode = this.head;
 
     if (index === 0) {
-      let deletedNode
-      currentNode.next = this.head
-      deletedNode = currentNode
-      this.length--
+      let deletedNode;
+      currentNode.next = this.head;
+      deletedNode = currentNode;
+      this.length--;
 
-      return deletedNode
+      return deletedNode;
     }
 
     if (index < 0 || index > this.length) {
-      return null
+      return null;
     }
 
-    let i = 0
-    let previous
+    let i = 0;
+    let previous;
 
-    while(i < index) {
-      i++
-      previous = currentNode
-      currentNode = currentNode.next
+    while (i < index) {
+      i++;
+      previous = currentNode;
+      currentNode = currentNode.next;
     }
-    previous.next = currentNode.next
-    this.length--
-    return currentNode
+    previous.next = currentNode.next;
+    this.length--;
+    return currentNode;
   }
-  
+
   isEmpty() {
-    return this.length === 0
+    return this.length === 0;
   }
   print() {
-    const list = []
-    let currentNode = this.head
-    while(currentNode){
-      list.push(currentNode.data)
-      currentNode = currentNode.next
+    const list = [];
+    let currentNode = this.head;
+    while (currentNode) {
+      list.push(currentNode.data);
+      currentNode = currentNode.next;
     }
-    return list.join(' => ')
+    return list.join(' => ');
   }
 }
 ```
@@ -330,17 +325,17 @@ class LinkedList {
 测试一下：
 
 ```js
-const l = new LinkedList()
+const l = new LinkedList();
 
 // 添加节点
-const values = ['A', 'B', 'C']
-values.forEach(value => l.push(value))
+const values = ['A', 'B', 'C'];
+values.forEach((value) => l.push(value));
 
-console.log(l)
-console.log(l.pop())
-console.log(l.get(1))
-console.log(l.isEmpty())
-console.log(l.print())
+console.log(l);
+console.log(l.pop());
+console.log(l.get(1));
+console.log(l.isEmpty());
+console.log(l.print());
 ```
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a95a219af8fd99?w=562&h=155&f=png&s=37873)
@@ -353,14 +348,14 @@ console.log(l.print())
 
 ```js
 class Node {
-    constructor(data) {
-        // data 包含链表项应存储的值
-        this.data = data;
-        // next 是指向列表中下一项的指针
-        this.next = null;
-        // prev 是指向列表中上一项的指针
-        this.prev = null;
-    }
+  constructor(data) {
+    // data 包含链表项应存储的值
+    this.data = data;
+    // next 是指向列表中下一项的指针
+    this.next = null;
+    // prev 是指向列表中上一项的指针
+    this.prev = null;
+  }
 }
 ```
 
@@ -369,12 +364,12 @@ class Node {
 
 ```js
 class DoublyLinkedList {
-    constructor() {
-        this.head = null;
-        this.tail = null;
-    }
-    // 各种操作方法
-    // ...
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
+  // 各种操作方法
+  // ...
 }
 ```
 
@@ -382,7 +377,7 @@ class DoublyLinkedList {
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a963f46a824cbf?w=1440&h=198&f=png&s=17311)
 
-* `Append & AppendAt`: 在链表的尾部/ 指定位置添加节点
+- `Append & AppendAt`: 在链表的尾部/ 指定位置添加节点
 
 ```js
 append( item ) {
@@ -426,7 +421,7 @@ appendAt( pos, item ) {
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a963b448ed1420?w=1440&h=172&f=png&s=22400)
 
-* `Remove & RemoveAt`: 在链表的尾部/ 指定位置删除节点
+- `Remove & RemoveAt`: 在链表的尾部/ 指定位置删除节点
 
 ```js
 remove( item ) {
@@ -480,7 +475,7 @@ removeAt( pos ) {
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a963cac2e6408b?w=1440&h=190&f=png&s=22442)
 
-* `Reverse`: 翻转双向链表
+- `Reverse`: 翻转双向链表
 
 ```js
 reverse(){
@@ -501,7 +496,7 @@ reverse(){
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9640d2074f141?w=1440&h=185&f=png&s=19956)
 
-* `Swap`：两节点间交换。
+- `Swap`：两节点间交换。
 
 ```js
 swap( nodeOne, nodeTwo ) {
@@ -525,7 +520,7 @@ swap( nodeOne, nodeTwo ) {
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9641e395a992c?w=1440&h=190&f=png&s=22214)
 
-* `IsEmpty & Length`：查询是否为空或长度。
+- `IsEmpty & Length`：查询是否为空或长度。
 
 ```js
 length() {
@@ -544,7 +539,7 @@ isEmpty() {
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9645f1ccfbbb3?w=1440&h=161&f=png&s=13532)
 
-* `Traverse`: 遍历链表
+- `Traverse`: 遍历链表
 
 ```js
 traverse( fn ) {
@@ -558,9 +553,10 @@ traverse( fn ) {
 ```
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9647bd80a37a7?w=1440&h=179&f=png&s=24243)
+
 <center>每一项都加10</center>
 
-* `Search`：查找节点的索引。
+- `Search`：查找节点的索引。
 
 ```js
 search( item ) {
@@ -583,35 +579,34 @@ search( item ) {
 
 计算机中经常用到的一种非线性的数据结构——树（Tree），由于其存储的所有元素之间具有明显的层次特性，因此常被用来存储具有层级关系的数据，比如文件系统中的文件；也会被用来存储有序列表等。
 
-* 在树结构中，每一个结点只有一个父结点，若一个结点无父节点，则称为树的根结点，简称树的根（root）。
-* 每一个结点可以有多个子结点。
-* 没有子结点的结点称为叶子结点。
-* 一个结点所拥有的子结点的个数称为该结点的度。
-* 所有结点中最大的度称为树的度。树的最大层次称为树的深度。
+- 在树结构中，每一个结点只有一个父结点，若一个结点无父节点，则称为树的根结点，简称树的根（root）。
+- 每一个结点可以有多个子结点。
+- 没有子结点的结点称为叶子结点。
+- 一个结点所拥有的子结点的个数称为该结点的度。
+- 所有结点中最大的度称为树的度。树的最大层次称为树的深度。
 
 ### 6.1 树的分类
 
 常见的树分类如下，其中我们掌握二叉搜索树即可。
 
-* 二叉树：`Binary Search Tree`
-* AVL树：`AVL Tree`
-* 红黑树：`Red-Black Tree`
-* 线段树： `Segment Tree` - with min/max/sum range queries examples
-* 芬威克树：`Fenwick Tree` (`Binary Indexed Tree`)
+- 二叉树：`Binary Search Tree`
+- AVL 树：`AVL Tree`
+- 红黑树：`Red-Black Tree`
+- 线段树： `Segment Tree` - with min/max/sum range queries examples
+- 芬威克树：`Fenwick Tree` (`Binary Indexed Tree`)
 
 ### 6.2 树的应用
 
 1. `DOM`树。每个网页都有一个树数据结构。
 
-![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a967dad61fab4f?w=560&h=357&f=png&s=35700)
-2. `Vue`和`React`的`Virtual DOM`也是树。
+![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a967dad61fab4f?w=560&h=357&f=png&s=35700) 2. `Vue`和`React`的`Virtual DOM`也是树。
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96800da696486?w=552&h=310&f=png&s=67854)
 
 ### 6.3 二叉树：`Binary Search Tree`
 
-* 二叉树是一种特殊的树，它的子节点个数不超过两个。
-* 且分别称为该结点的左子树（left subtree）与右子树（right subtree）。
-* 二叉树常被用作二叉查找树和二叉搜索树、或是二叉排序树（BST）。
+- 二叉树是一种特殊的树，它的子节点个数不超过两个。
+- 且分别称为该结点的左子树（left subtree）与右子树（right subtree）。
+- 二叉树常被用作二叉查找树和二叉搜索树、或是二叉排序树（BST）。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a9681c89ac541b?w=478&h=371&f=png&s=54103)
 
@@ -624,25 +619,28 @@ search( item ) {
 按照根节点访问的顺序不同，二叉树的遍历分为以下三种：前序遍历，中序遍历，后序遍历；
 
 **前序遍历**：`Pre-Order`
+
 > 根节点->左子树->右子树
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a968ab67d518d1?w=549&h=388&f=png&s=69751)
 
 **中序遍历**：`In-Order`
+
 > 左子树->根节点->右子树
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a968bc99bd95eb?w=551&h=405&f=png&s=68076)
 
 **后序遍历**：`Post-Order`
+
 > 左子树->右子树->根节点
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a968c3062d6efc?w=515&h=377&f=png&s=64888)
 
 因此我们可以得之上面二叉树的遍历结果如下：
 
-* 前序遍历：ABDEFGC
-* 中序遍历：DEBGFAC
-* 后序遍历：EDGFBCA
+- 前序遍历：ABDEFGC
+- 中序遍历：DEBGFAC
+- 后序遍历：EDGFBCA
 
 ### 6.5 二叉树的实现
 
@@ -676,7 +674,7 @@ class BST {
       (!root.right) ? root.right = newNode : this.insertNode(root.right, newNode)
     }
   }
-  
+
 insert(value) {
     let newNode = new Node(value)
     // 如果没有根节点
@@ -728,7 +726,7 @@ insert(value) {
       return root
     }
   }
-  
+
 remove(value) {
     if (!this.root) {
       return 'Tree is empty!'
@@ -736,7 +734,7 @@ remove(value) {
       this.removeNode(this.root, value)
     }
 }
-  
+
 ```
 
 #### 3. `findMinNode`:获取子节点的最小值
@@ -824,6 +822,7 @@ postOrder(root) {
 图是由具有边的节点集合组成的数据结构。图可以是定向的或不定向的。
 
 图的介绍普及，找了一圈文章，还是这篇最佳：
+
 > [Graphs—-A Visual Introduction for Beginners](https://medium.freecodecamp.org/data-structures-101-graphs-a-visual-introduction-for-beginners-6d88f36ec768)
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96cd8d2a3ba4e?w=1509&h=752&f=png&s=2992470)
@@ -832,19 +831,19 @@ postOrder(root) {
 
 在以下场景中，你都使用到了图：
 
-* 使用搜索服务，如`Google`，百度。
-* 使用`LBS`地图服务，如高德，谷歌地图。
-* 使用社交媒体网站，如微博，`Facebook`。
+- 使用搜索服务，如`Google`，百度。
+- 使用`LBS`地图服务，如高德，谷歌地图。
+- 使用社交媒体网站，如微博，`Facebook`。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96db7a7f66c26?w=571&h=340&f=png&s=42665)
 
 图用于不同的行业和领域：
 
-* `GPS`系统和谷歌地图使用图表来查找从一个目的地到另一个目的地的最短路径。
-* 社交网络使用图表来表示用户之间的连接。
-* `Google`搜索算法使用图 来确定搜索结果的相关性。
-* 运营研究是一个使用图 来寻找降低运输和交付货物和服务成本的最佳途径的领域。
-* 甚至化学使用图 来表示分子！
+- `GPS`系统和谷歌地图使用图表来查找从一个目的地到另一个目的地的最短路径。
+- 社交网络使用图表来表示用户之间的连接。
+- `Google`搜索算法使用图 来确定搜索结果的相关性。
+- 运营研究是一个使用图 来寻找降低运输和交付货物和服务成本的最佳途径的领域。
+- 甚至化学使用图 来表示分子！
 
 图，可以说是应用最广泛的数据结构之一，真实场景中处处有图。
 
@@ -856,15 +855,15 @@ postOrder(root) {
 
 #### 1. 图的基本元素
 
-* 节点：`Node`，比如地铁站中某个站/多个村庄中的某个村庄/互联网中的某台主机/人际关系中的人.
-* 边：`Edge`，比如地铁站中两个站点之间的直接连线, 就是一个边。
-![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96e0b30a7249f?w=675&h=540&f=png&s=44522)
+- 节点：`Node`，比如地铁站中某个站/多个村庄中的某个村庄/互联网中的某台主机/人际关系中的人.
+- 边：`Edge`，比如地铁站中两个站点之间的直接连线, 就是一个边。
+  ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96e0b30a7249f?w=675&h=540&f=png&s=44522)
 
 #### 2. 符号和术语
 
-* `|V|`=图中顶点（节点）的总数。
+- `|V|`=图中顶点（节点）的总数。
 
-* `|E|`=图中的连接总数（边）。
+- `|E|`=图中的连接总数（边）。
 
 在下面的示例中
 
@@ -886,6 +885,7 @@ postOrder(root) {
 如下图所示，边（连接）现在具有指向特定方向的箭头。 将这些边视为单行道。您可以向一个方向前进并到达目的地，但是你无法通过同一条街道返回，因此您需要找到另一条路径。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96e6162fe383d?w=623&h=366&f=png&s=37695)
+
 <center>有向图</center>
 
 ##### 2. 无向图
@@ -898,8 +898,8 @@ postOrder(root) {
 
 在加权图中，每条边都有一个与之相关的值（称为权重）。该值用于表示它们连接的节点之间的某种可量化关系。例如：
 
-* 权重可以表示距离，时间，社交网络中两个用户之间共享的连接数。
-* 或者可以用于描述您正在使用的上下文中的节点之间的连接的任何内容。
+- 权重可以表示距离，时间，社交网络中两个用户之间共享的连接数。
+- 或者可以用于描述您正在使用的上下文中的节点之间的连接的任何内容。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96ea279b9ef4c?w=646&h=389&f=png&s=27987)
 
@@ -910,10 +910,12 @@ postOrder(root) {
 当图中的边数接近最大边数时，图是密集的。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96ef680e24fc8?w=663&h=382&f=png&s=26667)
+
 <center>密集图</center>
 
 当图中的边数明显少于最大边数时，图是稀疏的。
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96efedc21a84f?w=647&h=379&f=png&s=23337)
+
 <center>稀疏图</center>
 
 #### 6. 循环
@@ -927,6 +929,7 @@ postOrder(root) {
 循环并不总是“孤立的”，因为它们可以是较大图的一部分。可以通过在特定节点上开始搜索并找到将你带回同一节点的路径来检测它们。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/8/16a96f2bd077791d?w=794&h=538&f=png&s=45467)
+
 <center>循环图</center>
 
 ### 7.3 图的实现
@@ -938,7 +941,7 @@ class Graph {
   constructor() {
     this.AdjList = new Map();
   }
-  
+
   // 基础操作方法
   // addVertex(vertex) {}
   // addEdge(vertex, node) {}
@@ -1056,9 +1059,9 @@ g.print();
 
 到目前为止，这就是创建图所需的。但是，99％的情况下，会要求你实现另外两种方法：
 
-* 广度优先算法，`BFS`。
-* 深度优先算法，`DFS`
-* `BFS` 的重点在于队列，而 `DFS` 的重点在于递归。这是它们的本质区别。
+- 广度优先算法，`BFS`。
+- 深度优先算法，`DFS`
+- `BFS` 的重点在于队列，而 `DFS` 的重点在于递归。这是它们的本质区别。
 
 #### 5. 广度优先算法实现
 
@@ -1071,28 +1074,28 @@ g.print();
 
 该算法的具体步骤为：
 
-* BFS将起始节点作为参数。（例如`'A'`）
-* 初始化一个空对象：`visited`。
-* 初始化一个空数组：`q`，该数组将用作队列。
-* 将起始节点标记为已访问。`（visited = {'A': true}）`
-* 将起始节点放入队列中。`（q = ['A']）`
-* 循环直到队列为空
+- BFS 将起始节点作为参数。（例如`'A'`）
+- 初始化一个空对象：`visited`。
+- 初始化一个空数组：`q`，该数组将用作队列。
+- 将起始节点标记为已访问。`（visited = {'A': true}）`
+- 将起始节点放入队列中。`（q = ['A']）`
+- 循环直到队列为空
 
 循环内部：
 
-* 从中获取元素`q`并将其存储在变量中。`（let current = q.pop()）`
-* 打印 当前 `current`
-* 从图中获取`current`的边。`（let arr = this.AdjList.get(current)）`。
-* 如果未访问元素，则将每个元素标记为已访问并将其放入队列中。
+- 从中获取元素`q`并将其存储在变量中。`（let current = q.pop()）`
+- 打印 当前 `current`
+- 从图中获取`current`的边。`（let arr = this.AdjList.get(current)）`。
+- 如果未访问元素，则将每个元素标记为已访问并将其放入队列中。
 
 ```js
 visited = {
-  'A': true,
-  'B': true,
-  'D': true,
-  'E': true
-}
-q = ['B', 'D', 'E']
+  A: true,
+  B: true,
+  D: true,
+  E: true,
+};
+q = ['B', 'D', 'E'];
 ```
 
 **具体实现**：
@@ -1137,14 +1140,14 @@ bfs(startingNode){
 
 如上图所示，从起点出发，先把一个方向的点都遍历完才会改变方向...... 所以说，DFS 的搜索过程和 “不撞南墙不回头” 很相似，此即 “深度优先搜索算法” 中“深度”的由来。
 
-该算法的前期步骤和BFS相似，接受起始节点并跟踪受访节点，最后执行递归的辅助函数。
+该算法的前期步骤和 BFS 相似，接受起始节点并跟踪受访节点，最后执行递归的辅助函数。
 
 具体步骤：
 
-* 接受起点作为参数`dfs(startingNode)` 。
-* 创建访问对象`let visited = this.createVisitedObject()`。
-* 调用辅助函数递归起始节点和访问对象`this.dfsHelper(startingNode, visited)`。
-* `dfsHelper` 将其标记为已访问并打印出来。
+- 接受起点作为参数`dfs(startingNode)` 。
+- 创建访问对象`let visited = this.createVisitedObject()`。
+- 调用辅助函数递归起始节点和访问对象`this.dfsHelper(startingNode, visited)`。
+- `dfsHelper` 将其标记为已访问并打印出来。
 
 ```js
 createVisitedObject(){
@@ -1215,17 +1218,17 @@ createVisitedObject(){
 
 它的特点：
 
-* key都为字符串，能做到高效查询和插入，时间复杂度为`O(k)`，k为字符串长度
-* 缺点是如果大量字符串没有共同前缀时很耗内存。
-* 它的核心思想就是减少没必要的字符比较，使查询高效率。
-* 即用空间换时间，再利用共同前缀来提高查询效率。
+- key 都为字符串，能做到高效查询和插入，时间复杂度为`O(k)`，k 为字符串长度
+- 缺点是如果大量字符串没有共同前缀时很耗内存。
+- 它的核心思想就是减少没必要的字符比较，使查询高效率。
+- 即用空间换时间，再利用共同前缀来提高查询效率。
 
 例如：
-搜索前缀“b”的匹配将返回6个值：`be`，`bear`，`bell`，`bid`，`bull`，`buy`。
+搜索前缀“b”的匹配将返回 6 个值：`be`，`bear`，`bell`，`bid`，`bull`，`buy`。
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/9/16a982f45ae5929b?w=254&h=179&f=png&s=24036)
 
-搜索前缀“`be`”的匹配将返回2个值：`bear，bell`
+搜索前缀“`be`”的匹配将返回 2 个值：`bear，bell`
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/9/16a982fa0846f2ed?w=254&h=179&f=png&s=26988)
 
@@ -1235,16 +1238,16 @@ createVisitedObject(){
 
 现实中多运用在：
 
-* 自动填充/预先输入
-* 搜索
-* 输入法选项
-* 分类
+- 自动填充/预先输入
+- 搜索
+- 输入法选项
+- 分类
 
 也可以运用在：
 
-* IP地址检索
-* 电话号码
-* 以及更多...
+- IP 地址检索
+- 电话号码
+- 以及更多...
 
 ### 8.2 字典树的实现
 
@@ -1354,8 +1357,8 @@ predictWord(string) {
 {[[['a'，9]，['b'，88]]，[['e'，7]，['q'，8]]，[['j'，7]，['l '，8]]]};
 ```
 
-* 外部数组有多个等于数组最大长度的桶（子数组）。
-* 在桶内，元组或两个元素数组保持键值对。
+- 外部数组有多个等于数组最大长度的桶（子数组）。
+- 在桶内，元组或两个元素数组保持键值对。
 
 ### 9.3 哈希表的基础知识
 
@@ -1363,8 +1366,8 @@ predictWord(string) {
 
 散列是一种用于从一组相似对象中唯一标识特定对象的技术。我们生活中如何使用散列的一些例子包括：
 
-* 在大学中，每个学生都会被分配一个唯一的卷号，可用于检索有关它们的信息。
-* 在图书馆中，每本书都被分配了一个唯一的编号，可用于确定有关图书的信息，例如图书馆中的确切位置或已发给图书的用户等。
+- 在大学中，每个学生都会被分配一个唯一的卷号，可用于检索有关它们的信息。
+- 在图书馆中，每本书都被分配了一个唯一的编号，可用于确定有关图书的信息，例如图书馆中的确切位置或已发给图书的用户等。
 
 在这两个例子中，学生和书籍都被分成了一个唯一的数字。
 
@@ -1386,8 +1389,8 @@ predictWord(string) {
 
 具体执行分两步：
 
-* 通过使用散列函数将元素转换为整数。此元素可用作存储原始元素的索引，该元素属于哈希表。
-* 该元素存储在哈希表中，可以使用散列键快速检索它。
+- 通过使用散列函数将元素转换为整数。此元素可用作存储原始元素的索引，该元素属于哈希表。
+- 该元素存储在哈希表中，可以使用散列键快速检索它。
 
 ```js
 hash = hashfunc（key）
@@ -1398,8 +1401,8 @@ index = hash ％ array_size
 
 #### 3. 哈希函数
 
-* 哈希函数是可用于将任意大小的数据集映射到固定大小的数据集的任何函数，该数据集属于散列表
-* 哈希函数返回的值称为哈希值，哈希码，哈希值或简单哈希值。
+- 哈希函数是可用于将任意大小的数据集映射到固定大小的数据集的任何函数，该数据集属于散列表
+- 哈希函数返回的值称为哈希值，哈希码，哈希值或简单哈希值。
 
 要实现良好的散列机制，需要具有以下基本要求：
 
@@ -1415,8 +1418,8 @@ index = hash ％ array_size
 
 首先是建立索引：
 
-* `a，b，c，d，e`和`f`的`ASCII`值分别为`97,98,99,100,101`和`102`，总和为：`597`
-* `597`不是素数，取其附近的素数`599`，来减少索引不同字符串（冲突）的可能性。
+- `a，b，c，d，e`和`f`的`ASCII`值分别为`97,98,99,100,101`和`102`，总和为：`597`
+- `597`不是素数，取其附近的素数`599`，来减少索引不同字符串（冲突）的可能性。
 
 哈希函数将为所有字符串计算相同的索引，并且字符串将以下格式存储在哈希表中。
 
@@ -1424,8 +1427,8 @@ index = hash ％ array_size
 
 由于所有字符串的索引都相同，此时所有字符串都在同一个“桶”中。
 
-* 这里，访问特定字符串需要`O(n)`时间（其中n是字符串数）。
-* 这表明该哈希函数不是一个好的哈希函数。
+- 这里，访问特定字符串需要`O(n)`时间（其中 n 是字符串数）。
+- 这表明该哈希函数不是一个好的哈希函数。
 
 **如何优化这个哈希函数？**
 
@@ -1435,25 +1438,25 @@ index = hash ％ array_size
 {“abcdef”，“bcdefa”，“cdefab”，“defabc”}
 ```
 
-* 都是由`a，b，c，d，e`和`f`组成
-* 不同点在于组成顺序。
+- 都是由`a，b，c，d，e`和`f`组成
+- 不同点在于组成顺序。
 
 来尝试不同的哈希函数。
 
-* 特定字符串的索引将等于字符的ASCII值之和乘以字符串中它们各自的顺序
-* 之后将它与`2069`（素数）取余。
+- 特定字符串的索引将等于字符的 ASCII 值之和乘以字符串中它们各自的顺序
+- 之后将它与`2069`（素数）取余。
 
 字符串哈希函数索引
-| 字符串 |                       索引生成                       | 计算值 |
+| 字符串 | 索引生成 | 计算值 |
 | ------ | :--------------------------------------------------: | -----: |
-| abcdef | （97 1 + 98 2 + 99 3 + 100 4 + 101 5 + 102 6）％2069 |     38 |
-| bcdefa | （98 1 + 99 2 + 100 3 + 101 4 + 102 5 + 97 6）%2069  |     23 |
-| cdefab | （99 1 + 100 2 + 101 3 + 102 4 + 97 5 + 98 6）％2069 |     14 |
-| defabc | （100 1 + 101 2 + 102 3 + 97 4 + 98 5 + 99 6）%2069  |     11 |
+| abcdef | （97 1 + 98 2 + 99 3 + 100 4 + 101 5 + 102 6）％2069 | 38 |
+| bcdefa | （98 1 + 99 2 + 100 3 + 101 4 + 102 5 + 97 6）%2069 | 23 |
+| cdefab | （99 1 + 100 2 + 101 3 + 102 4 + 97 5 + 98 6）％2069 | 14 |
+| defabc | （100 1 + 101 2 + 102 3 + 97 4 + 98 5 + 99 6）%2069 | 11 |
 
 ![alt](https://user-gold-cdn.xitu.io/2019/5/9/16a9a68985be9ee7?w=1469&h=1789&f=png&s=212008)
 
-在合理的假设下，在哈希表中搜索元素所需的平均时间应是O（1）。
+在合理的假设下，在哈希表中搜索元素所需的平均时间应是 O（1）。
 
 ### 9.4 哈希表的实现
 
@@ -1461,20 +1464,20 @@ index = hash ％ array_size
 
 ```js
 class Node {
-  constructor( data ){
+  constructor(data) {
     this.data = data;
     this.next = null;
   }
 }
 
 class HashTableWithChaining {
-  constructor( size = 10 ) {
-    this.table = new Array( size );
+  constructor(size = 10) {
+    this.table = new Array(size);
   }
 
-    // 操作方法
-    // computeHash( string ) {...}
-    // ...
+  // 操作方法
+  // computeHash( string ) {...}
+  // ...
 }
 ```
 
@@ -1629,7 +1632,7 @@ traverse( fn ) {
 > 1. [DS with JS - Hash Tables— I](https://medium.com/dev-blogs/ds-with-js-hash-table-4715c94083d2)
 > 2. [Joseph Crick - Practical Data Structures for Frontend Applications: When to use Tries](https://hackernoon.com/practical-data-structures-for-frontend-applications-when-to-use-tries-5428a565eba4)
 > 3. [Thon Ly - Data Structures in JavaScript
-> ](https://medium.com/siliconwat/data-structures-in-javascript-1b9aed0ea17c)
+>    ](https://medium.com/siliconwat/data-structures-in-javascript-1b9aed0ea17c)
 > 4. [Graphs — A Visual Introduction for Beginners](https://medium.freecodecamp.org/data-structures-101-graphs-a-visual-introduction-for-beginners-6d88f36ec768)
 > 5. [Graph Data Structure in JavaScript](https://medium.com/@ziyoshams/graphs-in-javascript-cc0ed170b156)
 > 6. [Trie (Keyword Tree)](https://www.hackerearth.com/zh/practice/data-structures/advanced-data-structures/trie-keyword-tree/tutorial/)

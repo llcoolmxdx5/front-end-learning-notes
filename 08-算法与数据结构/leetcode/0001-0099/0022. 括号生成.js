@@ -12,14 +12,14 @@ var generateParenthesis = function (n) {
       return;
     }
     if (leftNum < n) {
-      dfs(curString + "(", leftNum + 1, rightNum);
+      dfs(curString + '(', leftNum + 1, rightNum);
     }
     if (rightNum < n && rightNum < leftNum) {
-      dfs(curString + ")", leftNum, rightNum + 1);
+      dfs(curString + ')', leftNum, rightNum + 1);
     }
   };
   // 递归入口
-  dfs("", 0, 0);
+  dfs('', 0, 0);
   return res;
 };
 

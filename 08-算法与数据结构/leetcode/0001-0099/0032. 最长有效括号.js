@@ -7,12 +7,12 @@ var longestValidParentheses = function (s) {
   const dp = new Array(length).fill(0);
   let ans = 0;
   for (let i = 1; i < length; i++) {
-    if (s[i] === "(") {
+    if (s[i] === '(') {
       continue;
     }
-    if (s[i - 1] === "(") {
+    if (s[i - 1] === '(') {
       dp[i] = (dp[i - 2] ?? 0) + 2;
-    } else if (s[i - 1] === ")" && s[i - dp[i - 1] - 1] === "(") {
+    } else if (s[i - 1] === ')' && s[i - dp[i - 1] - 1] === '(') {
       dp[i] = dp[i - 1] + (dp[i - dp[i - 1] - 2] ?? 0) + 2;
     }
     ans = Math.max(dp[i], ans);
@@ -28,7 +28,7 @@ var longestValidParentheses = function (s) {
     right = 0,
     ans = 0;
   for (let i = 0; i < length; i++) {
-    if (s[i] == "(") {
+    if (s[i] == '(') {
       left += 1;
     } else {
       right += 1;
@@ -41,7 +41,7 @@ var longestValidParentheses = function (s) {
   }
   left = right = 0;
   for (let i = length - 1; i >= 0; i--) {
-    if (s[i] == "(") {
+    if (s[i] == '(') {
       left += 1;
     } else {
       right += 1;
@@ -55,5 +55,5 @@ var longestValidParentheses = function (s) {
   return ans;
 };
 
-console.assert(longestValidParentheses(")()())") === 4, 1);
-console.assert(longestValidParentheses("(()())") === 6, 2);
+console.assert(longestValidParentheses(')()())') === 4, 1);
+console.assert(longestValidParentheses('(()())') === 6, 2);

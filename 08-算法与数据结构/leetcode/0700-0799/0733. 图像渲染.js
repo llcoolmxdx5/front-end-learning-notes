@@ -14,14 +14,10 @@ var floodFill = function (image, sr, sc, newColor) {
   while (queue.length) {
     const [row, col] = queue.shift();
     image[row][col] = newColor;
-    if (row - 1 >= 0 && image[row - 1][col] === oldColor)
-      queue.push([row - 1, col]);
-    if (col + 1 < image[row].length && image[row][col + 1] === oldColor)
-      queue.push([row, col + 1]);
-    if (row + 1 < length && image[row + 1][col] === oldColor)
-      queue.push([row + 1, col]);
-    if (col - 1 >= 0 && image[row][col - 1] === oldColor)
-      queue.push([row, col - 1]);
+    if (row - 1 >= 0 && image[row - 1][col] === oldColor) queue.push([row - 1, col]);
+    if (col + 1 < image[row].length && image[row][col + 1] === oldColor) queue.push([row, col + 1]);
+    if (row + 1 < length && image[row + 1][col] === oldColor) queue.push([row + 1, col]);
+    if (col - 1 >= 0 && image[row][col - 1] === oldColor) queue.push([row, col - 1]);
   }
   return image;
 };

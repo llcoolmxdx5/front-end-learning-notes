@@ -25,7 +25,7 @@ Action 创建函数 就是生成 action 的方法。在 Redux 中的 action 创�
 
   ```js
   // actionCreators.js
-  import { ADD, DEL } from "./actionTypes";
+  import { ADD, DEL } from './actionTypes';
   const add_item = (data) => {
     return {
       type: ADD,
@@ -45,8 +45,8 @@ Action 创建函数 就是生成 action 的方法。在 Redux 中的 action 创�
 
   ```js
   // actionTypes.js
-  export const ADD = "todoList/add";
-  export const DEL = "todoList/del";
+  export const ADD = 'todoList/add';
+  export const DEL = 'todoList/del';
   ```
 
 ### Reducer
@@ -67,13 +67,13 @@ combineReducers() 所做的只是生成一个函数，这个函数来调用你�
 
 ```js
 // reducer.js
-import { ADD, DEL } from "./actionTypes";
-import { combineReducers } from "redux";
-import * as reducers from "./reducers"; // 多个reducer
+import { ADD, DEL } from './actionTypes';
+import { combineReducers } from 'redux';
+import * as reducers from './reducers'; // 多个reducer
 const defaultState = {
   list: [
-    { id: 1, name: "beijing" },
-    { id: 2, name: "shanghai" },
+    { id: 1, name: 'beijing' },
+    { id: 2, name: 'shanghai' },
   ],
 };
 const reducer = (state = defaultState, action) => {
@@ -109,8 +109,8 @@ Store 就是把 action 和 reducer 联系到一起的对象。Store 有以下职
 createStore() 的第二个参数是可选的, 用于设置 state 初始状态。这对开发同构应用时非常有用，服务器端 redux 应用的 state 结构可以与客户端保持一致, 那么客户端可以将从网络接收到的服务端 state 直接用于本地数据初始化。
 
 ```js
-import { createStore } from "redux";
-import reducer from "./reducer";
+import { createStore } from 'redux';
+import reducer from './reducer';
 const store = createStore(reducer);
 export default store;
 ```
@@ -118,8 +118,8 @@ export default store;
 ### connect
 
 ```js
-import { connect } from "react-redux";
-import { add_item, del_item } from "./actionCreators";
+import { connect } from 'react-redux';
+import { add_item, del_item } from './actionCreators';
 const mapState = (state) => {
   return {
     list: state.list,
@@ -141,13 +141,13 @@ export default connect(mapState, mapDispatch);
 ### index.js
 
 ```js
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { Provider } from 'react-redux';
+import store from './redux/store';
 ReactDOM.render(
   <Provider store={store}>
     <App></App>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 ```
 
@@ -157,9 +157,9 @@ ReactDOM.render(
 
 ```jsx
 // store.js
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import reducer from "./reducer";
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducer from './reducer';
 const store = createStore(reducer, applyMiddleware(thunk));
 export default store;
 ```
@@ -169,14 +169,14 @@ export default store;
 #### 阻塞与非阻塞
 
 ```js
-import { call, cancel, join, take, put, fork, select } from "redux-saga/effects";
+import { call, cancel, join, take, put, fork, select } from 'redux-saga/effects';
 
 function* saga() {
-  yield take("ACTION"); // 阻塞: 会一直等待,直到 Action 被触发
+  yield take('ACTION'); // 阻塞: 会一直等待,直到 Action 被触发
   yield call(ApiFn, ...args); // 阻塞: 会等待 ApiFn 执行完成(如果ApiFn是个 返回的是 Promise)
   yield call(otherSaga, ...args); // 阻塞: 会等待 otherSaga 函数执行完成
-  yield put("ACTION"); // 非阻塞, 会 dispatch 一个 action, 但不等待这个 action 后续的 effects 完成
-  yield select(somethingFromState) // 阻塞: 获取 store 中的 state
+  yield put('ACTION'); // 非阻塞, 会 dispatch 一个 action, 但不等待这个 action 后续的 effects 完成
+  yield select(somethingFromState); // 阻塞: 获取 store 中的 state
   const task = yield fork(otherSaga, ...args); // 非阻塞, 不会等待 otherSaga 完成 fork指的是新开一个协程,与父协程并行执行
   yield cancel(task); // 非阻塞: 立即返回
   // or
@@ -186,7 +186,7 @@ function* saga() {
 
 ```jsx
 // /src/sagas.js
-import { sagas as homeSaga } from "pages/index/home/";
+import { sagas as homeSaga } from 'pages/index/home/';
 function* sagas() {
   yield homeSaga.loadDataSaga();
   yield homeSaga.loadMoreDataSaga();
@@ -196,10 +196,10 @@ export default sagas;
 
 ```jsx
 // /src/store/index.js
-import { createStore, applyMiddleware } from "redux";
-import createSagaMiddleware from "redux-saga";
-import reducer from "./reducer";
-import sagas from "./sagas";
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import reducer from './reducer';
+import sagas from './sagas';
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(sagas);
@@ -208,13 +208,13 @@ export default store;
 
 ```jsx
 // /src/pages/index/home/sagas.js
-import { takeEvery, put } from "redux-saga/effects";
-import { SAGA_LOAD_DATA, SAGA_LOAD_MORE_DATA } from "./actionTypes";
-import { loadData, loadMoreData } from "./actionCreator";
-import http from "utils/http";
+import { takeEvery, put } from 'redux-saga/effects';
+import { SAGA_LOAD_DATA, SAGA_LOAD_MORE_DATA } from './actionTypes';
+import { loadData, loadMoreData } from './actionCreator';
+import http from 'utils/http';
 function loadDataSaga() {
   return takeEvery(SAGA_LOAD_DATA, function* () {
-    let result = yield http.get({ url: "/data?_start=0&_limit=10" });
+    let result = yield http.get({ url: '/data?_start=0&_limit=10' });
     yield put(loadData(result));
   });
 }

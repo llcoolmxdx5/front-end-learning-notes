@@ -1,4 +1,4 @@
-import isIterable from "../utils/isIterable";
+import isIterable from '../utils/isIterable';
 
 // Array.from() 可以通过以下方式来创建数组对象：
 // - 伪数组对象（拥有一个 length 属性和若干索引属性的任意对象）
@@ -26,7 +26,7 @@ function arrayFrom<T, U>(
   const toStr = Object.prototype.toString;
   // 伪数组对象（拥有一个 length 属性和若干索引属性的任意对象）
   const isArrayLike =
-    toStr.call(iterable) === "[object Object]" &&
+    toStr.call(iterable) === '[object Object]' &&
     // @ts-ignore
     (iterable as object)?.length !== undefined;
   const arr: T[] = [];
@@ -35,7 +35,7 @@ function arrayFrom<T, U>(
   } else if (isIterable(iterable)) {
     arr.push(...(iterable as Iterable<T>));
   }
-  if (toStr.call(mapFn) === "[object Function]") {
+  if (toStr.call(mapFn) === '[object Function]') {
     return arr.map(mapFn!, (thisArg = undefined));
   }
   return arr;

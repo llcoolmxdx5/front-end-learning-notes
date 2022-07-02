@@ -6,11 +6,11 @@ var subsetsWithDup = function (nums) {
   const resp = [];
   const temp = [];
   nums.sort((a, b) => a - b);
-  const set = new Set()
+  const set = new Set();
   const backTrack = (start) => {
-    if(!set.has(temp.join(','))) {
+    if (!set.has(temp.join(','))) {
       resp.push([...temp]);
-      set.add(temp.join(','))
+      set.add(temp.join(','));
     }
     for (let i = start; i < nums.length; i++) {
       temp.push(nums[i]);

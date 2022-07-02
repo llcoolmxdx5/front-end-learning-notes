@@ -37,7 +37,7 @@ class Node {
 
 class MapSum {
   constructor() {
-    this.root = new Node()
+    this.root = new Node();
   }
 
   /**
@@ -46,16 +46,16 @@ class MapSum {
    * @return {void}
    */
   insert(key, val) {
-    let node = this.root
-    const { length } = key
+    let node = this.root;
+    const { length } = key;
     for (let i = 0; i < length; i++) {
       const index = key[i].charCodeAt() - 97;
-      if(!node.children[index]) {
-        node.children[index] = new Node()
+      if (!node.children[index]) {
+        node.children[index] = new Node();
       }
-      node = node.children[index]
+      node = node.children[index];
     }
-    node.val = val
+    node.val = val;
   }
 
   /**
@@ -63,28 +63,28 @@ class MapSum {
    * @return {number}
    */
   sum(prefix) {
-    let node = this.root
-    const { length } = prefix
+    let node = this.root;
+    const { length } = prefix;
     for (let i = 0; i < length; i++) {
       const index = prefix[i].charCodeAt() - 97;
-      if(!node.children[index]) {
-        return 0
+      if (!node.children[index]) {
+        return 0;
       }
-      node = node.children[index]
+      node = node.children[index];
     }
-    return this.dfs(node)
+    return this.dfs(node);
   }
 
   dfs(node) {
-    if(!node) {
-      return 0
+    if (!node) {
+      return 0;
     }
-    let ans = node.val
-    const { length } = node.children
+    let ans = node.val;
+    const { length } = node.children;
     for (let i = 0; i < length; i++) {
-      ans += this.dfs(node.children[i])
+      ans += this.dfs(node.children[i]);
     }
-    return ans
+    return ans;
   }
 }
 
@@ -96,7 +96,7 @@ class MapSum {
  */
 
 const mapSum = new MapSum();
-mapSum.insert("apple", 3);
-console.assert(mapSum.sum("ap") === 3, 1); // apple = 3
-mapSum.insert("app", 2);
-console.assert(mapSum.sum("ap") === 5, 2); // apple + app = 3 + 2 = 5
+mapSum.insert('apple', 3);
+console.assert(mapSum.sum('ap') === 3, 1); // apple = 3
+mapSum.insert('app', 2);
+console.assert(mapSum.sum('ap') === 5, 2); // apple + app = 3 + 2 = 5

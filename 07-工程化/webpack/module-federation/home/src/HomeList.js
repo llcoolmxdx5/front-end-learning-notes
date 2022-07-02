@@ -1,9 +1,9 @@
 const HomeList = (num) => {
-  let str = "<ul>";
+  let str = '<ul>';
   for (let i = 0; i < num; i++) {
-    str += "<li>item " + i + "</li>";
+    str += '<li>item ' + i + '</li>';
   }
-  str += "</ul>";
+  str += '</ul>';
   return str;
 };
 

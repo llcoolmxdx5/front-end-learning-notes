@@ -8,16 +8,16 @@ var nextGreaterElement = function (nums1, nums2) {
   for (let i = 0; i < nums1.length; i++) {
     const element = nums1[i];
     let flag = true;
-    let isFind = false
+    let isFind = false;
     for (let j = 0; j < nums2.length; j++) {
       if (nums2[j] === element) {
         isFind = true;
-        continue
+        continue;
       }
       if (isFind && nums2[j] > element) {
         flag = false;
         resp.push(nums2[j]);
-        break
+        break;
       }
     }
     if (flag) {
@@ -44,11 +44,5 @@ var nextGreaterElement = function (nums1, nums2) {
   return res;
 };
 
-console.assert(
-  nextGreaterElement([4, 1, 2], [1, 3, 4, 2]).join() === [-1, 3, -1].join(),
-  1
-);
-console.assert(
-  nextGreaterElement([2, 4], [1, 2, 3, 4]).join() === [3, -1].join(),
-  2
-);
+console.assert(nextGreaterElement([4, 1, 2], [1, 3, 4, 2]).join() === [-1, 3, -1].join(), 1);
+console.assert(nextGreaterElement([2, 4], [1, 2, 3, 4]).join() === [3, -1].join(), 2);

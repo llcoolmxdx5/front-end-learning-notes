@@ -12,7 +12,7 @@ var maximalRectangle = function (matrix) {
   for (let row = 0; row < m; row++) {
     for (let col = 0; col < n; col++) {
       // 更新 width
-      if (matrix[row][col] == "1") {
+      if (matrix[row][col] == '1') {
         if (col == 0) {
           width[row][col] = 1;
         } else {
@@ -59,7 +59,7 @@ var maximalRectangle = function (matrix) {
   for (let row = 0; row < m; row++) {
     // 遍历每一列，更新高度
     for (let col = 0; col < n; col++) {
-      if (matrix[row][col] == "1") {
+      if (matrix[row][col] == '1') {
         heights[col] += 1;
       } else {
         heights[col] = 0;
@@ -73,12 +73,12 @@ var maximalRectangle = function (matrix) {
 
 console.assert(
   maximalRectangle([
-    ["1", "0", "1", "0", "0"],
-    ["1", "0", "1", "1", "1"],
-    ["1", "1", "1", "1", "1"],
-    ["1", "0", "0", "1", "0"],
+    ['1', '0', '1', '0', '0'],
+    ['1', '0', '1', '1', '1'],
+    ['1', '1', '1', '1', '1'],
+    ['1', '0', '0', '1', '0'],
   ]) === 6,
   1
 );
 
-console.assert(maximalRectangle([["0", "0"]]) === 0, 2);
+console.assert(maximalRectangle([['0', '0']]) === 0, 2);

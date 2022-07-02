@@ -16,7 +16,7 @@ var maxPower = function (s) {
   return power;
 };
 
-console.assert(maxPower("tourist") === 1, 1);
-console.assert(maxPower("t") === 1, 2);
-console.assert(maxPower("hooraaaaaaaaaaay") === 11, 3);
-console.assert(maxPower("hooraaaaaaaaaaa") === 11, 4);
+console.assert(maxPower('tourist') === 1, 1);
+console.assert(maxPower('t') === 1, 2);
+console.assert(maxPower('hooraaaaaaaaaaay') === 11, 3);
+console.assert(maxPower('hooraaaaaaaaaaa') === 11, 4);

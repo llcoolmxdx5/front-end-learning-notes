@@ -49,11 +49,10 @@ var shortestToChar = function (s, c) {
 };
 
 console.assert(
-  shortestToChar("loveleetcode", "e").join() ===
-    [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0].join(),
+  shortestToChar('loveleetcode', 'e').join() === [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0].join(),
   1
 );
 
-console.assert(shortestToChar("aaab", "b").join() === [3, 2, 1, 0].join(), 2);
+console.assert(shortestToChar('aaab', 'b').join() === [3, 2, 1, 0].join(), 2);
 
-console.assert(shortestToChar("aaba", "b").join() === [2, 1, 0, 1].join(), 2);
+console.assert(shortestToChar('aaba', 'b').join() === [2, 1, 0, 1].join(), 2);

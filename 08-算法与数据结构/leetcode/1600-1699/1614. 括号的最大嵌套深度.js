@@ -7,14 +7,14 @@ var maxDepth = function (s) {
   let ans = 0;
   let temp = 0;
   for (const str of s) {
-    if (str === "(") {
+    if (str === '(') {
       temp += 1;
       ans = Math.max(temp, ans);
-    } else if (str === ")") {
+    } else if (str === ')') {
       temp -= 1;
     }
   }
   return ans;
 };
 
-console.assert(maxDepth("(1+(2*3)+((8)/4))+1") === 3, 1);
+console.assert(maxDepth('(1+(2*3)+((8)/4))+1') === 3, 1);

@@ -52,7 +52,7 @@ var merge = function (nums1, m, nums2, n) {
   let index = m + n;
   while (i >= 0 || j >= 0) {
     index -= 1;
-    if(index < 0) break
+    if (index < 0) break;
     if (nums1[i] === undefined) {
       nums1[index] = nums2[j];
       j -= 1;

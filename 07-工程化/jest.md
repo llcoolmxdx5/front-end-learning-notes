@@ -24,30 +24,30 @@
 // jest.config.js
 module.exports = {
   moduleFileExtensions: [
-    "ts", // 增加 ts、tsx，以支持单测文件中引入 typescript 模块
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node",
+    'ts', // 增加 ts、tsx，以支持单测文件中引入 typescript 模块
+    'tsx',
+    'js',
+    'jsx',
+    'json',
+    'node',
   ],
   globals: {
-    "ts-jest": {
-      tsConfig: "./tsconfig.jest.json", // 此处指明 ts-jest 编译 typescript 时的配置文件
+    'ts-jest': {
+      tsConfig: './tsconfig.jest.json', // 此处指明 ts-jest 编译 typescript 时的配置文件
       diagnostics: false,
     },
     document: {},
   },
   // 只跑 util 进行单测覆盖率
-  collectCoverageFrom: ["**/__test__/**"],
+  collectCoverageFrom: ['**/__test__/**'],
   // 此外，若你使用 typescript 书写单测，则需配置 testRegex 正则，保证匹配你的 ts、tsx 结尾的测试文件，并配置 testMatch 为 null
-  testRegex: "/.*\\.(test)\\.(ts|tsx|js|jsx)$",
+  testRegex: '/.*\\.(test)\\.(ts|tsx|js|jsx)$',
   testMatch: null,
   // 在执行每个测试文件前执行一次
   // setupFiles: ['./tests/setup.ts'],
   // 配置别名
   // 会在此递归的寻找需要的模块地址
-  moduleDirectories: ["node_modules", "src"],
+  moduleDirectories: ['node_modules', 'src'],
   // transformIgnorePatterns: ['/node_modules/(?!\\/react)'],
 };
 ```
@@ -100,16 +100,16 @@ test.only("仅测试当前用例"，() => {
 ## 异步测试
 
 ```js
-test("测试异步代码", () => {
+test('测试异步代码', () => {
   return fetchData().then((data) => {
     expect(data.data).toEqual({ success: true });
   });
 });
-test("测试异步代码", async () => {
+test('测试异步代码', async () => {
   let data = await fetchData();
   expect(data.data).toMatchObject({ success: true });
 });
-test("异步测试失败", () => {
+test('异步测试失败', () => {
   return expect(fetchData()).rejects.toThrow();
 });
 ```
@@ -126,15 +126,15 @@ test("异步测试失败", () => {
   > 所有的 describe 函数下面都有独立的 beforeEach beforeAll afterAll afterEach
 
 ```js
-describe("测试所有加法", () => {
+describe('测试所有加法', () => {
   beforeAll(() => {
     p = new Num();
   });
-  test("测试Num加法", () => {
+  test('测试Num加法', () => {
     p.add();
     expect(p.n).toBe(11);
   });
-  test("测试Num减法", () => {
+  test('测试Num减法', () => {
     p.reduce();
     expect(p.n).toBe(10);
   });

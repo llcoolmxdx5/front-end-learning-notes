@@ -21,10 +21,7 @@ var maxProduct = function (words) {
     }
   }
   // console.log(nums);
-  return ans
+  return ans;
 };
 
-console.assert(
-  maxProduct(["abcw", "baz", "foo", "bar", "xtfn", "abcdef"]) === 16,
-  1
-);
+console.assert(maxProduct(['abcw', 'baz', 'foo', 'bar', 'xtfn', 'abcdef']) === 16, 1);

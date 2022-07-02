@@ -29,7 +29,7 @@ class KVue {
     this.observer(this._data);
   }
   observer(value) {
-    if (!value || typeof value !== "object") {
+    if (!value || typeof value !== 'object') {
       return;
     }
     Object.keys(value).forEach((key) => {
@@ -50,15 +50,15 @@ class KVue {
     });
   }
   cb(val) {
-    console.log("更新数据了", val);
+    console.log('更新数据了', val);
   }
 }
 let o = new KVue({
   data: {
-    test: "I am test.",
+    test: 'I am test.',
   },
 });
-o._data.test = "hello,kaikeba";
+o._data.test = 'hello,kaikeba';
 ```
 
 ## 依赖收集与追踪
@@ -67,10 +67,10 @@ o._data.test = "hello,kaikeba";
 new Vue({
   template: `<div> <span>{{text1}}</span> <span>{{text2}}</span><div>`,
   data: {
-    text1: "name1",
+    text1: 'name1',
   },
   created() {
-    this.text1 = "开课吧";
+    this.text1 = '开课吧';
   },
 });
 ```
@@ -105,7 +105,7 @@ class Watcher {
   }
   // 更新视图的方法
   update() {
-    console.log("视图更新啦~");
+    console.log('视图更新啦~');
   }
 }
 ```
@@ -250,10 +250,10 @@ class Compile {
     this.text(node, this.$vm, exp);
   }
   isDirective(attr) {
-    return attr.indexOf("k-") == 0;
+    return attr.indexOf('k-') == 0;
   }
   isEventDirective(dir) {
-    return dir.indexOf("@") === 0;
+    return dir.indexOf('@') === 0;
   }
   isElementNode(node) {
     return node.nodeType == 1;
@@ -262,22 +262,22 @@ class Compile {
     return node.nodeType == 3;
   }
   text(node, vm, exp) {
-    this.update(node, vm, exp, "text");
+    this.update(node, vm, exp, 'text');
   }
   html(node, vm, exp) {
-    this.update(node, vm, exp, "html");
+    this.update(node, vm, exp, 'html');
   }
   model(node, vm, exp) {
-    this.update(node, vm, exp, "model");
+    this.update(node, vm, exp, 'model');
     let val = vm.exp;
-    node.addEventListener("input", (e) => {
+    node.addEventListener('input', (e) => {
       let newValue = e.target.value;
       vm[exp] = newValue;
       val = newValue;
     });
   }
   update(node, vm, exp, dir) {
-    let updaterFn = this[dir + "Updater"];
+    let updaterFn = this[dir + 'Updater'];
     updaterFn && updaterFn(node, vm[exp]);
     new Watcher(vm, exp, function (value) {
       updaterFn && updaterFn(node, value);
@@ -312,14 +312,14 @@ class KVue {
     this.observer(this.$data);
     // 新建一个Watcher观察者对象，这时候Dep.target会指向这个Watcher对象 // new Watcher()
     // 在这里模拟render的过程，为了触发test属性的get函数
-    console.log("模拟render，触发test的getter", this.$data);
+    console.log('模拟render，触发test的getter', this.$data);
     if (options.created) {
       options.created.call(this);
     }
     this.$compile = new Compile(options.el, this);
   }
   observer(value) {
-    if (!value || typeof value !== "object") {
+    if (!value || typeof value !== 'object') {
       return;
     }
     Object.keys(value).forEach((key) => {

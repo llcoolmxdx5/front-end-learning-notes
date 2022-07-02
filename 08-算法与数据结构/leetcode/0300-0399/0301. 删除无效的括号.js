@@ -6,9 +6,9 @@ var removeInvalidParentheses = function (s) {
   const isValid = (str) => {
     let count = 0;
     for (let i = 0; i < str.length; i++) {
-      if (str[i] === "(") {
+      if (str[i] === '(') {
         count += 1;
-      } else if (str[i] === ")") {
+      } else if (str[i] === ')') {
         if (count <= 0) {
           return false;
         }
@@ -31,7 +31,7 @@ var removeInvalidParentheses = function (s) {
         // 无效
         for (let j = 0; j < item.length; j++) {
           const element = item[j];
-          if (["(", ")"].includes(element)) {
+          if (['(', ')'].includes(element)) {
             const newStr = item.slice(0, j) + item.slice(j + 1);
             if (!set.has(newStr)) {
               queue.push(newStr);
@@ -47,6 +47,6 @@ var removeInvalidParentheses = function (s) {
   }
 };
 
-console.log(removeInvalidParentheses("()())()")); // ["(())()", "()()()"]
-console.log(removeInvalidParentheses("(a)())()")); // ["(a())()","(a)()()"]
-console.log(removeInvalidParentheses(")(")); // [""]
+console.log(removeInvalidParentheses('()())()')); // ["(())()", "()()()"]
+console.log(removeInvalidParentheses('(a)())()')); // ["(a())()","(a)()()"]
+console.log(removeInvalidParentheses(')(')); // [""]

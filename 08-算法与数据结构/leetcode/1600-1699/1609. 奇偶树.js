@@ -19,13 +19,13 @@ var isEvenOddTree = function (root) {
     for (let i = 0; i < length; i++) {
       const node = queue.shift();
       if (flag) {
-        if(node.val % 2 === 0) return false
-        if(i > 0 && node.val <= value) return false
+        if (node.val % 2 === 0) return false;
+        if (i > 0 && node.val <= value) return false;
       } else {
-        if(node.val % 2 !== 0) return false
-        if(i > 0 && node.val >= value) return false
+        if (node.val % 2 !== 0) return false;
+        if (i > 0 && node.val >= value) return false;
       }
-      value = node.val
+      value = node.val;
       if (node.left) queue.push(node.left);
       if (node.right) queue.push(node.right);
     }

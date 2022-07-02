@@ -1,3 +1,3 @@
 export const print = () => {
-  console.log("preload chunk.");
+  console.log('preload chunk.');
 };

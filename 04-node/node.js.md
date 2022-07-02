@@ -3,18 +3,18 @@
 ## index.js
 
 ```js
-const http = require("http");
-const path = require("path");
-const content = require("./util/content");
-const mimes = require("./util/mimes");
+const http = require('http');
+const path = require('path');
+const content = require('./util/content');
+const mimes = require('./util/mimes');
 
 // 静态资源目录对于相对入口文件index.js的路径
-const staticPath = "./static";
+const staticPath = './static';
 
 // 解析资源类型
 function parseMime(url) {
   let extName = path.extname(url);
-  extName = extName ? extName.slice(1) : "unknown";
+  extName = extName ? extName.slice(1) : 'unknown';
   return mimes[extName];
 }
 
@@ -31,14 +31,14 @@ const server = http.createServer((req, res) => {
 
   // 如果有对应的文件类型，就配置上下文的类型
   if (_mime) {
-    res.setHeader("Content-Type", _mime);
+    res.setHeader('Content-Type', _mime);
   }
 
   // 输出静态资源内容
-  if (_mime && _mime.indexOf("image/") >= 0) {
+  if (_mime && _mime.indexOf('image/') >= 0) {
     // 如果是图片，输出二进制数据
     res.writeHead(200);
-    res.write(_content, "binary");
+    res.write(_content, 'binary');
     res.end();
   } else {
     // 其他则输出文本
@@ -48,21 +48,21 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(3000, () => {
-  console.log("[demo] static-server is starting at port 3000");
+  console.log('[demo] static-server is starting at port 3000');
 });
 ```
 
 ## util/content.js
 
 ```js
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
 
 // 封装读取目录内容方法
-const dir = require("./dir");
+const dir = require('./dir');
 
 // 封装读取文件内容方法
-const file = require("./file");
+const file = require('./file');
 
 /**
  * 获取静态资源内容
@@ -78,11 +78,11 @@ function content(url, fullStaticPath) {
   let exist = fs.existsSync(reqPath);
 
   // 返回请求内容， 默认为空
-  let content = "";
+  let content = '';
 
   if (!exist) {
     //如果请求路径不存在，返回404
-    content = "404 Not Found! o(╯□╰)o！";
+    content = '404 Not Found! o(╯□╰)o！';
   } else {
     //判断访问地址是文件夹还是文件
     let stat = fs.statSync(reqPath);
@@ -106,7 +106,7 @@ module.exports = content;
 
 ```js
 // 遍历读取目录内容方法
-const walk = require("./walk");
+const walk = require('./walk');
 
 /**
  * 封装目录内容
@@ -120,9 +120,7 @@ function dir(url, reqPath) {
 
   let html = `<ul>`;
   for (let [index, item] of contentList.entries()) {
-    html = `${html}<li><a href="${
-      url === "/" ? "" : url
-    }/${item}">${item}</a></li>`;
+    html = `${html}<li><a href="${url === '/' ? '' : url}/${item}">${item}</a></li>`;
   }
   html = `${html}</ul>`;
 
@@ -135,8 +133,8 @@ module.exports = dir;
 ## util/walk.js
 
 ```js
-const fs = require("fs");
-const mimes = require("./mimes.js");
+const fs = require('fs');
+const mimes = require('./mimes.js');
 
 /**
  * 遍历读取目录内容（子目录，文件名）
@@ -150,11 +148,10 @@ function walk(reqPath) {
     fileList = [];
   for (let i = 0, len = files.length; i < len; i++) {
     let item = files[i];
-    let itemArr = item.split(".");
-    let itemMime =
-      itemArr.length > 1 ? itemArr[itemArr.length - 1] : "undefined";
+    let itemArr = item.split('.');
+    let itemMime = itemArr.length > 1 ? itemArr[itemArr.length - 1] : 'undefined';
 
-    if (typeof mimes[itemMime] === "undefined") {
+    if (typeof mimes[itemMime] === 'undefined') {
       dirList.push(files[i]);
     } else {
       fileList.push(files[i]);
@@ -172,7 +169,7 @@ module.exports = walk;
 ## util/file.js
 
 ```js
-const fs = require("fs");
+const fs = require('fs');
 
 /**
  * 读取文件方法
@@ -180,7 +177,7 @@ const fs = require("fs");
  * @return {string|binary}
  */
 function file(filePath) {
-  let content = fs.readFileSync(filePath, "binary");
+  let content = fs.readFileSync(filePath, 'binary');
   return content;
 }
 
@@ -190,8 +187,8 @@ module.exports = file;
 util/walk.js
 
 ```js
-const fs = require("fs");
-const mimes = require("./mimes.js");
+const fs = require('fs');
+const mimes = require('./mimes.js');
 
 /**
  * 遍历读取目录内容（子目录，文件名）
@@ -205,11 +202,10 @@ function walk(reqPath) {
     fileList = [];
   for (let i = 0, len = files.length; i < len; i++) {
     let item = files[i];
-    let itemArr = item.split(".");
-    let itemMime =
-      itemArr.length > 1 ? itemArr[itemArr.length - 1] : "undefined";
+    let itemArr = item.split('.');
+    let itemMime = itemArr.length > 1 ? itemArr[itemArr.length - 1] : 'undefined';
 
-    if (typeof mimes[itemMime] === "undefined") {
+    if (typeof mimes[itemMime] === 'undefined') {
       dirList.push(files[i]);
     } else {
       fileList.push(files[i]);
@@ -228,25 +224,25 @@ module.exports = walk;
 
 ```js
 let mimes = {
-  css: "text/css",
-  less: "text/css",
-  gif: "image/gif",
-  html: "text/html",
-  ico: "image/x-icon",
-  jpeg: "image/jpeg",
-  jpg: "image/jpeg",
-  js: "text/javascript",
-  json: "application/json",
-  pdf: "application/pdf",
-  png: "image/png",
-  svg: "image/svg+xml",
-  swf: "application/x-shockwave-flash",
-  tiff: "image/tiff",
-  txt: "text/plain",
-  wav: "audio/x-wav",
-  wma: "audio/x-ms-wma",
-  wmv: "video/x-ms-wmv",
-  xml: "text/xml",
+  css: 'text/css',
+  less: 'text/css',
+  gif: 'image/gif',
+  html: 'text/html',
+  ico: 'image/x-icon',
+  jpeg: 'image/jpeg',
+  jpg: 'image/jpeg',
+  js: 'text/javascript',
+  json: 'application/json',
+  pdf: 'application/pdf',
+  png: 'image/png',
+  svg: 'image/svg+xml',
+  swf: 'application/x-shockwave-flash',
+  tiff: 'image/tiff',
+  txt: 'text/plain',
+  wav: 'audio/x-wav',
+  wma: 'audio/x-ms-wma',
+  wmv: 'video/x-ms-wmv',
+  xml: 'text/xml',
 };
 
 module.exports = mimes;
@@ -259,31 +255,31 @@ module.exports = mimes;
 **SocketClient.js**
 
 ```js
-var net = require("net");
-const readline = require("readline");
+var net = require('net');
+const readline = require('readline');
 
 var port = 9000;
-var host = "127.0.0.1";
+var host = '127.0.0.1';
 
 var socket = new net.Socket();
 
-socket.setEncoding = "UTF-8";
+socket.setEncoding = 'UTF-8';
 
 socket.connect(port, host, () => {
-  socket.write("hello.");
+  socket.write('hello.');
 });
 
-socket.on("data", (msg) => {
+socket.on('data', (msg) => {
   console.log(msg.toString());
   say();
 });
 
-socket.on("error", function (err) {
-  console.log("error" + err);
+socket.on('error', function (err) {
+  console.log('error' + err);
 });
 
-socket.on("close", function () {
-  console.log("connection closeed");
+socket.on('close', function () {
+  console.log('connection closeed');
 });
 
 const r1 = readline.createInterface({
@@ -292,9 +288,9 @@ const r1 = readline.createInterface({
 });
 
 function say() {
-  r1.question("请输入：", (inputMsg) => {
-    if (inputMsg != "bye") {
-      socket.write(inputMsg + "\n");
+  r1.question('请输入：', (inputMsg) => {
+    if (inputMsg != 'bye') {
+      socket.write(inputMsg + '\n');
     } else {
       socket.destroy();
       r1.close();
@@ -306,36 +302,36 @@ function say() {
 **SocketServer.js**
 
 ```js
-const net = require("net");
+const net = require('net');
 
 const server = new net.createServer();
 
 let clients = {};
 let clientName = 0;
 
-server.on("connection", (client) => {
+server.on('connection', (client) => {
   client.name = ++clientName;
   clients[client.name] = client;
 
-  client.on("data", (msg) => {
+  client.on('data', (msg) => {
     // console.log('客户端传来：' + msg);
     broadcast(client, msg.toString());
   });
 
-  client.on("error", (e) => {
-    console.log("client error" + e);
+  client.on('error', (e) => {
+    console.log('client error' + e);
     client.end();
   });
 
-  client.on("close", (data) => {
+  client.on('close', (data) => {
     delete clients[client.name];
-    console.log(client.name + " 下线了");
+    console.log(client.name + ' 下线了');
   });
 });
 
 function broadcast(client, msg) {
   for (var key in clients) {
-    clients[key].write(client.name + " 说：" + msg);
+    clients[key].write(client.name + ' 说：' + msg);
   }
 }
 
@@ -369,12 +365,12 @@ server.listen(9000);
     </div>
     <button id="submit">提交</button>
     <script>
-      document.querySelector("#submit").addEventListener(
-        "click",
+      document.querySelector('#submit').addEventListener(
+        'click',
         function () {
           var msg2 = msg.value;
           ws.send(msg2);
-          msg.value = "";
+          msg.value = '';
         },
         false
       );
@@ -386,15 +382,15 @@ server.listen(9000);
 **client/WsClient.js**
 
 ```js
-const ws = new WebSocket("ws://localhost:8080/");
+const ws = new WebSocket('ws://localhost:8080/');
 
 ws.onopen = () => {
-  ws.send("大家好");
+  ws.send('大家好');
 };
 
 ws.onmessage = (msg) => {
-  const content = document.getElementById("content");
-  content.innerHTML += msg.data + "<br/>";
+  const content = document.getElementById('content');
+  content.innerHTML += msg.data + '<br/>';
 };
 
 ws.onerror = (err) => {
@@ -402,36 +398,36 @@ ws.onerror = (err) => {
 };
 
 ws.onclose = () => {
-  console.log("closed~");
+  console.log('closed~');
 };
 ```
 
 **WebSocketServer.js**
 
 ```js
-const WebSocket = require("ws");
+const WebSocket = require('ws');
 const ws = new WebSocket.Server({ port: 8080 });
 
 let clients = {};
 let clientName = 0;
 
-ws.on("connection", (client) => {
+ws.on('connection', (client) => {
   client.name = ++clientName;
   clients[client.name] = client;
 
-  client.on("message", (msg) => {
+  client.on('message', (msg) => {
     broadcast(client, msg);
   });
 
-  client.on("close", () => {
+  client.on('close', () => {
     delete clients[client.name];
-    console.log(client.name + " 离开了~");
+    console.log(client.name + ' 离开了~');
   });
 });
 
 function broadcast(client, msg) {
   for (var key in clients) {
-    clients[key].send(client.name + " 说：" + msg);
+    clients[key].send(client.name + ' 说：' + msg);
   }
 }
 ```
@@ -463,21 +459,21 @@ function broadcast(client, msg) {
     </div>
     <button id="submit">提交</button>
     <script>
-      var socket = io.connect("http://10.9.164.98:8081");
-      const content = document.getElementById("content");
-      document.querySelector("#submit").addEventListener(
-        "click",
+      var socket = io.connect('http://10.9.164.98:8081');
+      const content = document.getElementById('content');
+      document.querySelector('#submit').addEventListener(
+        'click',
         function () {
           var msg2 = msg.value;
-          socket.emit("receive", msg2);
-          msg.value = "";
-          content.innerHTML += msg2 + "<br/>";
+          socket.emit('receive', msg2);
+          msg.value = '';
+          content.innerHTML += msg2 + '<br/>';
         },
         false
       );
 
-      socket.on("message", function (msg) {
-        content.innerHTML += msg + "<br/>";
+      socket.on('message', function (msg) {
+        content.innerHTML += msg + '<br/>';
       });
     </script>
   </body>
@@ -491,14 +487,14 @@ function broadcast(client, msg) {
 **server.js**
 
 ```js
-var express = require("express");
+var express = require('express');
 var app = express();
-var server = require("http").Server(app);
-var io = require("socket.io")(server);
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-app.use(express.static(__dirname + "/client"));
+app.use(express.static(__dirname + '/client'));
 
-io.on("connection", function (socket) {
+io.on('connection', function (socket) {
   // setInterval(function () {
   //   socket.emit('list', 'abc')
   // }, 1000)
@@ -507,12 +503,12 @@ io.on("connection", function (socket) {
   //   console.log(msg);
   // })
 
-  socket.on("receive", (msg) => {
-    socket.broadcast.emit("message", msg);
+  socket.on('receive', (msg) => {
+    socket.broadcast.emit('message', msg);
   });
 });
 
-server.listen(8081, "10.9.164.98");
+server.listen(8081, '10.9.164.98');
 ```
 
 # 异步编程
@@ -526,20 +522,20 @@ server.listen(8081, "10.9.164.98");
 ```js
 // event-loop-1.js
 setTimeout(() => {
-  console.log("setTimeout");
+  console.log('setTimeout');
 }, 0);
 setImmediate(() => {
-  console.log("setImmediate");
+  console.log('setImmediate');
 });
 
 // event-loop-2.js
-const fs = require("fs");
+const fs = require('fs');
 fs.readFile(__filename, () => {
   setTimeout(() => {
-    console.log("setTimeout");
+    console.log('setTimeout');
   }, 0);
   setImmediate(() => {
-    console.log("setImmediate");
+    console.log('setImmediate');
   });
 });
 ```
@@ -635,33 +631,33 @@ libuv 内部还维护着一个默认 4 个线程的线程池，这些线程负�
 
 ```js
 Promise.resolve().then(() => {
-  console.log("resolve1");
+  console.log('resolve1');
 });
 
 process.nextTick(function () {
-  console.log("tick1");
+  console.log('tick1');
   process.nextTick(function () {
-    console.log("tick2");
+    console.log('tick2');
   });
   process.nextTick(function () {
-    console.log("tick3");
+    console.log('tick3');
   });
 });
 
 Promise.resolve().then(() => {
-  console.log("resolve2");
+  console.log('resolve2');
 });
 
 process.nextTick(function () {
-  console.log("tick4");
+  console.log('tick4');
 });
 
 Promise.resolve().then(() => {
-  console.log("resolve3");
+  console.log('resolve3');
 });
 
 process.nextTick(function () {
-  console.log("tick5");
+  console.log('tick5');
 });
 ```
 
@@ -1129,15 +1125,15 @@ npm 提供一个`npm_lifecycle_event`变量，返回当前正在运行的脚本�
 > ```javascript
 > const TARGET = process.env.npm_lifecycle_event;
 >
-> if (TARGET === "test") {
+> if (TARGET === 'test') {
 >   console.log(`Running the test task!`);
 > }
 >
-> if (TARGET === "pretest") {
+> if (TARGET === 'pretest') {
 >   console.log(`Running the pretest task!`);
 > }
 >
-> if (TARGET === "posttest") {
+> if (TARGET === 'posttest') {
 >   console.log(`Running the posttest task!`);
 > }
 > ```
@@ -1334,1601 +1330,1352 @@ npm 脚本有一个非常强大的功能，就是可以使用 npm 的内部变�
     rating: {
       max: 10,
       average: 9.6,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["犯罪", "剧情"],
-    title: "肖申克的救赎",
+    genres: ['犯罪', '剧情'],
+    title: '肖申克的救赎',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1054521/",
+        alt: 'https://movie.douban.com/celebrity/1054521/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.jpg',
         },
-        name: "蒂姆·罗宾斯",
-        id: "1054521",
+        name: '蒂姆·罗宾斯',
+        id: '1054521',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1054534/",
+        alt: 'https://movie.douban.com/celebrity/1054534/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34642.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34642.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34642.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34642.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34642.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34642.jpg',
         },
-        name: "摩根·弗里曼",
-        id: "1054534",
+        name: '摩根·弗里曼',
+        id: '1054534',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1041179/",
+        alt: 'https://movie.douban.com/celebrity/1041179/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5837.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5837.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5837.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5837.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5837.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5837.jpg',
         },
-        name: "鲍勃·冈顿",
-        id: "1041179",
+        name: '鲍勃·冈顿',
+        id: '1041179',
       },
     ],
     collect_count: 1452533,
-    original_title: "The Shawshank Redemption",
-    subtype: "movie",
+    original_title: 'The Shawshank Redemption',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1047973/",
+        alt: 'https://movie.douban.com/celebrity/1047973/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.jpg',
         },
-        name: "弗兰克·德拉邦特",
-        id: "1047973",
+        name: '弗兰克·德拉邦特',
+        id: '1047973',
       },
     ],
-    year: "1994",
+    year: '1994',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292052/",
-    id: "1292052",
+    alt: 'https://movie.douban.com/subject/1292052/',
+    id: '1292052',
   },
   {
     rating: {
       max: 10,
       average: 9.6,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "爱情", "同性"],
-    title: "霸王别姬",
+    genres: ['剧情', '爱情', '同性'],
+    title: '霸王别姬',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1003494/",
+        alt: 'https://movie.douban.com/celebrity/1003494/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p67.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p67.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p67.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p67.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p67.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p67.jpg',
         },
-        name: "张国荣",
-        id: "1003494",
+        name: '张国荣',
+        id: '1003494',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1050265/",
+        alt: 'https://movie.douban.com/celebrity/1050265/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1391771959.66.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1391771959.66.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1391771959.66.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1391771959.66.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1391771959.66.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1391771959.66.jpg',
         },
-        name: "张丰毅",
-        id: "1050265",
+        name: '张丰毅',
+        id: '1050265',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1035641/",
+        alt: 'https://movie.douban.com/celebrity/1035641/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1399268395.47.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1399268395.47.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1399268395.47.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1399268395.47.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1399268395.47.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1399268395.47.jpg',
         },
-        name: "巩俐",
-        id: "1035641",
+        name: '巩俐',
+        id: '1035641',
       },
     ],
     collect_count: 1108300,
-    original_title: "霸王别姬",
-    subtype: "movie",
+    original_title: '霸王别姬',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1023040/",
+        alt: 'https://movie.douban.com/celebrity/1023040/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451727734.81.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451727734.81.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451727734.81.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451727734.81.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451727734.81.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451727734.81.jpg',
         },
-        name: "陈凯歌",
-        id: "1023040",
+        name: '陈凯歌',
+        id: '1023040',
       },
     ],
-    year: "1993",
+    year: '1993',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910813120.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910813120.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910813120.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910813120.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910813120.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910813120.jpg',
     },
-    alt: "https://movie.douban.com/subject/1291546/",
-    id: "1291546",
+    alt: 'https://movie.douban.com/subject/1291546/',
+    id: '1291546',
   },
   {
     rating: {
       max: 10,
       average: 9.4,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "动作", "犯罪"],
-    title: "这个杀手不太冷",
+    genres: ['剧情', '动作', '犯罪'],
+    title: '这个杀手不太冷',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1025182/",
+        alt: 'https://movie.douban.com/celebrity/1025182/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p8833.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p8833.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p8833.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p8833.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p8833.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p8833.jpg',
         },
-        name: "让·雷诺",
-        id: "1025182",
+        name: '让·雷诺',
+        id: '1025182',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1054454/",
+        alt: 'https://movie.douban.com/celebrity/1054454/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p2274.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p2274.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p2274.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p2274.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p2274.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p2274.jpg',
         },
-        name: "娜塔莉·波特曼",
-        id: "1054454",
+        name: '娜塔莉·波特曼',
+        id: '1054454',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1010507/",
+        alt: 'https://movie.douban.com/celebrity/1010507/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33896.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33896.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33896.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33896.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33896.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33896.jpg',
         },
-        name: "加里·奥德曼",
-        id: "1010507",
+        name: '加里·奥德曼',
+        id: '1010507',
       },
     ],
     collect_count: 1460639,
-    original_title: "Léon",
-    subtype: "movie",
+    original_title: 'Léon',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1031876/",
+        alt: 'https://movie.douban.com/celebrity/1031876/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33301.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33301.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33301.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33301.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33301.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33301.jpg',
         },
-        name: "吕克·贝松",
-        id: "1031876",
+        name: '吕克·贝松',
+        id: '1031876',
       },
     ],
-    year: "1994",
+    year: '1994',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p511118051.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p511118051.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p511118051.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p511118051.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p511118051.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p511118051.jpg',
     },
-    alt: "https://movie.douban.com/subject/1295644/",
-    id: "1295644",
+    alt: 'https://movie.douban.com/subject/1295644/',
+    id: '1295644',
   },
   {
     rating: {
       max: 10,
       average: 9.4,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "爱情"],
-    title: "阿甘正传",
+    genres: ['剧情', '爱情'],
+    title: '阿甘正传',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1054450/",
+        alt: 'https://movie.douban.com/celebrity/1054450/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p551.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p551.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p551.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p551.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p551.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p551.jpg',
         },
-        name: "汤姆·汉克斯",
-        id: "1054450",
+        name: '汤姆·汉克斯',
+        id: '1054450',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1002676/",
+        alt: 'https://movie.douban.com/celebrity/1002676/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1537890386.77.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1537890386.77.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1537890386.77.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1537890386.77.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1537890386.77.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1537890386.77.jpg',
         },
-        name: "罗宾·怀特",
-        id: "1002676",
+        name: '罗宾·怀特',
+        id: '1002676',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1031848/",
+        alt: 'https://movie.douban.com/celebrity/1031848/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1345.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1345.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1345.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1345.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1345.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1345.jpg',
         },
-        name: "加里·西尼斯",
-        id: "1031848",
+        name: '加里·西尼斯',
+        id: '1031848',
       },
     ],
     collect_count: 1224207,
-    original_title: "Forrest Gump",
-    subtype: "movie",
+    original_title: 'Forrest Gump',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1053564/",
+        alt: 'https://movie.douban.com/celebrity/1053564/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p505.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p505.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p505.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p505.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p505.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p505.jpg',
         },
-        name: "罗伯特·泽米吉斯",
-        id: "1053564",
+        name: '罗伯特·泽米吉斯',
+        id: '1053564',
       },
     ],
-    year: "1994",
+    year: '1994',
     images: {
-      small:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p510876377.jpg",
-      large:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p510876377.jpg",
-      medium:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p510876377.jpg",
+      small: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p510876377.jpg',
+      large: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p510876377.jpg',
+      medium: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p510876377.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292720/",
-    id: "1292720",
+    alt: 'https://movie.douban.com/subject/1292720/',
+    id: '1292720',
   },
   {
     rating: {
       max: 10,
       average: 9.5,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "喜剧", "爱情"],
-    title: "美丽人生",
+    genres: ['剧情', '喜剧', '爱情'],
+    title: '美丽人生',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1041004/",
+        alt: 'https://movie.douban.com/celebrity/1041004/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg',
         },
-        name: "罗伯托·贝尼尼",
-        id: "1041004",
+        name: '罗伯托·贝尼尼',
+        id: '1041004',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1000375/",
+        alt: 'https://movie.douban.com/celebrity/1000375/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9548.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9548.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9548.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9548.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9548.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9548.jpg',
         },
-        name: "尼可莱塔·布拉斯基",
-        id: "1000375",
+        name: '尼可莱塔·布拉斯基',
+        id: '1000375',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1000368/",
+        alt: 'https://movie.douban.com/celebrity/1000368/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45590.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45590.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45590.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45590.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45590.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45590.jpg',
         },
-        name: "乔治·坎塔里尼",
-        id: "1000368",
+        name: '乔治·坎塔里尼',
+        id: '1000368',
       },
     ],
     collect_count: 664748,
-    original_title: "La vita è bella",
-    subtype: "movie",
+    original_title: 'La vita è bella',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1041004/",
+        alt: 'https://movie.douban.com/celebrity/1041004/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p26764.jpg',
         },
-        name: "罗伯托·贝尼尼",
-        id: "1041004",
+        name: '罗伯托·贝尼尼',
+        id: '1041004',
       },
     ],
-    year: "1997",
+    year: '1997',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p510861873.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p510861873.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p510861873.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p510861873.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p510861873.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p510861873.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292063/",
-    id: "1292063",
+    alt: 'https://movie.douban.com/subject/1292063/',
+    id: '1292063',
   },
   {
     rating: {
       max: 10,
       average: 9.3,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "爱情", "灾难"],
-    title: "泰坦尼克号",
+    genres: ['剧情', '爱情', '灾难'],
+    title: '泰坦尼克号',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1041029/",
+        alt: 'https://movie.douban.com/celebrity/1041029/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg',
         },
-        name: "莱昂纳多·迪卡普里奥",
-        id: "1041029",
+        name: '莱昂纳多·迪卡普里奥',
+        id: '1041029',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1054446/",
+        alt: 'https://movie.douban.com/celebrity/1054446/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53358.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53358.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53358.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53358.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53358.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53358.jpg',
         },
-        name: "凯特·温丝莱特",
-        id: "1054446",
+        name: '凯特·温丝莱特',
+        id: '1054446',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1031864/",
+        alt: 'https://movie.douban.com/celebrity/1031864/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45186.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45186.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45186.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45186.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45186.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45186.jpg',
         },
-        name: "比利·赞恩",
-        id: "1031864",
+        name: '比利·赞恩',
+        id: '1031864',
       },
     ],
     collect_count: 1144872,
-    original_title: "Titanic",
-    subtype: "movie",
+    original_title: 'Titanic',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1022571/",
+        alt: 'https://movie.douban.com/celebrity/1022571/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33715.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33715.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33715.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33715.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33715.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33715.jpg',
         },
-        name: "詹姆斯·卡梅隆",
-        id: "1022571",
+        name: '詹姆斯·卡梅隆',
+        id: '1022571',
       },
     ],
-    year: "1997",
+    year: '1997',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p457760035.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p457760035.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p457760035.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p457760035.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p457760035.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p457760035.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292722/",
-    id: "1292722",
+    alt: 'https://movie.douban.com/subject/1292722/',
+    id: '1292722',
   },
   {
     rating: {
       max: 10,
       average: 9.3,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "动画", "奇幻"],
-    title: "千与千寻",
+    genres: ['剧情', '动画', '奇幻'],
+    title: '千与千寻',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1023337/",
+        alt: 'https://movie.douban.com/celebrity/1023337/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1463193210.13.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1463193210.13.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1463193210.13.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1463193210.13.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1463193210.13.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1463193210.13.jpg',
         },
-        name: "柊瑠美",
-        id: "1023337",
+        name: '柊瑠美',
+        id: '1023337',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1005438/",
+        alt: 'https://movie.douban.com/celebrity/1005438/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44986.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44986.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44986.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44986.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44986.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44986.jpg',
         },
-        name: "入野自由",
-        id: "1005438",
+        name: '入野自由',
+        id: '1005438',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1045797/",
+        alt: 'https://movie.douban.com/celebrity/1045797/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1376151005.51.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1376151005.51.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1376151005.51.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1376151005.51.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1376151005.51.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1376151005.51.jpg',
         },
-        name: "夏木真理",
-        id: "1045797",
+        name: '夏木真理',
+        id: '1045797',
       },
     ],
     collect_count: 1064494,
-    original_title: "千と千尋の神隠し",
-    subtype: "movie",
+    original_title: '千と千尋の神隠し',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1054439/",
+        alt: 'https://movie.douban.com/celebrity/1054439/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg',
         },
-        name: "宫崎骏",
-        id: "1054439",
+        name: '宫崎骏',
+        id: '1054439',
       },
     ],
-    year: "2001",
+    year: '2001',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1606727862.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1606727862.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1606727862.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1606727862.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1606727862.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1606727862.jpg',
     },
-    alt: "https://movie.douban.com/subject/1291561/",
-    id: "1291561",
+    alt: 'https://movie.douban.com/subject/1291561/',
+    id: '1291561',
   },
   {
     rating: {
       max: 10,
       average: 9.5,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "历史", "战争"],
-    title: "辛德勒的名单",
+    genres: ['剧情', '历史', '战争'],
+    title: '辛德勒的名单',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1031220/",
+        alt: 'https://movie.douban.com/celebrity/1031220/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44906.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44906.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44906.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44906.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44906.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p44906.jpg',
         },
-        name: "连姆·尼森",
-        id: "1031220",
+        name: '连姆·尼森',
+        id: '1031220',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1054393/",
+        alt: 'https://movie.douban.com/celebrity/1054393/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1374649659.58.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1374649659.58.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1374649659.58.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1374649659.58.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1374649659.58.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1374649659.58.jpg',
         },
-        name: "本·金斯利",
-        id: "1054393",
+        name: '本·金斯利',
+        id: '1054393',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1006956/",
+        alt: 'https://movie.douban.com/celebrity/1006956/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p28941.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p28941.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p28941.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p28941.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p28941.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p28941.jpg',
         },
-        name: "拉尔夫·费因斯",
-        id: "1006956",
+        name: '拉尔夫·费因斯',
+        id: '1006956',
       },
     ],
     collect_count: 623451,
     original_title: "Schindler's List",
-    subtype: "movie",
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1054440/",
+        alt: 'https://movie.douban.com/celebrity/1054440/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34602.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34602.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34602.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34602.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34602.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p34602.jpg',
         },
-        name: "史蒂文·斯皮尔伯格",
-        id: "1054440",
+        name: '史蒂文·斯皮尔伯格',
+        id: '1054440',
       },
     ],
-    year: "1993",
+    year: '1993',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p492406163.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p492406163.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p492406163.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p492406163.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p492406163.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p492406163.jpg',
     },
-    alt: "https://movie.douban.com/subject/1295124/",
-    id: "1295124",
+    alt: 'https://movie.douban.com/subject/1295124/',
+    id: '1295124',
   },
   {
     rating: {
       max: 10,
       average: 9.3,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "科幻", "悬疑"],
-    title: "盗梦空间",
+    genres: ['剧情', '科幻', '悬疑'],
+    title: '盗梦空间',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1041029/",
+        alt: 'https://movie.douban.com/celebrity/1041029/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p470.jpg',
         },
-        name: "莱昂纳多·迪卡普里奥",
-        id: "1041029",
+        name: '莱昂纳多·迪卡普里奥',
+        id: '1041029',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1101703/",
+        alt: 'https://movie.douban.com/celebrity/1101703/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3517.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3517.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3517.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3517.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3517.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3517.jpg',
         },
-        name: "约瑟夫·高登-莱维特",
-        id: "1101703",
+        name: '约瑟夫·高登-莱维特',
+        id: '1101703',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1012520/",
+        alt: 'https://movie.douban.com/celebrity/1012520/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p118.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p118.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p118.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p118.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p118.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p118.jpg',
         },
-        name: "艾伦·佩吉",
-        id: "1012520",
+        name: '艾伦·佩吉',
+        id: '1012520',
       },
     ],
     collect_count: 1269773,
-    original_title: "Inception",
-    subtype: "movie",
+    original_title: 'Inception',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1054524/",
+        alt: 'https://movie.douban.com/celebrity/1054524/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg',
         },
-        name: "克里斯托弗·诺兰",
-        id: "1054524",
+        name: '克里斯托弗·诺兰',
+        id: '1054524',
       },
     ],
-    year: "2010",
+    year: '2010',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p513344864.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p513344864.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p513344864.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p513344864.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p513344864.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p513344864.jpg',
     },
-    alt: "https://movie.douban.com/subject/3541415/",
-    id: "3541415",
+    alt: 'https://movie.douban.com/subject/3541415/',
+    id: '3541415',
   },
   {
     rating: {
       max: 10,
       average: 9.3,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["爱情", "科幻", "动画"],
-    title: "机器人总动员",
+    genres: ['爱情', '科幻', '动画'],
+    title: '机器人总动员',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1009535/",
+        alt: 'https://movie.douban.com/celebrity/1009535/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13028.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13028.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13028.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13028.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13028.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13028.jpg',
         },
-        name: "本·贝尔特",
-        id: "1009535",
+        name: '本·贝尔特',
+        id: '1009535',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1000389/",
+        alt: 'https://movie.douban.com/celebrity/1000389/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1519794715.93.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1519794715.93.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1519794715.93.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1519794715.93.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1519794715.93.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1519794715.93.jpg',
         },
-        name: "艾丽莎·奈特",
-        id: "1000389",
+        name: '艾丽莎·奈特',
+        id: '1000389',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1018022/",
+        alt: 'https://movie.douban.com/celebrity/1018022/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p31068.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p31068.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p31068.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p31068.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p31068.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p31068.jpg',
         },
-        name: "杰夫·格尔林",
-        id: "1018022",
+        name: '杰夫·格尔林',
+        id: '1018022',
       },
     ],
     collect_count: 787709,
-    original_title: "WALL·E",
-    subtype: "movie",
+    original_title: 'WALL·E',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1036450/",
+        alt: 'https://movie.douban.com/celebrity/1036450/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1467359656.96.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1467359656.96.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1467359656.96.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1467359656.96.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1467359656.96.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1467359656.96.jpg',
         },
-        name: "安德鲁·斯坦顿",
-        id: "1036450",
+        name: '安德鲁·斯坦顿',
+        id: '1036450',
       },
     ],
-    year: "2008",
+    year: '2008',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1461851991.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1461851991.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1461851991.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1461851991.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1461851991.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1461851991.jpg',
     },
-    alt: "https://movie.douban.com/subject/2131459/",
-    id: "2131459",
+    alt: 'https://movie.douban.com/subject/2131459/',
+    id: '2131459',
   },
   {
     rating: {
       max: 10,
       average: 9.3,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情"],
-    title: "忠犬八公的故事",
+    genres: ['剧情'],
+    title: '忠犬八公的故事',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1040997/",
+        alt: 'https://movie.douban.com/celebrity/1040997/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33013.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33013.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33013.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33013.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33013.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p33013.jpg',
         },
-        name: "理查·基尔",
-        id: "1040997",
+        name: '理查·基尔',
+        id: '1040997',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1049499/",
+        alt: 'https://movie.douban.com/celebrity/1049499/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5502.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5502.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5502.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5502.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5502.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5502.jpg',
         },
-        name: "萨拉·罗默尔",
-        id: "1049499",
+        name: '萨拉·罗默尔',
+        id: '1049499',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1025215/",
+        alt: 'https://movie.douban.com/celebrity/1025215/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17520.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17520.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17520.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17520.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17520.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17520.jpg',
         },
-        name: "琼·艾伦",
-        id: "1025215",
+        name: '琼·艾伦',
+        id: '1025215',
       },
     ],
     collect_count: 849338,
     original_title: "Hachi: A Dog's Tale",
-    subtype: "movie",
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1018014/",
+        alt: 'https://movie.douban.com/celebrity/1018014/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4333.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4333.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4333.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4333.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4333.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4333.jpg',
         },
-        name: "拉斯·霍尔斯道姆",
-        id: "1018014",
+        name: '拉斯·霍尔斯道姆',
+        id: '1018014',
       },
     ],
-    year: "2009",
+    year: '2009',
     images: {
-      small:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p524964016.jpg",
-      large:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p524964016.jpg",
-      medium:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p524964016.jpg",
+      small: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p524964016.jpg',
+      large: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p524964016.jpg',
+      medium: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p524964016.jpg',
     },
-    alt: "https://movie.douban.com/subject/3011091/",
-    id: "3011091",
+    alt: 'https://movie.douban.com/subject/3011091/',
+    id: '3011091',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "45",
+      stars: '45',
       min: 0,
     },
-    genres: ["剧情", "喜剧", "爱情"],
-    title: "三傻大闹宝莱坞",
+    genres: ['剧情', '喜剧', '爱情'],
+    title: '三傻大闹宝莱坞',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1031931/",
+        alt: 'https://movie.douban.com/celebrity/1031931/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13628.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13628.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13628.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13628.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13628.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p13628.jpg',
         },
-        name: "阿米尔·汗",
-        id: "1031931",
+        name: '阿米尔·汗',
+        id: '1031931',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1049635/",
+        alt: 'https://movie.douban.com/celebrity/1049635/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5568.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5568.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5568.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5568.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5568.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5568.jpg',
         },
-        name: "卡琳娜·卡普尔",
-        id: "1049635",
+        name: '卡琳娜·卡普尔',
+        id: '1049635',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1018290/",
+        alt: 'https://movie.douban.com/celebrity/1018290/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5651.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5651.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5651.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5651.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5651.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p5651.jpg',
         },
-        name: "马达范",
-        id: "1018290",
+        name: '马达范',
+        id: '1018290',
       },
     ],
     collect_count: 1070049,
-    original_title: "3 Idiots",
-    subtype: "movie",
+    original_title: '3 Idiots',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1286677/",
+        alt: 'https://movie.douban.com/celebrity/1286677/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p16549.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p16549.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p16549.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p16549.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p16549.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p16549.jpg',
         },
-        name: "拉吉库马尔·希拉尼",
-        id: "1286677",
+        name: '拉吉库马尔·希拉尼',
+        id: '1286677',
       },
     ],
-    year: "2009",
+    year: '2009',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p579729551.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p579729551.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p579729551.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p579729551.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p579729551.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p579729551.jpg',
     },
-    alt: "https://movie.douban.com/subject/3793023/",
-    id: "3793023",
+    alt: 'https://movie.douban.com/subject/3793023/',
+    id: '3793023',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "45",
+      stars: '45',
       min: 0,
     },
-    genres: ["剧情", "音乐"],
-    title: "海上钢琴师",
+    genres: ['剧情', '音乐'],
+    title: '海上钢琴师',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1025176/",
+        alt: 'https://movie.douban.com/celebrity/1025176/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p6281.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p6281.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p6281.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p6281.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p6281.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p6281.jpg',
         },
-        name: "蒂姆·罗斯",
-        id: "1025176",
+        name: '蒂姆·罗斯',
+        id: '1025176',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1010659/",
+        alt: 'https://movie.douban.com/celebrity/1010659/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1355152571.6.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1355152571.6.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1355152571.6.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1355152571.6.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1355152571.6.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1355152571.6.jpg',
         },
-        name: "普路特·泰勒·文斯",
-        id: "1010659",
+        name: '普路特·泰勒·文斯',
+        id: '1010659',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1027407/",
+        alt: 'https://movie.douban.com/celebrity/1027407/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p12333.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p12333.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p12333.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p12333.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p12333.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p12333.jpg',
         },
-        name: "比尔·努恩",
-        id: "1027407",
+        name: '比尔·努恩',
+        id: '1027407',
       },
     ],
     collect_count: 928132,
     original_title: "La leggenda del pianista sull'oceano",
-    subtype: "movie",
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1018983/",
+        alt: 'https://movie.douban.com/celebrity/1018983/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p195.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p195.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p195.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p195.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p195.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p195.jpg',
         },
-        name: "朱塞佩·托纳多雷",
-        id: "1018983",
+        name: '朱塞佩·托纳多雷',
+        id: '1018983',
       },
     ],
-    year: "1998",
+    year: '1998',
     images: {
-      small:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p511146807.jpg",
-      large:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p511146807.jpg",
-      medium:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p511146807.jpg",
+      small: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p511146807.jpg',
+      large: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p511146807.jpg',
+      medium: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p511146807.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292001/",
-    id: "1292001",
+    alt: 'https://movie.douban.com/subject/1292001/',
+    id: '1292001',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "音乐"],
-    title: "放牛班的春天",
+    genres: ['剧情', '音乐'],
+    title: '放牛班的春天',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1048281/",
+        alt: 'https://movie.douban.com/celebrity/1048281/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3363.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3363.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3363.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3363.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3363.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p3363.jpg',
         },
-        name: "热拉尔·朱尼奥",
-        id: "1048281",
+        name: '热拉尔·朱尼奥',
+        id: '1048281',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1036712/",
+        alt: 'https://movie.douban.com/celebrity/1036712/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1414312828.15.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1414312828.15.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1414312828.15.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1414312828.15.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1414312828.15.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1414312828.15.jpg',
         },
-        name: "让-巴蒂斯特·莫尼耶",
-        id: "1036712",
+        name: '让-巴蒂斯特·莫尼耶',
+        id: '1036712',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1054351/",
+        alt: 'https://movie.douban.com/celebrity/1054351/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9329.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9329.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9329.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9329.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9329.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p9329.jpg',
         },
-        name: "弗朗索瓦·贝莱昂",
-        id: "1054351",
+        name: '弗朗索瓦·贝莱昂',
+        id: '1054351',
       },
     ],
     collect_count: 784510,
-    original_title: "Les choristes",
-    subtype: "movie",
+    original_title: 'Les choristes',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1277959/",
+        alt: 'https://movie.douban.com/celebrity/1277959/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p24744.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p24744.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p24744.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p24744.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p24744.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p24744.jpg',
         },
-        name: "克里斯托夫·巴拉蒂",
-        id: "1277959",
+        name: '克里斯托夫·巴拉蒂',
+        id: '1277959',
       },
     ],
-    year: "2004",
+    year: '2004',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910824951.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910824951.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910824951.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910824951.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910824951.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p1910824951.jpg',
     },
-    alt: "https://movie.douban.com/subject/1291549/",
-    id: "1291549",
+    alt: 'https://movie.douban.com/subject/1291549/',
+    id: '1291549',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "45",
+      stars: '45',
       min: 0,
     },
-    genres: ["喜剧", "爱情", "奇幻"],
-    title: "大话西游之大圣娶亲",
+    genres: ['喜剧', '爱情', '奇幻'],
+    title: '大话西游之大圣娶亲',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1048026/",
+        alt: 'https://movie.douban.com/celebrity/1048026/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47421.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47421.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47421.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47421.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47421.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47421.jpg',
         },
-        name: "周星驰",
-        id: "1048026",
+        name: '周星驰',
+        id: '1048026',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1016771/",
+        alt: 'https://movie.douban.com/celebrity/1016771/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45482.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45482.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45482.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45482.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45482.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45482.jpg',
         },
-        name: "吴孟达",
-        id: "1016771",
+        name: '吴孟达',
+        id: '1016771',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1041734/",
+        alt: 'https://movie.douban.com/celebrity/1041734/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p49237.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p49237.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p49237.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p49237.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p49237.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p49237.jpg',
         },
-        name: "朱茵",
-        id: "1041734",
+        name: '朱茵',
+        id: '1041734',
       },
     ],
     collect_count: 821929,
-    original_title: "西遊記大結局之仙履奇緣",
-    subtype: "movie",
+    original_title: '西遊記大結局之仙履奇緣',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1274431/",
+        alt: 'https://movie.douban.com/celebrity/1274431/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45374.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45374.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45374.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45374.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45374.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45374.jpg',
         },
-        name: "刘镇伟",
-        id: "1274431",
+        name: '刘镇伟',
+        id: '1274431',
       },
     ],
-    year: "1995",
+    year: '1995',
     images: {
-      small:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.jpg",
-      large:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.jpg",
-      medium:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.jpg",
+      small: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.jpg',
+      large: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.jpg',
+      medium: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292213/",
-    id: "1292213",
+    alt: 'https://movie.douban.com/subject/1292213/',
+    id: '1292213',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "45",
+      stars: '45',
       min: 0,
     },
-    genres: ["剧情", "科幻"],
-    title: "楚门的世界",
+    genres: ['剧情', '科幻'],
+    title: '楚门的世界',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1054438/",
+        alt: 'https://movie.douban.com/celebrity/1054438/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p615.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p615.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p615.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p615.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p615.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p615.jpg',
         },
-        name: "金·凯瑞",
-        id: "1054438",
+        name: '金·凯瑞',
+        id: '1054438',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1053572/",
+        alt: 'https://movie.douban.com/celebrity/1053572/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p516.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p516.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p516.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p516.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p516.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p516.jpg',
         },
-        name: "劳拉·琳妮",
-        id: "1053572",
+        name: '劳拉·琳妮',
+        id: '1053572',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1048024/",
+        alt: 'https://movie.douban.com/celebrity/1048024/',
         avatars: {
           small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1485163747.76.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1485163747.76.jpg',
           large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1485163747.76.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1485163747.76.jpg',
           medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1485163747.76.jpg",
+            'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1485163747.76.jpg',
         },
-        name: "艾德·哈里斯",
-        id: "1048024",
+        name: '艾德·哈里斯',
+        id: '1048024',
       },
     ],
     collect_count: 784754,
-    original_title: "The Truman Show",
-    subtype: "movie",
+    original_title: 'The Truman Show',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1022721/",
+        alt: 'https://movie.douban.com/celebrity/1022721/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4360.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4360.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4360.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4360.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4360.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p4360.jpg',
         },
-        name: "彼得·威尔",
-        id: "1022721",
+        name: '彼得·威尔',
+        id: '1022721',
       },
     ],
-    year: "1998",
+    year: '1998',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p479682972.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p479682972.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p479682972.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p479682972.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p479682972.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p479682972.jpg',
     },
-    alt: "https://movie.douban.com/subject/1292064/",
-    id: "1292064",
+    alt: 'https://movie.douban.com/subject/1292064/',
+    id: '1292064',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情", "犯罪"],
-    title: "教父",
+    genres: ['剧情', '犯罪'],
+    title: '教父',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1041025/",
+        alt: 'https://movie.douban.com/celebrity/1041025/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45035.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45035.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45035.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45035.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45035.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p45035.jpg',
         },
-        name: "马龙·白兰度",
-        id: "1041025",
+        name: '马龙·白兰度',
+        id: '1041025',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1054451/",
+        alt: 'https://movie.douban.com/celebrity/1054451/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p645.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p645.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p645.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p645.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p645.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p645.jpg',
         },
-        name: "阿尔·帕西诺",
-        id: "1054451",
+        name: '阿尔·帕西诺',
+        id: '1054451',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1000050/",
+        alt: 'https://movie.douban.com/celebrity/1000050/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53524.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53524.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53524.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53524.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53524.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p53524.jpg',
         },
-        name: "詹姆斯·肯恩",
-        id: "1000050",
+        name: '詹姆斯·肯恩',
+        id: '1000050',
       },
     ],
     collect_count: 551532,
-    original_title: "The Godfather",
-    subtype: "movie",
+    original_title: 'The Godfather',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1054419/",
+        alt: 'https://movie.douban.com/celebrity/1054419/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p592.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p592.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p592.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p592.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p592.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p592.jpg',
         },
-        name: "弗朗西斯·福特·科波拉",
-        id: "1054419",
+        name: '弗朗西斯·福特·科波拉',
+        id: '1054419',
       },
     ],
-    year: "1972",
+    year: '1972',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2190556185.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2190556185.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2190556185.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2190556185.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2190556185.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2190556185.jpg',
     },
-    alt: "https://movie.douban.com/subject/1291841/",
-    id: "1291841",
+    alt: 'https://movie.douban.com/subject/1291841/',
+    id: '1291841',
   },
   {
     rating: {
       max: 10,
       average: 9.1,
-      stars: "45",
+      stars: '45',
       min: 0,
     },
-    genres: ["动画", "奇幻", "冒险"],
-    title: "龙猫",
+    genres: ['动画', '奇幻', '冒险'],
+    title: '龙猫',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1019382/",
+        alt: 'https://movie.douban.com/celebrity/1019382/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1455201170.02.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1455201170.02.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1455201170.02.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1455201170.02.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1455201170.02.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1455201170.02.jpg',
         },
-        name: "日高法子",
-        id: "1019382",
+        name: '日高法子',
+        id: '1019382',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1025582/",
+        alt: 'https://movie.douban.com/celebrity/1025582/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p29537.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p29537.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p29537.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p29537.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p29537.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p29537.jpg',
         },
-        name: "坂本千夏",
-        id: "1025582",
+        name: '坂本千夏',
+        id: '1025582',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1379738/",
+        alt: 'https://movie.douban.com/celebrity/1379738/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1503457262.72.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1503457262.72.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1503457262.72.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1503457262.72.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1503457262.72.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1503457262.72.jpg',
         },
-        name: "糸井重里",
-        id: "1379738",
+        name: '糸井重里',
+        id: '1379738',
       },
     ],
     collect_count: 668392,
-    original_title: "となりのトトロ",
-    subtype: "movie",
+    original_title: 'となりのトトロ',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1054439/",
+        alt: 'https://movie.douban.com/celebrity/1054439/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p616.jpg',
         },
-        name: "宫崎骏",
-        id: "1054439",
+        name: '宫崎骏',
+        id: '1054439',
       },
     ],
-    year: "1988",
+    year: '1988',
     images: {
-      small:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p537668599.jpg",
-      large:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p537668599.jpg",
-      medium:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p537668599.jpg",
+      small: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p537668599.jpg',
+      large: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p537668599.jpg',
+      medium: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p537668599.jpg',
     },
-    alt: "https://movie.douban.com/subject/1291560/",
-    id: "1291560",
+    alt: 'https://movie.douban.com/subject/1291560/',
+    id: '1291560',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "45",
+      stars: '45',
       min: 0,
     },
-    genres: ["剧情", "科幻", "冒险"],
-    title: "星际穿越",
+    genres: ['剧情', '科幻', '冒险'],
+    title: '星际穿越',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1040511/",
+        alt: 'https://movie.douban.com/celebrity/1040511/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1392653727.04.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1392653727.04.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1392653727.04.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1392653727.04.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1392653727.04.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1392653727.04.jpg',
         },
-        name: "马修·麦康纳",
-        id: "1040511",
+        name: '马修·麦康纳',
+        id: '1040511',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1048027/",
+        alt: 'https://movie.douban.com/celebrity/1048027/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10467.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10467.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10467.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10467.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10467.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10467.jpg',
         },
-        name: "安妮·海瑟薇",
-        id: "1048027",
+        name: '安妮·海瑟薇',
+        id: '1048027',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1000225/",
+        alt: 'https://movie.douban.com/celebrity/1000225/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p54076.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p54076.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p54076.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p54076.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p54076.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p54076.jpg',
         },
-        name: "杰西卡·查斯坦",
-        id: "1000225",
+        name: '杰西卡·查斯坦',
+        id: '1000225',
       },
     ],
     collect_count: 789910,
-    original_title: "Interstellar",
-    subtype: "movie",
+    original_title: 'Interstellar',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1054524/",
+        alt: 'https://movie.douban.com/celebrity/1054524/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p673.jpg',
         },
-        name: "克里斯托弗·诺兰",
-        id: "1054524",
+        name: '克里斯托弗·诺兰',
+        id: '1054524',
       },
     ],
-    year: "2014",
+    year: '2014',
     images: {
-      small:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2206088801.jpg",
-      large:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2206088801.jpg",
-      medium:
-        "http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2206088801.jpg",
+      small: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2206088801.jpg',
+      large: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2206088801.jpg',
+      medium: 'http://img7.doubanio.com/view/photo/s_ratio_poster/public/p2206088801.jpg',
     },
-    alt: "https://movie.douban.com/subject/1889243/",
-    id: "1889243",
+    alt: 'https://movie.douban.com/subject/1889243/',
+    id: '1889243',
   },
   {
     rating: {
       max: 10,
       average: 9.2,
-      stars: "50",
+      stars: '50',
       min: 0,
     },
-    genres: ["剧情"],
-    title: "熔炉",
+    genres: ['剧情'],
+    title: '熔炉',
     casts: [
       {
-        alt: "https://movie.douban.com/celebrity/1011009/",
+        alt: 'https://movie.douban.com/celebrity/1011009/',
         avatars: {
-          small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p55195.jpg",
-          large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p55195.jpg",
-          medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p55195.jpg",
+          small: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p55195.jpg',
+          large: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p55195.jpg',
+          medium: 'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p55195.jpg',
         },
-        name: "孔侑",
-        id: "1011009",
+        name: '孔侑',
+        id: '1011009',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1276062/",
+        alt: 'https://movie.douban.com/celebrity/1276062/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1352773255.21.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1352773255.21.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1352773255.21.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1352773255.21.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1352773255.21.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1352773255.21.jpg',
         },
-        name: "郑有美",
-        id: "1276062",
+        name: '郑有美',
+        id: '1276062',
       },
       {
-        alt: "https://movie.douban.com/celebrity/1331104/",
+        alt: 'https://movie.douban.com/celebrity/1331104/',
         avatars: {
           small:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1393488191.45.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1393488191.45.jpg',
           large:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1393488191.45.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1393488191.45.jpg',
           medium:
-            "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1393488191.45.jpg",
+            'http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1393488191.45.jpg',
         },
-        name: "金志映",
-        id: "1331104",
+        name: '金志映',
+        id: '1331104',
       },
     ],
     collect_count: 409953,
-    original_title: "도가니",
-    subtype: "movie",
+    original_title: '도가니',
+    subtype: 'movie',
     directors: [
       {
-        alt: "https://movie.douban.com/celebrity/1317274/",
+        alt: 'https://movie.douban.com/celebrity/1317274/',
         avatars: {
-          small:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p52558.jpg",
-          large:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p52558.jpg",
-          medium:
-            "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p52558.jpg",
+          small: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p52558.jpg',
+          large: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p52558.jpg',
+          medium: 'http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p52558.jpg',
         },
-        name: "黄东赫",
-        id: "1317274",
+        name: '黄东赫',
+        id: '1317274',
       },
     ],
-    year: "2011",
+    year: '2011',
     images: {
-      small:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p1363250216.jpg",
-      large:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p1363250216.jpg",
-      medium:
-        "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p1363250216.jpg",
+      small: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p1363250216.jpg',
+      large: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p1363250216.jpg',
+      medium: 'http://img3.doubanio.com/view/photo/s_ratio_poster/public/p1363250216.jpg',
     },
-    alt: "https://movie.douban.com/subject/5912992/",
-    id: "5912992",
+    alt: 'https://movie.douban.com/subject/5912992/',
+    id: '5912992',
   },
 ];
 ```

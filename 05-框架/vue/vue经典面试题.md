@@ -323,17 +323,17 @@ vue-router 有 3 种路由模式:hash、history、abstract，对应的源码如�
 
 ```js
 switch (mode) {
-  case "history":
+  case 'history':
     this.history = new HTML5History(this, options.base);
     break;
-  case "hash":
+  case 'hash':
     this.history = new HashHistory(this, options.base, this.fallback);
     break;
-  case "abstract":
+  case 'abstract':
     this.history = new AbstractHistory(thisoptions.base);
     break;
   default:
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV !== 'production') {
       assert(false, `invalid mode: ${mode}`);
     }
 }
@@ -396,10 +396,10 @@ MVVM 框架实现了双向绑定，这样 ViewModel 的内容会实时展现在 
 
 ```js
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   data: {
     // ⽤于描述视图状态
-    message: "Hello Vue!",
+    message: 'Hello Vue!',
   },
   methods: {
     // ⽤于描述视图⾏为
@@ -412,7 +412,7 @@ var app = new Vue({
     let vm = this;
     // Ajax 获取 Model 层的数
     ajax({
-      url: "/your/server/data/api",
+      url: '/your/server/data/api',
       success(res) {
         vm.message = res;
       },

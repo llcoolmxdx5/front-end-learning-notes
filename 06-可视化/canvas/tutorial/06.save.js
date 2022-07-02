@@ -1,15 +1,15 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
   ctx.fillRect(0, 0, 150, 150); // 使用默认设置绘制一个矩形
   ctx.save(); // 保存默认状态
 
-  ctx.fillStyle = "#09F"; // 在原有配置基础上对颜色做改变
+  ctx.fillStyle = '#09F'; // 在原有配置基础上对颜色做改变
   ctx.fillRect(15, 15, 120, 120); // 使用新的设置绘制一个矩形
 
   ctx.save(); // 保存当前状态
-  ctx.fillStyle = "#FFF"; // 再次改变颜色配置
+  ctx.fillStyle = '#FFF'; // 再次改变颜色配置
   ctx.globalAlpha = 0.5;
   ctx.fillRect(30, 30, 90, 90); // 使用新的配置绘制一个矩形
 

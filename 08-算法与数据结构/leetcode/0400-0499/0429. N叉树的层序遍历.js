@@ -15,18 +15,18 @@ var levelOrder = function (root) {
   if (!root) {
     return ans;
   }
-  const queue = [root]
-  while(queue.length) {
-    let temp = []
-    const len = queue.length
+  const queue = [root];
+  while (queue.length) {
+    let temp = [];
+    const len = queue.length;
     for (let i = 0; i < len; i++) {
-      const item = queue.shift()
-      temp.push(item.val)
-      if(item.children) {
-        queue.push(...item.children)
+      const item = queue.shift();
+      temp.push(item.val);
+      if (item.children) {
+        queue.push(...item.children);
       }
     }
-    ans.push([...temp])
+    ans.push([...temp]);
   }
-  return ans
+  return ans;
 };

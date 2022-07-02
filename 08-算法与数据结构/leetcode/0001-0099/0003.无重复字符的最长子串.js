@@ -20,37 +20,37 @@ var lengthOfLongestSubstring = function (s) {
 
 var lengthOfLongestSubstring = function (s) {
   /** 该做法能获得最长子串 */
-  let length = 0
-  let map = new Map()
+  let length = 0;
+  let map = new Map();
   for (let index = 0; index < s.length; index++) {
     const char = s[index];
-    if(!map.has(char)) {
-      map.set(char, index)
-    } else if ((index - map.size) === map.get(char)) {
+    if (!map.has(char)) {
+      map.set(char, index);
+    } else if (index - map.size === map.get(char)) {
       // 第一个
-      map.delete(char)
-      map.set(char, index)
+      map.delete(char);
+      map.set(char, index);
     } else {
       // 非第一个
-      let start = map.get(char) + 1
-      const size = map.size
-      length = Math.max(size, length)
+      let start = map.get(char) + 1;
+      const size = map.size;
+      length = Math.max(size, length);
       for (let [key, value] of map.entries()) {
         if (value < start) {
-          map.delete(key)
+          map.delete(key);
         } else {
-          break
+          break;
         }
       }
-      map.set(char, index)
+      map.set(char, index);
     }
   }
-  return Math.max(length, map.size)
+  return Math.max(length, map.size);
 };
 
-console.log(lengthOfLongestSubstring("abcabcbb")); // 3
-console.log(lengthOfLongestSubstring("bbbbb")); // 1
-console.log(lengthOfLongestSubstring("pwwkew")); // 3
-console.log(lengthOfLongestSubstring("")); // 0
-console.log(lengthOfLongestSubstring("umvejcuuk")); // 6
-console.log(lengthOfLongestSubstring("kdgjkjhglfp")); // 7
+console.log(lengthOfLongestSubstring('abcabcbb')); // 3
+console.log(lengthOfLongestSubstring('bbbbb')); // 1
+console.log(lengthOfLongestSubstring('pwwkew')); // 3
+console.log(lengthOfLongestSubstring('')); // 0
+console.log(lengthOfLongestSubstring('umvejcuuk')); // 6
+console.log(lengthOfLongestSubstring('kdgjkjhglfp')); // 7

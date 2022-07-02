@@ -7,13 +7,13 @@ var backspaceCompare = function (s, t) {
   const getString = (str) => {
     const stack = [];
     for (let index = 0; index < str.length; index++) {
-      if (str[index] !== "#") {
+      if (str[index] !== '#') {
         stack.push(str[index]);
       } else {
         stack.pop();
       }
     }
-    return stack.join("");
+    return stack.join('');
   };
   return getString(s) === getString(t);
 };
@@ -25,7 +25,7 @@ var backspaceCompare = function (s, t) {
     skipT = 0;
   while (n >= 0 || m >= 0) {
     while (n >= 0) {
-      if (s[n] == "#") {
+      if (s[n] == '#') {
         skipS += 1;
         n -= 1;
       } else if (skipS > 0) {
@@ -36,7 +36,7 @@ var backspaceCompare = function (s, t) {
       }
     }
     while (m >= 0) {
-      if (t[m] == "#") {
+      if (t[m] == '#') {
         skipT += 1;
         m -= 1;
       } else if (skipT > 0) {
@@ -60,8 +60,8 @@ var backspaceCompare = function (s, t) {
   return true;
 };
 
-console.assert(backspaceCompare("ab#c", "ad#c") === true, 1);
-console.assert(backspaceCompare("ab##", "c#d#") === true, 2);
-console.assert(backspaceCompare("a##c", "#a#c") === true, 3);
-console.assert(backspaceCompare("a#c", "b") === false, 4);
-console.assert(backspaceCompare("##b", "b") === true, 5);
+console.assert(backspaceCompare('ab#c', 'ad#c') === true, 1);
+console.assert(backspaceCompare('ab##', 'c#d#') === true, 2);
+console.assert(backspaceCompare('a##c', '#a#c') === true, 3);
+console.assert(backspaceCompare('a#c', 'b') === false, 4);
+console.assert(backspaceCompare('##b', 'b') === true, 5);

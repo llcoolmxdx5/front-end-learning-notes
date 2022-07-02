@@ -21,7 +21,7 @@ const store = new Vuex.Store({
   },
 });
 // 现在，你可以通过 store.state 来获取状态对象，以及通过 store.commit 方法触发状态变更：
-store.commit("increment");
+store.commit('increment');
 console.log(store.state.count); // -> 1
 ```
 
@@ -51,7 +51,7 @@ Vuex 通过 store 选项，提供了一种机制将状态从根组件“注入�
 
 ```js
 const app = new Vue({
-  el: "#app",
+  el: '#app',
   // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
   store,
   components: { Counter },
@@ -80,12 +80,12 @@ const Counter = {
 
 ```js
 // 在单独构建的版本中辅助函数为 Vuex.mapState
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 export default {
   // ...
   computed: mapState({
     count: (state) => state.count, // 箭头函数可使代码更简练
-    countAlias: "count", // 传字符串参数 'count' 等同于 `state => state.count`
+    countAlias: 'count', // 传字符串参数 'count' 等同于 `state => state.count`
     countPlusLocalState(state) {
       // 为了能够使用 `this` 获取局部状态，必须使用常规函数
       return state.count + this.localCount;
@@ -99,7 +99,7 @@ export default {
 ```js
 computed: mapState([
   // 映射 this.count 为 store.state.count
-  "count",
+  'count',
 ]);
 ```
 
@@ -125,8 +125,8 @@ Getter 接受 state 作为其第一个参数:
 const store = new Vuex.Store({
   state: {
     todos: [
-      { id: 1, text: "...", done: true },
-      { id: 2, text: "...", done: false },
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false },
     ],
   },
   getters: {
@@ -192,14 +192,14 @@ const store = new Vuex.Store({
 mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性：
 
 ```js
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
   // ...
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters([
-      "doneTodosCount",
-      "anotherGetter",
+      'doneTodosCount',
+      'anotherGetter',
       // ...
     ]),
   },
@@ -211,7 +211,7 @@ export default {
 ```js
 mapGetters({
   // 把 `this.doneCount` 映射为 `this.$store.getters.doneTodosCount`
-  doneCount: "doneTodosCount",
+  doneCount: 'doneTodosCount',
 });
 ```
 
@@ -236,7 +236,7 @@ const store = new Vuex.Store({
 你不能直接调用一个 mutation handler。这个选项更像是事件注册：“当触发一个类型为 increment 的 mutation 时，调用此函数。”要唤醒一个 mutation handler，你需要以相应的 type 调用 store.commit 方法：
 
 ```js
-store.commit("increment");
+store.commit('increment');
 ```
 
 你可以向 store.commit 传入额外的参数，即 mutation 的 载荷（payload）：
@@ -251,7 +251,7 @@ mutations: {
 ```
 
 ```js
-store.commit("increment", 10);
+store.commit('increment', 10);
 ```
 
 在大多数情况下，载荷应该是一个对象，这样可以包含多个字段并且记录的 mutation 会更易读：
@@ -266,7 +266,7 @@ mutations: {
 ```
 
 ```js
-store.commit("increment", {
+store.commit('increment', {
   amount: 10,
 });
 ```
@@ -275,7 +275,7 @@ store.commit("increment", {
 
 ```js
 store.commit({
-  type: "increment",
+  type: 'increment',
   amount: 10,
 });
 ```
@@ -296,7 +296,7 @@ mutations: {
 
 ```js
 // mutation-types.js
-export const SOME_MUTATION = "SOME_MUTATION";
+export const SOME_MUTATION = 'SOME_MUTATION';
 ```
 
 ```js
@@ -321,18 +321,18 @@ Mutation 必须是同步函数
 你可以在组件中使用 this.\$store.commit('xxx') 提交 mutation，或者使用 mapMutations 辅助函数将组件中的 methods 映射为 store.commit 调用（需要在根节点注入 store）。
 
 ```js
-import { mapMutations } from "vuex";
+import { mapMutations } from 'vuex';
 export default {
   // ...
   methods: {
     ...mapMutations([
-      "increment", // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+      'increment', // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
 
       // `mapMutations` 也支持载荷：
-      "incrementBy", // 将 `this.incrementBy(amount)` 映射为 `this.$store.commit('incrementBy', amount)`
+      'incrementBy', // 将 `this.incrementBy(amount)` 映射为 `this.$store.commit('incrementBy', amount)`
     ]),
     ...mapMutations({
-      add: "increment", // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+      add: 'increment', // 将 `this.add()` 映射为 `this.$store.commit('increment')`
     }),
   },
 };
@@ -360,7 +360,7 @@ const store = new Vuex.Store({
   },
   actions: {
     increment(context) {
-      context.commit("increment");
+      context.commit('increment');
     },
   },
 });
@@ -381,7 +381,7 @@ actions: {
 Action 通过 store.dispatch 方法触发：
 
 ```js
-store.dispatch("increment");
+store.dispatch('increment');
 ```
 
 乍一眼看上去感觉多此一举，我们直接分发 mutation 岂不更方便？实际上并非如此，还记得 mutation 必须同步执行这个限制么？Action 就不受约束！我们可以在 action 内部执行异步操作：
@@ -400,12 +400,12 @@ Actions 支持同样的载荷方式和对象方式进行分发：
 
 ```js
 // 以载荷形式分发
-store.dispatch("incrementAsync", {
+store.dispatch('incrementAsync', {
   amount: 10,
 });
 // 以对象形式分发
 store.dispatch({
-  type: "incrementAsync",
+  type: 'incrementAsync',
   amount: 10,
 });
 ```
@@ -438,17 +438,17 @@ actions: {
 你在组件中使用 `this.$store.dispatch('xxx')` 分发 action，或者使用 mapActions 辅助函数将组件的 methods 映射为 `store.dispatch` 调用（需要先在根节点注入 store）：
 
 ```js
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
   // ...
   methods: {
     ...mapActions([
-      "increment", // 将 `this.increment()` 映射为 `this.$store.dispatch('increment')`
+      'increment', // 将 `this.increment()` 映射为 `this.$store.dispatch('increment')`
       // `mapActions` 也支持载荷：
-      "incrementBy", // 将 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
+      'incrementBy', // 将 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
     ]),
     ...mapActions({
-      add: "increment", // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
+      add: 'increment', // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
     }),
   },
 };
@@ -474,7 +474,7 @@ actions: {
 现在你可以：
 
 ```js
-store.dispatch("actionA").then(() => {
+store.dispatch('actionA').then(() => {
   // ...
 });
 ```
@@ -563,7 +563,7 @@ const moduleA = {
   actions: {
     incrementIfOddOnRootSum({ state, commit, rootState }) {
       if ((state.count + rootState.count) % 2 === 1) {
-        commit("increment");
+        commit('increment');
       }
     },
   },

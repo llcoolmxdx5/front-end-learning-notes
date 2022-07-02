@@ -3,17 +3,17 @@
  * @param {string} num2
  * @return {string}
  */
- var multiply = function (num1, num2) {
-  if (num1 === "0" || num2 === "0") {
-    return "0";
+var multiply = function (num1, num2) {
+  if (num1 === '0' || num2 === '0') {
+    return '0';
   }
   const arr = [];
-  const s1 = num1.split("").reverse();
-  const s2 = num2.split("").reverse();
+  const s1 = num1.split('').reverse();
+  const s2 = num2.split('').reverse();
   const multiple = (str, index) => {
     const res = [];
     for (let i = 0; i < index; i++) {
-      res.push("0");
+      res.push('0');
     }
     let sum = 0;
     for (const s of s2) {
@@ -43,13 +43,13 @@
     ans.push(String(sum % 10));
     add = Math.floor(sum / 10);
   }
-  const res = ans.reverse().join("");
+  const res = ans.reverse().join('');
   return add ? add + res : res;
 };
 
 var multiply = function (num1, num2) {
-  if (num1 === "0" || num2 === "0") {
-    return "0";
+  if (num1 === '0' || num2 === '0') {
+    return '0';
   }
   let l1 = num1.length,
     l2 = num2.length,
@@ -65,9 +65,9 @@ var multiply = function (num1, num2) {
   while (p[start] === 0) {
     start += 1;
   }
-  return p.slice(start).join("");
+  return p.slice(start).join('');
 };
 
-console.assert(multiply("2", "3") === "6", 1);
-console.assert(multiply("123", "456") === "56088", 2);
-console.assert(multiply("123", "12") === "1476", 3);
+console.assert(multiply('2', '3') === '6', 1);
+console.assert(multiply('123', '456') === '56088', 2);
+console.assert(multiply('123', '12') === '1476', 3);

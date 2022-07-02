@@ -3,7 +3,7 @@
  * @return {number}
  */
 var countValidWords = function (sentence) {
-  const arr = sentence.split(" ");
+  const arr = sentence.split(' ');
   let count = 0;
   const isValid = (str) => {
     // 'a' 97, 'z' 122
@@ -13,7 +13,7 @@ var countValidWords = function (sentence) {
     for (let i = 0, len = str.length; i < len; i++) {
       const charCode = str[i].charCodeAt();
       if (charCode >= 48 && charCode <= 57) return 0;
-      if (str[i] === "-") {
+      if (str[i] === '-') {
         c1 += 1;
         if (
           i - 1 < 0 ||
@@ -27,7 +27,7 @@ var countValidWords = function (sentence) {
         }
       }
       if (c1 > 1) return 0;
-      if ([",", "!", "."].includes(str[i]) && i !== len - 1) {
+      if ([',', '!', '.'].includes(str[i]) && i !== len - 1) {
         return 0;
       }
     }
@@ -40,9 +40,6 @@ var countValidWords = function (sentence) {
   return count;
 };
 
-console.assert(countValidWords("!this  1-s b8d!") === 0, 1);
-console.assert(
-  countValidWords("alice and  bob are playing stone-game10") === 5,
-  2
-);
-console.assert(countValidWords("-") === 0, 3);
+console.assert(countValidWords('!this  1-s b8d!') === 0, 1);
+console.assert(countValidWords('alice and  bob are playing stone-game10') === 5, 2);
+console.assert(countValidWords('-') === 0, 3);

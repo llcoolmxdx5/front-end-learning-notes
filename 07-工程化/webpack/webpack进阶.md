@@ -177,16 +177,16 @@ output: {
  * 发布静态文件到CDN上，并且修改HTML引用文件为CDN地址
  */
 
-const fs = require("fs");
-const emitter = require("events");
-const Client = require("ftp");
+const fs = require('fs');
+const emitter = require('events');
+const Client = require('ftp');
 const c = new Client();
 
 class MyEmitter extends emitter {}
 const EventEmitter = new MyEmitter();
 
-const bucket = "source";
-const project = "test"; // 项目名称
+const bucket = 'source';
+const project = 'test'; // 项目名称
 var projectPath = `${bucket}/${project}/`;
 // static 静态资源目录
 var staticPath = `${projectPath}static/`;
@@ -198,10 +198,10 @@ var imgPath = `${staticPath}img/`;
 var jsPath = `${staticPath}js/`;
 
 const FTP_CONFIG = {
-  host: "192.168.1.170",
+  host: '192.168.1.170',
   port: 2121,
-  user: "username",
-  password: "1qaz2wsx3edc",
+  user: 'username',
+  password: '1qaz2wsx3edc',
 };
 const uploadList = [];
 
@@ -226,65 +226,61 @@ function mkdir(path, cb) {
   });
 }
 
-travel("css");
-travel("js");
-travel("img");
+travel('css');
+travel('js');
+travel('img');
 
-c.on("ready", () => {
+c.on('ready', () => {
   //create project path
   mkdir(projectPath, function () {
-    EventEmitter.emit("PROJECT_PATH_CREATED");
+    EventEmitter.emit('PROJECT_PATH_CREATED');
   });
 
   // create project static path
-  EventEmitter.on("PROJECT_PATH_CREATED", function () {
+  EventEmitter.on('PROJECT_PATH_CREATED', function () {
     mkdir(staticPath, function () {
-      EventEmitter.emit("STATIC_PATH_CREATED");
+      EventEmitter.emit('STATIC_PATH_CREATED');
     });
   });
 
   // create css path
-  EventEmitter.on("STATIC_PATH_CREATED", function () {
+  EventEmitter.on('STATIC_PATH_CREATED', function () {
     mkdir(cssPath, function () {
-      EventEmitter.emit("CSS_PATH_CREATED");
+      EventEmitter.emit('CSS_PATH_CREATED');
     });
   });
 
   // create image path
-  EventEmitter.on("CSS_PATH_CREATED", function () {
+  EventEmitter.on('CSS_PATH_CREATED', function () {
     mkdir(imgPath, function () {
-      EventEmitter.emit("IMG_PATH_CREATED");
+      EventEmitter.emit('IMG_PATH_CREATED');
     });
   });
 
   // create js path
-  EventEmitter.on("IMG_PATH_CREATED", function () {
+  EventEmitter.on('IMG_PATH_CREATED', function () {
     mkdir(jsPath, function () {
-      EventEmitter.emit("JS_PATH_CREATED");
+      EventEmitter.emit('JS_PATH_CREATED');
     });
   });
 
   //update static resource file
-  EventEmitter.on("JS_PATH_CREATED", function () {
+  EventEmitter.on('JS_PATH_CREATED', function () {
     var count = 0;
     for (let i = 0; i < uploadList.length; i += 1) {
-      c.put(
-        uploadList[i].path,
-        `${bucket}/${project}/${uploadList[i].name}`,
-        (err) => {
-          count++;
-          if (!err) {
-            console.log(`upload success ${uploadList[i].name}`);
-          } else if (err.message.indexOf("Overwrite permission denied")) {
-            console.log(`文件 ${uploadList[i].name}已存在，不给予上传!`);
-          } else if (err) {
-            console.log(err.message);
-          }
-          if (count == uploadList.length) {
-            console.log("upload complete!");
-          }
+      c.put(uploadList[i].path, `${bucket}/${project}/${uploadList[i].name}`, (err) => {
+        count++;
+        if (!err) {
+          console.log(`upload success ${uploadList[i].name}`);
+        } else if (err.message.indexOf('Overwrite permission denied')) {
+          console.log(`文件 ${uploadList[i].name}已存在，不给予上传!`);
+        } else if (err) {
+          console.log(err.message);
         }
-      );
+        if (count == uploadList.length) {
+          console.log('upload complete!');
+        }
+      });
     }
   });
 });
@@ -325,17 +321,17 @@ DllPlugin 这个插件是在一个额外的独立的 webpack 设置中创建一�
 // webpack.vendor.config.js
 new webpack.DllPlugin({
   context: __dirname,
-  name: "[name]_[hash]",
-  path: path.join(__dirname, "manifest.json"),
+  name: '[name]_[hash]',
+  path: path.join(__dirname, 'manifest.json'),
 });
 
 // webpack.app.config.js
 new webpack.DllReferencePlugin({
   context: __dirname,
-  manifest: require("./manifest.json"),
-  name: "./my-dll.js",
-  scope: "xyz",
-  sourceType: "commonjs2",
+  manifest: require('./manifest.json'),
+  name: './my-dll.js',
+  scope: 'xyz',
+  sourceType: 'commonjs2',
 });
 ```
 
@@ -415,7 +411,7 @@ webpack 将根据以下条件自动拆分代码块：
 基本上脚手架都包含了该插件,该插件会分析 JS 代码语法树，理解代码的含义，从而做到去掉无效代码、去掉日志输入代码、缩短变量名等优化。
 
 ```js
-const UglifyJSPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
+const UglifyJSPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 //...
 plugins: [
   new UglifyJSPlugin({
@@ -455,10 +451,10 @@ JSON.stringify('production')。
 测试 DefinePlugin：编写
 
 ```js
-if (WP_CONF === "dev") {
-  console.log("This is dev");
+if (WP_CONF === 'dev') {
+  console.log('This is dev');
 } else {
-  console.log("This is prod");
+  console.log('This is prod');
 }
 ```
 
@@ -466,9 +462,9 @@ if (WP_CONF === "dev") {
 
 ```js
 if (false) {
-  console.log("This is dev");
+  console.log('This is dev');
 } else {
-  console.log("This is prod");
+  console.log('This is prod');
 }
 ```
 
@@ -499,27 +495,27 @@ HappyPack 可以开启多进程 Loader 转换，将任务分解给多个子进�
 ```js
 exports.plugins = [
   new HappyPack({
-    id: "jsx",
+    id: 'jsx',
     threads: 4,
-    loaders: ["babel-loader"],
+    loaders: ['babel-loader'],
   }),
 
   new HappyPack({
-    id: "styles",
+    id: 'styles',
     threads: 2,
-    loaders: ["style-loader", "css-loader", "less-loader"],
+    loaders: ['style-loader', 'css-loader', 'less-loader'],
   }),
 ];
 
 exports.module.rules = [
   {
     test: /\.js$/,
-    use: "happypack/loader?id=jsx",
+    use: 'happypack/loader?id=jsx',
   },
 
   {
     test: /\.less$/,
-    use: "happypack/loader?id=styles",
+    use: 'happypack/loader?id=styles',
   },
 ];
 ```
@@ -528,7 +524,7 @@ exports.module.rules = [
 
 ```js
 // ParallelUglifyPlugin可以开启多进程压缩JS文件
-import ParallelUglifyPlugin from "webpack-parallel-uglify-plugin";
+import ParallelUglifyPlugin from 'webpack-parallel-uglify-plugin';
 
 module.exports = {
   plugins: [
@@ -565,8 +561,7 @@ webpack-dev-middleware 中该部分源码如下:
 ```js
 // compiler
 // webpack-dev-middleware/lib/Shared.js
-var isMemoryFs =
-  !compiler.compilers && compiler.outputFileSystem instanceof MemoryFileSystem;
+var isMemoryFs = !compiler.compilers && compiler.outputFileSystem instanceof MemoryFileSystem;
 if (isMemoryFs) {
   fs = compiler.outputFileSystem;
 } else {
@@ -690,7 +685,7 @@ module.hot
   })
   .catch(function (err) {
     var status = module.hot.status();
-    if (["abort", "fail"].indexOf(status) >= 0) {
+    if (['abort', 'fail'].indexOf(status) >= 0) {
       window.location.reload();
     }
   });
@@ -703,7 +698,7 @@ module.hot
 ```js
 // index.js
 if (module.hot) {
-  module.hot.accept("./hello.js", function () {
+  module.hot.accept('./hello.js', function () {
     div.innerHTML = hello();
   });
 }

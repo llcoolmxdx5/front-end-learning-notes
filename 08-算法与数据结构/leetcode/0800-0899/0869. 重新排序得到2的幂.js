@@ -19,7 +19,7 @@ var reorderedPowerOf2 = function (n) {
       return isPowerOf2(num);
     }
     for (let i = 0; i < length; i++) {
-      if (used[i] || (num === 0 && nums[i] === "0")) continue;
+      if (used[i] || (num === 0 && nums[i] === '0')) continue;
       used[i] = true;
       if (backTrack(used, idx + 1, +nums[i] + num * 10)) {
         return true;
@@ -39,13 +39,13 @@ var reorderedPowerOf2 = function (n) {
       cnt[num % 10] += 1;
       num = Math.floor(num / 10);
     }
-    return cnt.join("");
+    return cnt.join('');
   };
   const set = new Set();
   for (let i = 1; i < 1e9; i <<= 1) {
-    set.add(countDigits(i))
+    set.add(countDigits(i));
   }
-  return set.has(countDigits(n))
+  return set.has(countDigits(n));
 };
 
 console.assert(reorderedPowerOf2(1) === true, 1);

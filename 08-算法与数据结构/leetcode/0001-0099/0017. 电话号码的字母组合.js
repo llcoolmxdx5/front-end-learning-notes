@@ -7,14 +7,14 @@ var letterCombinations = function (digits) {
     return [];
   }
   const obj = {
-    2: ["a", "b", "c"],
-    3: ["d", "e", "f"],
-    4: ["g", "h", "i"],
-    5: ["j", "k", "l"],
-    6: ["m", "n", "o"],
-    7: ["p", "q", "r", "s"],
-    8: ["t", "u", "v"],
-    9: ["w", "x", "y", "z"],
+    2: ['a', 'b', 'c'],
+    3: ['d', 'e', 'f'],
+    4: ['g', 'h', 'i'],
+    5: ['j', 'k', 'l'],
+    6: ['m', 'n', 'o'],
+    7: ['p', 'q', 'r', 's'],
+    8: ['t', 'u', 'v'],
+    9: ['w', 'x', 'y', 'z'],
   };
   const resp = [];
   const temp = [];
@@ -35,8 +35,8 @@ var letterCombinations = function (digits) {
   return resp;
 };
 
-console.log(letterCombinations("23")); // ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+console.log(letterCombinations('23')); // ["ad","ae","af","bd","be","bf","cd","ce","cf"]
 
-console.log(letterCombinations("")); // []
+console.log(letterCombinations('')); // []
 
-console.log(letterCombinations("2")); // ["a","b","c"]
+console.log(letterCombinations('2')); // ["a","b","c"]

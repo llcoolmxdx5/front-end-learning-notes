@@ -8,9 +8,9 @@ var permuteUnique = function (nums) {
   const resp = [];
   const set = new Set();
   const backTrack = (used) => {
-    if (temp.length === length && !set.has(temp.join(","))) {
+    if (temp.length === length && !set.has(temp.join(','))) {
       resp.push([...temp]);
-      set.add(temp.join(","));
+      set.add(temp.join(','));
       return;
     }
     for (let i = 0; i < length; i++) {
@@ -37,8 +37,7 @@ var permuteUnique = function (nums) {
       return;
     }
     for (let i = 0; i < length; i++) {
-      if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]))
-        continue;
+      if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) continue;
       temp.push(nums[i]);
       used[i] = true;
       backTrack(used);

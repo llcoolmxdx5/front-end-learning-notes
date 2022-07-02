@@ -37,7 +37,7 @@ var longestWord = function (words) {
     // console.log(queue);
   }
   if (!res.length) {
-    return "";
+    return '';
   }
   let ans = res[0];
   for (let i = 1; i < res.length; i++) {
@@ -57,9 +57,9 @@ var longestWord = function (words) {
       return b.localeCompare(a);
     }
   });
-  let longest = "";
+  let longest = '';
   const set = new Set();
-  set.add("");
+  set.add('');
   const n = words.length;
   for (let i = 0; i < n; i++) {
     const word = words[i];
@@ -71,53 +71,49 @@ var longestWord = function (words) {
   return longest;
 };
 
-console.assert(longestWord(["w", "wo", "wor", "worl", "world"]) === "world", 1);
-console.assert(
-  longestWord(["a", "banana", "app", "appl", "ap", "apply", "apple"]) ===
-    "apple",
-  2
-);
+console.assert(longestWord(['w', 'wo', 'wor', 'worl', 'world']) === 'world', 1);
+console.assert(longestWord(['a', 'banana', 'app', 'appl', 'ap', 'apply', 'apple']) === 'apple', 2);
 console.assert(
   longestWord([
-    "m",
-    "mo",
-    "moc",
-    "moch",
-    "mocha",
-    "l",
-    "la",
-    "lat",
-    "latt",
-    "latte",
-    "c",
-    "ca",
-    "cat",
-  ]) === "latte",
+    'm',
+    'mo',
+    'moc',
+    'moch',
+    'mocha',
+    'l',
+    'la',
+    'lat',
+    'latt',
+    'latte',
+    'c',
+    'ca',
+    'cat',
+  ]) === 'latte',
   3
 );
 console.assert(
   longestWord([
-    "ts",
-    "e",
-    "x",
-    "pbhj",
-    "opto",
-    "xhigy",
-    "erikz",
-    "pbh",
-    "opt",
-    "erikzb",
-    "eri",
-    "erik",
-    "xlye",
-    "xhig",
-    "optoj",
-    "optoje",
-    "xly",
-    "pb",
-    "xhi",
-    "x",
-    "o",
-  ]) === "e",
+    'ts',
+    'e',
+    'x',
+    'pbhj',
+    'opto',
+    'xhigy',
+    'erikz',
+    'pbh',
+    'opt',
+    'erikzb',
+    'eri',
+    'erik',
+    'xlye',
+    'xhig',
+    'optoj',
+    'optoje',
+    'xly',
+    'pb',
+    'xhi',
+    'x',
+    'o',
+  ]) === 'e',
   4
 );

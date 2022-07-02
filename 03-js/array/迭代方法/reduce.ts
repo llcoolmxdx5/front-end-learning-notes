@@ -14,45 +14,25 @@
 
 function reduce<T>(
   array: T[],
-  callbackfn: (
-    previousValue: T,
-    currentValue: T,
-    currentIndex: T,
-    array: T[]
-  ) => T
+  callbackfn: (previousValue: T, currentValue: T, currentIndex: T, array: T[]) => T
   // initialValue?: undefined
 ): T;
 
 function reduce<T>(
   array: T[],
-  callbackfn: (
-    previousValue: T,
-    currentValue: T,
-    currentIndex: number,
-    array: T[]
-  ) => T,
+  callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T,
   initialValue: T
 ): T;
 
 function reduce<T, U>(
   array: T[],
-  callbackfn: (
-    previousValue: U,
-    currentValue: T,
-    currentIndex: number,
-    array: T[]
-  ) => U,
+  callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U,
   initialValue: U
 ): U;
 
 function reduce<T, U>(
   array: T[],
-  callbackfn: (
-    previousValue: U,
-    currentValue: T,
-    currentIndex: number,
-    array: T[]
-  ) => U,
+  callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U,
   initialValue?: U
 ) {
   let index = 0;
@@ -65,7 +45,7 @@ function reduce<T, U>(
       index++;
     }
     if (index >= len) {
-      throw new TypeError("Reduce of empty array " + "with no initial value");
+      throw new TypeError('Reduce of empty array ' + 'with no initial value');
     }
     acc = array[index++];
   }

@@ -13,14 +13,12 @@
 var tree2str = function (root) {
   const dfs = (node) => {
     if (!node) {
-      return "";
+      return '';
     }
     if (!node.left) {
       return `${node.val}`;
     }
-    return `${node.val}(${dfs(node.left)})${
-      node.right ? "(" + dfs(node.right) + ")" : ""
-    }`;
+    return `${node.val}(${dfs(node.left)})${node.right ? '(' + dfs(node.right) + ')' : ''}`;
   };
   return dfs(root);
 };

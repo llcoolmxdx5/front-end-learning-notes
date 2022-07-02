@@ -12,20 +12,20 @@ webpack-cli 是为了在 webpack 4+ 在命令行里使用 webpack
 
 ```js
 // webpack.config.js
-const { Configuration } = require("webpack");
-const path = require("path");
+const { Configuration } = require('webpack');
+const path = require('path');
 
 /**
  * @type {Configuration}
  */
 const config = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   output: {
-    filename: "bundle.js",
+    filename: 'bundle.js',
     // path 输出文件夹必须定义为绝对路径
-    path: path.resolve(__dirname, "./dist"),
+    path: path.resolve(__dirname, './dist'),
   },
-  mode: "none",
+  mode: 'none',
 };
 
 module.exports = config;
@@ -59,15 +59,15 @@ yarn add -D html-webpack-plugin
 
 ```js
 // webpack.config.js
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = { 
+module.exports = {
   //...
   plugins: [
-    // 实例化 html-webpack-plugin 插件 
-    new HtmlWebpackPlugin()
-  ]
-}
+    // 实例化 html-webpack-plugin 插件
+    new HtmlWebpackPlugin(),
+  ],
+};
 ```
 
 打包后的内容
@@ -76,13 +76,12 @@ module.exports = {
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Webpack App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-      <script defer src="bundle.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script defer src="bundle.js"></script>
   </head>
-  <body>
-  </body>
+  <body></body>
 </html>
 ```
 
@@ -92,17 +91,17 @@ module.exports = {
 
 ```js
 // webpack.config.js
-module.exports = { 
+module.exports = {
   //...
   plugins: [
-    // 实例化 html-webpack-plugin 插件 
+    // 实例化 html-webpack-plugin 插件
     new HtmlWebpackPlugin({
-      template: './index.html', // 打包生成的文件的模板 
+      template: './index.html', // 打包生成的文件的模板
       filename: 'index.html', // 打包生成的文件名称。默认为 index.html
-      inject: 'body' // 设置所有资源文件注入模板的位置。可以设置的值 true|'head'|'body'|false，默认值为 true 
-    })
-  ]
-}
+      inject: 'body', // 设置所有资源文件注入模板的位置。可以设置的值 true|'head'|'body'|false，默认值为 true
+    }),
+  ],
+};
 ```
 
 打包后的结果
@@ -111,32 +110,31 @@ module.exports = {
 <!-- ./dist/index.html -->
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>webpack</title>
-<script defer src="bundle.js"></script></head>
-<body>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>webpack</title>
+    <script defer src="bundle.js"></script>
+  </head>
+  <body></body>
 </html>
-
 ```
 
-### 清理dist
+### 清理 dist
 
 webpack 将生成文件并放置在 /dist 文件夹中，但是它不会追踪哪些文件是实际在项目中用到的。通常比较推荐的做法是，在每次构建前清理 /dist 文件夹，这样只会生成用到的文件。让我们使用 output.clean 配置项 实现这个需求。
 
 ```js
 // webpack.config.js
-module.exports = { 
+module.exports = {
   //...
-  output: { 
+  output: {
     //...
-    // 打包前清理 dist 文件夹 
-    clean: true
+    // 打包前清理 dist 文件夹
+    clean: true,
   },
-}
+};
 ```
 
 ## 搭建开发环境
@@ -154,7 +152,7 @@ module.exports = {
 devtool: 'inline-source-map',
 
 - eval 每个 module 会封装到 eval 里包裹起来执行，并且会在末尾追加注释 // @ sourceURL.
-- source-map 生成一个 SourceMap文件. 默认
+- source-map 生成一个 SourceMap 文件. 默认
 - hidden-source-map 和 source-map 一样，但不会在 bundle 末尾追加注释.
 - inline-source-map 生成一个 DataUrl 形式的 SourceMap 文件.
 - eval-source-map 每个 module 会通过 eval() 来执行，并且生成一个 DataUrl 形式的 SourceMap.
@@ -185,12 +183,13 @@ yarn add -D webpack-dev-server
 
 ```js
 // webpack.config.js
-module.exports = { //...
+module.exports = {
+  //...
   // dev-server
-  devServer: { 
-    static: './dist'
-  } 
-}
+  devServer: {
+    static: './dist',
+  },
+};
 ```
 
 以上配置告知 webpack-dev-server ，将 dist 目录下的文件作为 web 服务的根目录。
@@ -204,12 +203,12 @@ webpack serve --open
 额外的配置
 
 ```js
-devServer: { 
+devServer: {
   static: './dist'
   // 添加响应头
   headers: {
     'X-Fast-Id': 'p3fdg42njghm34gi9ukj',
-    }, 
+    },
   },
   // 开启代理
   proxy: {
@@ -252,7 +251,7 @@ devServer: {
 
 在 webpack 出现之前，前端开发人员会使用 grunt 和 gulp 等工具来处理资源，并 将它们从 /src 文件夹移动到 /dist 或 /build 目录中。webpack 最出色的功能 之一就是，除了引入 JavaScript，还可以内置的资源模块 Asset Modules
 。
-资源模块(asset module)是一种模块类型，它允许我们应用Webpack来打包其他资 源文件(如字体，图标等)
+资源模块(asset module)是一种模块类型，它允许我们应用 Webpack 来打包其他资 源文件(如字体，图标等)
 
 资源模块类型(asset module type)，通过添加 4 种新的模块类型，来替换所有这些 loader:
 
@@ -267,16 +266,16 @@ devServer: {
 
 ```js
 module.exports = {
-// 配置资源文件 
+  // 配置资源文件
   module: {
     rules: [
       {
         test: /\.png$/,
-        type: 'asset/resource'
-      }
-    ] 
+        type: 'asset/resource',
+      },
+    ],
   },
-}
+};
 ```
 
 - 自定义输出文件名
@@ -294,21 +293,21 @@ output: {
 另一种自定义输出文件名的方式是，将某些资源发送到指定目录，修改配置:
 
 ```js
-module.exports = { 
+module.exports = {
   // 配置资源文件
   module: {
     rules: [
       {
         test: /\.png$/,
         type: 'asset/resource',
-        // 优先级高于 assetModuleFilename 
+        // 优先级高于 assetModuleFilename
         generator: {
-          filename: 'images/[contenthash][ext][query]'
-        }
-      } 
+          filename: 'images/[contenthash][ext][query]',
+        },
+      },
     ],
   },
-}
+};
 ```
 
 ### inline 资源
@@ -316,29 +315,29 @@ module.exports = {
 修改 webpack.config.js 配置:
 
 ```js
-// 配置资源文件 
+// 配置资源文件
 module: {
   rules: [
     {
       test: /\.svg$/,
-      type: 'asset/inline'
-    }
-  ]
+      type: 'asset/inline',
+    },
+  ];
 }
 ```
 
 ### source 资源
 
-source资源，导出资源的源代码。修改配置文件，添加:
+source 资源，导出资源的源代码。修改配置文件，添加:
 
 ```js
 module: {
   rules: [
     {
       test: /\.txt$/,
-      type: 'asset/source'
-    }
-  ]
+      type: 'asset/source',
+    },
+  ];
 }
 ```
 
@@ -354,10 +353,10 @@ module: {
 module: {
   rules: [
     {
-      test: /\.jpg$/, 
-      type: 'asset'
-    }
-  ]
+      test: /\.jpg$/,
+      type: 'asset',
+    },
+  ];
 }
 ```
 
@@ -369,23 +368,23 @@ module: {
 module: {
   rules: [
     {
-      test: /\.jpg$/, 
+      test: /\.jpg$/,
       type: 'asset',
       parser: {
         dataUrlCondition: {
           maxSize: 4 * 1024,
         },
       },
-    }
-  ]
+    },
+  ];
 }
 ```
 
 ## 管理资源
 
-除了资源模块，我们还可以通过 loader引入其他类型的文件。
+除了资源模块，我们还可以通过 loader 引入其他类型的文件。
 
-### 什么是loader
+### 什么是 loader
 
 webpack 只能理解 JavaScript 和 JSON 文件，这是 webpack 开箱可用的自带能力。 loader 让 webpack 能够去处理其他类型的文件，并将它们转换为有效 模块，以供应用程序使用，以及被添加到依赖图中。
 
@@ -396,14 +395,14 @@ webpack 只能理解 JavaScript 和 JSON 文件，这是 webpack 开箱可用的
 
 ```js
 const path = require('path');
-module.exports = { 
+module.exports = {
   // ...
   module: {
     rules: [{ test: /\.txt$/, use: 'raw-loader' }],
-  }, 
+  },
 };
 ```
-  
+
 以上配置中，对一个单独的 module 对象定义了 rules 属性，里面包含两个必须属性: test 和 use 。这告诉 webpack 编译器(compiler) 如下信息: “嘿，webpack 编译器，当你碰到「在 require() / import 语句中被解析为 '.txt' 的路径」时，在你对它打包之前，先 use(使用) raw-loader 转换一下。”
 
 需要安装 raw-loader `yarn add -D raw-loader`
@@ -416,7 +415,7 @@ txt: `hello webpack`, 实际显示为 `export default "hello webpack\n";`
 
 ```css
 .block-bg {
-  background-image: url(./assets/webpack-logo.svg) ;
+  background-image: url(./assets/webpack-logo.svg);
 }
 ```
 
@@ -428,10 +427,10 @@ txt: `hello webpack`, 实际显示为 `export default "hello webpack\n";`
 module: {
   rules: [
     {
-      test: /\.(woff|woff2|eot|ttf|otf)$/i, 
+      test: /\.(woff|woff2|eot|ttf|otf)$/i,
       type: 'asset/resource',
     },
-  ] 
+  ];
 }
 ```
 
@@ -441,12 +440,12 @@ module: {
 
 ```css
 @font-face {
-  font-family: "iconfont";
-  src: url("../assets/iconfont.ttf") format("truetype");
+  font-family: 'iconfont';
+  src: url('../assets/iconfont.ttf') format('truetype');
 }
 
 .icon {
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 30px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -455,9 +454,9 @@ module: {
 ```
 
 ```js
-const span = document.createElement("span");
-span.classList.add("icon");
-span.innerHTML = "&#xe668;";
+const span = document.createElement('span');
+span.classList.add('icon');
+span.innerHTML = '&#xe668;';
 document.body.appendChild(span);
 ```
 
@@ -479,24 +478,24 @@ yarn add -D csv-loader xml-loader
 添加配置:
 
 ```js
-module.exports = { 
-//...
-// 配置资源文件 
+module.exports = {
+  //...
+  // 配置资源文件
   module: {
-    rules: [ 
-      { test: /\.(csv|tsv)$/i, use: ['csv-loader'] }, 
+    rules: [
+      { test: /\.(csv|tsv)$/i, use: ['csv-loader'] },
       {
         test: /\.xml$/i,
-        use: ['xml-loader'], 
+        use: ['xml-loader'],
       },
-    ]
-  }
-}
+    ],
+  },
+};
 ```
 
 现在，你可以 import 这四种类型的数据(JSON, CSV, TSV, XML)中的任何一种，所导入的 Data 变量，将包含可直接使用的已解析 JSON
 
-data.xml 文件转化为一个JS对象， data.cvs 转化为一个二维数组。
+data.xml 文件转化为一个 JS 对象， data.cvs 转化为一个二维数组。
 
 ### 自定义 JSON 模块 parser
 
@@ -523,31 +522,31 @@ module.exports = {
     rules: [
       {
         test: /\.toml$/i,
-        type: "json",
+        type: 'json',
         parser: { parse: toml.parse },
       },
       {
         test: /\.yaml$/i,
-        type: "json",
+        type: 'json',
         parser: {
           parse: yaml.parse,
         },
       },
       {
         test: /\.json5$/i,
-        type: "json",
+        type: 'json',
         parser: {
           parse: json5.parse,
         },
-      }, 
-    ]
-  } 
-}
+      },
+    ],
+  },
+};
 ```
 
 现在，toml、 yaml 和 json5 几个类型的文件都正常输出了结果。
 
-## 加载CSS
+## 加载 CSS
 
 为了在 JavaScript 模块中 import 一个 CSS 文件，你需要安装 style-loader 和 css-loader，并在 module 配置 中添加这些 loader:
 
@@ -563,7 +562,7 @@ module: {
     {
       test: /\.css$/i,
       use: ['style-loader', 'css-loader'],
-    }, 
+    },
   ],
 },
 ```
@@ -581,7 +580,7 @@ module: {
 ```js
 {
   test: /\.((le|c)ss)$/i,
-  use: ['style-loader', 'css-loader', 'less-loader'], 
+  use: ['style-loader', 'css-loader', 'less-loader'],
 },
 ```
 
@@ -612,7 +611,7 @@ module: {
           },
           localIdentName: '[local]_[hash:base64:4]',
           /**
-           * 
+           *
            * - camelCase 短横线命名增加一个驼峰命名的拷贝
            * - camelCaseOnly 短横线命名转为驼峰命名
            */
@@ -628,9 +627,9 @@ import './global.less'; // 全局导入
 import styles from './index.less'; // 局部导入
 ```
 
-### 抽离和压缩CSS
+### 抽离和压缩 CSS
 
-在多数情况下，我们也可以进行压缩CSS，以便在生产环境中节省加载时间，同时还 可以将CSS文件抽离成一个单独的文件。实现这个功能，需要 `mini-css-extract-plugin` 这个插件来帮忙。安装插件:
+在多数情况下，我们也可以进行压缩 CSS，以便在生产环境中节省加载时间，同时还 可以将 CSS 文件抽离成一个单独的文件。实现这个功能，需要 `mini-css-extract-plugin` 这个插件来帮忙。安装插件:
 
 ```bash
 npm install mini-css-extract-plugin --save-dev
@@ -685,7 +684,7 @@ yarn add -D postcss-loader postcss
 postcss-preset-env 包含 autoprefixer
 
 ```bash
-npm install --save-dev postcss-preset-env 
+npm install --save-dev postcss-preset-env
 ```
 
 ```js
@@ -732,7 +731,7 @@ autoprefixer 添加厂商前缀。postcss-preset-env 帮助 postcss 找到 packa
 function getString() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve("Hello world~~~");
+      resolve('Hello world~~~');
     }, 2000);
   });
 }
@@ -744,16 +743,15 @@ async function helloWorld() {
 
 // 导出函数模块
 export default helloWorld;
-
 ```
 
-执行编译: npm run build 我们发现，编写的ES6代码原样输出了。启动服务，打开浏览器:
+执行编译: npm run build 我们发现，编写的 ES6 代码原样输出了。启动服务，打开浏览器:
 
-npm run start Hello world~~ 两秒后正常输出，说明浏览器能够运行我们的ES6代码。但如果浏览器版本过低，就很难保证代码正常运行了。
+npm run start Hello world~~ 两秒后正常输出，说明浏览器能够运行我们的 ES6 代码。但如果浏览器版本过低，就很难保证代码正常运行了。
 
 ### 为什么需要 babel-loader
 
-webpack 自身可以自动加载 JS 文件，就像加载JSON文件一样，无需任何 loader。可是，加载的JS文件会原样输出，即使你的 JS 文件里包含 ES6+ 的代码，也不会做任何的转化。这时我们就需要 Babel 来帮忙。Babel 是一个 JavaScript 编译器，可以将 ES6+ 转化成 ES5。在 Webpack 里使用 Babel，需要使用 babel-loader 。
+webpack 自身可以自动加载 JS 文件，就像加载 JSON 文件一样，无需任何 loader。可是，加载的 JS 文件会原样输出，即使你的 JS 文件里包含 ES6+ 的代码，也不会做任何的转化。这时我们就需要 Babel 来帮忙。Babel 是一个 JavaScript 编译器，可以将 ES6+ 转化成 ES5。在 Webpack 里使用 Babel，需要使用 babel-loader 。
 
 ### 使用 babel-loader
 
@@ -763,9 +761,9 @@ webpack 自身可以自动加载 JS 文件，就像加载JSON文件一样，无�
 npm install -D babel-loader @babel/core @babel/preset-env
 ```
 
-- babel-loader : 在webpack里应用 babel 解析ES6的桥梁
-- @babel/core: babel核心模块
-- @babel/preset-env: babel预设，一组babel插件的集合
+- babel-loader : 在 webpack 里应用 babel 解析 ES6 的桥梁
+- @babel/core: babel 核心模块
+- @babel/preset-env: babel 预设，一组 babel 插件的集合
 
 在 webpack 配置中，需要将 babel-loader 添加到 module 列表中，就像下面这样:
 
@@ -782,7 +780,7 @@ npm install -D babel-loader @babel/core @babel/preset-env
 },
 ```
 
-执行编译: 从编译完的结果可以看出，async/await 的ES6语法被 babel编译了。
+执行编译: 从编译完的结果可以看出，async/await 的 ES6 语法被 babel 编译了。
 
 ### regeneratorRuntime 插件
 
@@ -793,9 +791,9 @@ regeneratorRuntime 是 webpack 打包生成的全局辅助函数，由 babel 生
 这个错误显然是未能正确配置 babel。 正确的做法需要添加以下的插件和配置:
 
 ```bash
-# 这个包中包含了 regeneratorRuntime，运行时需要 
+# 这个包中包含了 regeneratorRuntime，运行时需要
 npm install --save @babel/runtime
-# 这个插件会在需要 regeneratorRuntime 的地方自动 require 导包，编译时需要 
+# 这个插件会在需要 regeneratorRuntime 的地方自动 require 导包，编译时需要
 npm install --save-dev @babel/plugin-transform-runtime
 # 更多参考这里 <https://babeljs.io/docs/en/babel-plugin-transform-runtime>
 ```
@@ -835,8 +833,8 @@ npm install --save-dev @babel/plugin-transform-runtime
 在 src/split 目录下创建 another-module.js 文件: webpack/src/split/another-module.js
 
 ```js
-import _ from 'lodash'
-console.log(_.join(['Another', 'module', 'loaded!'], ' '))
+import _ from 'lodash';
+console.log(_.join(['Another', 'module', 'loaded!'], ' '));
 ```
 
 这个模块依赖了 lodash ，需要安装一下: npm install lodash
@@ -862,15 +860,15 @@ asset another.bundle.js 1.38 MiB [emitted] (name: another) , 我们发现 lodash
 
 ```js
 // webpack/src/split/index.js
-import _ from 'lodash'
+import _ from 'lodash';
 console.log(_.join(['index', 'module', 'loaded!'], ' '));
 // webpack/src/index.js
-import "./split";
+import './split';
 ```
 
 执行编译:
 
-观察一下: 我们发现 index.bundle.js 文件大小也骤然增大了，可以 lodash.js也被打包 到了 index.bundle.js 中了。
+观察一下: 我们发现 index.bundle.js 文件大小也骤然增大了，可以 lodash.js 也被打包 到了 index.bundle.js 中了。
 
 正如前面提到的，这种方式的确存在一些隐患:
 
@@ -916,52 +914,53 @@ interface EntryDescription {
 
    ```js
    entry: {
-     a2: 'depending.js', 
+     a2: 'depending.js',
      b2: {
        dependOn: 'a2',
-       import: './src/app.js', 
+       import: './src/app.js',
      },
    },
    ```
 
 #### 配置 index.html 模板
 
-1. 生成多个HTML文件
+1. 生成多个 HTML 文件
 
-   要生成多个HTML文件，请在插件数组中多次声明插件。
+   要生成多个 HTML 文件，请在插件数组中多次声明插件。
 
    ```js
    plugins: [
-     new HtmlWebpackPlugin(), // Generates default index.html 
-     new HtmlWebpackPlugin({ // Also generate a test.html
+     new HtmlWebpackPlugin(), // Generates default index.html
+     new HtmlWebpackPlugin({
+       // Also generate a test.html
        filename: 'test.html',
-       template: 'src/assets/test.html' 
-     })
-   ]
+       template: 'src/assets/test.html',
+     }),
+   ];
    ```
 
 2. 编写自己的模板
 
-   如果默认生成的HTML不能满足您的需要，您可以提供自己的模板。最简单的方法是 使用 template 选项并传递自定义HTML文件。html 网页包插件将自动将所有必要的 CSS、JS、manifest和favicon文件注入标记中。
+   如果默认生成的 HTML 不能满足您的需要，您可以提供自己的模板。最简单的方法是 使用 template 选项并传递自定义 HTML 文件。html 网页包插件将自动将所有必要的 CSS、JS、manifest 和 favicon 文件注入标记中。
 
    ```js
    plugins: [
-    new HtmlWebpackPlugin({
+     new HtmlWebpackPlugin({
        title: 'Custom template',
-       // Load a custom template (lodash by default) 
-       template: 'index.html'
-     })
-   ]
+       // Load a custom template (lodash by default)
+       template: 'index.html',
+     }),
+   ];
    ```
 
    ```html
    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8"/>
-        <title><%= htmlWebpackPlugin.options.title %></title> 
-      </head>
-      <body></body>
+   <html>
+     <head>
+       <meta charset="utf-8" />
+       <title><%= htmlWebpackPlugin.options.title %></title>
+     </head>
+     <body></body>
    </html>
    ```
 
@@ -969,7 +968,7 @@ interface EntryDescription {
 
    ```js
    entry: {
-     pageOne: './src/pageOne/index.js', 
+     pageOne: './src/pageOne/index.js',
      pageTwo: './src/pageTwo/index.js',
      pageThree: './src/pageThree/index.js',
    },
@@ -1026,25 +1025,24 @@ optimization: {
 ```js
 // webpack/src/split/async-module.js
 function getComponent() {
-  return import("lodash")
+  return import('lodash')
     .then(({ default: _ }) => {
-      const element = document.createElement("div");
-      element.innerHTML = _.join(["Hello", "webpack"], " ");
+      const element = document.createElement('div');
+      element.innerHTML = _.join(['Hello', 'webpack'], ' ');
       return element;
     })
-    .catch((error) => "An error occurred while loading the component");
+    .catch((error) => 'An error occurred while loading the component');
 }
 
 getComponent().then((component) => {
   document.body.appendChild(component);
 });
-
 ```
 
 在入口文件中导入:
 
 ```js
-import "./split/async-module";
+import './split/async-module';
 ```
 
 执行编译: 从打印的结果看，公共的代码被单独打包到一个文件外 我们看到，静态和动态载入的模块都正常工作了。
@@ -1070,12 +1068,12 @@ export const minus = (x, y) => {
 
 ```js
 // webpack/src/split/index.js
-const button = document.createElement("button");
+const button = document.createElement('button');
 
-button.textContent = "点击执行加法运算";
+button.textContent = '点击执行加法运算';
 
-button.addEventListener("click", () => {
-  import(/* webpackChunkName: 'math' */ "./math.js").then(({ add }) => {
+button.addEventListener('click', () => {
+  import(/* webpackChunkName: 'math' */ './math.js').then(({ add }) => {
     console.log(add(4, 5));
   });
 });
@@ -1083,7 +1081,7 @@ button.addEventListener("click", () => {
 document.body.appendChild(button);
 ```
 
-这里有句注释，我们把它称为 webpack 魔法注释: webpackChunkName: 'math' , 告诉webpack打包生成的文件名为 math 。
+这里有句注释，我们把它称为 webpack 魔法注释: webpackChunkName: 'math' , 告诉 webpack 打包生成的文件名为 math 。
 
 启动服务，在浏览器上查看: 第一次加载完页面， math.bundle.js 不会加载，当点击按钮后，才加载 math.bundle.js 文件。
 
@@ -1099,12 +1097,12 @@ Webpack v4.6.0+ 增加了对预获取和预加载的支持。
 下面这个 prefetch 的简单示例中，编辑 index.js 文件: 添加第二句魔法注释: webpackPrefetch: true
 
 ```js
-import(/* webpackChunkName: 'math', webpackPrefetch: true */ "./math.js")
+import(/* webpackChunkName: 'math', webpackPrefetch: true */ './math.js');
 ```
 
 告诉 webpack 执行预获取。这会生成 `<link rel="prefetch" as="script" href="math.js">` 并追加到页面头部，指示着浏览器在闲置时间预取 math.js 文件。
 
-启动服务，在浏览器上查看: 我们发现，在还没有点击按钮时， math.bundle.js 就已经下载下来了。同时，在 index.html 里webpack自动添加了一句: 点击按钮，会立即调用已经下载好的 math.bundle.js 文件中的 add 方法 点击按钮，执行 4+5 的加法运算。
+启动服务，在浏览器上查看: 我们发现，在还没有点击按钮时， math.bundle.js 就已经下载下来了。同时，在 index.html 里 webpack 自动添加了一句: 点击按钮，会立即调用已经下载好的 math.bundle.js 文件中的 add 方法 点击按钮，执行 4+5 的加法运算。
 
 与 prefetch 指令相比，preload 指令有许多不同之处:
 
@@ -1117,19 +1115,17 @@ import(/* webpackChunkName: 'math', webpackPrefetch: true */ "./math.js")
 
 ```js
 export const print = () => {
-  console.log("preload chunk.");
+  console.log('preload chunk.');
 };
 ```
 
 修改 index.js 文件:
 
 ```js
-const button2 = document.createElement("button");
-button2.textContent = "点击执行字符串打印";
-button2.addEventListener("click", () => {
-  import(
-    /* webpackChunkName: 'print', webpackPreload: true */ "./print.js"
-  ).then(({ print }) => {
+const button2 = document.createElement('button');
+button2.textContent = '点击执行字符串打印';
+button2.addEventListener('click', () => {
+  import(/* webpackChunkName: 'print', webpackPreload: true */ './print.js').then(({ print }) => {
     print(4, 5);
   });
 });
@@ -1141,11 +1137,9 @@ document.body.appendChild(button2);
 我们修改一下引入方式:
 
 ```js
-import(/* webpackChunkName: 'print', webpackPreload: true */ "./print.js").then(
-  ({ print }) => {
-    print();
-  }
-);
+import(/* webpackChunkName: 'print', webpackPreload: true */ './print.js').then(({ print }) => {
+  print();
+});
 ```
 
 再次刷新浏览器页面: print.bundle.js 被加载下来，是和当前 index.bundle.js 并行加载的。
@@ -1158,7 +1152,7 @@ import(/* webpackChunkName: 'print', webpackPreload: true */ "./print.js").then(
 
 ### 输出文件的文件名
 
-我们可以通过替换 output.filename 中的 substitutions 设置，来定义输出文件的名称。webpack 提供了一种使用称为**substitution(可替换模板字符串)**的方式，通过带括号字符串来模板化文件名。其中， `[contenthash]` substitution 将根据资源内容创建出唯一hash。当资源内容发生变化时， `[contenthash]` 也会发生变化。
+我们可以通过替换 output.filename 中的 substitutions 设置，来定义输出文件的名称。webpack 提供了一种使用称为**substitution(可替换模板字符串)**的方式，通过带括号字符串来模板化文件名。其中， `[contenthash]` substitution 将根据资源内容创建出唯一 hash。当资源内容发生变化时， `[contenthash]` 也会发生变化。
 
 修改配置文件:
 
@@ -1237,7 +1231,7 @@ plugins: [
   }),
 ]
 ```
-  
+
 #### auto
 
 该值是默认项
@@ -1258,16 +1252,16 @@ webpack 命令行 环境配置 的 --env 参数，可以允许你传入任意数
 module.exports = (env) => {
   return {
     // 根据命令行参数 env 来设置不同环境的 mode
-    mode: env.production ? "production" : "development", 
+    mode: env.production ? 'production' : 'development',
     //...
-  }
-}
+  };
+};
 ```
 
 或是 `webpack --node-env production`
 
 ```js
-mode: process.env.NODE_ENV === "production" ? "production" : "development", 
+mode: process.env.NODE_ENV === "production" ? "production" : "development",
 ```
 
 ### 拆分配置文件
@@ -1287,7 +1281,7 @@ webpack.config.prod.js (生产环境配置)。在项目根目录下创建一个�
 ```json
 // package.json
 "scripts": {
-  "start": "webpack serve -c ./config/webpack.config.dev.js", 
+  "start": "webpack serve -c ./config/webpack.config.dev.js",
   "build": "webpack -c ./config/webpack.config.prod.js"
 }
 ```
@@ -1302,18 +1296,18 @@ webpack.config.prod.js (生产环境配置)。在项目根目录下创建一个�
 
 1. 如果数据类型不一样，后面的直接完全覆盖前面的，如果两者都是基础数据类型，后面的也会覆盖前面的
 2. 如果两者都是数组的话就会把两个数组进行合并
-3. 如果两者都是对象, 例如在a对象和b对象合并的过程中，a和b的键值对key如果不同，当然都会保留下来，到最终合并后的对象中
+3. 如果两者都是对象, 例如在 a 对象和 b 对象合并的过程中，a 和 b 的键值对 key 如果不同，当然都会保留下来，到最终合并后的对象中
 
 ## 模块解析(resolve)
 
-webpack通过Resolvers实现了模块之间的依赖和引用。举个例子:所引用的模块可以是来自应用程序的代码，也可以是第三方库。 resolver 帮助 webpack 从每个 require/import 语句中，找到需要引入到 bundle 中的模块代码。 当打包模块时，webpack 使用 enhanced-resolve 来解析文件路径。(webpack_resolver的代码实现很有思想，webpack 基于此进行 tree-shaking，这个概念我们后面会讲到)。
+webpack 通过 Resolvers 实现了模块之间的依赖和引用。举个例子:所引用的模块可以是来自应用程序的代码，也可以是第三方库。 resolver 帮助 webpack 从每个 require/import 语句中，找到需要引入到 bundle 中的模块代码。 当打包模块时，webpack 使用 enhanced-resolve 来解析文件路径。(webpack_resolver 的代码实现很有思想，webpack 基于此进行 tree-shaking，这个概念我们后面会讲到)。
 
 ### resolve alias
 
 ```js
 resolve: {
   alias: {
-    "@utils": path.resolve(__dirname, 'src/utils/') 
+    "@utils": path.resolve(__dirname, 'src/utils/')
   },
 },
 ```
@@ -1326,20 +1320,20 @@ resolve: {
 },
 ```
 
-webpack会按照数组顺序去解析这些后缀名，对于同名的文件，webpack总是会先 解析列在数组首位的后缀名的文件。
+webpack 会按照数组顺序去解析这些后缀名，对于同名的文件，webpack 总是会先 解析列在数组首位的后缀名的文件。
 
 ### 外部扩展(Externals)
 
-有时候我们为了减小bundle的体积，从而把一些不变的第三方库用cdn的形式引入进来，比如 jQuery
+有时候我们为了减小 bundle 的体积，从而把一些不变的第三方库用 cdn 的形式引入进来，比如 jQuery
 
-这个时候我们想在我们的代码里使用引入的jquery———但似乎三种模块引入方式都不行，这时候怎么办呢? webpack给我们提供了 Externals 的配置属性，让我们可以配置外部扩展模块:
+这个时候我们想在我们的代码里使用引入的 jquery———但似乎三种模块引入方式都不行，这时候怎么办呢? webpack 给我们提供了 Externals 的配置属性，让我们可以配置外部扩展模块:
 
 ```html
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
 ```
 
 ```js
-module.exports = { 
+module.exports = {
   //...
   externals: {
     jquery: 'jQuery',
@@ -1347,18 +1341,18 @@ module.exports = {
 };
 ```
 
-注意:我们如何得知 { jquery: 'jQuery'} 中的 'jQuery'? 其实就是cdn里打入到window中的变量名，比如jQuery不仅有jQuery变量名，还有$，那么我们也可以写成这样子:
+注意:我们如何得知 { jquery: 'jQuery'} 中的 'jQuery'? 其实就是 cdn 里打入到 window 中的变量名，比如 jQuery 不仅有 jQuery 变量名，还有$，那么我们也可以写成这样子:
 
 ```js
-import $ from 'jquery'; 
+import $ from 'jquery';
 console.log($);
 ```
 
 ### 依赖图(dependency graph)
 
-每当一个文件依赖另一个文件时，webpack 会直接将文件视为存在依赖关系。 这使得 webpack 可以获取非代码资源，如 images 或 web 字体等。并会把它们作为依赖提供给应用程序。 当 webpack 开始工作时，它会根据我们写好的配置,从入口 (entry) 开始，webpack 会递归的构建一个依赖关系图，这个依赖图包含着应用程序中所需的每个模块，然后将所有模块打包为bundle(也就是output的配置项)。
+每当一个文件依赖另一个文件时，webpack 会直接将文件视为存在依赖关系。 这使得 webpack 可以获取非代码资源，如 images 或 web 字体等。并会把它们作为依赖提供给应用程序。 当 webpack 开始工作时，它会根据我们写好的配置,从入口 (entry) 开始，webpack 会递归的构建一个依赖关系图，这个依赖图包含着应用程序中所需的每个模块，然后将所有模块打包为 bundle(也就是 output 的配置项)。
 
-单纯讲似乎很抽象，我们更期望能够可视化打包产物的依赖图，下边列示了一些 bundle分析工具。
+单纯讲似乎很抽象，我们更期望能够可视化打包产物的依赖图，下边列示了一些 bundle 分析工具。
 
 bundle 分析(bundle analysis) 工具:
 
@@ -1374,19 +1368,19 @@ bundle 分析(bundle analysis) 工具:
 ```bash
 # 首先安装这个插件作为开发依赖
 # NPM
-npm install --save-dev webpack-bundle-analyzer 
+npm install --save-dev webpack-bundle-analyzer
 # Yarn
 yarn add -D webpack-bundle-analyzer
 ```
 
 ```js
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-module.exports = { 
+module.exports = {
   plugins: [
     // ...others
-    new BundleAnalyzerPlugin()
-  ]
-}
+    new BundleAnalyzerPlugin(),
+  ],
+};
 ```
 
 这时我们执行打包命令，发现控制台里打印出下面这样的日志: 我们在浏览器中打开 `http://127.0.0.1:8888` ，我们成功可视化了打包产物依赖图!
@@ -1395,24 +1389,24 @@ module.exports = {
 
 ### Web Works
 
-有时我们需要在客户端进行大量的运算，但又不想让它阻塞我们的js主线程。你可能第一时间考虑到的是异步。 但事实上，运算量过大(执行时间过长)的异步也会阻塞js事件循环，甚至会导致浏览器假死状态。
+有时我们需要在客户端进行大量的运算，但又不想让它阻塞我们的 js 主线程。你可能第一时间考虑到的是异步。 但事实上，运算量过大(执行时间过长)的异步也会阻塞 js 事件循环，甚至会导致浏览器假死状态。
 
-这时候，HTML5的新特性 WebWorker 就派上了用场。 在此之前，我们简单的了解下这个特性。
+这时候，HTML5 的新特性 WebWorker 就派上了用场。 在此之前，我们简单的了解下这个特性。
 
-html5之前，打开一个常规的网页，浏览器会启用几个线程? 一般而言，至少存在三个线程(公用线程不计入在内): 分别是js引擎线程(处理js)、GUI渲染线程(渲染页面)、浏览器事件触发线程(控制交互)。
+html5 之前，打开一个常规的网页，浏览器会启用几个线程? 一般而言，至少存在三个线程(公用线程不计入在内): 分别是 js 引擎线程(处理 js)、GUI 渲染线程(渲染页面)、浏览器事件触发线程(控制交互)。
 
-当一段JS脚本长时间占用着处理机,就会挂起浏览器的GUI更新，而后面的事件响应也被排在队列中得不到处理，从而造成了浏览器被锁定进入假死状态。现在如果遇到了这种情况，我们可以做的不仅仅是优化代码————html5提供了解决方案，webworker。webWorkers提供了js的后台处理线程的API，它允许将复杂耗时的单纯js逻辑处理放 在浏览器后台线程中进行处理，让js线程不阻塞UI线程的渲染。 多个线程间也是可以通过相同的方法进行数据传递。
+当一段 JS 脚本长时间占用着处理机,就会挂起浏览器的 GUI 更新，而后面的事件响应也被排在队列中得不到处理，从而造成了浏览器被锁定进入假死状态。现在如果遇到了这种情况，我们可以做的不仅仅是优化代码————html5 提供了解决方案，webworker。webWorkers 提供了 js 的后台处理线程的 API，它允许将复杂耗时的单纯 js 逻辑处理放 在浏览器后台线程中进行处理，让 js 线程不阻塞 UI 线程的渲染。 多个线程间也是可以通过相同的方法进行数据传递。
 
 它的使用方式如下:
 
 ```js
 // new Worker(scriptURL: string | URL, options?: WorkerOptions)
-new Worker("someWorker.js");
+new Worker('someWorker.js');
 ```
 
-也就是说，需要单独写一个js脚本，然后使用new Worker来创建一个Work线程实 例。 这意味着并不是将这个脚本当做一个模块引入进来，而是单独开一个线程去执行这个脚本。
+也就是说，需要单独写一个 js 脚本，然后使用 new Worker 来创建一个 Work 线程实 例。 这意味着并不是将这个脚本当做一个模块引入进来，而是单独开一个线程去执行这个脚本。
 
-我们知道，常规模式下，我们的webpack工程化环境只会打包出一个bundle.js，那 我们的worker脚本怎么办? 也许你会想到设置多入口(Entry)多出口(output)的方式。 事实上不需要那么麻烦，webpack4 的时候就提供了 worker-loader 专门配置 webWorker。 令人开心的是，webpack5之后就不需要用 loader 啦，因为 webpack5 内置了这个功能。
+我们知道，常规模式下，我们的 webpack 工程化环境只会打包出一个 bundle.js，那 我们的 worker 脚本怎么办? 也许你会想到设置多入口(Entry)多出口(output)的方式。 事实上不需要那么麻烦，webpack4 的时候就提供了 worker-loader 专门配置 webWorker。 令人开心的是，webpack5 之后就不需要用 loader 啦，因为 webpack5 内置了这个功能。
 
 ```js
 // work.js
@@ -1425,10 +1419,10 @@ self.onmessage = ({ data: { question } }) => {
 
 ```js
 // 下面的代码属于业务逻辑
-const worker = new Worker(new URL("./work.js", import.meta.url));
+const worker = new Worker(new URL('./work.js', import.meta.url));
 
 worker.postMessage({
-  question: "hi, 那边的 worker 线程，请告诉我今天的幸运数字是多少?",
+  question: 'hi, 那边的 worker 线程，请告诉我今天的幸运数字是多少?',
 });
 
 worker.onmessage = ({ data: { answer } }) => {
@@ -1436,21 +1430,21 @@ worker.onmessage = ({ data: { answer } }) => {
 };
 ```
 
-> import.meta.url这个参数能够锁定我们当前的这个模块——注意，它不能在 commonjs中使用。
+> import.meta.url 这个参数能够锁定我们当前的这个模块——注意，它不能在 commonjs 中使用。
 
-这时候我们执行打包命令，会发现,dist目录下除了bundle.js之外，还有另外一个 xxx.bundle.js!
+这时候我们执行打包命令，会发现,dist 目录下除了 bundle.js 之外，还有另外一个 xxx.bundle.js!
 
-这说明我们的 webpack5 自动的将被 new Work 使用的脚本单独打出了一个bundle。
+这说明我们的 webpack5 自动的将被 new Work 使用的脚本单独打出了一个 bundle。
 
 我们加上刚才的问答代码，执行 npm run start，发现它是能够正常工作。 并且在 network 里也可以发现多了一个 src_worker_js.bundle.js。
 
-总结: webpack5以来内置了很多功能，让我们不需要过多的配置，比如之前讲过的hot模 式，和现在的 web worker。
+总结: webpack5 以来内置了很多功能，让我们不需要过多的配置，比如之前讲过的 hot 模 式，和现在的 web worker。
 
 ### TypeScript
 
-在前端生态里，TS扮演着越来越重要的角色。 我们直入正题，讲下如何在webpack工程化环境中集成TS。
+在前端生态里，TS 扮演着越来越重要的角色。 我们直入正题，讲下如何在 webpack 工程化环境中集成 TS。
 
-首先，当然是安装我们的ts和对应的loader。
+首先，当然是安装我们的 ts 和对应的 loader。
 
 ```bash
 npm install --save-dev typescript ts-loader
@@ -1462,23 +1456,23 @@ npm install --save-dev typescript ts-loader
 npx tsc --init
 ```
 
-我们发现生成了一个tsconfig.json，里面注释掉了绝大多数配置。 现在，根据我们想要的效果来打开对应的配置。
+我们发现生成了一个 tsconfig.json，里面注释掉了绝大多数配置。 现在，根据我们想要的效果来打开对应的配置。
 
 ```json
 {
   "compilerOptions": {
-    "outDir": "./dist/", 
-    "sourceMap": true, 
+    "outDir": "./dist/",
+    "sourceMap": true,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
-    "allowJs": true, 
+    "allowJs": true,
     "moduleResolution": "node"
-  } 
+  }
 }
 ```
 
- 好了，接下来我们新增一个src/index.ts，内置一些内容。 然后我们别忘了更改我们的 entry 及配置对应的 loader。 当然，还有resolve extensions，将 .ts 放在 .js 之前，这样它会先找 .ts。 注意，如果我们使用了sourceMap，一定记得和上面的ts配置一样，设置 sourcemap为true。 也别忘记在我们的webpack.config.js里，添加 sourcemap ,就像我们之前讲的那样。
+好了，接下来我们新增一个 src/index.ts，内置一些内容。 然后我们别忘了更改我们的 entry 及配置对应的 loader。 当然，还有 resolve extensions，将 .ts 放在 .js 之前，这样它会先找 .ts。 注意，如果我们使用了 sourceMap，一定记得和上面的 ts 配置一样，设置 sourcemap 为 true。 也别忘记在我们的 webpack.config.js 里，添加 sourcemap ,就像我们之前讲的那样。
 
 ```js
 resolve: {
@@ -1493,21 +1487,21 @@ module: {
     },
 ```
 
-eslint & ts 注意，如果要使用eslint，使用初始化命令的时候，记得选择 “使用了 typescript ”。
+eslint & ts 注意，如果要使用 eslint，使用初始化命令的时候，记得选择 “使用了 typescript ”。
 
-如果已经配置了eslint，但没有配置ts相关的配置，那么我们需要先安装对应的 plugin
+如果已经配置了 eslint，但没有配置 ts 相关的配置，那么我们需要先安装对应的 plugin
 
 ```bash
 yarn add -D @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
 ```
 
-注意如果需要用到react的话，记得也要安装
+注意如果需要用到 react 的话，记得也要安装
 
 ```bash
 yarn add -D eslint-plugin-react@latest
 ```
 
-vue或者其他常用框架同样如此，一般都会有专门的plugin。 然后我们对 .esilntrc 进行更改~
+vue 或者其他常用框架同样如此，一般都会有专门的 plugin。 然后我们对 .esilntrc 进行更改~
 
 ```js
 {
@@ -1516,47 +1510,47 @@ vue或者其他常用框架同样如此，一般都会有专门的plugin。 然�
     "es2021": true
   },
   "extends": [
-    "eslint:recommended", 
-    // 如果需要react的话 "plugin:react/recommended", 
+    "eslint:recommended",
+    // 如果需要react的话 "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "parser": "@typescript-eslint/parser", 
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    }, 
+    },
     // 如果需要 react 的话 "ecmaVersion": 13, "sourceType": "module"
     },
   "plugins": [
     "react",
     "@typescript-eslint"
-  ], 
+  ],
   "rules": {
     // ...一些自定义的rules "no-console": "error"
-  } 
+  }
 };
 ```
 
 ## Tree shaking
 
-注意 Webpack 不能百分百安全地进行 tree-shaking。有些模块导入，只要被引入，就会对应用程序产生重要的影响。一个很好的例子就是全局样式表，或者设置全局配置的JavaScript 文件。
+注意 Webpack 不能百分百安全地进行 tree-shaking。有些模块导入，只要被引入，就会对应用程序产生重要的影响。一个很好的例子就是全局样式表，或者设置全局配置的 JavaScript 文件。
 
 Webpack 认为这样的文件有“副作用”。具有副作用的文件不应该做 tree-shaking， 因为这将破坏整个应用程序。
 
-Webpack 的设计者清楚地认识到不知道哪些文件有副作用的情况下打包代码的风险，因此webpack4默认地将所有代码视为有副作用。这可以保护你免于删除必要的文件，但这意味着 Webpack 的默认行为实际上是不进行 tree-shaking。值得注意的是 webpack5 默认会进行 tree-shaking。
+Webpack 的设计者清楚地认识到不知道哪些文件有副作用的情况下打包代码的风险，因此 webpack4 默认地将所有代码视为有副作用。这可以保护你免于删除必要的文件，但这意味着 Webpack 的默认行为实际上是不进行 tree-shaking。值得注意的是 webpack5 默认会进行 tree-shaking。
 
 如何告诉 Webpack 你的代码无副作用，可以通过 package.json 有一个特殊的属性 sideEffects，就是为此而存在的。
 
 它有三个可能的值:
 
 1. true
-  如果不指定其他值的话。这意味着所有的文件都有副作用，也就是没有一个文件可以 tree-shaking。
+   如果不指定其他值的话。这意味着所有的文件都有副作用，也就是没有一个文件可以 tree-shaking。
 
 2. false
-  告诉 Webpack 没有文件有副作用，所有文件都可以 tree-shaking。
+   告诉 Webpack 没有文件有副作用，所有文件都可以 tree-shaking。
 
 3. 数组[...]
-  是文件路径数组。它告诉 webpack，除了数组中包含的文件外，你的任何文件 都没有副作用。因此，除了指定的文件之外，其他文件都可以安全地进行 tree- shaking。
+   是文件路径数组。它告诉 webpack，除了数组中包含的文件外，你的任何文件 都没有副作用。因此，除了指定的文件之外，其他文件都可以安全地进行 tree- shaking。
 
 webpack4 曾经不进行对 CommonJs 导出和 require() 调用时的导出使用分析。 webpack 5 增加了对一些 CommonJs 构造的支持，允许消除未使用的 CommonJs 导出，并从 require() 调用中跟踪引用的导出名称。
 
@@ -1606,7 +1600,7 @@ yarn add workbox-webpack-plugin
 
 ```js
 // webpack.config.common.js
-const WorkboxPlugin = require("workbox-webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
 plugins: [
   new WorkboxPlugin.GenerateSW({
     // 这些选项帮助快速启用 ServiceWorkers
@@ -1614,7 +1608,7 @@ plugins: [
     clientsClaim: true,
     skipWaiting: true,
   }),
-]
+];
 ```
 
 执行 yarn build
@@ -1628,15 +1622,15 @@ plugins: [
 接下来我们注册 Service Worker，使其出场并开始表演。通过添加以下注册代码来完成此操作:
 
 ```js
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register("/service- worker.js")
+      .register('/service- worker.js')
       .then((registration) => {
-        console.log("SW registered: ", registration);
+        console.log('SW registered: ', registration);
       })
       .catch((registrationError) => {
-        console.log("SW registration failed: ", registrationError);
+        console.log('SW registration failed: ', registrationError);
       });
   });
 }
@@ -1660,7 +1654,7 @@ shim 另外一个极其有用的使用场景就是:当你希望 polyfill 扩展�
 
 ```js
 // /src/shimming/index.ts
-console.log(_.join(['hello', 'webpack'], ' '))
+console.log(_.join(['hello', 'webpack'], ' '));
 ```
 
 ```js,
@@ -1671,13 +1665,13 @@ plugins: [
 ]
 ```
 
-我们本质上所做的，就是告诉 webpack 如果你遇到了至少一处用到 _ 变量的模块实例，那请你将 lodash package 引入进来，并将其提供给需要用到它的模块。
+我们本质上所做的，就是告诉 webpack 如果你遇到了至少一处用到 \_ 变量的模块实例，那请你将 lodash package 引入进来，并将其提供给需要用到它的模块。
 
 还可以使用 ProvidePlugin 暴露出某个模块中单个导出，通过配置一个“数组路径” (例如 [module, child, ...children?] )实现此功能。所以，我们假想如下， 无论 join 方法在何处调用，我们都只会获取到 lodash 中提供的 join 方法。
 
 ```js
 // /src/shimming/index.ts
-console.log(join(['hello', 'webpack'], ' '))
+console.log(join(['hello', 'webpack'], ' '));
 ```
 
 ```js,
@@ -1698,16 +1692,16 @@ plugins: [
 当模块运行在 CommonJS 上下文中，这将会变成一个问题，也就是说此时的 this 指向的是 module.exports 。在这种情况下，你可以通过使用 imports-loader 覆盖 this 指向:
 
 ```js
-this.log('"this console"')
+this.log('"this console"');
 ```
 
 ```js
 rules: [
   {
     test: require.resolve('../src/shimming/index.ts'),
-    use: 'imports-loader?wrapper=window.console', 
+    use: 'imports-loader?wrapper=window.console',
   },
-]
+];
 ```
 
 ### 全局 Exports
@@ -1716,23 +1710,23 @@ rules: [
 
 ```js
 // src/globals.js
-const file = 'example.txt'; 
+const file = 'example.txt';
 const helpers = {
-  test: function () { 
-    console.log('test something')
+  test: function () {
+    console.log('test something');
   },
   parse: function () {
-    console.log('parse something') 
+    console.log('parse something');
   },
-}
+};
 ```
 
 ```js
 // webpack.config.js
-rules: [ 
+rules: [
   {
     test: require.resolve('./src/globals.js'),
-    use: 'exports-loader?type=commonjs&exports=file,multiple|helpers.parse|parse', 
+    use: 'exports-loader?type=commonjs&exports=file,multiple|helpers.parse|parse',
   },
 ],
 ```
@@ -1752,12 +1746,12 @@ npm install --save @babel/polyfill
 然后，使用将其引入到我们的主 bundle 文件:
 
 ```js
-import '@babel/polyfill'
-console.log(Array.from([1, 2, 3], x => x + x))
+import '@babel/polyfill';
+console.log(Array.from([1, 2, 3], (x) => x + x));
 ```
 
 注意，这种方式优先考虑正确性，而不考虑 bundle 体积大小。为了安全和可靠， polyfill/shim 必须运行于所有其他代码之前，而且需要同步加载，或者说，需要在所有 polyfill/shim 加载之后，再去加载所有应用程序代码。 社区中存在许多误解，即 现代浏览器“不需要”polyfill，或者 polyfill/shim 仅用于添加缺失功能 - 实际上，它们通常用于修复损坏实现(repair broken implementation)，即使是在最现代的浏览器中，也会出现这种情况。 因此，最佳实践仍然是，不加选择地和同步地加载所有 polyfill/shim，尽管这会导致额外的 bundle 体积成本。
-  
+
 ### 进一步优化 Polyfills
 
 不建议使用 `import @babel/polyfill` 。因为这样做的缺点是会全局引入整个 polyfill 包，比如 Array.from 会全局引入，不但包的体积大，而且还会污染全局环境。
@@ -1777,14 +1771,14 @@ rules: [
     test: /\.js$/,
     exclude: /node_modules/,
     use: {
-      loader: "babel-loader",
+      loader: 'babel-loader',
       options: {
         presets: [
           [
-            "@babel/preset-env",
+            '@babel/preset-env',
             {
-              targets: ["last 1 version", "> 1%"],
-              useBuiltIns: "usage",
+              targets: ['last 1 version', '> 1%'],
+              useBuiltIns: 'usage',
               // 添加corejs配置
               corejs: 3,
             },
@@ -1793,16 +1787,16 @@ rules: [
       },
     },
   },
-]
+];
 ```
 
-useBuiltIns: 参数有 “entry”、”usage”、false 三个值默认值是 false ，此参数决定了babel打包时如何处理@babel/polyfill 语句。
+useBuiltIns: 参数有 “entry”、”usage”、false 三个值默认值是 false ，此参数决定了 babel 打包时如何处理@babel/polyfill 语句。
 
 - "entry": 会将文件中 import @babel/polyfill 语句 结合 targets ，转换为一系 列引入语句，去掉目标浏览器已支持的 polyfill 模块，不管代码里有没有用到，只要 目标浏览器不支持都会引入对应的 polyfill 模块。
 - "usage": 不需要手动在代码里写 import @babel/polyfill ，打包时会自动根据 实际代码的使用情况，结合 targets 引入代码里实际用到部分 polyfill 模块
 - false: 对 import‘@babel/polyfill’不作任何处理，也不会自动引入 polyfill 模块。
 
-需要注意的是在 webpack 打包文件配置的 entry 中引入的 @babel/polyfill 不会根据 useBuiltIns 配置任何转换处理。 由于@babel/polyfill在7.4.0中被弃用，我们建议直接添加 corejs 并通过 corejs 选项设置版本。
+需要注意的是在 webpack 打包文件配置的 entry 中引入的 @babel/polyfill 不会根据 useBuiltIns 配置任何转换处理。 由于@babel/polyfill 在 7.4.0 中被弃用，我们建议直接添加 corejs 并通过 corejs 选项设置版本。
 
 ## 创建 library
 
@@ -1810,16 +1804,16 @@ useBuiltIns: 参数有 “entry”、”usage”、false 三个值默认值是 f
 
 ### 创建一个 library
 
-假设我们正在编写一个名为 webpack-numbers 的小的 library，可以将数字 1 到 5转换为文本表示，反之亦然，例如将 2 转换为 'two'。
+假设我们正在编写一个名为 webpack-numbers 的小的 library，可以将数字 1 到 5 转换为文本表示，反之亦然，例如将 2 转换为 'two'。
 
-我们需要用到 lodash 但是不想把他打包到项目中。在这种场景中，我们更倾向于把 lodash 当作 peerDependency 。也就是说，consumer(使用者) 应该已经安装过lodash 。因此，你就可以放弃控制此外部 library ，而是将控制权让给使用 library 的 consumer。这可以使用 externals 配置来完成:
+我们需要用到 lodash 但是不想把他打包到项目中。在这种场景中，我们更倾向于把 lodash 当作 peerDependency 。也就是说，consumer(使用者) 应该已经安装过 lodash 。因此，你就可以放弃控制此外部 library ，而是将控制权让给使用 library 的 consumer。这可以使用 externals 配置来完成:
 
 ```js
 module.exports = {
-  entry: './src/index.js', 
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'), 
-    filename: 'webpack-numbers.js', 
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'webpack-numbers.js',
     library: {
       name: 'webpackNumbers',
       type: 'umd',
@@ -1828,7 +1822,7 @@ module.exports = {
 };
 ```
 
-为优化生产环境下的输出结果，我们还需要将生成 bundle 的文件路径，添加到package.json 中的 main 字段中。或者，将其添加为标准模块这里的 key(键) main 是参照 package.json 标准，而 module 是参照一个提案，此提案允许 JavaScript 生态系统升级使用 ES2015 模块，而不会破坏向后兼容性。
+为优化生产环境下的输出结果，我们还需要将生成 bundle 的文件路径，添加到 package.json 中的 main 字段中。或者，将其添加为标准模块这里的 key(键) main 是参照 package.json 标准，而 module 是参照一个提案，此提案允许 JavaScript 生态系统升级使用 ES2015 模块，而不会破坏向后兼容性。
 
 ```js
 // package.json
@@ -1852,17 +1846,17 @@ Webpack5 模块联邦让 Webpack 达到了线上 Runtime 的效果，让代码�
 
 #### NPM 方式共享模块
 
-平时大家开发想必对npm也会十分的熟悉，像我们如果想把某一块功能某一组件做成共用的，可以让其他应用进行使用的，一般就把他做成一个npm包然后发布上去，其他需要用到的应用进行下载安装就能用了。
+平时大家开发想必对 npm 也会十分的熟悉，像我们如果想把某一块功能某一组件做成共用的，可以让其他应用进行使用的，一般就把他做成一个 npm 包然后发布上去，其他需要用到的应用进行下载安装就能用了。
 
 ```txt
 A应用 <- npm library -> B应用
 ```
 
-虽然说这种方式在一定的程度上是实现了代码的共用，跨项目之间的安装即使用，但是npm的方式存在一个巨大的问题就是当npm包更新后，怎样让各个子应用也实现更新呢？只能是使用到的相关项目进行一次重新构建然后发布上线，这样才能在正式线上用到最新的代码。这也就是走本地编译带来的缺陷。
+虽然说这种方式在一定的程度上是实现了代码的共用，跨项目之间的安装即使用，但是 npm 的方式存在一个巨大的问题就是当 npm 包更新后，怎样让各个子应用也实现更新呢？只能是使用到的相关项目进行一次重新构建然后发布上线，这样才能在正式线上用到最新的代码。这也就是走本地编译带来的缺陷。
 
 #### UMD 方式共享模块
 
-UMD方式可以说的是真正的runtime方式使用公共模块，就像我们平时使用jQuery、lodash一样，通过直接引用他们的cdn，然后直接在项目中进行使用。而且当他们发布更新时候我们也可以做到更新。
+UMD 方式可以说的是真正的 runtime 方式使用公共模块，就像我们平时使用 jQuery、lodash 一样，通过直接引用他们的 cdn，然后直接在项目中进行使用。而且当他们发布更新时候我们也可以做到更新。
 
 ```txt
 A应用 <- cdn library -> B应用
@@ -1891,12 +1885,12 @@ A应用 <- cdn library -> B应用
 终于到了本文的主角了 webpack5 新特性模块联邦，webpack5 内置的这个功能比较完美的解决上面几种共享模式下的问题，既可以做到打包发布模块供给后，消费者能够实时保持同步，也可以进行代码构建时候的优化，他可以在一个应用中直接导出使用另外一个应用的模块，
 
 ```txt
-A: a1, a2, b2 
+A: a1, a2, b2
 B: b1, b2, c2
 B import a1, a2
 ```
 
-B应用 作为模块消费方（host），直接 import 应用A 中的模块，A应用 作为模块提供方（remote）
+B 应用 作为模块消费方（host），直接 import 应用 A 中的模块，A 应用 作为模块提供方（remote）
 
 ### 应用案例
 
@@ -1907,8 +1901,8 @@ B应用 作为模块消费方（host），直接 import 应用A 中的模块，A
 ```js
 // src/header.js
 const Header = () => {
-  const header = document.createElement("h1");
-  header.textContent = "公共头部内容";
+  const header = document.createElement('h1');
+  header.textContent = '公共头部内容';
   return header;
 };
 
@@ -1917,36 +1911,36 @@ export default Header;
 
 ```js
 // src/index.js
-import Header from "./header";
+import Header from './header';
 
-const div = document.createElement("div");
+const div = document.createElement('div');
 div.appendChild(Header());
 document.body.appendChild(div);
 ```
 
 ```js
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { ModuleFederationPlugin } = require("webpack").container;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 /**
  * @type {import('webpack').Configuration}
  */
 module.exports = {
-  mode: "production",
-  entry: "./src/index.js",
+  mode: 'production',
+  entry: './src/index.js',
   plugins: [
     new HtmlWebpackPlugin(),
     new ModuleFederationPlugin({
       // 模块联邦名字
-      name: "nav",
+      name: 'nav',
       // 外部访问的资源名字
-      filename: "remoteEntry.js",
+      filename: 'remoteEntry.js',
       // 引用的外部资源列表
       remotes: {},
       // 暴露给外部资源列表
       exposes: {
-        "./Header": "./src/header.js",
+        './Header': './src/header.js',
       },
       // 共享模块，如lodash
       shared: {},
@@ -1968,11 +1962,11 @@ yarn run webpack
 ```js
 // src/HomeList
 const HomeList = (num) => {
-  let str = "<ul>";
+  let str = '<ul>';
   for (let i = 0; i < num; i++) {
-    str += "<li>item " + i + "</li>";
+    str += '<li>item ' + i + '</li>';
   }
-  str += "</ul>";
+  str += '</ul>';
   return str;
 };
 
@@ -1981,10 +1975,10 @@ export default HomeList;
 
 ```js
 // src/index.js
-import HomeList from "./HomeList";
+import HomeList from './HomeList';
 
-import("nav/Header").then((Header) => {
-  const body = document.createElement("div");
+import('nav/Header').then((Header) => {
+  const body = document.createElement('div');
   body.appendChild(Header.default());
   document.body.appendChild(body);
   document.body.innerHTML += HomeList(5);
@@ -1993,31 +1987,30 @@ import("nav/Header").then((Header) => {
 
 ```js
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { ModuleFederationPlugin } = require("webpack").container;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 /**
  * @type {import('webpack').Configuration}
  */
 module.exports = {
-  mode: "production",
-  entry: "./src/index.js",
+  mode: 'production',
+  entry: './src/index.js',
   plugins: [
     new HtmlWebpackPlugin(),
     new ModuleFederationPlugin({
-      name: "home",
-      filename: "remoteEntry.js",
+      name: 'home',
+      filename: 'remoteEntry.js',
       remotes: {
-        nav: "nav@http://localhost:3001/remoteEntry.js",
+        nav: 'nav@http://localhost:3001/remoteEntry.js',
       },
       exposes: {
-        "./HomeList": "./src/HomeList.js",
+        './HomeList': './src/HomeList.js',
       },
       shared: {},
     }),
   ],
 };
-
 ```
 
 配置 script : `"webpack": "webpack serve --port 3002"`
@@ -2032,7 +2025,7 @@ yarn run webpack
 
 ```js
 // src/index.js
-Promise.all([import("nav/Header"), import("home/HomeList")]).then(
+Promise.all([import('nav/Header'), import('home/HomeList')]).then(
   ([{ default: Header }, { default: HomeList }]) => {
     document.body.appendChild(Header());
     document.body.innerHTML += HomeList(4);
@@ -2042,30 +2035,29 @@ Promise.all([import("nav/Header"), import("home/HomeList")]).then(
 
 ```js
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { ModuleFederationPlugin } = require("webpack").container;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 /**
  * @type {import('webpack').Configuration}
  */
 module.exports = {
-  mode: "production",
-  entry: "./src/index.js",
+  mode: 'production',
+  entry: './src/index.js',
   plugins: [
     new HtmlWebpackPlugin(),
     new ModuleFederationPlugin({
-      name: "search",
-      filename: "remoteEntry.js",
+      name: 'search',
+      filename: 'remoteEntry.js',
       remotes: {
-        nav: "nav@http://localhost:3001/remoteEntry.js",
-        home: "home@http://localhost:3002/remoteEntry.js",
+        nav: 'nav@http://localhost:3001/remoteEntry.js',
+        home: 'home@http://localhost:3002/remoteEntry.js',
       },
       exposes: {},
       shared: {},
     }),
   ],
 };
-
 ```
 
 配置 script : `"webpack": "webpack serve --port 3003"`
@@ -2153,7 +2145,7 @@ item 3
 
 ```js
 // webpack.config.js
-module.exports = { 
+module.exports = {
   //...
   cache: {
     type: 'memory',
@@ -2226,10 +2218,11 @@ webpack 4 默认使用 stats.toJson() 输出大量数据。除非在增量步骤
 Webpack 只会在文件系统中输出已经更新的 chunk。某些配置选项(HMR, output.chunkFilename 的 `[name]/[chunkhash]/[contenthash]`， `[fullhash]` )来说，除了对已经更新的 chunk 无效之外，对于 entry chunk 也不会生效。确保在生成 entry chunk 时，尽量减少其体积以提高性能。下面的配置为运行时代码创建了一个额外的 chunk，所以它的生成代价较低:
 
 ```js
-module.exports = { // ...
+module.exports = {
+  // ...
   optimization: {
     runtimeChunk: true,
-  }, 
+  },
 };
 ```
 
@@ -2238,12 +2231,13 @@ module.exports = { // ...
 Webpack 通过执行额外的算法任务，来优化输出结果的体积和加载性能。这些优化适用于小型代码库，但是在大型代码库中却非常耗费性能:
 
 ```js
-module.exports = { // ...
+module.exports = {
+  // ...
   optimization: {
     removeAvailableModules: false,
     removeEmptyChunks: false,
     splitChunks: false,
-  }, 
+  },
 };
 ```
 
@@ -2252,7 +2246,7 @@ module.exports = { // ...
 Webpack 会在输出的 bundle 中生成路径信息。然而，在打包数千个模块的项目中，这会导致造成垃圾回收性能压力。在 `options.output.pathinfo` 设置中关闭:
 
 ```js
-module.exports = { 
+module.exports = {
   // ...
   output: {
     pathinfo: false,
@@ -2333,7 +2327,7 @@ new ForkTsCheckerWebpackPlugin({
 
 // 这里不可以使用箭头函数
 module.exports = function (source) {
-  return source.replace("reck", "luna");
+  return source.replace('reck', 'luna');
 };
 
 // 使用
@@ -2344,7 +2338,7 @@ module.exports = {
         test: /\.js$/,
         use: [
           {
-            loader: path.resolve(__dirname, "/loaders/replaceLoader.js"),
+            loader: path.resolve(__dirname, '/loaders/replaceLoader.js'),
           },
         ],
       },
@@ -2356,17 +2350,17 @@ module.exports = {
 ### 获取参数
 
 ```js
-const loaderUtils = require("loader-utils");
+const loaderUtils = require('loader-utils');
 
 module.exports = function (source) {
   // 参数会被放在 this.query 里面
   const { name } = this.query;
 
   // 有的时候 options 可能不是对象而是字符串，我们可以借助 loader-utils
-  const loaderUtils = require("loader-utils");
+  const loaderUtils = require('loader-utils');
   const { name } = loaderUtils.getOptions(this);
 
-  return source.replace("reck", name);
+  return source.replace('reck', name);
 };
 
 // 使用
@@ -2377,9 +2371,9 @@ module.exports = {
         test: /\.js$/,
         use: [
           {
-            loader: path.resolve(__dirname, "/loaders/replaceLoader.js"),
+            loader: path.resolve(__dirname, '/loaders/replaceLoader.js'),
             options: {
-              name: "luna",
+              name: 'luna',
             },
           },
         ],
@@ -2403,11 +2397,11 @@ this.callback(
 ```
 
 ```js
-const loaderUtils = require("loader-utils");
+const loaderUtils = require('loader-utils');
 
 module.exports = function (source) {
   const { name } = loaderUtils.getOptions(this);
-  const result = source.replace("reck", name);
+  const result = source.replace('reck', name);
 
   this.callback(null, result, sourceMap, meta);
 };
@@ -2421,7 +2415,7 @@ module.exports = function (source) {
 // 使用
 module.exports = {
   resolveLoader: {
-    modules: ["node_modules", "./loaders"],
+    modules: ['node_modules', './loaders'],
   },
   module: {
     rules: [
@@ -2429,12 +2423,12 @@ module.exports = {
         test: /\.js$/,
         use: [
           {
-            loader: "replaceLoader2",
+            loader: 'replaceLoader2',
           },
           {
-            loader: path.resolve(__dirname, "/loaders/replaceLoader.js"),
+            loader: path.resolve(__dirname, '/loaders/replaceLoader.js'),
             options: {
-              name: "luna",
+              name: 'luna',
             },
           },
         ],
@@ -2447,25 +2441,25 @@ module.exports = {
 ### 异步处理
 
 ```js
-const loaderUtils = require("loader-utils");
+const loaderUtils = require('loader-utils');
 
 module.exports = function (source) {
   const { name } = loaderUtils.getOptions(this);
   const callback = this.async();
 
   setTimeout(() => {
-    const result = source.replace("reck", name);
+    const result = source.replace('reck', name);
     callback(null, result);
   }, 1000);
 };
 ```
 
 ```js
-const loaderUtils = require("loader-utils");
+const loaderUtils = require('loader-utils');
 
 module.exports = function (source) {
   const { name } = loaderUtils.getOptions(this);
-  const result = source.replace("reck", name);
+  const result = source.replace('reck', name);
 
   this.callback(null, result, sourceMap, meta);
 };
@@ -2492,31 +2486,28 @@ class CopyrightWebpackPlugin {
      * emit        将打包好的文件放到输出目录之前（异步钩子）
      * compilation 和本次打包相关的东西
      */
-    compiler.hooks.emit.tapAsync(
-      "CopyrightWebpackPlugin",
-      (compilation, cb) => {
-        // 增加一个 txt 文件
-        compilation.assets["copyright.txt"] = {
-          /**
-           * source 文本内容
-           * size   文本字节大小
-           */
-          source: function () {
-            return "copyright by reck_luna";
-          },
-          size: function () {
-            return 22;
-          },
-        };
+    compiler.hooks.emit.tapAsync('CopyrightWebpackPlugin', (compilation, cb) => {
+      // 增加一个 txt 文件
+      compilation.assets['copyright.txt'] = {
+        /**
+         * source 文本内容
+         * size   文本字节大小
+         */
+        source: function () {
+          return 'copyright by reck_luna';
+        },
+        size: function () {
+          return 22;
+        },
+      };
 
-        // 必须回调
-        cb();
-      }
-    );
+      // 必须回调
+      cb();
+    });
 
     // compile 同步钩子，不需要callback
-    compiler.hooks.compile.tap("CopyrightWebpackPlugin", (compilation) => {
-      console.log("同步钩子");
+    compiler.hooks.compile.tap('CopyrightWebpackPlugin', (compilation) => {
+      console.log('同步钩子');
     });
   }
 }
@@ -2527,12 +2518,12 @@ module.exports = CopyrightWebpackPlugin;
 ```js
 // /webpack.config.js
 
-const CopyrightWebpackPlugin = require("/plugins/copyright-webpack-plugin.js");
+const CopyrightWebpackPlugin = require('/plugins/copyright-webpack-plugin.js');
 
 module.exports = {
   plugins: [
     new CopyrightWebpackPlugin({
-      name: "reck",
+      name: 'reck',
     }),
   ],
 };
@@ -2556,10 +2547,10 @@ module.exports = {
 ```js
 class CopyrightWebpackPlugin {
   apply(compiler) {
-    compiler.hooks.compile.tap("CopyrightWebpackPlugin", (compilation) => {
+    compiler.hooks.compile.tap('CopyrightWebpackPlugin', (compilation) => {
       // 打断点
       debugger;
-      console.log("同步钩子");
+      console.log('同步钩子');
     });
   }
 }
@@ -2574,20 +2565,20 @@ module.exports = CopyrightWebpackPlugin;
 ### 入口文件分析
 
 ```js
-const fs = require("fs");
-const path = require("path");
-const babel = require("@babel/core");
-const parser = require("@babel/parser"); // 分析抽象语法树
-const traverse = require("@babel/traverse").default;
+const fs = require('fs');
+const path = require('path');
+const babel = require('@babel/core');
+const parser = require('@babel/parser'); // 分析抽象语法树
+const traverse = require('@babel/traverse').default;
 
 // ************ 入口文件分析 **************
 const moduleAnalyses = (filename) => {
   // 读取文件
-  const content = fs.readFileSync(filename, "utf-8");
+  const content = fs.readFileSync(filename, 'utf-8');
 
   //分析抽象语法树
   const ast = parser.parse(content, {
-    sourceType: "module",
+    sourceType: 'module',
   });
 
   // 分析依赖
@@ -2608,7 +2599,7 @@ const moduleAnalyses = (filename) => {
   // 将 ES6 语法转译为 浏览器可以执行的语法
   const { code } = babel.transformFromAst(ast, null, {
     // 需要安装 @babel/preset-env
-    presets: ["@babel/preset-env"],
+    presets: ['@babel/preset-env'],
   });
 
   /**
@@ -2623,7 +2614,7 @@ const moduleAnalyses = (filename) => {
   };
 };
 
-const moduleInfo = moduleAnalyses("./src/index.js");
+const moduleInfo = moduleAnalyses('./src/index.js');
 
 console.log(moduleInfo);
 ```
@@ -2631,20 +2622,20 @@ console.log(moduleInfo);
 ### 依赖图谱
 
 ```js
-const fs = require("fs");
-const path = require("path");
-const babel = require("@babel/core");
-const parser = require("@babel/parser"); // 分析抽象语法树
-const traverse = require("@babel/traverse").default;
+const fs = require('fs');
+const path = require('path');
+const babel = require('@babel/core');
+const parser = require('@babel/parser'); // 分析抽象语法树
+const traverse = require('@babel/traverse').default;
 
 // ************ 入口文件分析 **************
 const moduleAnalyses = (filename) => {
   // 读取文件
-  const content = fs.readFileSync(filename, "utf-8");
+  const content = fs.readFileSync(filename, 'utf-8');
 
   //分析抽象语法树
   const ast = parser.parse(content, {
-    sourceType: "module",
+    sourceType: 'module',
   });
 
   // 分析依赖
@@ -2665,7 +2656,7 @@ const moduleAnalyses = (filename) => {
   // 将 ES6 语法转译为 浏览器可以执行的语法
   const { code } = babel.transformFromAst(ast, null, {
     // 需要安装 @babel/preset-env
-    presets: ["@babel/preset-env"],
+    presets: ['@babel/preset-env'],
   });
 
   /**
@@ -2714,27 +2705,27 @@ const makeDependenciesGraph = (entry) => {
   return graph;
 };
 
-const graphInfo = makeDependenciesGraph("./src/index.js");
+const graphInfo = makeDependenciesGraph('./src/index.js');
 console.log(graphInfo);
 ```
 
 ### 生成可用代码
 
 ```js
-const fs = require("fs");
-const path = require("path");
-const babel = require("@babel/core");
-const parser = require("@babel/parser"); // 分析抽象语法树
-const traverse = require("@babel/traverse").default;
+const fs = require('fs');
+const path = require('path');
+const babel = require('@babel/core');
+const parser = require('@babel/parser'); // 分析抽象语法树
+const traverse = require('@babel/traverse').default;
 
 // ************ 入口文件分析 **************
 const moduleAnalyses = (filename) => {
   // 读取文件
-  const content = fs.readFileSync(filename, "utf-8");
+  const content = fs.readFileSync(filename, 'utf-8');
 
   //分析抽象语法树
   const ast = parser.parse(content, {
-    sourceType: "module",
+    sourceType: 'module',
   });
 
   // 分析依赖
@@ -2755,7 +2746,7 @@ const moduleAnalyses = (filename) => {
   // 将 ES6 语法转译为 浏览器可以执行的语法
   const { code } = babel.transformFromAst(ast, null, {
     // 需要安装 @babel/preset-env
-    presets: ["@babel/preset-env"],
+    presets: ['@babel/preset-env'],
   });
 
   /**
@@ -2839,6 +2830,6 @@ const generateCode = (entry) => {
   `;
 };
 
-const code = generateCode("./src/index.js");
+const code = generateCode('./src/index.js');
 console.log(code);
 ```

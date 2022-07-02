@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --build tsconfig.json",
-    "dev": "nodemon --watch src/**/**/*.ts --exec \"tsc\" --build tsconfig.json"
+    "dev": "nodemon --watch src/**/**/*.ts --exec \"tsc\" --build tsconfig.json",
+    "prettier": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -42,10 +43,17 @@
     }
   },
   "lint-staged": {
-    "*.ts": "eslint --fix"
+    "*.ts": "eslint --fix",
+    "*.{js,css,json,md,ts,jsx,tsx,less}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "bugs": {
     "url": "https://github.com/llcoolmxdx5/front-end-learning-notes/issues"
   },
-  "homepage": "https://github.com/llcoolmxdx5/front-end-learning-notes#readme"
+  "homepage": "https://github.com/llcoolmxdx5/front-end-learning-notes#readme",
+  "dependencies": {
+    "prettier": "^2.7.1"
+  }
 }

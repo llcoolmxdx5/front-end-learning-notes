@@ -11,12 +11,12 @@ var platesBetweenCandles = function (s, queries) {
       flag = false;
     for (let index = left; index <= right; index++) {
       const element = s[index];
-      if (flag && element === "*") {
+      if (flag && element === '*') {
         count += 1;
-      } else if (!flag && element === "|") {
+      } else if (!flag && element === '|') {
         flag = true;
       }
-      if (element === "|") {
+      if (element === '|') {
         temp = index;
       }
     }
@@ -32,21 +32,21 @@ var platesBetweenCandles = function (s, queries) {
   const n = s.length;
   const preSum = new Array(n).fill(0);
   for (let i = 0, sum = 0; i < n; i++) {
-    if (s[i] === "*") {
+    if (s[i] === '*') {
       sum++;
     }
     preSum[i] = sum;
   }
   const left = new Array(n).fill(0);
   for (let i = 0, l = -1; i < n; i++) {
-    if (s[i] === "|") {
+    if (s[i] === '|') {
       l = i;
     }
     left[i] = l;
   }
   const right = new Array(n).fill(0);
   for (let i = n - 1, r = -1; i >= 0; i--) {
-    if (s[i] === "|") {
+    if (s[i] === '|') {
       r = i;
     }
     right[i] = r;
@@ -64,14 +64,14 @@ var platesBetweenCandles = function (s, queries) {
 };
 
 console.assert(
-  platesBetweenCandles("**|**|***|", [
+  platesBetweenCandles('**|**|***|', [
     [2, 5],
     [5, 9],
   ]).join() === [2, 3].join(),
   1
 );
 console.assert(
-  platesBetweenCandles("***|**|*****|**||**|*", [
+  platesBetweenCandles('***|**|*****|**||**|*', [
     [1, 17],
     [4, 5],
     [14, 17],

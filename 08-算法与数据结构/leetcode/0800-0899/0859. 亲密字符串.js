@@ -37,15 +37,13 @@ var buddyStrings = function (s, goal) {
       }
     }
   }
-  return (
-    second !== -1 && s[first] === goal[second] && s[second] === goal[first]
-  );
+  return second !== -1 && s[first] === goal[second] && s[second] === goal[first];
 };
 
-console.assert(buddyStrings("ab", "ab") === false, 1);
-console.assert(buddyStrings("aa", "aa") === true, 2);
-console.assert(buddyStrings("ab", "ba") === true, 3);
-console.assert(buddyStrings("aaaaaaabc", "aaaaaaacb") === true, 4);
-console.assert(buddyStrings("abcaa", "abcbb") === false, 5);
-console.assert(buddyStrings("abab", "abab") === true, 6);
-console.assert(buddyStrings("adcb", "abdc") === false, 7);
+console.assert(buddyStrings('ab', 'ab') === false, 1);
+console.assert(buddyStrings('aa', 'aa') === true, 2);
+console.assert(buddyStrings('ab', 'ba') === true, 3);
+console.assert(buddyStrings('aaaaaaabc', 'aaaaaaacb') === true, 4);
+console.assert(buddyStrings('abcaa', 'abcbb') === false, 5);
+console.assert(buddyStrings('abab', 'abab') === true, 6);
+console.assert(buddyStrings('adcb', 'abdc') === false, 7);

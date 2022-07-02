@@ -32,9 +32,7 @@ var kInversePairs = function (n, k) {
     dp[i] = [];
     const maxJ = Math.min(k, (i * (i - 1)) / 2);
     for (let j = 0; j <= maxJ; j++) {
-      dp[i][j] =
-        ((dp[i][j - 1] ?? 0) + (dp[i - 1][j] ?? 0) - (dp[i - 1][j - i] ?? 0)) %
-        MOD;
+      dp[i][j] = ((dp[i][j - 1] ?? 0) + (dp[i - 1][j] ?? 0) - (dp[i - 1][j - i] ?? 0)) % MOD;
     }
   }
   // console.log(dp);

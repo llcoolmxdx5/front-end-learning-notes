@@ -18,9 +18,9 @@ document.querySelectorAll(); // 返回NodeList列表可以用forEach遍历
 #### 1. 注册/移除事件的三种方式
 
 ```js
-var box = document.getElementById("box");
+var box = document.getElementById('box');
 box.onclick = function (e) {
-  console.log("代码会在box被点击后执行");
+  console.log('代码会在box被点击后执行');
   // IE6时没有e
 };
 box.onclick = null;
@@ -29,15 +29,15 @@ box.onclick = null;
 
 ```js
 // IE9及以上
-box.addEventListener("click", eventCode, false);
-box.removeEventListener("click", eventCode, false);
+box.addEventListener('click', eventCode, false);
+box.removeEventListener('click', eventCode, false);
 // 第三个参数为true时是捕获阶段触发，为false时为冒泡阶段触发，默认是false
 ```
 
 ```js
 // IE8及以下
-box.attachEvent("onclick", eventCode);
-box.detachEvent("onclick", eventCode);
+box.attachEvent('onclick', eventCode);
+box.detachEvent('onclick', eventCode);
 ```
 
 #### 2. 事件注册/移除的兼容代码
@@ -47,9 +47,9 @@ function addEventListener(element, type, fn) {
   if (element.addEventListener) {
     element.addEventListener(type, fn, false);
   } else if (element.attachEvent) {
-    element.attachEvent("on" + type, fn);
+    element.attachEvent('on' + type, fn);
   } else {
-    element["on" + type] = fn;
+    element['on' + type] = fn;
   }
 }
 
@@ -57,9 +57,9 @@ function removeEventListener(element, type, fn) {
   if (element.removeEventListener) {
     element.removeEventListener(type, fn, false);
   } else if (element.detachEvent) {
-    element.detachEvent("on" + type, fn);
+    element.detachEvent('on' + type, fn);
   } else {
-    element["on" + type] = null;
+    element['on' + type] = null;
   }
 }
 ```
@@ -197,7 +197,7 @@ var e = new WheelEvent();
 > href、title、id、src、className
 
 ```js
-var pic = document.getElementById("pic");
+var pic = document.getElementById('pic');
 console.log(pic.src);
 ```
 
@@ -206,9 +206,7 @@ console.log(pic.src);
 ```js
 innerText兼容处理;
 function getInnerText(element) {
-  return typeof element.textContent === "string"
-    ? element.textContent
-    : element.innerText;
+  return typeof element.textContent === 'string' ? element.textContent : element.innerText;
 }
 ```
 
@@ -225,9 +223,9 @@ ele.selected; // 下拉菜单选中属性
 #### 4. 自定义属性操作
 
 ```js
-element.getAttribute("属性名"); // 获取标签行内属性
-element.setAttribute("属性名", "值"); // 设置标签行内属性
-element.removeAttribute("属性名"); // 移除标签行内属性
+element.getAttribute('属性名'); // 获取标签行内属性
+element.setAttribute('属性名', '值'); // 设置标签行内属性
+element.removeAttribute('属性名'); // 移除标签行内属性
 // 与element.属性的区别: 上述三个方法用于获取任意的行内属性。
 ```
 
@@ -235,7 +233,7 @@ element.removeAttribute("属性名"); // 移除标签行内属性
 
 ```js
 // ele.style是行内样式
-element.style.width = "123px";
+element.style.width = '123px';
 getComputedStyle(ele).width; // 获取计算后样式 IE不支持
 ele.currentStyle.width; // 获取计算后样式 仅支持IE
 ```
@@ -243,7 +241,7 @@ ele.currentStyle.width; // 获取计算后样式 仅支持IE
 #### 6. 类名操作
 
 ```js
-element.className = "box";
+element.className = 'box';
 ```
 
 #### 7. 自定义标签属性
@@ -321,7 +319,7 @@ window.onload = function () {
 
 ```js
 var timerId = setTimeout(function () {
-  console.log("Hello World");
+  console.log('Hello World');
 }, 1000);
 clearTimeout(timerId); // 取消定时器的执行
 ```
@@ -345,9 +343,9 @@ location 可以获取或者设置浏览器地址栏的 URL 使用的时候可以
 scheme://host:port/path?query#fragment
 
 ```js
-location.href = "https://www.baidu.com"; // 交互后执行有历史记录
-location.assign("https://www.baidu.com"); // 交互后执行有历史记录
-location.replace("https://www.baidu.com"); // 无历史记录
+location.href = 'https://www.baidu.com'; // 交互后执行有历史记录
+location.assign('https://www.baidu.com'); // 交互后执行有历史记录
+location.replace('https://www.baidu.com'); // 无历史记录
 location.reload(); // 重载页面，不会在http请求头中携带缓存标记 和ctrl+r类似
 location.hash; // 获取地址栏中#标志后的内容包括#
 location.search; // 获取地址栏中？后的内容包括？
@@ -381,7 +379,7 @@ window.innerHeight; // 文档高度
 ### 1. 滚动偏移
 
 ```js
-var box = document.getElementById("box");
+var box = document.getElementById('box');
 // 兼容问题 高版本浏览器获取/设置scrollLeft/Top 使用HTML document.documentElement
 // 低版本浏览器获取/设置scrollLeft/Top 使用body document.body
 console.log(box.scrollLeft); //
@@ -397,7 +395,7 @@ console.log(box.scrollHeight); // 内容高度+2内容border+1padding
 offsetParent 用于获取定位的父级元素 不能设置
 
 ```js
-var box = document.getElementById("box");
+var box = document.getElementById('box');
 console.log(box.offsetParent); // 获取距离当前元素最近的定位父元素
 console.log(box.offsetLeft); // 获取box的坐标 到最近一个定位的父元素的距离
 console.log(box.offsetTop);
@@ -410,7 +408,7 @@ console.log(box.offsetHeight); // 高度+2padding+2border
 不能设置
 
 ```js
-var box = document.getElementById("box");
+var box = document.getElementById('box');
 console.log(box.clientLeft); // border-left的宽度
 console.log(box.clientTop); // border-top的宽度
 console.log(box.clientWidth); // 宽度+2padding-滚动条宽度

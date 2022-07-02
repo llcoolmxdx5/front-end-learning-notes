@@ -34,11 +34,11 @@ export default class Queue<T = number> {
   }
   public toString() {
     if (this.isEmpty()) {
-      return "";
+      return '';
     }
     return Array.from({ length: this.size() }, (_, index) =>
       this.items.get(this.lowestCount + index)
-    ).join(",");
+    ).join(',');
   }
 }
 

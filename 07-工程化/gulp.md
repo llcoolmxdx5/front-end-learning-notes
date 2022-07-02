@@ -30,47 +30,47 @@ json-server ./mock/mock.js --routes ./mock/routes.json --port 9090
 
 ```js
 // gulpfile.dev.js
-const { series, parallel, src, dest, watch } = require("gulp");
+const { series, parallel, src, dest, watch } = require('gulp');
 // const gulp = require('gulp')
-const gulpServer = require("gulp-webserver");
-const sass = require("gulp-sass");
-const concat = require("gulp-concat");
-const webpackStream = require("webpack-stream");
-const path = require("path");
-const proxy = require("http-proxy-middleware");
-const del = require("del"); // yarn add del -D
+const gulpServer = require('gulp-webserver');
+const sass = require('gulp-sass');
+const concat = require('gulp-concat');
+const webpackStream = require('webpack-stream');
+const path = require('path');
+const proxy = require('http-proxy-middleware');
+const del = require('del'); // yarn add del -D
 
 function copyHtml() {
-  return src("./src/views/*.html").pipe(dest("./dev/"));
+  return src('./src/views/*.html').pipe(dest('./dev/'));
 }
 function copyImages() {
-  return src("./src/images/*.*").pipe(dest("./dev/images/"));
+  return src('./src/images/*.*').pipe(dest('./dev/images/'));
 }
 function compileCSS() {
-  return src(["./src/style/*.scss", "!./src/style/detail.scss"])
-    .pipe(sass().on("error", sass.logError))
-    .pipe(concat("all.css"))
-    .pipe(dest("./dev/style/"));
+  return src(['./src/style/*.scss', '!./src/style/detail.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('all.css'))
+    .pipe(dest('./dev/style/'));
 }
 function detailCompileCss() {
-  return src(["./src/style/detail.scss", "./src/style/reset.scss"])
-    .pipe(sass().on("error", sass.logError))
-    .pipe(concat("detail.css"))
-    .pipe(dest("./dev/style/"));
+  return src(['./src/style/detail.scss', './src/style/reset.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('detail.css'))
+    .pipe(dest('./dev/style/'));
 }
 function compileJS() {
-  return src("./src/js/index.js")
+  return src('./src/js/index.js')
     .pipe(
       webpackStream({
-        mode: "development",
-        devtool: "inline-source-map",
+        mode: 'development',
+        devtool: 'inline-source-map',
         entry: {
-          index: "./src/js/index.js",
-          detail: "./src/js/detail.js",
+          index: './src/js/index.js',
+          detail: './src/js/detail.js',
         },
         output: {
-          path: path.resolve(__dirname, "./dev/js/"), //目录
-          filename: "[name].min.js", //文件名,
+          path: path.resolve(__dirname, './dev/js/'), //目录
+          filename: '[name].min.js', //文件名,
         },
         module: {
           rules: [
@@ -78,37 +78,37 @@ function compileJS() {
               test: /\.js$/, //匹配js文件
               exclude: /(node_modules)/, //排除文件
               use: {
-                loader: "babel-loader",
+                loader: 'babel-loader',
                 options: {
-                  presets: ["@babel/preset-env"],
-                  plugins: ["@babel/plugin-transform-runtime"],
+                  presets: ['@babel/preset-env'],
+                  plugins: ['@babel/plugin-transform-runtime'],
                 },
               },
             },
-            { test: /\.html$/, loader: "string-loader" },
+            { test: /\.html$/, loader: 'string-loader' },
           ],
         },
       })
     )
-    .pipe(dest("./dev/js/"));
+    .pipe(dest('./dev/js/'));
 }
 function startServer() {
   // 生产模式不需要
-  return src("./dev/").pipe(
+  return src('./dev/').pipe(
     gulpServer({
       port: 9090,
-      host: "0.0.0.0",
+      host: '0.0.0.0',
       livereload: true, // 是否支持热更新
       //directoryListing: true, // 是否展示文件夹列表
       open: true, // 打开浏览器
       middleware: [
-        proxy("/fetch", {
+        proxy('/fetch', {
           // target: 'http://localhost:9099/',
-          target: "https://m.lagou.com/",
+          target: 'https://m.lagou.com/',
           changeOrigin: true, // 是否支持跨域
           pathRewrite: {
             // 路径重写
-            "^/fetch": "",
+            '^/fetch': '',
           },
         }),
       ],
@@ -118,36 +118,29 @@ function startServer() {
 //监控文件的变化，当文件有变化时，同步到dev目录
 function watchFile() {
   // 生产模式不需要
-  watch("./src/**/*.js", (cb) => {
+  watch('./src/**/*.js', (cb) => {
     compileJS();
     cb();
   });
-  watch("./src/style/*.scss", (cb) => {
+  watch('./src/style/*.scss', (cb) => {
     compileCSS();
     cb();
   });
-  watch("./src/views/**/*.html", (cb) => {
+  watch('./src/views/**/*.html', (cb) => {
     copyHtml();
     compileJS();
     cb();
   });
 }
 function copyLibs() {
-  return src("./src/libs/*.*").pipe(dest("./dev/libs/"));
+  return src('./src/libs/*.*').pipe(dest('./dev/libs/'));
 }
 function remove() {
-  return del(["./dev/"]);
+  return del(['./dev/']);
 }
 exports.default = series(
   remove,
-  parallel(
-    copyHtml,
-    copyImages,
-    copyLibs,
-    compileJS,
-    compileCSS,
-    detailCompileCss
-  ),
+  parallel(copyHtml, copyImages, copyLibs, compileJS, compileCSS, detailCompileCss),
   startServer,
   watchFile
 );
@@ -156,53 +149,53 @@ exports.default = series(
 ## prod 配置
 
 ```js
-const { series, parallel, src, dest, watch } = require("gulp");
-const gulpServer = require("gulp-webserver");
-const sass = require("gulp-sass");
-const concat = require("gulp-concat");
-const webpackStream = require("webpack-stream");
-const path = require("path");
-const del = require("del");
-const rev = require("gulp-rev");
-const revCol = require("gulp-rev-collector");
+const { series, parallel, src, dest, watch } = require('gulp');
+const gulpServer = require('gulp-webserver');
+const sass = require('gulp-sass');
+const concat = require('gulp-concat');
+const webpackStream = require('webpack-stream');
+const path = require('path');
+const del = require('del');
+const rev = require('gulp-rev');
+const revCol = require('gulp-rev-collector');
 
 function copyHtml() {
-  return src("./src/views/*.html").pipe(dest("./dist/"));
+  return src('./src/views/*.html').pipe(dest('./dist/'));
 }
 function copyImages() {
-  return src("./src/images/*.*").pipe(dest("./dist/images/"));
+  return src('./src/images/*.*').pipe(dest('./dist/images/'));
 }
 function compileCSS() {
-  return src(["./src/style/*.scss", "!./src/style/detail.scss"])
-    .pipe(sass().on("error", sass.logError))
-    .pipe(concat("all.css"))
+  return src(['./src/style/*.scss', '!./src/style/detail.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('all.css'))
     .pipe(rev())
-    .pipe(dest("./dist/style/"))
-    .pipe(rev.manifest("css-index-manifest.json"))
-    .pipe(dest("./rev/"));
+    .pipe(dest('./dist/style/'))
+    .pipe(rev.manifest('css-index-manifest.json'))
+    .pipe(dest('./rev/'));
 }
 function detailCompileCss() {
-  return src(["./src/style/detail.scss", "./src/style/reset.scss"])
-    .pipe(sass().on("error", sass.logError))
-    .pipe(concat("detail.css"))
+  return src(['./src/style/detail.scss', './src/style/reset.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('detail.css'))
     .pipe(rev())
-    .pipe(dest("./dist/style/"))
-    .pipe(rev.manifest("css-detail-manifest.json"))
-    .pipe(dest("./rev/"));
+    .pipe(dest('./dist/style/'))
+    .pipe(rev.manifest('css-detail-manifest.json'))
+    .pipe(dest('./rev/'));
 }
 function compileJS() {
-  return src("./src/js/index.js")
+  return src('./src/js/index.js')
     .pipe(
       webpackStream({
-        mode: "production",
-        devtool: "inline-source-map",
+        mode: 'production',
+        devtool: 'inline-source-map',
         entry: {
-          index: "./src/js/index.js",
-          detail: "./src/js/detail.js",
+          index: './src/js/index.js',
+          detail: './src/js/detail.js',
         },
         output: {
-          path: path.resolve(__dirname, "./dev/js/"),
-          filename: "[name]-min.js",
+          path: path.resolve(__dirname, './dev/js/'),
+          filename: '[name]-min.js',
         },
         module: {
           rules: [
@@ -210,44 +203,35 @@ function compileJS() {
               test: /\.js$/,
               exclude: /(node_modules)/,
               use: {
-                loader: "babel-loader",
+                loader: 'babel-loader',
                 options: {
-                  presets: ["@babel/preset-env"],
-                  plugins: ["@babel/plugin-transform-runtime"],
+                  presets: ['@babel/preset-env'],
+                  plugins: ['@babel/plugin-transform-runtime'],
                 },
               },
             },
-            { test: /\.html$/, loader: "string-loader" },
+            { test: /\.html$/, loader: 'string-loader' },
           ],
         },
       })
     )
     .pipe(rev())
-    .pipe(dest("./dist/js/"))
-    .pipe(rev.manifest("js-rev-manifest.json"))
-    .pipe(dest("./rev/"));
+    .pipe(dest('./dist/js/'))
+    .pipe(rev.manifest('js-rev-manifest.json'))
+    .pipe(dest('./rev/'));
 }
 function copyLibs() {
-  return src("./src/libs/*.*").pipe(dest("./dist/libs/"));
+  return src('./src/libs/*.*').pipe(dest('./dist/libs/'));
 }
 function remove() {
-  return del(["./dist/"]);
+  return del(['./dist/']);
 }
 function revCollector() {
-  return src(["./rev/*.json", "./dist/*.html"])
-    .pipe(revCol())
-    .pipe(dest("./dist/"));
+  return src(['./rev/*.json', './dist/*.html']).pipe(revCol()).pipe(dest('./dist/'));
 }
 exports.default = series(
   remove,
-  parallel(
-    copyHtml,
-    copyImages,
-    copyLibs,
-    compileJS,
-    compileCSS,
-    detailCompileCss
-  ),
+  parallel(copyHtml, copyImages, copyLibs, compileJS, compileCSS, detailCompileCss),
   revCollector
 );
 ```
@@ -278,9 +262,9 @@ Gulp 是一个自动化工具，前端开发者可以使用它来处理常见任
 这个文件就是配置运行文件。我们先尝试写一个最简单的内容
 
 ```js
-var gulp = require("gulp");
-gulp.task("init", function () {
-  console.log("init");
+var gulp = require('gulp');
+gulp.task('init', function () {
+  console.log('init');
 });
 ```
 
@@ -325,8 +309,8 @@ gulp.task("init", function () {
   给文件写入数据流 `gulp.dest(path)` path 参数是要写入文件存放的路径
 
   ```js
-  gulp.task("init", function () {
-    gulp.src("./js/*.js").pipe(gulp.dest("./dist/"));
+  gulp.task('init', function () {
+    gulp.src('./js/*.js').pipe(gulp.dest('./dist/'));
   });
   ```
 
@@ -340,19 +324,19 @@ gulp.task("init", function () {
   gulp.task(任务名,任务所依赖前面任务名的数组,任务执行的函数);
 
   ```js
-  gulp.task("default", function () {
-    console.log("aaa");
+  gulp.task('default', function () {
+    console.log('aaa');
   });
   ```
 
   这是默认执行，执行 gulp 就可以，无需输入任务名
 
   ```js
-  gulp.task("one", function () {
-    console.log("one");
+  gulp.task('one', function () {
+    console.log('one');
   });
-  gulp.task("two", ["one"], function () {
-    console.log("two");
+  gulp.task('two', ['one'], function () {
+    console.log('two');
   });
   ```
 
@@ -363,8 +347,8 @@ gulp.task("init", function () {
   `gulp.watch("监视的文件",[监视文件发生变化后需要执行任务名的数组])`
 
   ```js
-  gulp.task("default", function () {
-    gulp.watch("js/*.js", function (event) {
+  gulp.task('default', function () {
+    gulp.watch('js/*.js', function (event) {
       console.log(event.type); //变化类型 added为新增,deleted为删除，changed为改变
       console.log(event.path); //变化的文件的路径
     });
@@ -384,26 +368,26 @@ gulp.task("init", function () {
   - 回调函数法
 
     ```js
-    gulp.task("js", function (done) {
+    gulp.task('js', function (done) {
       gulp
-        .src("./src/**/*.js")
+        .src('./src/**/*.js')
         .pipe(
           load.babel({
-            presets: ["@babel/env"],
+            presets: ['@babel/env'],
           })
         )
-        .pipe(gulp.dest("./dist"));
+        .pipe(gulp.dest('./dist'));
       done();
     });
     gulp.task(
-      "save",
-      gulp.series("js", function () {
-        console.log("aaaa");
+      'save',
+      gulp.series('js', function () {
+        console.log('aaaa');
         gulp
-          .src("./dist/**/*.js")
-          .pipe(load.concat("main.min.js"))
+          .src('./dist/**/*.js')
+          .pipe(load.concat('main.min.js'))
           .pipe(load.uglify())
-          .pipe(gulp.dest("./dist"));
+          .pipe(gulp.dest('./dist'));
       })
     );
     ```
@@ -413,28 +397,28 @@ gulp.task("init", function () {
   - promise 法
 
     ```js
-    gulp.task("js", function () {
+    gulp.task('js', function () {
       return new Promise(function (res, rej) {
         gulp
-          .src("./src/**/*.js")
+          .src('./src/**/*.js')
           .pipe(
             load.babel({
-              presets: ["@babel/env"],
+              presets: ['@babel/env'],
             })
           )
-          .pipe(gulp.dest("./dist"));
+          .pipe(gulp.dest('./dist'));
         res();
       });
     });
     gulp.task(
-      "save",
-      gulp.series("js", function () {
-        console.log("aaaa");
+      'save',
+      gulp.series('js', function () {
+        console.log('aaaa');
         gulp
-          .src("./dist/**/*.js")
-          .pipe(load.concat("main.min.js"))
+          .src('./dist/**/*.js')
+          .pipe(load.concat('main.min.js'))
           .pipe(load.uglify())
-          .pipe(gulp.dest("./dist"));
+          .pipe(gulp.dest('./dist'));
       })
     );
     ```
@@ -446,26 +430,26 @@ gulp.task("init", function () {
     以上的案例是 js 任务解决了 ES6 转换 ES5，任务 save 重新获取转换好的 js 文件合并压缩后存储为 main.min.js。但是使用上面两个方法后，我们发现后面没有合并存储，原因是什么呢？上面的两种写法在任务中标识完成了，但是不代表操作就完成了，js 任务最后存储是需要时间的，但是当开始存储时就已经执行了后续的任务，显然在后续任务中不能找到这个被转换后的文件。那么我们应该通过什么操作，这里我们需要等待上面内容完成后才可以操作后续内容
 
     ```js
-    gulp.task("js", function (done) {
+    gulp.task('js', function (done) {
       gulp
-        .src("./src/**/*.js")
+        .src('./src/**/*.js')
         .pipe(
           load.babel({
-            presets: ["@babel/env"],
+            presets: ['@babel/env'],
           })
         )
-        .pipe(gulp.dest("./dist"))
-        .on("end", done);
+        .pipe(gulp.dest('./dist'))
+        .on('end', done);
     });
     gulp.task(
-      "save",
-      gulp.series("js", function () {
-        console.log("aaaa");
+      'save',
+      gulp.series('js', function () {
+        console.log('aaaa');
         gulp
-          .src("./dist/**/*.js")
-          .pipe(load.concat("main.min.js"))
+          .src('./dist/**/*.js')
+          .pipe(load.concat('main.min.js'))
           .pipe(load.uglify())
-          .pipe(gulp.dest("./dist"));
+          .pipe(gulp.dest('./dist'));
       })
     );
     ```
@@ -477,25 +461,25 @@ gulp.task("init", function () {
   前置任务和当前任务一同执行
 
   ```js
-  gulp.task("js", function () {
+  gulp.task('js', function () {
     gulp
-      .src("./src/**/*.js")
+      .src('./src/**/*.js')
       .pipe(
         load.babel({
-          presets: ["@babel/env"],
+          presets: ['@babel/env'],
         })
       )
-      .pipe(gulp.dest("./dist"));
+      .pipe(gulp.dest('./dist'));
   });
   gulp.task(
-    "save",
-    gulp.parallel("js", function () {
-      console.log("aaaa");
+    'save',
+    gulp.parallel('js', function () {
+      console.log('aaaa');
       gulp
-        .src("./js/**/*.js")
-        .pipe(load.concat("main.min.js"))
+        .src('./js/**/*.js')
+        .pipe(load.concat('main.min.js'))
         .pipe(load.uglify())
-        .pipe(gulp.dest("./dist"));
+        .pipe(gulp.dest('./dist'));
     })
   );
   ```
@@ -513,17 +497,17 @@ gulp.task("init", function () {
   在 gulpfile 中如果需要使用别的插件，导入方法我们使用 require。那么如果需要加载很多就会出现这种情况
 
   ```js
-  var gulp = require("gulp"),
+  var gulp = require('gulp'),
     //一些gulp插件,abcd这些命名只是用来举个例子
-    a = require("gulp-a"),
-    b = require("gulp-b"),
-    c = require("gulp-c"),
-    d = require("gulp-d"),
-    e = require("gulp-e"),
-    f = require("gulp-f"),
-    g = require("gulp-g"),
+    a = require('gulp-a'),
+    b = require('gulp-b'),
+    c = require('gulp-c'),
+    d = require('gulp-d'),
+    e = require('gulp-e'),
+    f = require('gulp-f'),
+    g = require('gulp-g'),
     //更多的插件...
-    z = require("gulp-z");
+    z = require('gulp-z');
   ```
 
   我们可以这样做：
@@ -532,8 +516,8 @@ gulp.task("init", function () {
   在 package.json 的 devDependencies 中写下需要加载的插件，这个是开发依赖
 
   ```js
-  var load = require("gulp-load-plugins")();
-  load.rename("a.js"); // 这里的rename就是一个插件，这插件叫gulp-rename
+  var load = require('gulp-load-plugins')();
+  load.rename('a.js'); // 这里的rename就是一个插件，这插件叫gulp-rename
   ```
 
 - 压缩文件
@@ -545,8 +529,8 @@ gulp.task("init", function () {
   可以将文件中的空格去除
 
   ```js
-  gulp.task("default", function () {
-    gulp.src("./js/a.js").pipe(uglify()).pipe(gulp.dest("./dist"));
+  gulp.task('default', function () {
+    gulp.src('./js/a.js').pipe(uglify()).pipe(gulp.dest('./dist'));
   });
   ```
 
@@ -559,12 +543,12 @@ gulp.task("init", function () {
   可以重新给文件起名
 
   ```js
-  gulp.task("rename", function () {
+  gulp.task('rename', function () {
     gulp
-      .src("js/jquery.js")
+      .src('js/jquery.js')
       .pipe(uglify()) //压缩
-      .pipe(rename("jquery.min.js")) //会将jquery.js重命名为jquery.min.js
-      .pipe(gulp.dest("js"));
+      .pipe(rename('jquery.min.js')) //会将jquery.js重命名为jquery.min.js
+      .pipe(gulp.dest('js'));
   });
   ```
 
@@ -639,38 +623,38 @@ gulp.task("init", function () {
   `npm install --save-dev gulp-imagemin`
 
   ```js
-  var gulp = require("gulp");
-  var imagemin = require("gulp-imagemin");
-  gulp.task("default", function () {
-    gulp.src("src/images/*").pipe(imagemin()).pipe(gulp.dest("dist/images"));
+  var gulp = require('gulp');
+  var imagemin = require('gulp-imagemin');
+  gulp.task('default', function () {
+    gulp.src('src/images/*').pipe(imagemin()).pipe(gulp.dest('dist/images'));
   });
   ```
 
 - 静态服务器搭建
 
   ```js
-  var gulp = require("gulp");
-  var load = require("gulp-load-plugins")();
-  var browser = require("browser-sync").create();
-  gulp.task("save", function (done) {
+  var gulp = require('gulp');
+  var load = require('gulp-load-plugins')();
+  var browser = require('browser-sync').create();
+  gulp.task('save', function (done) {
     gulp
-      .src("./src/**/*.js")
+      .src('./src/**/*.js')
       .pipe(
         load.babel({
-          presets: ["@babel/env"],
+          presets: ['@babel/env'],
         })
       )
-      .pipe(load.concat("main.min.js"))
+      .pipe(load.concat('main.min.js'))
       .pipe(load.uglify())
-      .pipe(gulp.dest("./dist"))
-      .on("end", browser.reload);
+      .pipe(gulp.dest('./dist'))
+      .on('end', browser.reload);
   });
-  gulp.task("server", function () {
+  gulp.task('server', function () {
     browser.init({
-      server: "./",
+      server: './',
       port: 3009,
     });
-    gulp.watch("./src/**/*.js", gulp.series("save"));
+    gulp.watch('./src/**/*.js', gulp.series('save'));
   });
   ```
 

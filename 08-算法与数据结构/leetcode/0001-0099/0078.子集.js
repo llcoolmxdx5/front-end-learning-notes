@@ -6,15 +6,15 @@ var subsets = function (nums) {
   const stack = [],
     ans = [];
   const backTrack = (start) => {
-    ans.push([...stack])
+    ans.push([...stack]);
     for (let index = start; index < nums.length; index++) {
       const element = nums[index];
-      stack.push(element)
-      backTrack(index+1)
-      stack.pop()
+      stack.push(element);
+      backTrack(index + 1);
+      stack.pop();
     }
-  }
-  backTrack(0)
+  };
+  backTrack(0);
   return ans;
 };
 

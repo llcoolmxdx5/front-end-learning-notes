@@ -30,7 +30,7 @@ var loudAndRich = function (richer, quiet) {
   return ans;
 };
 
-import Queue from "../../datastructure/Queue/Queue";
+import Queue from '../../datastructure/Queue/Queue';
 
 var loudAndRich = (richer, quiet) => {
   // 拓扑排序：取入度为0的先入队，减少它下游节点的入度，如果为0了也入队，直到队列中没有元素为止

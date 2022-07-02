@@ -10,17 +10,17 @@ var isMatch = function (s, p) {
   const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(false));
   dp[0][0] = true;
   for (let j = 1; j < m + 1; j++) {
-    if (p[j - 1] === "*") {
+    if (p[j - 1] === '*') {
       // 题目保证了 * 前面一定有有效的字符
       dp[0][j] = dp[0][j - 2];
     }
   }
   for (let i = 1; i < n + 1; i++) {
     for (let j = 1; j < m + 1; j++) {
-      if (s[i - 1] === p[j - 1] || p[j - 1] === ".") {
+      if (s[i - 1] === p[j - 1] || p[j - 1] === '.') {
         dp[i][j] = dp[i - 1][j - 1];
-      } else if (p[j - 1] === "*") {
-        if (s[i - 1] === p[j - 2] || p[j - 2] === ".") {
+      } else if (p[j - 1] === '*') {
+        if (s[i - 1] === p[j - 2] || p[j - 2] === '.') {
           dp[i][j] =
             dp[i][j - 2] /** a* 是空 */ ||
             dp[i][j - 1] /** a* 是单个 a */ ||
@@ -35,8 +35,8 @@ var isMatch = function (s, p) {
   return dp[n][m];
 };
 
-console.assert(isMatch("aa", "a") === false, 1);
-console.assert(isMatch("aa", "a*") === true, 2);
-console.assert(isMatch("aab", "c*a*b") === true, 3);
-console.assert(isMatch("mississippi", "mis*is*p*.") === false, 4);
-console.assert(isMatch("ab", ".*") === true, 5);
+console.assert(isMatch('aa', 'a') === false, 1);
+console.assert(isMatch('aa', 'a*') === true, 2);
+console.assert(isMatch('aab', 'c*a*b') === true, 3);
+console.assert(isMatch('mississippi', 'mis*is*p*.') === false, 4);
+console.assert(isMatch('ab', '.*') === true, 5);

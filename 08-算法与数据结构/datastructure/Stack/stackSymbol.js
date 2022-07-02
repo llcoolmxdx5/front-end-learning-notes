@@ -1,4 +1,4 @@
-const _items = Symbol("stackItems");
+const _items = Symbol('stackItems');
 
 export default class Stack {
   constructor() {

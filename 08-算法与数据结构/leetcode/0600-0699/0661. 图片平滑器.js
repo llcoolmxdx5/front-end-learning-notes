@@ -17,9 +17,7 @@ var imageSmoother = function (img) {
         sum += img[i][j];
       }
     }
-    return Math.floor(
-      sum / ((rowEnd - rowStart + 1) * (colEnd - colStart + 1))
-    );
+    return Math.floor(sum / ((rowEnd - rowStart + 1) * (colEnd - colStart + 1)));
   };
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {

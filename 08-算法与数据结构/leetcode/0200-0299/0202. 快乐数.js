@@ -7,7 +7,7 @@ var isHappy = function (n) {
   while (n !== 1) {
     n = n
       .toString()
-      .split("")
+      .split('')
       .reduce((acc, value) => (acc += Number(value) ** 2), 0);
     if (set.has(n)) {
       return false;
@@ -22,7 +22,7 @@ var isHappy = function (n) {
   while (n !== 1) {
     n = n
       .toString()
-      .split("")
+      .split('')
       .reduce((acc, value) => (acc += Number(value) ** 2), 0);
     if (set.has(n)) {
       return false;

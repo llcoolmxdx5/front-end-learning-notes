@@ -7,7 +7,7 @@ const deepClone = (obj, map = new Map()) => {
   }
   map.set(obj, clone);
   Object.keys(clone).forEach((key) => {
-    if (typeof obj[key] === "object") {
+    if (typeof obj[key] === 'object') {
       clone[key] = deepClone(obj[key], map);
     } else {
       clone[key] = obj[key];
@@ -20,14 +20,14 @@ const deepClone = (obj, map = new Map()) => {
   return clone;
 };
 
-const a = { foo: "bar", obj: { a: 1, b: 2 } };
+const a = { foo: 'bar', obj: { a: 1, b: 2 } };
 const b = deepClone([a]); // a !== b, a.obj !== b.obj
 
 const target = {
   field1: 1,
   field2: undefined,
   field3: {
-    child: "child",
+    child: 'child',
   },
   field4: [2, 4, 8],
 };

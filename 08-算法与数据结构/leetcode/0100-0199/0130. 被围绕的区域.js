@@ -17,8 +17,8 @@ var solve = function (board) {
           [row + 1, col],
           [row - 1, col],
         ].forEach(([a, b]) => {
-          const v = board[a]?.[b] ?? "X";
-          if (v === "O" && !visited.has(`${a},${b}`)) {
+          const v = board[a]?.[b] ?? 'X';
+          if (v === 'O' && !visited.has(`${a},${b}`)) {
             visited.add(`${a},${b}`);
             queue.push([a, b]);
           }
@@ -32,14 +32,14 @@ var solve = function (board) {
     for (let j = 0; j < n; j++) {
       if (
         !visited.has(`${i},${j}`) &&
-        board[i][j] === "O" &&
+        board[i][j] === 'O' &&
         (i === 0 || i === m - 1 || j === 0 || j === n - 1)
       ) {
         // console.log(`${i},${j}`);
         visited.add(`${i},${j}`);
         queue.push([i, j]);
         BFS();
-      } else if (board[i][j] === "O") {
+      } else if (board[i][j] === 'O') {
         v2.add(`${i},${j}`);
       }
     }
@@ -49,8 +49,8 @@ var solve = function (board) {
     if (visited.has(item)) {
       return;
     }
-    const [a, b] = item.split(",");
-    board[a][b] = "X";
+    const [a, b] = item.split(',');
+    board[a][b] = 'X';
   });
   return board;
 };
@@ -59,11 +59,11 @@ var solve = function (board) {
   const m = board.length,
     n = board[0].length;
   function dfs(board, sx, sy) {
-    if (sx < 0 || sy < 0 || sx >= m || sy >= n || board[sx][sy] != "O") {
+    if (sx < 0 || sy < 0 || sx >= m || sy >= n || board[sx][sy] != 'O') {
       return;
     }
     //标记已访问
-    board[sx][sy] = "#";
+    board[sx][sy] = '#';
     dfs(board, sx + 1, sy);
     dfs(board, sx - 1, sy);
     dfs(board, sx, sy - 1);
@@ -82,8 +82,8 @@ var solve = function (board) {
   // 剩下的O都是应该被被替换掉的
   for (let i = 1; i < m - 1; i++) {
     for (let j = 1; j < n - 1; j++) {
-      if (board[i][j] === "O") {
-        board[i][j] = "X";
+      if (board[i][j] === 'O') {
+        board[i][j] = 'X';
       }
     }
   }
@@ -91,8 +91,8 @@ var solve = function (board) {
   // 把所有字符#恢复为O
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
-      if (board[i][j] === "#") {
-        board[i][j] = "O";
+      if (board[i][j] === '#') {
+        board[i][j] = 'O';
       }
     }
   }
@@ -101,11 +101,11 @@ var solve = function (board) {
 
 console.log(
   solve([
-    ["X", "X", "X", "X"],
-    ["X", "O", "O", "X"],
-    ["X", "X", "O", "X"],
-    ["X", "O", "X", "X"],
-    ["X", "O", "X", "X"],
+    ['X', 'X', 'X', 'X'],
+    ['X', 'O', 'O', 'X'],
+    ['X', 'X', 'O', 'X'],
+    ['X', 'O', 'X', 'X'],
+    ['X', 'O', 'X', 'X'],
   ])
 );
 /* [
@@ -116,4 +116,4 @@ console.log(
   [ 'X', 'O', 'X', 'X' ]
 ] */
 
-console.log(solve([["X"]])); // [["X"]]
+console.log(solve([['X']])); // [["X"]]

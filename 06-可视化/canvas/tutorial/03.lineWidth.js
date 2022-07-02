@@ -1,5 +1,5 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
   for (let i = 0; i < 10; i++) {

@@ -1,7 +1,7 @@
 function getString() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve("Hello world~~~");
+      resolve('Hello world~~~');
     }, 2000);
   });
 }

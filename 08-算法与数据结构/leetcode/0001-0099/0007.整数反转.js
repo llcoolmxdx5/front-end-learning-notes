@@ -4,7 +4,7 @@
  */
 var reverse = function (x) {
   let res = Math.abs(x);
-  res = +res.toString().split("").reverse().join("");
+  res = +res.toString().split('').reverse().join('');
   if (res >= 2 ** 31 - 1) {
     return 0;
   }
@@ -13,14 +13,14 @@ var reverse = function (x) {
 
 var reverse = function (x) {
   let res = Math.abs(x);
-  const arr = res.toString().split("");
+  const arr = res.toString().split('');
   const { length } = arr;
   const newArr = new Array(length);
   for (let index = 0; index < length; index++) {
     const element = arr[index];
     newArr[length - index] = element;
   }
-  res = +newArr.join("");
+  res = +newArr.join('');
   // 2^31-1=2147483647
   if (res >= 2147483647) {
     return 0;

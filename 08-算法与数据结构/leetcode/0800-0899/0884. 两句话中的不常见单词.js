@@ -5,10 +5,10 @@
  */
 var uncommonFromSentences = function (s1, s2) {
   const map = new Map();
-  s1.split(" ").forEach((item) => {
+  s1.split(' ').forEach((item) => {
     map.set(item, (map.get(item) || 0) + 1);
   });
-  s2.split(" ").forEach((item) => {
+  s2.split(' ').forEach((item) => {
     map.set(item, (map.get(item) || 0) + 1);
   });
   const ans = [];
@@ -21,4 +21,4 @@ var uncommonFromSentences = function (s1, s2) {
   return ans;
 };
 
-console.log(uncommonFromSentences("this apple is sweet", "this apple is sour")); // ["sweet","sour"]
+console.log(uncommonFromSentences('this apple is sweet', 'this apple is sour')); // ["sweet","sour"]

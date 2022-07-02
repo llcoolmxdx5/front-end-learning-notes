@@ -9,7 +9,7 @@ var maxCount = function (m, n, ops) {
   let minA = m;
   let minB = n;
   for (let i = 0; i < length; i++) {
-    const op = ops[i]
+    const op = ops[i];
     minA = Math.min(op[0], minA);
     minB = Math.min(op[1], minB);
   }

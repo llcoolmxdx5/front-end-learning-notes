@@ -5,10 +5,7 @@
  */
 var rotate = function (nums, k) {
   k = k % nums.length;
-  const res = [
-    ...nums.slice(nums.length - k),
-    ...nums.slice(0, nums.length - k),
-  ];
+  const res = [...nums.slice(nums.length - k), ...nums.slice(0, nums.length - k)];
   for (let index = 0; index < res.length; index++) {
     const element = res[index];
     nums[index] = element;

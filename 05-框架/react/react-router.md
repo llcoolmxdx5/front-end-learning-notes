@@ -2,7 +2,7 @@
 
 ## Hooks
 
-React Router带有一些钩子，您可以使用它们访问路由的状态并从组件内部执行导航。请注意：要使用这些钩子，您需要使用React> = 16.8
+React Router 带有一些钩子，您可以使用它们访问路由的状态并从组件内部执行导航。请注意：要使用这些钩子，您需要使用 React> = 16.8
 
 - useHistory
 - useLocation
@@ -14,13 +14,13 @@ React Router带有一些钩子，您可以使用它们访问路由的状态并�
 `useHistory`钩子使您可以访问可用于导航的历史记录实例。
 
 ```js
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 function HomeButton() {
   let history = useHistory();
 
   function handleClick() {
-    history.push("/home");
+    history.push('/home');
   }
 
   return (
@@ -33,23 +33,19 @@ function HomeButton() {
 
 ### useLocation
 
-`useLocation`钩子返回代表当前URL的位置对象。 您可以像useState一样考虑它，只要URL更改，它就会返回一个新位置。
+`useLocation`钩子返回代表当前 URL 的位置对象。 您可以像 useState 一样考虑它，只要 URL 更改，它就会返回一个新位置。
 
-这可能非常有用，例如 在您希望每次加载新页面时都使用Web分析工具触发新的“页面浏览”事件的情况下，如以下示例所示：
+这可能非常有用，例如 在您希望每次加载新页面时都使用 Web 分析工具触发新的“页面浏览”事件的情况下，如以下示例所示：
 
 ```js
-import React from "react";
-import ReactDOM from "react-dom";
-import {
-  BrowserRouter as Router,
-  Switch,
-  useLocation
-} from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, useLocation } from 'react-router-dom';
 
 function usePageViews() {
   let location = useLocation();
   React.useEffect(() => {
-    ga.send(["pageview", location.pathname]);
+    ga.send(['pageview', location.pathname]);
   }, [location]);
 }
 
@@ -68,16 +64,11 @@ ReactDOM.render(
 
 ### useParams
 
-`useParams`返回URL参数的键/值对的对象。 用它来访问当前 `<Route>`的`match.params`.
+`useParams`返回 URL 参数的键/值对的对象。 用它来访问当前 `<Route>`的`match.params`.
 
 ```js
-import ReactDOM from "react-dom";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useParams
-} from "react-router-dom";
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, Route, useParams } from 'react-router-dom';
 
 function BlogPost() {
   let { slug } = useParams();
@@ -101,10 +92,10 @@ ReactDOM.render(
 
 ### useRouteMatch
 
-`useRouteMatch`挂钩尝试以与`<Route>`相同的方式匹配当前URL。 在无需实际呈现`<Route>`的情况下访问匹配数据最有用。
+`useRouteMatch`挂钩尝试以与`<Route>`相同的方式匹配当前 URL。 在无需实际呈现`<Route>`的情况下访问匹配数据最有用。
 
 ```js
-import { Route } from "react-router-dom";
+import { Route } from 'react-router-dom';
 
 function BlogPost() {
   return (
@@ -122,10 +113,10 @@ function BlogPost() {
 用以下代码可以替换以上代码
 
 ```js
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from 'react-router-dom';
 
 function BlogPost() {
-  let match = useRouteMatch("/blog/:slug");
+  let match = useRouteMatch('/blog/:slug');
 
   // Do whatever you want with the match...
   return <div />;
@@ -138,14 +129,9 @@ function BlogPost() {
 
 ```js
 import { BrowserRouter } from 'react-router-dom';
-<BrowserRouter
-  basename={string}
-  forceRefresh={bool}
-  getUserConfirmation={func}
-  keyLength={number}
->
+<BrowserRouter basename={string} forceRefresh={bool} getUserConfirmation={func} keyLength={number}>
   <App />
-</BrowserRouter>
+</BrowserRouter>;
 ```
 
 ### basename: string
@@ -168,7 +154,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 ```js
 const supportsHistory = 'pushState' in window.history;
-<BrowserRouter forceRefresh={!supportsHistory} />
+<BrowserRouter forceRefresh={!supportsHistory} />;
 ```
 
 ### getUserConfirmation: func
@@ -180,8 +166,8 @@ const supportsHistory = 'pushState' in window.history;
 const getConfirmation = (message, callback) => {
   const allowTransition = window.confirm(message);
   callback(allowTransition);
-}
-<BrowserRouter getUserConfirmation={getConfirmation} />
+};
+<BrowserRouter getUserConfirmation={getConfirmation} />;
 ```
 
 ### keyLength: number
@@ -205,7 +191,7 @@ import { HashRouter } from 'react-router-dom';
 
 <HashRouter>
   <App />
-</HashRouter>
+</HashRouter>;
 ```
 
 注意： 使用 hash 记录导航历史不支持 location.key 和 location.state。在以前的版本中，我们视图 shim 这种行为，但是仍有一些问题我们无法解决。任何依赖此行为的代码或插件都将无法正常使用。由于该技术仅用于支持旧式（低版本）浏览器，因此对于一些新式浏览器，我们鼓励你使用 `<BrowserHistory>` 代替。
@@ -233,8 +219,8 @@ import { HashRouter } from 'react-router-dom';
 const getConfirmation = (message, callback) => {
   const allowTransition = window.confirm(message);
   callback(allowTransition);
-}
-<HashRouter getUserConfirmation={getConfirmation} />
+};
+<HashRouter getUserConfirmation={getConfirmation} />;
 ```
 
 ### hashType: string
@@ -258,7 +244,7 @@ const getConfirmation = (message, callback) => {
 ```js
 import { Link } from 'react-router-dom';
 
-<Link to="/about">About</Link>
+<Link to="/about">About</Link>;
 ```
 
 ### to: string
@@ -266,7 +252,7 @@ import { Link } from 'react-router-dom';
 一个字符串形式的链接地址，通过 `pathname`、`search` 和 `hash` 属性创建。
 
 ```js
-<Link to='/courses?sort=name' />
+<Link to="/courses?sort=name" />
 ```
 
 ### to: object
@@ -279,14 +265,16 @@ import { Link } from 'react-router-dom';
 - state - 存储到 location 中的额外状态数据
 
 ```js
-<Link to={{
-  pathname: '/courses',
-  search: '?sort=name',
-  hash: '#the-hash',
-  state: {
-    fromDashboard: true
-  }
-}} />
+<Link
+  to={{
+    pathname: '/courses',
+    search: '?sort=name',
+    hash: '#the-hash',
+    state: {
+      fromDashboard: true,
+    },
+  }}
+/>
 ```
 
 ### replace: bool
@@ -302,11 +290,11 @@ import { Link } from 'react-router-dom';
 允许访问组件的底层引用。
 
 ```js
-const refCallback = node => {
+const refCallback = (node) => {
   // node 指向最终挂载的 DOM 元素，在卸载时为 null
-}
+};
 
-<Link to="/" innerRef={refCallback} />
+<Link to="/" innerRef={refCallback} />;
 ```
 
 ### others
@@ -314,7 +302,9 @@ const refCallback = node => {
 你还可以传递一些其它属性，例如 title、id 或 className 等。
 
 ```js
-<Link to="/" className="nav" title="a title">About</Link>
+<Link to="/" className="nav" title="a title">
+  About
+</Link>
 ```
 
 ## `<NavLink>`
@@ -324,7 +314,7 @@ const refCallback = node => {
 ```js
 import { NavLink } from 'react-router-dom';
 
-<NavLink to="/about">About</NavLink>
+<NavLink to="/about">About</NavLink>;
 ```
 
 ### activeClassName: string
@@ -332,7 +322,9 @@ import { NavLink } from 'react-router-dom';
 当元素处于激活状态时应用的类，默认为 active。它将与 className 属性一起使用。
 
 ```js
-<NavLink to="/faq" activeClassName="selected">FAQs</NavLink>
+<NavLink to="/faq" activeClassName="selected">
+  FAQs
+</NavLink>
 ```
 
 ### activeStyle: object
@@ -342,10 +334,12 @@ import { NavLink } from 'react-router-dom';
 ```js
 const activeStyle = {
   fontWeight: 'bold',
-  color: 'red'
+  color: 'red',
 };
 
-<NavLink to="/faq" activeStyle={activeStyle}>FAQs</NavLink>
+<NavLink to="/faq" activeStyle={activeStyle}>
+  FAQs
+</NavLink>;
 ```
 
 ### exact: bool
@@ -353,7 +347,9 @@ const activeStyle = {
 如果为 true，则只有在位置完全匹配时才应用激活类/样式。
 
 ```js
-<NavLink exact to="/profile">Profile</NavLink>
+<NavLink exact to="/profile">
+  Profile
+</NavLink>
 ```
 
 ### strict: bool
@@ -361,7 +357,9 @@ const activeStyle = {
 如果为 true，则在确定位置是否与当前 URL 匹配时，将考虑位置的路径名后面的斜杠。有关更多信息，请参阅 `<Route strict>` 文档。
 
 ```js
-<NavLink strict to="/events/">Events</NavLink>
+<NavLink strict to="/events/">
+  Events
+</NavLink>
 ```
 
 ### isActive: func
@@ -376,8 +374,10 @@ const oddEvent = (match, location) => {
   }
   const eventID = parseInt(match.params.eventID);
   return !isNaN(eventID) && eventID % 2 === 1;
-}
-<NavLink to="/events/123" isActive={oddEvent}>Event 123</NavLink>
+};
+<NavLink to="/events/123" isActive={oddEvent}>
+  Event 123
+</NavLink>;
 ```
 
 ### location: object
@@ -393,7 +393,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 <MemoryRouter>
   <App />
-</MemoryRouter>
+</MemoryRouter>;
 ```
 
 ### initialEntries: array
@@ -401,11 +401,8 @@ import { MemoryRouter } from 'react-router-dom';
 历史堆栈中的一系列位置信息。这些可能是带有 {pathname, search, hash, state} 的完整位置对象或简单的字符串 URL。
 
 ```js
-<MemoryRouter
-  initialEntries={[ '/one', '/two', { pathname: '/three' } ]}
-  initialIndex={1}
->
-  <App/>
+<MemoryRouter initialEntries={['/one', '/two', { pathname: '/three' }]} initialIndex={1}>
+  <App />
 </MemoryRouter>
 ```
 
@@ -432,13 +429,11 @@ location.key 的长度，默认为 6。
 ```js
 import { Route, Redirect } from 'react-router-dom';
 
-<Route exact path="/" render={() => (
-  loggedIn ? (
-    <Redirect to="/dashboard" />
-  ) : (
-    <PublicHomePage />
-  )
-)} />
+<Route
+  exact
+  path="/"
+  render={() => (loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />)}
+/>;
 ```
 
 ### to: string
@@ -454,13 +449,15 @@ import { Route, Redirect } from 'react-router-dom';
 要重定向到的位置，其中 pathname 可以是 path-to-regexp 能够理解的任何有效的 URL 路径。
 
 ```js
-<Redirect to={{
-  pathname: '/login',
-  search: '?utm=your+face',
-  state: {
-    referrer: currentLocation
-  }
-}} />
+<Redirect
+  to={{
+    pathname: '/login',
+    search: '?utm=your+face',
+    state: {
+      referrer: currentLocation,
+    },
+  }}
+/>
 ```
 
 上例中的 `state` 对象可以在重定向到的组件中通过 `this.props.location.state` 进行访问。而 `referrer` 键（不是特殊名称）将通过路径名 `/login` 指向的登录组件中的 `this.props.location.state.referrer` 进行访问。
@@ -491,7 +488,7 @@ import { Route, Redirect } from 'react-router-dom';
 </Switch>
 ```
 
-译注：经过实践，发现以上“根据匹配参数进行重定向”的示例存在bug，没有效果。to 中的 :id 并不会继承 from 中的 :id 匹配的值，而是直接作为字符串显示到浏览器地址栏！！！
+译注：经过实践，发现以上“根据匹配参数进行重定向”的示例存在 bug，没有效果。to 中的 :id 并不会继承 from 中的 :id 匹配的值，而是直接作为字符串显示到浏览器地址栏！！！
 
 ### exact: bool
 
@@ -515,7 +512,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
     <Route exact path="/" component={Home} />
     <Route path="/news" component={News} />
   </div>
-</Router>
+</Router>;
 ```
 
 如果应用程序的位置是 `/`，那么 UI 的层次结构将会是：
@@ -562,9 +559,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 ```js
 const User = ({ match }) => {
-  return <h1>Hello {match.params.username}!</h1>
-}
-<Route path="/user/:username" component={User} />
+  return <h1>Hello {match.params.username}!</h1>;
+};
+<Route path="/user/:username" component={User} />;
 ```
 
 当你使用 `component`（而不是 `render` 或 `children`）时，Router 将根据指定的组件，使用 `React.createElement` 创建一个新的 React 元素。这意味着，如果你向 `component` 提供一个内联函数，那么每次渲染都会创建一个新组件。这将导致现有组件的卸载和新组件的安装，而不是仅仅更新现有组件。当使用内联函数进行内联渲染时，请使用 `render` 或 `children`（见下文）。
@@ -691,7 +688,7 @@ const history = createBrowserHistory();
 
 <Router history={history}>
   <App />
-</Router>
+</Router>;
 ```
 
 ### history: object
@@ -703,7 +700,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 
 const customHistory = createBrowserHistory();
 
-<Router history={customHistory} />
+<Router history={customHistory} />;
 ```
 
 ### children: node
@@ -743,7 +740,7 @@ createServer((req, res) => {
   // 如果使用 <Redirect>，context.url 将包含要重定向到的 URL
   if (context.url) {
     res.writeHead(302, {
-      Location: context.url
+      Location: context.url,
     });
     res.end();
   } else {
@@ -798,7 +795,7 @@ const context = {};
 
 <StaticRouter context={context}>
   <App />
-</StaticRouter>
+</StaticRouter>;
 ```
 
 当一个 `<Route>` 匹配时，它将把 `context` 对象传递给呈现为 `staticContext` 的组件。查看服务器渲染指南以获取有关如何自行完成此操作的更多信息。
@@ -841,7 +838,7 @@ import { Switch, Route } from 'react-router';
   <Route path="/about" component={About} />
   <Route path="/:user" component={User} />
   <Route component={NoMatch} />
-</Switch>
+</Switch>;
 ```
 
 现在，当我们在 /about 路径时，`<Switch>` 将开始寻找匹配的 `<Route>`。我们知道，`<Route path="/about" />` 将会被正确匹配，这时 `<Switch>` 会停止查找匹配项并立即呈现 `<About>`。同样，如果我们在 `/michael` 路径时，那么 `<User>` 会呈现。
@@ -928,7 +925,7 @@ class Comp extends React.Component {
   }
 }
 
-<Route component={Comp} />
+<Route component={Comp} />;
 ```
 
 根据你使用的实现方式，还可能存在其它属性。有关详细信息，请参阅 history 文档。
@@ -1054,7 +1051,7 @@ import { matchPath } from 'react-router';
 const match = matchPath('/users/123', {
   path: '/users/:id',
   exact: true,
-  strict: false
+  strict: false,
 });
 ```
 
@@ -1069,18 +1066,18 @@ const match = matchPath('/users/123', {
 ```js
 {
   path, // 例如 /users/:id
-  strict, // 可选，默认为 false
-  exact // 可选，默认为false
+    strict, // 可选，默认为 false
+    exact; // 可选，默认为false
 }
 ```
 
 ### returns
 
 ```js
-matchPath("/users/2", {
-  path: "/users/:id",
+matchPath('/users/2', {
+  path: '/users/:id',
   exact: true,
-  strict: true
+  strict: true,
 });
 // 匹配到时返回
 //  {
@@ -1110,22 +1107,20 @@ class ShowTheLocation extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-  }
+    history: PropTypes.object.isRequired,
+  };
 
   render() {
     const { match, location, history } = this.props;
-    return (
-      <div>You are now at {location.pathname}</div>
-    );
+    return <div>You are now at {location.pathname}</div>;
   }
 }
 
 // 创建一个连接到 Router 的新组件（借用 redux 术语）
-const ShowTheLocationWithRouter = withRouter(ShowTheLocation)
+const ShowTheLocationWithRouter = withRouter(ShowTheLocation);
 ```
 
-注意：`withRouter` 不会订阅位置更改，如 `React Redux` 的 `connect` 对状态更改所做的更改。而是在位置更改从 `<Router>` 组件传播出去之后重新呈现。这意味着除非其父组件重新呈现，否则使用 `withRouter` 不会在路由转换时重新呈现。如果使用 `withRouter` 来防止更新被 `shouldComponentUpdate` 阻塞，那么使用router 包装实现 `shouldComponentUpdate` 的组件是非常重要的。例如，使用 `Redux` 时：
+注意：`withRouter` 不会订阅位置更改，如 `React Redux` 的 `connect` 对状态更改所做的更改。而是在位置更改从 `<Router>` 组件传播出去之后重新呈现。这意味着除非其父组件重新呈现，否则使用 `withRouter` 不会在路由转换时重新呈现。如果使用 `withRouter` 来防止更新被 `shouldComponentUpdate` 阻塞，那么使用 router 包装实现 `shouldComponentUpdate` 的组件是非常重要的。例如，使用 `Redux` 时：
 
 ```js
 // This gets around shouldComponentUpdate
@@ -1176,9 +1171,7 @@ class Container extends React.Component {
   }
 
   render() {
-    return (
-      <MyComponent wrappedComponentRef={c => this.component = c} />
-    )
+    return <MyComponent wrappedComponentRef={(c) => (this.component = c)} />;
   }
 }
 ```

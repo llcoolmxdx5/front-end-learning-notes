@@ -15,7 +15,7 @@ var numberOfSteps = function (num) {
   return ans;
 };
 
-1110
+1110;
 
 console.assert(numberOfSteps(14) === 6, 1);
 console.assert(numberOfSteps(123) === 12, 2);

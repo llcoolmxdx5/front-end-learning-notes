@@ -59,8 +59,8 @@ var findAnagrams = function (s, p) {
   return ans;
 };
 
-console.log(findAnagrams("cbaebabacd", "abc")); // [0, 6]
+console.log(findAnagrams('cbaebabacd', 'abc')); // [0, 6]
 
-console.log(findAnagrams("abab", "ab")); // [0, 1, 2]
+console.log(findAnagrams('abab', 'ab')); // [0, 1, 2]
 
-console.log(findAnagrams("abaacbabc", "abc")); //[3, 4, 6]
+console.log(findAnagrams('abaacbabc', 'abc')); //[3, 4, 6]

@@ -45,12 +45,12 @@ npx swc ./main.ts
 你可以利用 `@swc/core` 制作更上层的构建工具，所以它是 `@swc/cli` 的开发者调用版本。基本 API 来自官网开发者文档：
 
 ```typescript
-const swc = require("@swc/core");
+const swc = require('@swc/core');
 
 swc
-  .transform("source code", {
+  .transform('source code', {
     // Some options cannot be specified in .swcrc
-    filename: "input.js",
+    filename: 'input.js',
     sourceMaps: true,
     // Input files are treated as module by default.
     isModule: false,
@@ -58,7 +58,7 @@ swc
     // All options below can be configured via .swcrc
     jsc: {
       parser: {
-        syntax: "ecmascript",
+        syntax: 'ecmascript',
       },
       transform: {},
     },
@@ -76,8 +76,8 @@ swc
 `@swc/wasm-web` 可以在浏览器运行时调用 wsm 版的 swc，以得到更好的性能。下面是官方的例子：
 
 ```typescript
-import { useEffect, useState } from "react";
-import initSwc, { transformSync } from "@swc/wasm-web";
+import { useEffect, useState } from 'react';
+import initSwc, { transformSync } from '@swc/wasm-web';
 
 export default function App() {
   const [initialized, setInitialized] = useState(false);
@@ -121,7 +121,7 @@ npm i @swc/jest
 ```javascript
 module.exports = {
   transform: {
-    "^.+\\.(t|j)sx?$": ["@swc/jest"],
+    '^.+\\.(t|j)sx?$': ['@swc/jest'],
   },
 };
 ```
@@ -138,7 +138,7 @@ module: {
       exclude: /(node_modules)/,
       use: {
         // `.swcrc` can be used to configure swc
-        loader: "swc-loader",
+        loader: 'swc-loader',
       },
     },
   ];
@@ -166,8 +166,8 @@ esbuild 目前有两个功能：编译和压缩，理论上分别可代替 babel
 编译功能的基本用法：
 
 ```js
-require("esbuild").transformSync("let x: number = 1", {
-  loader: "ts",
+require('esbuild').transformSync('let x: number = 1', {
+  loader: 'ts',
 });
 
 // 'let x = 1;\n'
@@ -176,7 +176,7 @@ require("esbuild").transformSync("let x: number = 1", {
 压缩功能的基本用法：
 
 ```js
-require("esbuild").transformSync("fn = obj => { return obj.x }", {
+require('esbuild').transformSync('fn = obj => { return obj.x }', {
   minify: true,
 });
 
@@ -220,7 +220,7 @@ fn fibonacci(ctx: CallContext) -> Result<JsNumber> {
 由于环境比较麻烦，因此需要利用这个脚手架初始化一个工作台，我们在里面写 Rust，然后再利用固定的脚本发布 npm 包。执行 `napi new` 创建一个项目，我们发现入口文件肯定是个 js，毕竟要被 node 引用，大概长这样（我创建了一个 `myLib` 包）：
 
 ```js
-const { loadBinding } = require("@node-rs/helper");
+const { loadBinding } = require('@node-rs/helper');
 
 /**
  * __dirname means load native addon from current dir
@@ -230,7 +230,7 @@ const { loadBinding } = require("@node-rs/helper");
  * `loadBinding` helper will load `myLib.[PLATFORM].node` from `__dirname` first
  * If failed to load addon, it will fallback to load from `myLib-[PLATFORM]`
  */
-module.exports = loadBinding(__dirname, "myLib", "myLib");
+module.exports = loadBinding(__dirname, 'myLib', 'myLib');
 ```
 
 所以 loadBinding 才是入口，同时项目文件夹下存在三个系统环境包，分别供不同系统环境调用：
@@ -246,7 +246,7 @@ module.exports = loadBinding(__dirname, "myLib", "myLib");
 发布后，就可以在 node 代码中引用啦：
 
 ```javascript
-import { fibonacci } from "myLib";
+import { fibonacci } from 'myLib';
 
 function hello() {
   let result = fibonacci(10000);
@@ -276,7 +276,7 @@ WebAssembly 是一个基于栈的虚拟机 ([stack machine](https://webassembly.
 `dprint-node` 可以直接在 Node 中使用：
 
 ```js
-const dprint = require("dprint-node");
+const dprint = require('dprint-node');
 dprint.format(filePath, code, options);
 ```
 

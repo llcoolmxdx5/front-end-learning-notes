@@ -19,32 +19,32 @@ const html = `
 const insertCanvas = () => {
   // Loop through all images
   for (const img of document.images) {
-    img.style.display = "none";
+    img.style.display = 'none';
     // Don't add a canvas for the frame image
-    if (img.getAttribute("id") != "frame") {
+    if (img.getAttribute('id') != 'frame') {
       // Create canvas element
-      const canvas = document.createElement("canvas");
-      canvas.setAttribute("width", 132);
-      canvas.setAttribute("height", 150);
+      const canvas = document.createElement('canvas');
+      canvas.setAttribute('width', 132);
+      canvas.setAttribute('height', 150);
       // Insert before the image
       img.parentNode.insertBefore(canvas, img);
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       // Draw image to canvas
       ctx.drawImage(img, 15, 20);
       // Add frame
-      ctx.drawImage(document.getElementById("frame"), 0, 0);
+      ctx.drawImage(document.getElementById('frame'), 0, 0);
     }
   }
 };
 
 function draw() {
   document.body.style.background =
-    "0 -100px repeat-x url(https://mdn.mozillademos.org/files/5415/bg_gallery.png) #4f191a";
-  document.body.style.margin = "10px";
-  document.querySelector("canvas").style.display = "none";
-  const div = document.createElement("div");
+    '0 -100px repeat-x url(https://mdn.mozillademos.org/files/5415/bg_gallery.png) #4f191a';
+  document.body.style.margin = '10px';
+  document.querySelector('canvas').style.display = 'none';
+  const div = document.createElement('div');
   div.innerHTML = html;
   document.body.appendChild(div);
-  document.querySelectorAll("td").forEach((td) => (td.style.padding = "15px"));
+  document.querySelectorAll('td').forEach((td) => (td.style.padding = '15px'));
   setTimeout(insertCanvas, 1000);
 }

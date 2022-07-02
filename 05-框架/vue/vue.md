@@ -48,11 +48,11 @@ const vm = {
   obj: {
     get a() {
       // this 指向 vm 对象。
-      this.dependencies.push("a");
+      this.dependencies.push('a');
       return this.obj.b;
     },
     get b() {
-      this.dependencies.push("b");
+      this.dependencies.push('b');
       return 1;
     },
   },
@@ -67,7 +67,7 @@ const vm = {
 };
 vm.dependencies = [];
 console.log(vm.c);
-console.log("vm.c 依赖项：", vm.dependencies); // 输出： vm.c 依赖项： a, b
+console.log('vm.c 依赖项：', vm.dependencies); // 输出： vm.c 依赖项： a, b
 ```
 
 访问 vm.c 之前，清空了一下 vm.dependencies 数组，访问 vm.c 的时候，会调用相应的 get() 方法，在 get() 方法中，访问了 this.obj.a ，而对于 this.obj.a 的访问，又会调用相应的 get 方法，在该 get 方法中，有一句代码 this.dependencies.push('a') ，往 vm.dependencies 中放置了当前执行流程中依赖到的属性，然后以此类推，在 vm.c 访问结束之后， vm.dependencies 里面就记录了 vm.c 的依赖 ['a', 'b'] 了

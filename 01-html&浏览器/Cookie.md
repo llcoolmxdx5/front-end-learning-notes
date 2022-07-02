@@ -104,7 +104,7 @@ SameSite 属性可以让`Cookie`在跨站请求时不会被发送，从而可以
 浏览器通过 document.cookie 属性可创建新的 Cookie，也可通过该属性访问非 HttpOnly 标记的 Cookie。
 
 ```js
-document.cookie = "yummy_cookie=choc";
-document.cookie = "tasty_cookie=strawberry";
+document.cookie = 'yummy_cookie=choc';
+document.cookie = 'tasty_cookie=strawberry';
 console.log(document.cookie);
 ```

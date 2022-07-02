@@ -14,7 +14,7 @@ var superPow = function (a, b) {
 };
 
 var superPow = function (a, b) {
-  a = BigInt(a % 1337)
+  a = BigInt(a % 1337);
   let ans = 1n;
   const len = b.length;
   for (let i = 0; i < len; i++) {

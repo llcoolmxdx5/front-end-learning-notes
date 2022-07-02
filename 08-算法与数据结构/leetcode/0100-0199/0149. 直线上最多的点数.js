@@ -11,7 +11,7 @@ var maxPoints = function (points) {
   const map = new Map();
   let ret = 0;
   for (let i = 0; i < length; i++) {
-    map.clear()
+    map.clear();
     for (let j = i + 1; j < length; j++) {
       const [x1, y1] = points[i];
       const [x2, y2] = points[j];

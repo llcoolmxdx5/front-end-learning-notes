@@ -30,13 +30,7 @@ var orangesRotting = function (grid) {
         [row + 1, col],
         [row, col - 1],
       ].forEach(([ni, nj]) => {
-        if (
-          freshOranges.has(`${ni},${nj}`) &&
-          0 <= ni &&
-          ni < m &&
-          0 <= nj &&
-          nj < n
-        ) {
+        if (freshOranges.has(`${ni},${nj}`) && 0 <= ni && ni < m && 0 <= nj && nj < n) {
           freshOranges.delete(`${ni},${nj}`);
           queue.push([ni, nj]);
         }

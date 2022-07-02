@@ -10,7 +10,7 @@ var countPrimeSetBits = function (left, right) {
     const bit = start.toString(2);
     let count = 0;
     for (const str of bit) {
-      if (str === "1") {
+      if (str === '1') {
         count += 1;
       }
     }

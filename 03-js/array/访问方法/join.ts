@@ -7,8 +7,8 @@
 //   一个所有数组元素连接的字符串。如果 arr.length 为0，则返回空字符串。
 // 如果一个元素为 undefined 或 null，它会被转换为空字符串。
 
-function join<T>(arr: T[] | ArrayLike<T>, separator = ","): string {
-  let ans = "";
+function join<T>(arr: T[] | ArrayLike<T>, separator = ','): string {
+  let ans = '';
   for (let i = 0, len = arr.length; i < len; i++) {
     const element = arr[i];
     if (element === undefined || element === null) {

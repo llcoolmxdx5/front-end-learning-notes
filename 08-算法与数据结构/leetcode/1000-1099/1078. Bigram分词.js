@@ -5,7 +5,7 @@
  * @return {string[]}
  */
 var findOcurrences = function (text, first, second) {
-  const arr = text.split(" ");
+  const arr = text.split(' ');
   const ans = [];
   for (let i = 0, len = arr.length; i < len - 2; i++) {
     if (arr[i] === first && arr[i + 1] === second) {
@@ -17,23 +17,16 @@ var findOcurrences = function (text, first, second) {
 };
 
 console.assert(
-  findOcurrences(
-    "alice is a good girl she is a good student",
-    "a",
-    "good"
-  ).join() === ["girl", "student"].join(),
+  findOcurrences('alice is a good girl she is a good student', 'a', 'good').join() ===
+    ['girl', 'student'].join(),
   1
 );
 console.assert(
-  findOcurrences(
-    "alice is aa good girl she is a good student",
-    "a",
-    "good"
-  ).join() === ["student"].join(),
+  findOcurrences('alice is aa good girl she is a good student', 'a', 'good').join() ===
+    ['student'].join(),
   2
 );
 console.assert(
-  findOcurrences("we will we will rock you", "we", "will").join() ===
-    ["we", "rock"].join(),
+  findOcurrences('we will we will rock you', 'we', 'will').join() === ['we', 'rock'].join(),
   3
 );

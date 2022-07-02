@@ -1,4 +1,4 @@
-import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
+import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
 
 class StockPrice {
   constructor() {
@@ -50,16 +50,7 @@ class StockPrice {
   }
 }
 
-const arr = [
-  "update",
-  "update",
-  "current",
-  "maximum",
-  "update",
-  "maximum",
-  "update",
-  "minimum",
-];
+const arr = ['update', 'update', 'current', 'maximum', 'update', 'maximum', 'update', 'minimum'];
 const values = [[1, 10], [2, 5], [], [], [1, 3], [], [4, 2], []];
 
 const stockPrice = new StockPrice();

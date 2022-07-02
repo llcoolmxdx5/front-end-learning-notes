@@ -10,7 +10,7 @@ var searchRange = function (nums, target) {
     while (left <= right) {
       const mid = left + Math.floor((right - left) / 2);
       if (target === nums[mid]) {
-        if (type === "left") {
+        if (type === 'left') {
           right = mid - 1;
         } else {
           left = mid + 1;
@@ -21,7 +21,7 @@ var searchRange = function (nums, target) {
         right = mid - 1;
       }
     }
-    if (type === "left") {
+    if (type === 'left') {
       if (left >= nums.length || nums[left] !== target) {
         return -1;
       }
@@ -32,11 +32,11 @@ var searchRange = function (nums, target) {
     }
     return right;
   };
-  const left = binarySearch("left");
+  const left = binarySearch('left');
   if (left === -1) {
     return [-1, -1];
   }
-  const right = binarySearch("right");
+  const right = binarySearch('right');
   if (right === -1) {
     return [-1, -1];
   }

@@ -37,7 +37,4 @@ console.assert(minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]) === 11, 1);
 
 console.assert(minimumTotal([[-10]]) === -10, 2);
 
-console.assert(
-  minimumTotal([[1], [-5, -2], [3, 6, 1], [-1, 2, 4, -3]]) === -3,
-  3
-);
+console.assert(minimumTotal([[1], [-5, -2], [3, 6, 1], [-1, 2, 4, -3]]) === -3, 3);

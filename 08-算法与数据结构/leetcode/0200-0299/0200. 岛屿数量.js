@@ -19,8 +19,8 @@ var numIslands = function (grid) {
           [row, col + 1],
           [row - 1, col],
         ].forEach(([row1, col1]) => {
-          const m = grid[row1]?.[col1] ?? "0";
-          if (m === "1" && !visited.has(`${row1},${col1}`)) {
+          const m = grid[row1]?.[col1] ?? '0';
+          if (m === '1' && !visited.has(`${row1},${col1}`)) {
             queue.push([row1, col1]);
             visited.add(`${row1},${col1}`);
           }
@@ -32,7 +32,7 @@ var numIslands = function (grid) {
   for (let row = 0; row < m; row++) {
     const n = grid[row].length;
     for (let col = 0; col < n; col++) {
-      if (!visited.has(`${row},${col}`) && grid[row][col] === "1") {
+      if (!visited.has(`${row},${col}`) && grid[row][col] === '1') {
         queue.push([row, col]); // 将起点加入队列
         visited.add(`${row},${col}`);
         BFS();
@@ -58,10 +58,10 @@ var numIslands = function (grid) {
           [row, col + 1],
           [row - 1, col],
         ].forEach(([row1, col1]) => {
-          const m = grid[row1]?.[col1] ?? "0";
-          if (m === "1") {
+          const m = grid[row1]?.[col1] ?? '0';
+          if (m === '1') {
             queue.push([row1, col1]);
-            grid[row1][col1] = "0";
+            grid[row1][col1] = '0';
           }
         });
       }
@@ -71,9 +71,9 @@ var numIslands = function (grid) {
   for (let row = 0; row < m; row++) {
     const n = grid[row].length;
     for (let col = 0; col < n; col++) {
-      if (grid[row][col] === "1") {
+      if (grid[row][col] === '1') {
         queue.push([row, col]); // 将起点加入队列
-        grid[row][col] = "0";
+        grid[row][col] = '0';
         BFS();
       }
     }
@@ -84,10 +84,10 @@ var numIslands = function (grid) {
 var numIslands = function (grid) {
   const dfs = (r, c) => {
     const value = grid[r]?.[c];
-    if (value !== "1") {
+    if (value !== '1') {
       return;
     }
-    grid[r][c] = "0";
+    grid[r][c] = '0';
     dfs(r - 1, c);
     dfs(r + 1, c);
     dfs(r, c + 1);
@@ -98,7 +98,7 @@ var numIslands = function (grid) {
   for (let row = 0; row < m; row++) {
     const n = grid[row].length;
     for (let col = 0; col < n; col++) {
-      if (grid[row][col] === "1") {
+      if (grid[row][col] === '1') {
         step += 1;
         dfs(row, col);
       }
@@ -109,19 +109,19 @@ var numIslands = function (grid) {
 
 console.assert(
   numIslands([
-    ["1", "1", "0", "0", "0"],
-    ["1", "1", "0", "0", "0"],
-    ["0", "0", "1", "0", "0"],
-    ["0", "0", "0", "1", "1"],
+    ['1', '1', '0', '0', '0'],
+    ['1', '1', '0', '0', '0'],
+    ['0', '0', '1', '0', '0'],
+    ['0', '0', '0', '1', '1'],
   ]) === 3,
   1
 );
 console.assert(
   numIslands([
-    ["1", "1", "1", "1", "0"],
-    ["1", "1", "0", "1", "0"],
-    ["1", "1", "0", "0", "0"],
-    ["0", "0", "0", "0", "0"],
+    ['1', '1', '1', '1', '0'],
+    ['1', '1', '0', '1', '0'],
+    ['1', '1', '0', '0', '0'],
+    ['0', '0', '0', '0', '0'],
   ]) === 1,
   2
 );

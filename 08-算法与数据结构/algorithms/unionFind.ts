@@ -40,7 +40,7 @@ export default class UnionFind extends UnionFindA {
     while (this.parent[p] !== p) {
       // 路径压缩
       this.parent[p] = this.parent[this.parent[p]];
-      p = this.parent[p]
+      p = this.parent[p];
     }
     return p;
   }

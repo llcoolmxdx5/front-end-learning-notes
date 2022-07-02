@@ -75,13 +75,13 @@ var repeatedStringMatch = function (a, b) {
   return -1;
 };
 
-console.assert(repeatedStringMatch("abcd", "cdabcdab") === 3, 1);
-console.assert(repeatedStringMatch("a", "aa") === 2, 2);
-console.assert(repeatedStringMatch("a", "a") === 1, 3);
-console.assert(repeatedStringMatch("abc", "wxyz") === -1, 4);
-console.assert(repeatedStringMatch("aa", "a") === 1, 5);
-console.assert(repeatedStringMatch("abc", "cabcabca") === 4, 6);
-console.assert(repeatedStringMatch("aaaaaaaaaaaaaaaaaaaaaab", "ba") === 2, 7);
-console.assert(repeatedStringMatch("bc", "bcbcbcb") === 4, 8);
-console.assert(repeatedStringMatch("abcd", "abcdb") === -1, 9);
-console.assert(repeatedStringMatch("abcd", "cdabcdacdabcda") === -1, 10);
+console.assert(repeatedStringMatch('abcd', 'cdabcdab') === 3, 1);
+console.assert(repeatedStringMatch('a', 'aa') === 2, 2);
+console.assert(repeatedStringMatch('a', 'a') === 1, 3);
+console.assert(repeatedStringMatch('abc', 'wxyz') === -1, 4);
+console.assert(repeatedStringMatch('aa', 'a') === 1, 5);
+console.assert(repeatedStringMatch('abc', 'cabcabca') === 4, 6);
+console.assert(repeatedStringMatch('aaaaaaaaaaaaaaaaaaaaaab', 'ba') === 2, 7);
+console.assert(repeatedStringMatch('bc', 'bcbcbcb') === 4, 8);
+console.assert(repeatedStringMatch('abcd', 'abcdb') === -1, 9);
+console.assert(repeatedStringMatch('abcd', 'cdabcdacdabcda') === -1, 10);

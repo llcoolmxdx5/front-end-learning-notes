@@ -6,7 +6,7 @@
 // - apply() 方法接受的是一个参数数组。
 
 const apply = (func, context = globalThis, args) => {
-  const fn = Symbol("fn");
+  const fn = Symbol('fn');
   context[fn] = func;
   const result = args?.length ? context[fn](...args) : context[fn]();
   delete context[fn];
@@ -14,9 +14,8 @@ const apply = (func, context = globalThis, args) => {
 };
 
 Function.prototype._apply = function (context, args) {
-  context =
-    context !== undefined || context !== null ? Object(context) : globalThis;
-  const fn = Symbol("fn");
+  context = context !== undefined || context !== null ? Object(context) : globalThis;
+  const fn = Symbol('fn');
   context[fn] = this;
   let result;
   // 判断是否有第二个参数
@@ -34,5 +33,5 @@ function bar(name, age) {
   console.log(age);
   console.log(this.value, this.fn);
 }
-bar._apply(foo, ["black", "18"]); // black 18 1 1
-apply(bar, foo, ["black", "18"]);
+bar._apply(foo, ['black', '18']); // black 18 1 1
+apply(bar, foo, ['black', '18']);

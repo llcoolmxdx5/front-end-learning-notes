@@ -36,7 +36,7 @@ export default class PriorityQueue<T = number> {
   }
 
   public toString() {
-    return this.heap.join(",");
+    return this.heap.join(',');
   }
 
   public get values() {
@@ -48,17 +48,11 @@ export default class PriorityQueue<T = number> {
       right = k * 2 + 2,
       largest = k;
 
-    if (
-      left < this.heap.length &&
-      this.compare(this.heap[left], this.heap[largest])
-    ) {
+    if (left < this.heap.length && this.compare(this.heap[left], this.heap[largest])) {
       largest = left;
     }
 
-    if (
-      right < this.heap.length &&
-      this.compare(this.heap[right], this.heap[largest])
-    ) {
+    if (right < this.heap.length && this.compare(this.heap[right], this.heap[largest])) {
       largest = right;
     }
 

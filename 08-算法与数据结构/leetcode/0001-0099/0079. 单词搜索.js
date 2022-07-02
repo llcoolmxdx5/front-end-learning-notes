@@ -107,11 +107,11 @@ var exist = function (board, word) {
 console.assert(
   exist(
     [
-      ["A", "B", "C", "E"],
-      ["S", "F", "C", "S"],
-      ["A", "D", "E", "E"],
+      ['A', 'B', 'C', 'E'],
+      ['S', 'F', 'C', 'S'],
+      ['A', 'D', 'E', 'E'],
     ],
-    "ABCCED"
+    'ABCCED'
   ) === true,
   1
 );
@@ -119,11 +119,11 @@ console.assert(
 console.assert(
   exist(
     [
-      ["A", "B", "C", "E"],
-      ["S", "F", "C", "S"],
-      ["A", "D", "E", "E"],
+      ['A', 'B', 'C', 'E'],
+      ['S', 'F', 'C', 'S'],
+      ['A', 'D', 'E', 'E'],
     ],
-    "SEE"
+    'SEE'
   ) === true,
   2
 );
@@ -131,11 +131,11 @@ console.assert(
 console.assert(
   exist(
     [
-      ["A", "B", "C", "E"],
-      ["S", "F", "C", "S"],
-      ["A", "D", "E", "E"],
+      ['A', 'B', 'C', 'E'],
+      ['S', 'F', 'C', 'S'],
+      ['A', 'D', 'E', 'E'],
     ],
-    "ABCB"
+    'ABCB'
   ) === false,
   3
 );
@@ -143,11 +143,11 @@ console.assert(
 console.assert(
   exist(
     [
-      ["A", "B", "C", "E"],
-      ["S", "F", "E", "S"],
-      ["A", "D", "E", "E"],
+      ['A', 'B', 'C', 'E'],
+      ['S', 'F', 'E', 'S'],
+      ['A', 'D', 'E', 'E'],
     ],
-    "ABCESEEEFS"
+    'ABCESEEEFS'
   ) === true,
   4
 );

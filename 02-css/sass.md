@@ -3,17 +3,17 @@
 ## 安装
 
 - ruby
-    sass基于Ruby语言开发而成，因此安装sass前需要安装Ruby
-    安装过程中请注意勾选Add Ruby executables to your PATH添加到系统环境变量。
-    brew install ruby
-- SASS安装
-    sudo gem install sass
-    sudo gem install compass
-- SASS转换CSS
-    单文件  sass input.scss output.css
-    多文件  sass --watch assets/sass:dist/sass
+  sass 基于 Ruby 语言开发而成，因此安装 sass 前需要安装 Ruby
+  安装过程中请注意勾选 Add Ruby executables to your PATH 添加到系统环境变量。
+  brew install ruby
+- SASS 安装
+  sudo gem install sass
+  sudo gem install compass
+- SASS 转换 CSS
+  单文件 sass input.scss output.css
+  多文件 sass --watch assets/sass:dist/sass
 
-## sass和scss
+## sass 和 scss
 
 - sass
   Sass 是一门高于 CSS 的元语言，它能用来清晰地、结构化地描述文件样式，有着比普通 CSS 更加强大的功能
@@ -29,112 +29,131 @@
   ```
 
   这两种写法都是可以的，但是注意不能使用{}和；
-  :color $color  指出该样式是这个元素的
-  color: $color 普通css写法
+  :color $color 指出该样式是这个元素的
+  color: $color 普通 css 写法
+
 - scss
-  Scss 是 Sass 3 引入新的语法，是Sassy CSS的简写，是CSS3语法的超集，也就是说所有有效的CSS3样式也同样适合于Sass
+  Scss 是 Sass 3 引入新的语法，是 Sassy CSS 的简写，是 CSS3 语法的超集，也就是说所有有效的 CSS3 样式也同样适合于 Sass
   扩展名是.scss
   书写
 
   ```scss
-  $color:red;
-  div{
-      color: $color;
+  $color: red;
+  div {
+    color: $color;
   }
-  span{
-      color: $color;
+  span {
+    color: $color;
   }
   ```
 
-  贴近于CSS的写法
+  贴近于 CSS 的写法
 
-- Scss就是Sass的升级版
+- Scss 就是 Sass 的升级版
 
 ## 变量的声明
 
 ```scss
-$color:red;
-$width:300;
-div{
-    color: $color;
-    width: $width+px;
+$color: red;
+$width: 300;
+div {
+  color: $color;
+  width: $width + px;
 }
-span{
-    color: $color;
+span {
+  color: $color;
 }
 ```
 
 ## 选择器的嵌套
 
 ```scss
-$color_1:red;
-$color_2:blue;
-div{
-    span{color: $color_1}
-    div{color: $color_2}
+$color_1: red;
+$color_2: blue;
+div {
+  span {
+    color: $color_1;
+  }
+  div {
+    color: $color_2;
+  }
 }
 ```
 
 - 父选择器
 
   ```scss
-  span{
-      color: red;
-      &:hover{
-          color: blue;
-      }
+  span {
+    color: red;
+    &:hover {
+      color: blue;
+    }
   }
   ```
 
-  这里的&就是span自身这个选择器给它自己加了hover
+  这里的&就是 span 自身这个选择器给它自己加了 hover
 
 - 各种选择器的嵌套
 
 ```scss
-  article {
-      ~ article { border-top: 1px dashed #ccc }
-      > section { background: #eee }
-      dl > {
-          dt { color: #333 }
-          dd { color: #555 }
-      }
-      nav + & { margin-top: 0 }
+article {
+  ~ article {
+    border-top: 1px dashed #ccc;
   }
+  > section {
+    background: #eee;
+  }
+  dl > {
+    dt {
+      color: #333;
+    }
+    dd {
+      color: #555;
+    }
+  }
+  nav + & {
+    margin-top: 0;
+  }
+}
 ```
 
 ## 属性嵌套
 
 ```scss
 nav {
-    border: {
-        style: solid;
-        width: 1px;
-        color: #ccc;
-    }
+  border: {
+    style: solid;
+    width: 1px;
+    color: #ccc;
+  }
 }
 ```
 
-这是嵌套了属性，border-style被拆分
+这是嵌套了属性，border-style 被拆分
 
 ## 导入文件
 
 ```scss
-$r:50px;
-div{
-    width: $r;
-    height: $r;
-    border-radius: $r/2;
+$r: 50px;
+div {
+  width: $r;
+  height: $r;
+  border-radius: $r/2;
 }
 // 上面这个文件起名叫 a.scss
 // 在main.scss中如下写入
-@import "a";
-div{
-    span {color: red}
-    & {@import "a";}
+@import 'a';
+div {
+  span {
+    color: red;
+  }
+  & {
+    @import 'a';
+  }
 }
 ```
 
-这里导入以后就会有把a中的定义内容导入
+这里导入以后就会有把 a 中的定义内容导入
 如果写在标签中，那么导入的内容将会作为这个标签的后代元素样式进入
 
 ## 混合器
@@ -142,68 +161,68 @@ div{
 - 普通类型混合器
 
   ```scss
-  $r:50px;
-  @mixin divRadius{
-      width: $r;
-      height: $r;
-      border-radius: $r/2;
+  $r: 50px;
+  @mixin divRadius {
+    width: $r;
+    height: $r;
+    border-radius: $r/2;
   }
-  div{
-      @include divRadius;
+  div {
+    @include divRadius;
   }
   ```
 
-  这里的@mixin定义语句块，@include调用语句块
+  这里的@mixin 定义语句块，@include 调用语句块
 
 - 传参混合器
 
   ```scss
-  @mixin divRadius($r){
-      width: $r;
-      height: $r;
-      border-radius: $r/2;
+  @mixin divRadius($r) {
+    width: $r;
+    height: $r;
+    border-radius: $r/2;
   }
-  div{
-      @include divRadius(50px);
-      div{
-          @include divRadius(25px)
-      }
+  div {
+    @include divRadius(50px);
+    div {
+      @include divRadius(25px);
+    }
   }
   ```
 
 - 混合器传参的默认值
 
   ```scss
-  @mixin divRadius($r:100px){
-      width: $r;
-      height: $r;
-      border-radius: $r/2;
+  @mixin divRadius($r: 100px) {
+    width: $r;
+    height: $r;
+    border-radius: $r/2;
   }
-  div{
-      @include divRadius;
-      div{
-          @include divRadius(50px)
-      }
+  div {
+    @include divRadius;
+    div {
+      @include divRadius(50px);
+    }
   }
   ```
 
 ## 继承
 
-  ```scss
-  .div0 {
-      $r:100px;
-      width: $r;
-      height: $r;
-      border-radius: $r/2;
+```scss
+.div0 {
+  $r: 100px;
+  width: $r;
+  height: $r;
+  border-radius: $r/2;
+}
+div {
+  div {
+    @extend .div0;
   }
-  div{
-      div{
-          @extend .div0;
-      }
-  }
-  ```
+}
+```
 
-这里使用@extend 继承了类div0的样式
+这里使用@extend 继承了类 div0 的样式
 
 ## 控制指令
 
@@ -213,9 +232,15 @@ div{
 
 ```scss
 p {
-  @if 1 + 1 == 2 { border: 1px solid; }
-  @if 5 < 3 { border: 2px dotted; }
-  @if null  { border: 3px double; }
+  @if 1 + 1 == 2 {
+    border: 1px solid;
+  }
+  @if 5 < 3 {
+    border: 2px dotted;
+  }
+  @if null {
+    border: 3px double;
+  }
 }
 $type: monster;
 p {
@@ -237,7 +262,9 @@ p {
 
 ```scss
 @for $i from 1 through 3 {
-  .item-#{$i} { width: 2em * $i; }
+  .item-#{$i} {
+    width: 2em * $i;
+  }
 }
 ```
 

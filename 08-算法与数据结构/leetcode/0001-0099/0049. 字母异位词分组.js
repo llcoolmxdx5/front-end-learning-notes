@@ -15,7 +15,7 @@ var groupAnagrams = function (strs) {
   return [...map.values()];
 };
 
-console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+console.log(groupAnagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat']));
 // [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]];
-console.log(groupAnagrams(["bdddddddddd", "bbbbbbbbbbc"]));
+console.log(groupAnagrams(['bdddddddddd', 'bbbbbbbbbbc']));
 // [["bbbbbbbbbbc"], ["bdddddddddd"]];

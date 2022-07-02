@@ -1,5 +1,5 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
   const img = new Image();
@@ -12,5 +12,5 @@ function draw() {
     ctx.lineTo(170, 15);
     ctx.stroke();
   };
-  img.src = "https://mdn.mozillademos.org/files/5395/backdrop.png";
+  img.src = 'https://mdn.mozillademos.org/files/5395/backdrop.png';
 }

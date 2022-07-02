@@ -25,11 +25,7 @@ var selfDividingNumbers = function (left, right) {
 };
 
 console.assert(
-  selfDividingNumbers(1, 22).join() ===
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22].join(),
+  selfDividingNumbers(1, 22).join() === [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22].join(),
   1
 );
-console.assert(
-  selfDividingNumbers(47, 85).join() === [48, 55, 66, 77].join(),
-  2
-);
+console.assert(selfDividingNumbers(47, 85).join() === [48, 55, 66, 77].join(), 2);

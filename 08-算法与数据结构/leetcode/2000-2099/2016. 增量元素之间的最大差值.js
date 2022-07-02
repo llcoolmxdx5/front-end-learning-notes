@@ -17,7 +17,4 @@ var maximumDifference = function (nums) {
 };
 
 console.assert(maximumDifference([7, 1, 5, 4]) === 4, 1);
-console.assert(
-  maximumDifference([87, 68, 91, 86, 58, 63, 43, 98, 6, 40]) === 55,
-  2
-);
+console.assert(maximumDifference([87, 68, 91, 86, 58, 63, 43, 98, 6, 40]) === 55, 2);

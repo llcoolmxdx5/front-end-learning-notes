@@ -1,4 +1,4 @@
-import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
+import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
 /**
  * @param {number[]} apples
  * @param {number[]} days
@@ -24,7 +24,7 @@ var eatenApples = function (apples, days) {
     }
     start += 1;
   }
-  return ans
+  return ans;
 };
 
 console.assert(eatenApples([1, 2, 3, 5, 2], [3, 2, 1, 4, 2]) === 7, 1);

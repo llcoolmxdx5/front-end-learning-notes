@@ -19,6 +19,6 @@ const longestCommonSubsequence = (text1, text2) => {
   return dp[n][m];
 };
 
-console.assert(longestCommonSubsequence("abcde", "ace") === 3, 1);
-console.assert(longestCommonSubsequence("abc", "abc") === 3, 2);
-console.assert(longestCommonSubsequence("abc", "def") === 0, 3);
+console.assert(longestCommonSubsequence('abcde', 'ace') === 3, 1);
+console.assert(longestCommonSubsequence('abc', 'abc') === 3, 2);
+console.assert(longestCommonSubsequence('abc', 'def') === 0, 3);

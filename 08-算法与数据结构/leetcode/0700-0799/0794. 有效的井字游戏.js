@@ -22,14 +22,14 @@ var validTicTacToe = function (board) {
   };
   let xCount = 0;
   let oCount = 0;
-  let xWin = win("X"); // x 赢
-  let oWin = win("O"); // o 赢
+  let xWin = win('X'); // x 赢
+  let oWin = win('O'); // o 赢
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       const value = board[i][j];
-      if (value === "X") {
+      if (value === 'X') {
         xCount += 1;
-      } else if (value === "O") {
+      } else if (value === 'O') {
         oCount += 1;
       }
     }
@@ -47,11 +47,11 @@ var validTicTacToe = function (board) {
   return true;
 };
 
-console.assert(validTicTacToe(["XXX", "   ", "OOO"]) === false, 1);
-console.assert(validTicTacToe(["O  ", "   ", "   "]) === false, 2);
-console.assert(validTicTacToe(["XOX", "O O", "XOX"]) === true, 3);
-console.assert(validTicTacToe(["XXX", "OOX", "OOX"]) === true, 4);
-console.assert(validTicTacToe(["XXX", "XOO", "OO "]) === false, 5);
+console.assert(validTicTacToe(['XXX', '   ', 'OOO']) === false, 1);
+console.assert(validTicTacToe(['O  ', '   ', '   ']) === false, 2);
+console.assert(validTicTacToe(['XOX', 'O O', 'XOX']) === true, 3);
+console.assert(validTicTacToe(['XXX', 'OOX', 'OOX']) === true, 4);
+console.assert(validTicTacToe(['XXX', 'XOO', 'OO ']) === false, 5);
 // xxx
 // xoo
 // oo

@@ -18,5 +18,5 @@ var winnerOfGame = function (colors) {
   return aCount > bCount;
 };
 
-console.assert(winnerOfGame("AAABABB") === true, 1);
-console.assert(winnerOfGame("AA") === false, 2);
+console.assert(winnerOfGame('AAABABB') === true, 1);
+console.assert(winnerOfGame('AA') === false, 2);

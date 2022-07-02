@@ -17,8 +17,8 @@ var maxConsecutiveAnswers = function (answerKey, k) {
     }
     return ans;
   };
-  return Math.max(maxConsecutiveChar("T"), maxConsecutiveChar("F"));
+  return Math.max(maxConsecutiveChar('T'), maxConsecutiveChar('F'));
 };
 
-console.assert(maxConsecutiveAnswers("TTFF", 2) === 4, 1);
-console.assert(maxConsecutiveAnswers("TTFTTFTT", 1) === 5, 2);
+console.assert(maxConsecutiveAnswers('TTFF', 2) === 4, 1);
+console.assert(maxConsecutiveAnswers('TTFTTFTT', 1) === 5, 2);

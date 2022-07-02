@@ -13,7 +13,7 @@ tsc ./src/\* --outdir ./dist --watch
 
    ```js
    let x: any = 4;
-   x = "I am who I am";
+   x = 'I am who I am';
    ```
 
 2. 改写现有代码时，任意值允许在编译时可选择地包含或移除类型检查
@@ -27,7 +27,7 @@ tsc ./src/\* --outdir ./dist --watch
 3. 定义存储各种类型数据的数组时
 
    ```js
-   let arrayList: any[] = [1, false, "fine"];
+   let arrayList: any[] = [1, false, 'fine'];
    arrayList[1] = 100;
    ```
 
@@ -53,7 +53,7 @@ let arr: number[] = [1, 2];
 // 或者使用数组泛型
 let arr: Array<number> = [1, 2];
 // 定义存储各种类型数据的数组
-let arrayList: any[] = [1, false, "fine"];
+let arrayList: any[] = [1, false, 'fine'];
 ```
 
 ### 元组
@@ -61,8 +61,8 @@ let arrayList: any[] = [1, false, "fine"];
 ```js
 // 元组类型用来表示已知元素数量和类型的数组，各元素的类型不必相同，对应位置的类型需要相同。
 let x: [string, number];
-x = ["Runoob", 1]; // 运行正常
-x = [1, "Runoob"]; // 报错
+x = ['Runoob', 1]; // 运行正常
+x = [1, 'Runoob']; // 报错
 console.log(x[0]); // 输出 Runoob
 ```
 
@@ -97,7 +97,7 @@ console.log(Color[3]); // 输出 Blue
 
 ```js
 function hello(): void {
-  alert("Hello Runoob");
+  alert('Hello Runoob');
 }
 ```
 
@@ -134,12 +134,12 @@ x = 123;
 
 // 运行正确，never 类型可以赋值给 never类型
 x = (() => {
-  throw new Error("exception");
+  throw new Error('exception');
 })();
 
 // 运行正确，never 类型可以赋值给 数字类型
 y = (() => {
-  throw new Error("exception");
+  throw new Error('exception');
 })();
 
 // 返回值为 never 的函数可以是抛出异常的情况
@@ -159,7 +159,7 @@ function loop(): never {
 
 ```typescript
 type A = `${string}-${number}`;
-const a: A = "aaa-2345";
+const a: A = 'aaa-2345';
 ```
 
 ### 类型断言
@@ -202,9 +202,9 @@ function toBoolean(something: string | number): boolean {
 ```js
 var val: string | number;
 val = 12;
-console.log("数字为 " + val);
-val = "Runoob";
-console.log("字符串为 " + val);
+console.log('数字为 ' + val);
+val = 'Runoob';
+console.log('字符串为 ' + val);
 ```
 
 ## 函数
@@ -215,12 +215,12 @@ console.log("字符串为 " + val);
 
 ```js
 function buildName(firstName: string, lastName?: string) {
-  if (lastName) return firstName + " " + lastName;
+  if (lastName) return firstName + ' ' + lastName;
   else return firstName;
 }
-let result1 = buildName("Bob"); // 正确
-let result2 = buildName("Bob", "Adams", "Sr."); // 错误，参数太多了
-let result3 = buildName("Bob", "Adams"); // 正确
+let result1 = buildName('Bob'); // 正确
+let result2 = buildName('Bob', 'Adams', 'Sr.'); // 错误，参数太多了
+let result3 = buildName('Bob', 'Adams'); // 正确
 ```
 
 ### 默认参数
@@ -230,7 +230,7 @@ let result3 = buildName("Bob", "Adams"); // 正确
 ```js
 function calculate_discount(price: number, rate: number = 0.5) {
   var discount = price * rate;
-  console.log("计算结果: ", discount);
+  console.log('计算结果: ', discount);
 }
 calculate_discount(1000);
 calculate_discount(1000, 0.3);
@@ -242,9 +242,9 @@ calculate_discount(1000, 0.3);
 
 ```js
 function buildName(firstName: string, ...restOfName: string[]) {
-  return firstName + " " + restOfName.join(" ");
+  return firstName + ' ' + restOfName.join(' ');
 }
-let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKenzie");
+let employeeName = buildName('Joseph', 'Samuel', 'Lucas', 'MacKenzie');
 ```
 
 ## 接口
@@ -264,7 +264,7 @@ function test(obj: testType): void {
   console.log(obj.name);
   console.log(obj.age);
 }
-test({ name: "fred", age: 20, height: 180 }); //错误
+test({ name: 'fred', age: 20, height: 180 }); //错误
 ```
 
 ### 可选属性（接口定义中加“？”）
@@ -295,8 +295,8 @@ interface testType {
   readonly name: string;
   readonly age: number;
 }
-let test1: testType = { name: "fred", age: 20 };
-test1.name = "Bob"; //error
+let test1: testType = { name: 'fred', age: 20 };
+test1.name = 'Bob'; //error
 
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;
@@ -319,7 +319,7 @@ interface heightFace extends nameFace, ageFace {
   height: number;
 }
 let person = <heightFace>{};
-person.name = "fred";
+person.name = 'fred';
 person.age = 20;
 person.height = 180;
 ```
@@ -340,7 +340,7 @@ let fun: Fun = (x, z) => {
 ## const 断言
 
 ```typescript
-const x = { text: "hello" } as const;
+const x = { text: 'hello' } as const;
 ```
 
 - 该表达式中的字面类型不应被扩展（例如：不能从“hello”转换为字符串）
@@ -508,12 +508,12 @@ foo(animal);
 TypeScript 提供了为类型注解设置别名的便捷语法，你可以使用 `type SomeName = someValidTypeAnnotation` 来创建别名，比如：
 
 ```typescript
-type Pet = "cat" | "dog";
+type Pet = 'cat' | 'dog';
 let pet: Pet;
 
-pet = "cat"; // Ok
-pet = "dog"; // Ok
-pet = "zebra"; // Compiler error
+pet = 'cat'; // Ok
+pet = 'dog'; // Ok
+pet = 'zebra'; // Compiler error
 ```
 
 ### 基础知识
@@ -528,7 +528,7 @@ interface Person {
   age: number;
 }
 
-const sem: Person = { name: "semlinker", age: 30 };
+const sem: Person = { name: 'semlinker', age: 30 };
 type Sem = typeof sem; // -> Person
 
 function toArray(x: number): Array<number> {
@@ -558,7 +558,7 @@ type K3 = keyof { [x: string]: Person }; // string | number
 in 用来遍历枚举类型：
 
 ```typescript
-type Keys = "a" | "b" | "c";
+type Keys = 'a' | 'b' | 'c';
 
 type Obj = {
   [p in Keys]: any;
@@ -601,9 +601,7 @@ function loggingIdentity<T extends ILengthwise>(arg: T): T {
 #### is
 
 ```typescript
-export const isString = (arg: unknown): arg is string =>
-  typeof arg === "string";
-
+export const isString = (arg: unknown): arg is string => typeof arg === 'string';
 ```
 
 ### 内置类型别名
@@ -640,12 +638,12 @@ function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
 }
 
 const todo1 = {
-  title: "organize desk",
-  description: "clear clutter",
+  title: 'organize desk',
+  description: 'clear clutter',
 };
 
 const todo2 = updateTodo(todo1, {
-  description: "throw out trash",
+  description: 'throw out trash',
 });
 ```
 
@@ -707,10 +705,10 @@ interface Todo {
 }
 
 const todo: Readonly<Todo> = {
-  title: "Delete inactive users",
+  title: 'Delete inactive users',
 };
 
-todo.title = "Hello"; // Error: cannot reassign a readonly property
+todo.title = 'Hello'; // Error: cannot reassign a readonly property
 ```
 
 Readonly 对于表示在运行时将赋值失败的表达式很有用（比如，当尝试重新赋值冻结对象的属性时）。
@@ -741,12 +739,12 @@ interface PageInfo {
   title: string;
 }
 
-type Page = "home" | "about" | "contact";
+type Page = 'home' | 'about' | 'contact';
 
 const x: Record<Page, PageInfo> = {
-  about: { title: "about" },
-  contact: { title: "contact" },
-  home: { title: "home" },
+  about: { title: 'about' },
+  contact: { title: 'contact' },
+  home: { title: 'home' },
 };
 ```
 
@@ -776,10 +774,10 @@ interface Todo {
   completed: boolean;
 }
 
-type TodoPreview = Pick<Todo, "title" | "completed">;
+type TodoPreview = Pick<Todo, 'title' | 'completed'>;
 
 const todo: TodoPreview = {
-  title: "Clean room",
+  title: 'Clean room',
   completed: false,
 };
 ```
@@ -804,8 +802,8 @@ type Exclude<T, U> = T extends U ? never : T;
 示例：
 
 ```typescript
-type T0 = Exclude<"a" | "b" | "c", "a">; // "b" | "c"
-type T1 = Exclude<"a" | "b" | "c", "a" | "b">; // "c"
+type T0 = Exclude<'a' | 'b' | 'c', 'a'>; // "b" | "c"
+type T1 = Exclude<'a' | 'b' | 'c', 'a' | 'b'>; // "c"
 type T2 = Exclude<string | number | (() => void), Function>; // string | number
 ```
 
@@ -829,7 +827,7 @@ type Extract<T, U> = T extends U ? T : never;
 示例：
 
 ```typescript
-type T0 = Extract<"a" | "b" | "c", "a" | "f">; // "a"
+type T0 = Extract<'a' | 'b' | 'c', 'a' | 'f'>; // "a"
 type T1 = Extract<string | number | (() => void), Function>; // () => void
 ```
 
@@ -857,10 +855,10 @@ interface Todo {
   completed: boolean;
 }
 
-type TodoPreview = Omit<Todo, "description">;
+type TodoPreview = Omit<Todo, 'description'>;
 
 const todo: TodoPreview = {
-  title: "Clean room",
+  title: 'Clean room',
   completed: false,
 };
 ```
@@ -927,9 +925,7 @@ type T7 = ReturnType<Function>; // Error
 /**
  * Obtain the return type of a constructor function type
  */
-type InstanceType<T extends new (...args: any) => any> = T extends new (
-  ...args: any
-) => infer R
+type InstanceType<T extends new (...args: any) => any> = T extends new (...args: any) => infer R
   ? R
   : any;
 ```
@@ -993,11 +989,7 @@ const obj: ThisType<Person> = {
 /**
  * Obtain the parameters of a function type in a tuple
  */
-type Parameters<T extends (...args: any) => any> = T extends (
-  ...args: infer P
-) => any
-  ? P
-  : never;
+type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
 ```
 
 示例：
@@ -1021,8 +1013,11 @@ type D = Parameters<typeof Math.max>; // number[]
 /**
  * Obtain the parameters of a constructor function type in a tuple
  */
-type ConstructorParameters<T extends new (...args: any) => any> =
-  T extends new (...args: infer P) => any ? P : never;
+type ConstructorParameters<T extends new (...args: any) => any> = T extends new (
+  ...args: infer P
+) => any
+  ? P
+  : never;
 ```
 
 示例：
@@ -1057,11 +1052,11 @@ class Car {
   }
   dips(): void {
     // 方法
-    console.log("函数中显示发动机型号  :   " + this.engine);
+    console.log('函数中显示发动机型号  :   ' + this.engine);
   }
 }
-var obj = new Car("BMW"); // 创建一个对象
-console.log("读取发动机型号 :  " + obj.engine); // 访问字段
+var obj = new Car('BMW'); // 创建一个对象
+console.log('读取发动机型号 :  ' + obj.engine); // 访问字段
 obj.dips(); // 访问方法
 ```
 
@@ -1076,13 +1071,13 @@ obj.dips(); // 访问方法
 ```js
 class PrinterClass {
   doPrint(): void {
-    console.log("父类的 doPrint() 方法。");
+    console.log('父类的 doPrint() 方法。');
   }
 }
 class StringPrinter extends PrinterClass {
   doPrint(): void {
     super.doPrint(); // 调用父类的函数
-    console.log("子类的 doPrint()方法。");
+    console.log('子类的 doPrint()方法。');
   }
 }
 ```
@@ -1095,7 +1090,7 @@ static 关键字用于定义类的数据成员（属性和方法）为静态的�
 class StaticMem {
   static num: number;
   static dips(): void {
-    console.log("num 值为 " + StaticMem.num);
+    console.log('num 值为 ' + StaticMem.num);
   }
 }
 StaticMem.num = 12; // 初始化静态变量
@@ -1134,19 +1129,19 @@ class Encapsulate {
 abstract class Department {
   constructor(public name: string) {}
   printName(): void {
-    console.log("Department name: " + this.name);
+    console.log('Department name: ' + this.name);
   }
   abstract printMeeting(): void; // 必须在派生类中实现
 }
 class AccountingDepartment extends Department {
   constructor() {
-    super("Accounting and Auditing"); // 在派生类的构造函数中必须调用 super()
+    super('Accounting and Auditing'); // 在派生类的构造函数中必须调用 super()
   }
   printMeeting(): void {
-    console.log("The Accounting Department meets each Monday at 10am.");
+    console.log('The Accounting Department meets each Monday at 10am.');
   }
   generateReports(): void {
-    console.log("Generating accounting reports...");
+    console.log('Generating accounting reports...');
   }
 }
 let department: Department; // 允许创建一个对抽象类型的引用
@@ -1174,7 +1169,7 @@ class AgricLoan implements ILoan {
   }
 }
 var obj = new AgricLoan(10, 1);
-console.log("利润为 : " + obj.interest + "，抽成为 : " + obj.rebate);
+console.log('利润为 : ' + obj.interest + '，抽成为 : ' + obj.rebate);
 ```
 
 ## 命名空间
@@ -1206,7 +1201,7 @@ namespace Drawing {
 namespace Drawing {
   export class Circle implements IShape {
     public draw() {
-      console.log("Circle is drawn");
+      console.log('Circle is drawn');
     }
   }
 }
@@ -1215,7 +1210,7 @@ namespace Drawing {
 namespace Drawing {
   export class Triangle implements IShape {
     public draw() {
-      console.log("Triangle is drawn");
+      console.log('Triangle is drawn');
     }
   }
 }
@@ -1272,23 +1267,23 @@ export interface IShape {
   draw();
 }
 // Circle.ts 文件代码：
-import shape = require("./IShape");
+import shape = require('./IShape');
 export class Circle implements shape.IShape {
   public draw() {
-    console.log("Circle is drawn (external module)");
+    console.log('Circle is drawn (external module)');
   }
 }
 // Triangle.ts 文件代码：
-import shape = require("./IShape");
+import shape = require('./IShape');
 export class Triangle implements shape.IShape {
   public draw() {
-    console.log("Triangle is drawn (external module)");
+    console.log('Triangle is drawn (external module)');
   }
 }
 // TestShape.ts 文件代码：
-import shape = require("./IShape");
-import circle = require("./Circle");
-import triangle = require("./Triangle");
+import shape = require('./IShape');
+import circle = require('./Circle');
+import triangle = require('./Triangle');
 function drawAllShapes(shapeToDraw: shape.IShape) {
   shapeToDraw.draw();
 }
@@ -1303,7 +1298,7 @@ drawAllShapes(new triangle.Triangle());
 
 ```ts
 declare var jQuery: (selector: string) => any;
-jQuery("#foo");
+jQuery('#foo');
 ```
 
 ### 声明文件或模块

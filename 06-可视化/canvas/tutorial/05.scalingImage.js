@@ -1,5 +1,5 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
   const img = new Image();
@@ -10,5 +10,5 @@ function draw() {
       }
     }
   };
-  img.src = "https://mdn.mozillademos.org/files/5397/rhino.jpg";
+  img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
 }

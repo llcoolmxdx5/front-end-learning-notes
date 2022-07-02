@@ -5,16 +5,16 @@ react hook 使用的是 `Object.is` 来进行的比较，这个比较是一个�
 ## 从一个 🌰 来看问题
 
 ```jsx
-import React, { useEffect, useMemo, useState } from "react";
-import update from "immutability-helper";
-import { Button } from "antd";
-import Child from "./Child";
-import { cloneDeep } from "lodash";
+import React, { useEffect, useMemo, useState } from 'react';
+import update from 'immutability-helper';
+import { Button } from 'antd';
+import Child from './Child';
+import { cloneDeep } from 'lodash';
 
 const Test = () => {
   const [data, setData] = useState({
     info: {
-      name: "tom",
+      name: 'tom',
       age: 12,
     },
     score: {
@@ -71,7 +71,7 @@ setData({
 ### 实现方式三（成功，但不推荐）
 
 ```jsx
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash';
 
 data.score.exam1[2] = Math.random() * 100;
 setData(cloneDeep(data));
@@ -192,8 +192,8 @@ const [data, setData] = useState<any[]>([
   {
     user: [
       {
-        name: "super-deng",
-        sex: "男",
+        name: 'super-deng',
+        sex: '男',
       },
     ],
   },
@@ -205,7 +205,7 @@ setData((data) => {
     0: {
       user: {
         0: {
-          $unset: ["sex"],
+          $unset: ['sex'],
         },
       },
     },
@@ -220,8 +220,8 @@ const [data, setData] = useState<any[]>([
   {
     user: [
       {
-        name: "super-deng",
-        sex: "男",
+        name: 'super-deng',
+        sex: '男',
       },
     ],
   },
@@ -249,8 +249,8 @@ const [data, setData] = useState<any[]>([
   {
     user: [
       {
-        name: "super-deng",
-        sex: "男",
+        name: 'super-deng',
+        sex: '男',
       },
     ],
   },

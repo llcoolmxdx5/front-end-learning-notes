@@ -3,7 +3,7 @@
  * @return {string}
  */
 var longestCommonPrefix = function (strs) {
-  let res = "";
+  let res = '';
   let index = 0;
   while (true) {
     const s = strs[0]?.[index];
@@ -19,12 +19,12 @@ var longestCommonPrefix = function (strs) {
 };
 
 var longestCommonPrefix = function (strs) {
-  if (strs.length === 0) return "";
+  if (strs.length === 0) return '';
   let i = 0;
   let res = strs[0];
   while (i < strs.length - 1) {
-    if (res === "") return "";
-    let s1 = "";
+    if (res === '') return '';
+    let s1 = '';
     for (let index = 0; index < res.length; index++) {
       if (res[index] === strs[i + 1]?.[index]) {
         s1 += res[index];
@@ -39,6 +39,6 @@ var longestCommonPrefix = function (strs) {
   return res;
 };
 
-console.assert(longestCommonPrefix(["flower", "flow", "flight"] === "fl"), 1);
-console.assert(longestCommonPrefix(["dog", "racecar", "car"] === ""), 2);
-console.assert(longestCommonPrefix([] === ""), 3);
+console.assert(longestCommonPrefix(['flower', 'flow', 'flight'] === 'fl'), 1);
+console.assert(longestCommonPrefix(['dog', 'racecar', 'car'] === ''), 2);
+console.assert(longestCommonPrefix([] === ''), 3);

@@ -49,15 +49,6 @@ var goodDaysToRobBank = function (security, time) {
   return ans;
 };
 
-console.assert(
-  goodDaysToRobBank([5, 3, 3, 3, 5, 6, 2], 2).join() === [2, 3].join(),
-  1
-);
-console.assert(
-  goodDaysToRobBank([1, 1, 1, 1, 1], 0).join() === [0, 1, 2, 3, 4].join(),
-  2
-);
-console.assert(
-  goodDaysToRobBank([1, 2, 3, 4, 5, 6], 2).join() === [].join(),
-  3
-);
+console.assert(goodDaysToRobBank([5, 3, 3, 3, 5, 6, 2], 2).join() === [2, 3].join(), 1);
+console.assert(goodDaysToRobBank([1, 1, 1, 1, 1], 0).join() === [0, 1, 2, 3, 4].join(), 2);
+console.assert(goodDaysToRobBank([1, 2, 3, 4, 5, 6], 2).join() === [].join(), 3);

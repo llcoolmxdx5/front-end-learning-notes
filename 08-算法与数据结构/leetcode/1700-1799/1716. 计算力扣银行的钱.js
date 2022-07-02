@@ -21,9 +21,7 @@ var totalMoney = function (n) {
   const weekNumber = Math.floor(n / 7);
   const firstWeekMoney = Math.floor(((1 + 7) * 7) / 2);
   const lastWeekMoney = firstWeekMoney + 7 * (weekNumber - 1);
-  const weekMoney = Math.floor(
-    ((firstWeekMoney + lastWeekMoney) * weekNumber) / 2
-  );
+  const weekMoney = Math.floor(((firstWeekMoney + lastWeekMoney) * weekNumber) / 2);
   // 剩下的不能构成一个完整的周的天数里存的钱
   const dayNumber = n % 7;
   const firstDayMoney = 1 + weekNumber;

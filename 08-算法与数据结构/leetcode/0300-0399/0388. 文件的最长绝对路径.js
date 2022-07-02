@@ -3,16 +3,16 @@
  * @return {number}
  */
 var lengthLongestPath = function (input) {
-  const arr = input.split("\n");
+  const arr = input.split('\n');
   // console.log(arr);
   const trueArr = [];
   let loop = 0;
   for (const item of arr) {
-    const str = item.replace(/\t/g, "$");
+    const str = item.replace(/\t/g, '$');
     const arr1 = [];
     for (let j = 0; j < str.length; j++) {
-      if (str[j] === "$") {
-        arr1.push("");
+      if (str[j] === '$') {
+        arr1.push('');
       } else {
         arr1.push(str.slice(j));
         break;
@@ -30,9 +30,7 @@ var lengthLongestPath = function (input) {
       continue;
     }
     // console.log(arr, preCount);
-    const temp = preCount
-      .slice(0, arr.length - 1)
-      .reduce((prev, cur) => prev + cur, 0);
+    const temp = preCount.slice(0, arr.length - 1).reduce((prev, cur) => prev + cur, 0);
     ans = Math.max(ans, temp + arr.at(-1).length + arr.length - 1);
     // console.log(ans);
   }
@@ -44,11 +42,11 @@ var lengthLongestPath = function (input) {
   let result = 0;
   stack.push(0);
   // 1. 以\n拆分字符串
-  let newArr = input.split("\n");
+  let newArr = input.split('\n');
   for (let i = 0; i < newArr.length; i++) {
     const arr = newArr[i];
     // 2. 计算当前字符串的层级
-    let level = arr.lastIndexOf("\t") + 1;
+    let level = arr.lastIndexOf('\t') + 1;
     // 2.1 如果当前字符串的层级比目前已经计算的层级要大，则将栈内的数据清理干净再计算
     while (stack.length > level + 1) {
       stack.pop();
@@ -58,7 +56,7 @@ var lengthLongestPath = function (input) {
     // 3. 将当前最新长度存到栈中
     stack.push(length);
     // 4. 如果是一个文件，则说明该层级已经到底部，输出本层循环的最终长度即可
-    if (arr.includes(".")) {
+    if (arr.includes('.')) {
       result = Math.max(result, length - 1);
     }
   }
@@ -67,18 +65,12 @@ var lengthLongestPath = function (input) {
 
 console.assert(
   lengthLongestPath(
-    "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+    'dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext'
   ) === 32,
   1
 );
-console.assert(lengthLongestPath("a") === 0, 2);
-console.assert(
-  lengthLongestPath("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext") === 20,
-  3
-);
-console.assert(
-  lengthLongestPath("file1.txt\nfile2.txt\nlongfile.txt") === 12,
-  4
-);
-console.assert(lengthLongestPath("dir\n        file.txt") === 16, 5);
-console.assert(lengthLongestPath("a\n\tb\n\t\tc.txt\n\taaaa.txt") === 10, 6);
+console.assert(lengthLongestPath('a') === 0, 2);
+console.assert(lengthLongestPath('dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext') === 20, 3);
+console.assert(lengthLongestPath('file1.txt\nfile2.txt\nlongfile.txt') === 12, 4);
+console.assert(lengthLongestPath('dir\n        file.txt') === 16, 5);
+console.assert(lengthLongestPath('a\n\tb\n\t\tc.txt\n\taaaa.txt') === 10, 6);

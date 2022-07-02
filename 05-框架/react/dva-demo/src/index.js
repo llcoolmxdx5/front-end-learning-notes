@@ -1,13 +1,13 @@
-import dva from "dva";
-import { Router, Route, Switch } from "dva/router";
-import Counter from "./pages/Counter";
+import dva from 'dva';
+import { Router, Route, Switch } from 'dva/router';
+import Counter from './pages/Counter';
 
 // 1. Initialize
 const app = dva();
 
 // 2. Model
 // Remove the comment and define your model.
-app.model(require("./models/counter").default);
+app.model(require('./models/counter').default);
 
 // 3. Router
 const HomePage = () => {
@@ -27,4 +27,4 @@ app.router(({ history }) => (
 ));
 
 // 4. Start
-app.start("#root");
+app.start('#root');

@@ -22,10 +22,7 @@ var integerReplacement = function (n) {
   if (n % 2 === 0) {
     memo.set(n, 1 + integerReplacement(next));
   } else {
-    memo.set(
-      n,
-      2 + Math.min(integerReplacement(next), integerReplacement(next + 1))
-    );
+    memo.set(n, 2 + Math.min(integerReplacement(next), integerReplacement(next + 1)));
   }
   return memo.get(n);
 };

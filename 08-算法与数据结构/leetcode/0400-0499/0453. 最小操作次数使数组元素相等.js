@@ -4,11 +4,11 @@
  */
 var minMoves = function (nums) {
   const min = Math.min(...nums);
-  let resp = 0
+  let resp = 0;
   for (let i = 0; i < nums.length; i++) {
-    resp += nums[i] - min
+    resp += nums[i] - min;
   }
-  return resp
+  return resp;
 };
 
 console.assert(minMoves([1, 2, 3]) === 3, 1);

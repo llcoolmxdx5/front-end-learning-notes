@@ -1,11 +1,11 @@
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WorkboxPlugin = require("workbox-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const toml = require("toml");
-const yaml = require("yaml");
-const json5 = require("json5");
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const toml = require('toml');
+const yaml = require('yaml');
+const json5 = require('json5');
 
 // const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
@@ -14,22 +14,22 @@ const json5 = require("json5");
  */
 const config = {
   entry: {
-    index: "./src/index.js",
-    another: "./src/split/another-module.js",
+    index: './src/index.js',
+    another: './src/split/another-module.js',
   },
   output: {
-    path: path.resolve(__dirname, "../dist"),
+    path: path.resolve(__dirname, '../dist'),
     clean: true,
-    assetModuleFilename: "images/[contenthash][ext][query]",
+    assetModuleFilename: 'images/[contenthash][ext][query]',
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   stats: {
     hash: false,
     assets: false,
     modules: false,
-    logging: "error",
+    logging: 'error',
     entrypoints: false,
     timings: true,
     runtimeModules: false,
@@ -48,23 +48,23 @@ const config = {
       // },
       {
         test: /\.png$/,
-        type: "asset/resource",
+        type: 'asset/resource',
         // 优先级高于 output.assetModuleFilename
         generator: {
-          filename: "images/[contenthash:8][ext][query]",
+          filename: 'images/[contenthash:8][ext][query]',
         },
       },
       {
         test: /\.svg$/,
-        type: "asset/inline",
+        type: 'asset/inline',
       },
       {
         test: /\.txt$/,
-        type: "asset/source",
+        type: 'asset/source',
       },
       {
         test: /\.jpg$/,
-        type: "asset",
+        type: 'asset',
         parser: {
           dataUrlCondition: {
             maxSize: 100 * 1024, // 默认 8kb
@@ -73,32 +73,32 @@ const config = {
       },
       {
         test: /\.txt$/,
-        use: "raw-loader",
+        use: 'raw-loader',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
       },
-      { test: /\.(csv|tsv)$/i, use: ["csv-loader"] },
+      { test: /\.(csv|tsv)$/i, use: ['csv-loader'] },
       {
         test: /\.xml$/i,
-        use: ["xml-loader"],
+        use: ['xml-loader'],
       },
       {
         test: /\.toml$/i,
-        type: "json",
+        type: 'json',
         parser: { parse: toml.parse },
       },
       {
         test: /\.yaml$/i,
-        type: "json",
+        type: 'json',
         parser: {
           parse: yaml.parse,
         },
       },
       {
         test: /\.json5$/i,
-        type: "json",
+        type: 'json',
         parser: {
           parse: json5.parse,
         },
@@ -107,7 +107,7 @@ const config = {
         test: /\.(js|ts|tsx|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           // options: {
           //   presets: ["@babel/preset-env"],
           //   plugins: [["@babel/plugin-transform-runtime"]],
@@ -115,15 +115,15 @@ const config = {
           options: {
             presets: [
               [
-                "@babel/preset-env",
+                '@babel/preset-env',
                 {
-                  targets: ["last 1 version", "> 1%"],
-                  useBuiltIns: "usage",
+                  targets: ['last 1 version', '> 1%'],
+                  useBuiltIns: 'usage',
                   // 添加corejs配置
                   corejs: 3,
                 },
               ],
-              ["@babel/preset-typescript"],
+              ['@babel/preset-typescript'],
             ],
           },
         },
@@ -136,9 +136,9 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./index.html",
-      filename: "index.html",
-      inject: "body",
+      template: './index.html',
+      filename: 'index.html',
+      inject: 'body',
     }),
     // new WorkboxPlugin.GenerateSW({
     //   // 这些选项帮助快速启用 ServiceWorkers
@@ -148,7 +148,7 @@ const config = {
     // }),
     new webpack.ProvidePlugin({
       // _: "lodash",
-      join: ["lodash", "join"],
+      join: ['lodash', 'join'],
     }),
     new ForkTsCheckerWebpackPlugin({
       async: false,
@@ -160,8 +160,8 @@ const config = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
+          name: 'vendors',
+          chunks: 'all',
         },
       },
     },

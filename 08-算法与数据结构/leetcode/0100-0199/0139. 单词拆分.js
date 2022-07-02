@@ -10,10 +10,7 @@ var wordBreak = (s, wordDict) => {
   for (let i = 0; i <= length; i++) {
     for (let j = 0; j < wordDict.length; j++) {
       if (i >= wordDict[j].length) {
-        if (
-          s.slice(i - wordDict[j].length, i) === wordDict[j] &&
-          dp[i - wordDict[j].length]
-        ) {
+        if (s.slice(i - wordDict[j].length, i) === wordDict[j] && dp[i - wordDict[j].length]) {
           dp[i] = true;
         }
       }
@@ -42,9 +39,6 @@ var wordBreak = function (s, wordDict) {
   return dp[length];
 };
 
-console.assert(wordBreak("leetcode", ["leet", "code"]) === true, 1);
-console.assert(wordBreak("applepenapple", ["apple", "pen"]) === true, 2);
-console.assert(
-  wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"]) === false,
-  3
-);
+console.assert(wordBreak('leetcode', ['leet', 'code']) === true, 1);
+console.assert(wordBreak('applepenapple', ['apple', 'pen']) === true, 2);
+console.assert(wordBreak('catsandog', ['cats', 'dog', 'sand', 'and', 'cat']) === false, 3);

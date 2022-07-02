@@ -7,7 +7,7 @@ var findAllConcatenatedWordsInADict = function (words) {
   const set = new Set(words);
   const dfs = (word, start = 0) => {
     if (!word) return start > 1;
-    let prefixWord = "";
+    let prefixWord = '';
     for (let i = 0, len = word.length; i < len; i++) {
       prefixWord += word[i];
       if (set.has(prefixWord)) {
@@ -26,9 +26,9 @@ var findAllConcatenatedWordsInADict = function (words) {
   function exists(word) {
     const { length } = word;
     // 前 i 个是连接词
-    const dp = Array(length+1).fill(false);
-    dp[0] = true
-    for (let i = 1; i < length+1; i += 1) {
+    const dp = Array(length + 1).fill(false);
+    dp[0] = true;
+    for (let i = 1; i < length + 1; i += 1) {
       if (wordSet.has(word.slice(0, i + 1))) {
         dp[i] = true;
         continue;
@@ -53,16 +53,16 @@ var findAllConcatenatedWordsInADict = function (words) {
 
 console.log(
   findAllConcatenatedWordsInADict([
-    "cat",
-    "cats",
-    "catsdogcats",
-    "dog",
-    "dogcatsdog",
-    "hippopotamuses",
-    "rat",
-    "ratcatdogcat",
+    'cat',
+    'cats',
+    'catsdogcats',
+    'dog',
+    'dogcatsdog',
+    'hippopotamuses',
+    'rat',
+    'ratcatdogcat',
   ])
 );
 // ["catsdogcats","dogcatsdog","ratcatdogcat"]
 
-console.log(findAllConcatenatedWordsInADict(["cat", "dog", "catdog"])); // ["catdog"]
+console.log(findAllConcatenatedWordsInADict(['cat', 'dog', 'catdog'])); // ["catdog"]

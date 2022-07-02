@@ -20,5 +20,5 @@ var plusOne = function (digits) {
   return digits;
 };
 
-console.assert(plusOne([1, 9, 9]).join("") === "200", 1);
-console.assert(plusOne([9]).join("") === "10", 2);
+console.assert(plusOne([1, 9, 9]).join('') === '200', 1);
+console.assert(plusOne([9]).join('') === '10', 2);

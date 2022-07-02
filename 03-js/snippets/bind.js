@@ -4,7 +4,7 @@ const bind =
     fn.apply(context, [...boundArgs, ...args]);
 
 Function.prototype._bind = function (context, ...args) {
-  if (typeof this !== "function") {
+  if (typeof this !== 'function') {
     throw new TypeError(`"${this}"+.bind is not a function`);
   }
   const self = this;
@@ -30,11 +30,11 @@ Function.prototype._bind = function (context, ...args) {
 };
 
 function greet(greeting, punctuation) {
-  return greeting + " " + this.user + punctuation;
+  return greeting + ' ' + this.user + punctuation;
 }
-const freddy = { user: "fred" };
+const freddy = { user: 'fred' };
 const freddyBound1 = bind(greet, freddy);
-console.log(freddyBound1("hi", "!")); // 'hi fred!'
+console.log(freddyBound1('hi', '!')); // 'hi fred!'
 
 const freddyBound2 = greet._bind(freddy);
-console.log(freddyBound2("hi", "!")); // 'hi fred!'
+console.log(freddyBound2('hi', '!')); // 'hi fred!'

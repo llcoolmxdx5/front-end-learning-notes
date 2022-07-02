@@ -26,22 +26,22 @@
 <script>
   // 4.1 使用 Vue.extend 来创建登录组件
   var login = Vue.extend({
-    template: "<h1>登录组件</h1>",
+    template: '<h1>登录组件</h1>',
   });
   // 4.2 使用 Vue.extend 来创建注册组件
   var register = Vue.extend({
-    template: "<h1>注册组件</h1>",
+    template: '<h1>注册组件</h1>',
   });
   // 5. 创建一个路由 router 实例，通过 routers 属性来定义路由匹配规则
   var routerObj = new VueRouter({
     routes: [
-      { path: "/login", component: login },
-      { path: "/register", component: register },
+      { path: '/login', component: login },
+      { path: '/register', component: register },
     ],
   });
   // 6. 创建 Vue 实例，得到 ViewModel
   var vm = new Vue({
-    el: "#app",
+    el: '#app',
     router: routerObj, // 将路由规则对象，注册到 vm 实例上，用来监听 URL 地址的变化，然后展示对应的组件
   });
 </script>
@@ -52,10 +52,10 @@
 ```js
 const router = new VueRouter({
   routes: [
-    { path: "/a", redirect: "/b" }, //从 /a 重定向到 /b
-    { path: "/a", redirect: { name: "foo" } }, //重定向的目标也可以是一个命名的路由
+    { path: '/a', redirect: '/b' }, //从 /a 重定向到 /b
+    { path: '/a', redirect: { name: 'foo' } }, //重定向的目标也可以是一个命名的路由
     {
-      path: "/a",
+      path: '/a',
       redirect: (to) => {
         //甚至是一个方法，动态返回重定向目标
         // 方法接收 目标路由 作为参数
@@ -72,7 +72,7 @@ const router = new VueRouter({
 
 ```js
 const router = new VueRouter({
-  routes: [{ path: "/a", component: A, alias: "/b" }],
+  routes: [{ path: '/a', component: A, alias: '/b' }],
 });
 ```
 
@@ -82,12 +82,12 @@ const router = new VueRouter({
 
 ```js
 const User = {
-  template: "<div>User{{ $route.params.id }}</div>",
+  template: '<div>User{{ $route.params.id }}</div>',
 };
 const router = new VueRouter({
   routes: [
     // 动态路径参数 以冒号开头
-    { path: "/user/:id", component: User },
+    { path: '/user/:id', component: User },
   ],
 });
 ```
@@ -103,7 +103,7 @@ const router = new VueRouter({
 
 ```js
 const User = {
-  template: "...",
+  template: '...',
   watch: {
     $route(to, from) {
       // 对路由变化作出响应...
@@ -132,35 +132,35 @@ const User = {
       </div>
     `,
   };
-  const UserHome = { template: "<div>Home</div>" };
-  const UserProfile = { template: "<div>Profile</div>" };
-  const UserPosts = { template: "<div>Posts</div>" };
+  const UserHome = { template: '<div>Home</div>' };
+  const UserProfile = { template: '<div>Profile</div>' };
+  const UserPosts = { template: '<div>Posts</div>' };
   // 要在嵌套的出口中渲染组件，需要在 VueRouter 的参数中使用 children 配置
   // 以 / 开头的嵌套路径会被当作根路径。 这让你充分的使用嵌套组件而无须设置嵌套的路径
   const router = new VueRouter({
     routes: [
       {
-        path: "/user/:id",
+        path: '/user/:id',
         component: User,
         children: [
-          { path: "", component: UserHome },
+          { path: '', component: UserHome },
           {
             // 当 /user/:id/profile 匹配成功，
             // UserProfile 会被渲染在 User 的 <router-view> 中
-            path: "profile",
+            path: 'profile',
             component: UserProfile,
           },
           {
             // 当 /user/:id/posts 匹配成功
             // UserPosts 会被渲染在 User 的 <router-view> 中
-            path: "posts",
+            path: 'posts',
             component: UserPosts,
           },
         ],
       },
     ],
   });
-  const app = new Vue({ router }).$mount("#app");
+  const app = new Vue({ router }).$mount('#app');
 </script>
 ```
 
@@ -170,10 +170,10 @@ const User = {
 
 ```js
 const User = {
-  template: "<div>User {{ $route.params.id }}</div>",
+  template: '<div>User {{ $route.params.id }}</div>',
 };
 const router = new VueRouter({
-  routes: [{ path: "/user/:id", component: User }],
+  routes: [{ path: '/user/:id', component: User }],
 });
 ```
 
@@ -181,15 +181,15 @@ const router = new VueRouter({
 
 ```js
 const User = {
-  props: ["id"],
-  template: "<div>User {{ id }}</div>",
+  props: ['id'],
+  template: '<div>User {{ id }}</div>',
 };
 const router = new VueRouter({
   routes: [
-    { path: "/user/:id", component: User, props: true },
+    { path: '/user/:id', component: User, props: true },
     // 对于包含命名视图的路由，你必须分别为每个命名视图添加 `props` 选项：
     {
-      path: "/user/:id",
+      path: '/user/:id',
       components: { default: User, sidebar: Sidebar },
       props: { default: true, sidebar: false },
     },
@@ -209,7 +209,7 @@ const router = new VueRouter({
    const router = new VueRouter({
      routes: [
        {
-         path: "/promotion/from-newsletter",
+         path: '/promotion/from-newsletter',
          component: Promotion,
          props: { newsletterPopup: false },
        },
@@ -226,7 +226,7 @@ const router = new VueRouter({
      routes: [
        // URL /search?q=vue 会将 {query: 'vue'} 作为属性传递给 SearchUser 组件。
        {
-         path: "/search",
+         path: '/search',
          component: SearchUser,
          props: (route) => ({ query: route.query.q }),
        },

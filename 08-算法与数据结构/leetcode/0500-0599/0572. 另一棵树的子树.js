@@ -27,9 +27,5 @@ var isSubtree = function (root, subRoot) {
   if (root === null) {
     return false;
   }
-  return (
-    check(root, subRoot) ||
-    isSubtree(root.left, subRoot) ||
-    isSubtree(root.right, subRoot)
-  );
+  return check(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
 };

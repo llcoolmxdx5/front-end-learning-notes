@@ -28,20 +28,14 @@ var highestPeak = function (isWater) {
         [x, y - 1],
         [x, y + 1],
       ].forEach(([row, col]) => {
-        if (
-          row < 0 ||
-          row >= m ||
-          col < 0 ||
-          col >= n ||
-          isWater[row][col] <= level
-        ) {
+        if (row < 0 || row >= m || col < 0 || col >= n || isWater[row][col] <= level) {
           return;
         }
         isWater[row][col] = level;
         next.push([row, col]);
       });
     }
-    queue = next
+    queue = next;
   }
   return isWater;
 };

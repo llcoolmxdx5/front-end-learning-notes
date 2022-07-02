@@ -1,8 +1,8 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
-  const lineJoin = ["round", "bevel", "miter"];
+  const lineJoin = ['round', 'bevel', 'miter'];
   ctx.lineWidth = 10;
   for (let i = 0; i < lineJoin.length; i++) {
     ctx.lineJoin = lineJoin[i];

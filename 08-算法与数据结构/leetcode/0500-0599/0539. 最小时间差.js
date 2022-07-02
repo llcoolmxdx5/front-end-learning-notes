@@ -5,7 +5,7 @@
 var findMinDifference = function (timePoints) {
   const arr = [];
   for (const timePoint of timePoints) {
-    const [hour, minute] = timePoint.split(":").map((str) => parseInt(str));
+    const [hour, minute] = timePoint.split(':').map((str) => parseInt(str));
     arr.push(hour * 60 + minute);
   }
   const { length } = arr;
@@ -20,4 +20,4 @@ var findMinDifference = function (timePoints) {
   return Math.min(diff, arr[0] + 1440 - arr[length - 1]);
 };
 
-console.assert(findMinDifference(["23:59", "00:00"]) === 1, 1);
+console.assert(findMinDifference(['23:59', '00:00']) === 1, 1);

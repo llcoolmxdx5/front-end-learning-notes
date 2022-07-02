@@ -1,6 +1,6 @@
-import LinkedList from "./LinkedList";
-import Node from "./Node";
-import { defaultEquals } from "./utils";
+import LinkedList from './LinkedList';
+import Node from './Node';
+import { defaultEquals } from './utils';
 
 class DoublyNode extends Node {
   constructor(element, next, prev) {

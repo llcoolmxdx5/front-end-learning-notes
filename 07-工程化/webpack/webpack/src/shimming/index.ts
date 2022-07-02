@@ -3,4 +3,4 @@
 // console.log(join(["hello", "webpack"], " "), "lodash.join");
 // this.log("this console");
 
-console.log("aaa");
+console.log('aaa');

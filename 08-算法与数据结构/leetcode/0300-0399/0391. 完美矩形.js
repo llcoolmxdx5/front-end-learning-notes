@@ -60,12 +60,9 @@ var isRectangleCover = function (rectangles) {
   return (
     sumArea === (maxX - minX) * (maxY - minY) &&
     record.size === 4 &&
-    [
-      `${minX} ${minY}`,
-      `${minX} ${maxY}`,
-      `${maxX} ${minY}`,
-      `${maxX} ${maxY}`,
-    ].every((k) => record.has(k))
+    [`${minX} ${minY}`, `${minX} ${maxY}`, `${maxX} ${minY}`, `${maxX} ${maxY}`].every((k) =>
+      record.has(k)
+    )
   );
 };
 

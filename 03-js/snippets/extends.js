@@ -22,7 +22,7 @@ function Rectangle(height, width) {
   this.height = height;
   this.width = width;
 }
-Object.defineProperty(Rectangle.prototype, "area", {
+Object.defineProperty(Rectangle.prototype, 'area', {
   // Getter
   get: function () {
     return this.calcArea();
@@ -40,9 +40,9 @@ console.log(rectangle.area);
 // -----------------------------------------------------------------
 function Square(length) {
   Rectangle.call(this, length, length);
-  this.name = "Square";
+  this.name = 'Square';
 }
-Object.defineProperty(Square.prototype, "area", {
+Object.defineProperty(Square.prototype, 'area', {
   get: function () {
     return this.height * this.width;
   },

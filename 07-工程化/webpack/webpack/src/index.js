@@ -2,17 +2,17 @@
 
 // hello();
 
-import case2 from "./case2";
-import loader from "./cssLoader/css";
-import helloWorld from "./babelLoader";
+import case2 from './case2';
+import loader from './cssLoader/css';
+import helloWorld from './babelLoader';
 
 helloWorld();
 
-import "./split";
+import './split';
 
-import "./work";
+import './work';
 
-import "./ts";
+import './ts';
 
 // if ("serviceWorker" in navigator) {
 //   window.addEventListener("load", () => {
@@ -27,4 +27,4 @@ import "./ts";
 //   });
 // }
 
-import "./shimming";
+import './shimming';

@@ -60,4 +60,4 @@ function deleteDuplicates(head: ListNode | null): ListNode | null {
     }
   }
   return dummy.next;
-};
+}

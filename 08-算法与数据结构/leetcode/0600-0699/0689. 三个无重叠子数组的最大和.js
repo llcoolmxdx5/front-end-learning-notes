@@ -32,14 +32,9 @@ var maxSumOfThreeSubarrays = function (nums, k) {
   return ans;
 };
 
-console.assert(
-  maxSumOfThreeSubarrays([1, 2, 1, 2, 6, 7, 5, 1], 2).join() ===
-    [0, 3, 5].join(),
-  1
-);
+console.assert(maxSumOfThreeSubarrays([1, 2, 1, 2, 6, 7, 5, 1], 2).join() === [0, 3, 5].join(), 1);
 
 console.assert(
-  maxSumOfThreeSubarrays([1, 2, 1, 2, 1, 2, 1, 2, 1], 2).join() ===
-    [0, 2, 4].join(),
+  maxSumOfThreeSubarrays([1, 2, 1, 2, 1, 2, 1, 2, 1], 2).join() === [0, 2, 4].join(),
   2
 );

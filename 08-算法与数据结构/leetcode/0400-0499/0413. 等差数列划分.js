@@ -17,8 +17,7 @@ var numberOfArithmeticSlices = function (nums) {
       if (j - i === 2) {
         dp[i][j] = nums[i + 1] * 2 === nums[i] + nums[j];
       } else {
-        dp[i][j] =
-          dp[i][j - 1] && nums[i + 1] - nums[i] === nums[j] - nums[j - 1];
+        dp[i][j] = dp[i][j - 1] && nums[i + 1] - nums[i] === nums[j] - nums[j - 1];
       }
       if (dp[i][j]) {
         resp += 1;
@@ -52,7 +51,4 @@ var numberOfArithmeticSlices = function (nums) {
 console.assert(numberOfArithmeticSlices([1, 2, 3, 4]) === 3, 1); // [[1, 2, 3], [2, 3, 4], [1,2,3,4]]
 console.assert(numberOfArithmeticSlices([1]) === 0, 2);
 console.assert(numberOfArithmeticSlices([1, 1, 1, 1, 1]) === 6, 3);
-console.assert(
-  numberOfArithmeticSlices([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) === 55,
-  4
-);
+console.assert(numberOfArithmeticSlices([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) === 55, 4);

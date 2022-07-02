@@ -17,13 +17,12 @@ var checkInclusion = function (s1, s2) {
     count2[s2[i].charCodeAt(0) - 97] += 1;
     while (
       start <= i &&
-      count1[s2[start].charCodeAt(0) - 97] <
-        count2[s2[start].charCodeAt(0) - 97]
+      count1[s2[start].charCodeAt(0) - 97] < count2[s2[start].charCodeAt(0) - 97]
     ) {
       count2[s2[start].charCodeAt(0) - 97] -= 1;
       start += 1;
     }
-    if (count1.join("") === count2.join("")) return true;
+    if (count1.join('') === count2.join('')) return true;
   }
   return false;
 };
@@ -45,13 +44,13 @@ var checkInclusion = function (s1, s2) {
       count[s2[left].charCodeAt() - 97] -= 1;
       left += 1;
     }
-    if(right - left + 1 === len1) {
-      return true
+    if (right - left + 1 === len1) {
+      return true;
     }
   }
-  return false
+  return false;
 };
 
-console.assert(checkInclusion("ab", "eidbaooo") === true, 1);
-console.assert(checkInclusion("ab", "eidboaoo") === false, 2);
-console.assert(checkInclusion("a", "b") === false, 3);
+console.assert(checkInclusion('ab', 'eidbaooo') === true, 1);
+console.assert(checkInclusion('ab', 'eidboaoo') === false, 2);
+console.assert(checkInclusion('a', 'b') === false, 3);

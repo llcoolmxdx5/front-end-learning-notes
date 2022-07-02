@@ -5,10 +5,10 @@
 var longestNiceSubstring = function (s) {
   const check = (str) => {
     const set1 = new Set(str);
-    const set2 = new Set(str.split("").map((item) => item.toLowerCase()));
+    const set2 = new Set(str.split('').map((item) => item.toLowerCase()));
     return set1.size === set2.size * 2;
   };
-  let ans = "";
+  let ans = '';
   for (let i = 0, len = s.length; i < len; i++) {
     for (let j = i + 1; j < len; j++) {
       if (j - i + 1 > ans.length && check(s.slice(i, j + 1))) {
@@ -27,10 +27,10 @@ var longestNiceSubstring = function (s) {
     let lower = 0;
     let upper = 0;
     for (let j = i; j < n; ++j) {
-      if ("a" <= s[j] && s[j] <= "z") {
-        lower |= 1 << (s[j].charCodeAt() - "a".charCodeAt());
+      if ('a' <= s[j] && s[j] <= 'z') {
+        lower |= 1 << (s[j].charCodeAt() - 'a'.charCodeAt());
       } else {
-        upper |= 1 << (s[j].charCodeAt() - "A".charCodeAt());
+        upper |= 1 << (s[j].charCodeAt() - 'A'.charCodeAt());
       }
       if (lower === upper && j - i + 1 > maxLen) {
         maxPos = i;
@@ -42,7 +42,7 @@ var longestNiceSubstring = function (s) {
 };
 
 var longestNiceSubstring = function (s) {
-  if (s.length < 2) return "";
+  if (s.length < 2) return '';
   for (let i = 0; i < s.length; i++) {
     const c = s.charCodeAt(i);
     if (
@@ -58,5 +58,5 @@ var longestNiceSubstring = function (s) {
   return s;
 };
 
-console.assert(longestNiceSubstring("YazaAay") === "aAa", 1);
-console.assert(longestNiceSubstring("Bb") === "Bb", 2);
+console.assert(longestNiceSubstring('YazaAay') === 'aAa', 1);
+console.assert(longestNiceSubstring('Bb') === 'Bb', 2);

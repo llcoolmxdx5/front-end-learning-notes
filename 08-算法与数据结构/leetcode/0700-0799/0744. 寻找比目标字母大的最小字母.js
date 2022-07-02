@@ -21,5 +21,5 @@ var nextGreatestLetter = function (letters, target) {
   return letters[left];
 };
 
-console.assert(nextGreatestLetter(["c", "f", "j"], "a") === "c", 1);
-console.assert(nextGreatestLetter(["c", "f", "j"], "c") === "f", 2);
+console.assert(nextGreatestLetter(['c', 'f', 'j'], 'a') === 'c', 1);
+console.assert(nextGreatestLetter(['c', 'f', 'j'], 'c') === 'f', 2);

@@ -4,7 +4,7 @@
  * @return {string}
  */
 var mostCommonWord = function (paragraph, banned) {
-  const arr = paragraph.replace(/[!?',;.]/g, " ").split(" ");
+  const arr = paragraph.replace(/[!?',;.]/g, ' ').split(' ');
   let ans = arr[0].toLowerCase();
   const map = new Map();
   for (const str of arr) {
@@ -21,10 +21,8 @@ var mostCommonWord = function (paragraph, banned) {
 };
 
 console.assert(
-  mostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", [
-    "hit",
-  ]) === "ball",
+  mostCommonWord('Bob hit a ball, the hit BALL flew far after it was hit.', ['hit']) === 'ball',
   1
 );
 
-console.assert(mostCommonWord("Bob. hIt, baLl", ["bob", "hit"]) === "ball", 2);
+console.assert(mostCommonWord('Bob. hIt, baLl', ['bob', 'hit']) === 'ball', 2);

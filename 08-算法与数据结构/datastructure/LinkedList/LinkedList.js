@@ -1,5 +1,5 @@
-import { defaultEquals } from "./utils";
-import Node from "./Node";
+import { defaultEquals } from './utils';
+import Node from './Node';
 
 export default class LinkedList {
   constructor(equalsFn = defaultEquals) {
@@ -101,15 +101,11 @@ export default class LinkedList {
   // 让其只输出元素的值。
   toString() {
     if (this._head === null) {
-      return "";
+      return '';
     }
     let objString = `${this._head.element}`;
     let current = this._head.next;
-    for (
-      let index = 0;
-      index < this.size && current !== null && current !== undefined;
-      index++
-    ) {
+    for (let index = 0; index < this.size && current !== null && current !== undefined; index++) {
       objString += `,${current.element}`;
       current = current.next;
     }

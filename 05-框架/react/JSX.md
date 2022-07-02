@@ -7,9 +7,7 @@
 ```html
 <div class="app" id="appRoot">
   <h1 class="title">欢迎进入React的世界</h1>
-  <p>
-    React.js 是一个帮助你构建页面 UI 的库
-  </p>
+  <p>React.js 是一个帮助你构建页面 UI 的库</p>
 </div>
 ```
 
@@ -41,8 +39,8 @@
 下面代码:
 
 ```jsx
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 class App extends React.Component {
   render() {
@@ -55,30 +53,30 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
 编译之后将得到这样的代码:
 
 ```jsx
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 class App extends React.Component {
   render() {
     return React.createElement(
-      "div",
+      'div',
       {
-        className: "app",
-        id: "appRoot",
+        className: 'app',
+        id: 'appRoot',
       },
-      React.createElement("h1", { className: "title" }, "欢迎进入React的世界"),
-      React.createElement("p", null, "React.js 是一个构建页面 UI 的库")
+      React.createElement('h1', { className: 'title' }, '欢迎进入React的世界'),
+      React.createElement('p', null, 'React.js 是一个构建页面 UI 的库')
     );
   }
 }
 
-ReactDOM.render(React.createElement(App), document.getElementById("root"));
+ReactDOM.render(React.createElement(App), document.getElementById('root'));
 ```
 
 `React.createElement` 会构建一个 JavaScript 对象来描述你 HTML 结构的信息，包括标签名、属性、还有子元素等, 语法为

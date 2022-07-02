@@ -8,11 +8,11 @@ var largestOddNumber = function (num) {
       return num.slice(0, i + 1);
     }
   }
-  return "";
+  return '';
 };
 
-console.log(largestOddNumber("1")); // 1
-console.log(largestOddNumber("")); // ''
-console.log(largestOddNumber("4206")); // ''
-console.log(largestOddNumber("10133890")); // 1013389
-console.log(largestOddNumber("35427")); // 35427
+console.log(largestOddNumber('1')); // 1
+console.log(largestOddNumber('')); // ''
+console.log(largestOddNumber('4206')); // ''
+console.log(largestOddNumber('10133890')); // 1013389
+console.log(largestOddNumber('35427')); // 35427

@@ -28,7 +28,7 @@ var sumOfUnique = function (nums) {
       map.set(num, 2);
     }
   }
-  return ans
+  return ans;
 };
 
 console.assert(sumOfUnique([1, 2, 3, 4, 5]) === 15, 1);

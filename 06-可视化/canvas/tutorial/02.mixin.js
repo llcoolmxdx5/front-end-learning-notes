@@ -1,5 +1,5 @@
-const canvas = document.querySelector("#canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('#canvas');
+const ctx = canvas.getContext('2d');
 
 function draw() {
   roundedRect(ctx, 12, 12, 150, 150, 15);
@@ -40,7 +40,7 @@ function draw() {
   ctx.lineTo(83, 116);
   ctx.fill();
 
-  ctx.fillStyle = "white";
+  ctx.fillStyle = 'white';
   ctx.beginPath();
   ctx.moveTo(91, 96);
   ctx.bezierCurveTo(88, 96, 87, 99, 87, 101);
@@ -54,7 +54,7 @@ function draw() {
   ctx.bezierCurveTo(107, 99, 106, 96, 103, 96);
   ctx.fill();
 
-  ctx.fillStyle = "black";
+  ctx.fillStyle = 'black';
   ctx.beginPath();
   ctx.arc(101, 102, 2, 0, Math.PI * 2, true);
   ctx.fill();

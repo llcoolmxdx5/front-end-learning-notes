@@ -22,11 +22,11 @@ var connect = function (root) {
     for (let index = 0; index < length; index++) {
       const v = queue.shift();
       v.next = index < length - 1 ? queue[0] : null;
-      if(v.left !== null) {
-        queue.push(v.left)
+      if (v.left !== null) {
+        queue.push(v.left);
       }
-      if(v.right !== null) {
-        queue.push(v.right)
+      if (v.right !== null) {
+        queue.push(v.right);
       }
     }
   }

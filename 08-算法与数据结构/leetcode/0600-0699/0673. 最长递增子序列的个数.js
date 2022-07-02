@@ -29,7 +29,7 @@ var findNumberOfLIS = function (nums) {
       ans += cnt[i];
     }
   }
-  return ans
+  return ans;
 };
 
 console.assert(findNumberOfLIS([1, 3, 5, 4, 7]) === 2, 1);

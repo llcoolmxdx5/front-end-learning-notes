@@ -18,7 +18,7 @@ var rotateString = function (s, goal) {
   return s.length === goal.length && (s + s).indexOf(goal) !== -1;
 };
 
-console.assert(rotateString("abcde", "cdeab") === true, 1);
-console.assert(rotateString("cdeab", "abcde") === true, 2);
-console.assert(rotateString("abcde", "abced") === false, 3);
-console.assert(rotateString("bbbacddceeb", "ceebbbbacdd") === true, 4);
+console.assert(rotateString('abcde', 'cdeab') === true, 1);
+console.assert(rotateString('cdeab', 'abcde') === true, 2);
+console.assert(rotateString('abcde', 'abced') === false, 3);
+console.assert(rotateString('bbbacddceeb', 'ceebbbbacdd') === true, 4);

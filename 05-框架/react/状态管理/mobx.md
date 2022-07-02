@@ -5,31 +5,31 @@
 ## observable
 
 ```js
-import { observable } from "mobx";
+import { observable } from 'mobx';
 const map = observable.map({ a: 1, b: 2 });
-map.set("a", 11);
-console.log(map.get("a"));
-map.delete("a");
-console.log(map.has("a"));
+map.set('a', 11);
+console.log(map.get('a'));
+map.delete('a');
+console.log(map.has('a'));
 
 const obj = observable({ a: 1, b: 2 });
 obj.a = 11;
 console.log(obj.a);
 
-const arr = observable(["a", "b", "c", "d"]);
+const arr = observable(['a', 'b', 'c', 'd']);
 console.log(arr[0]);
 arr.pop();
-arr.push("e");
+arr.push('e');
 console.log(arr);
 
 const num = observable.box(10);
-const str = observable.box("hello");
+const str = observable.box('hello');
 const bool = observable.box(true);
 num.set(100);
 console.log(num.get(), str.get(), bool.get());
 
 class Store {
-  @observable arr = ["a"];
+  @observable arr = ['a'];
   @observable obj = { a: 1 };
   @observable map = new Map();
 }
@@ -38,7 +38,7 @@ class Store {
 ## 对 observables 作出响应
 
 ```js
-import { observable, autorun, when, reaction, computed } from "mobx";
+import { observable, autorun, when, reaction, computed } from 'mobx';
 ```
 
 ### autorun
@@ -51,12 +51,12 @@ import { observable, autorun, when, reaction, computed } from "mobx";
 
 ```js
 let obj = observable({
-  title: "message",
+  title: 'message',
 });
 autorun(() => {
   console.log(obj.title);
 });
-obj.title = "hello";
+obj.title = 'hello';
 ```
 
 ### when
@@ -73,7 +73,7 @@ when(
     return store.bool;
   },
   () => {
-    console.log("when ");
+    console.log('when ');
   }
 );
 ```
@@ -113,7 +113,7 @@ class Store {
 ## 改变 observables 状态
 
 ```js
-import { action, runInAction } from "mobx";
+import { action, runInAction } from 'mobx';
 ```
 
 ### action
@@ -121,7 +121,7 @@ import { action, runInAction } from "mobx";
 ```js
 class Store {
   @action bar() {
-    this.str = "world";
+    this.str = 'world';
     this.num = 40;
   }
 }
@@ -137,7 +137,7 @@ store.bar(); // 调用action，只会执行一次
 class Store {
   // this 永远都是正确的
   @action.bound foo() {
-    this.str = "world";
+    this.str = 'world';
     this.num = 40;
   }
 }
@@ -203,10 +203,10 @@ yarn add mobx mobx-react;
 在项目根目录下创建 store 目录，在 store 目录下创建 index.js，内容如下：
 
 ```js
-import { observable, action, computed, runInAction } from "mobx";
+import { observable, action, computed, runInAction } from 'mobx';
 
 class AppStore {
-  @observable title = "mobx";
+  @observable title = 'mobx';
   @observable todos = [];
   @computed get desc() {
     return `一共${this.todos.length}条`;
@@ -234,10 +234,10 @@ export default store;
 修改项目根目录下的 App.js
 
 ```jsx
-import React, { Component } from "react";
-import Home from "./pages/Home";
-import { Provider } from "mobx-react";
-import store from "./store/";
+import React, { Component } from 'react';
+import Home from './pages/Home';
+import { Provider } from 'mobx-react';
+import store from './store/';
 export default class App extends Component {
   render() {
     return (
@@ -254,11 +254,11 @@ export default class App extends Component {
 在项目根目录下创建 pages 文件夹，在 pages 文件夹下创建 Home.js 组件，内容如下：
 
 ```jsx
-import React, { Component } from "react";
-import { observer, inject } from "mobx-react";
-import store from "../store";
+import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
+import store from '../store';
 
-@inject("store")
+@inject('store')
 @observer
 class Home extends Component {
   addTodo = (item) => {
@@ -282,10 +282,8 @@ class Home extends Component {
     return (
       <>
         <div>{store.title}</div>
-        <button onClick={this.addTodo("这是一条内容")}>添加</button>
-        <button onClick={this.asyncAddTodo("这是异步添加的内容")}>
-          async添加
-        </button>
+        <button onClick={this.addTodo('这是一条内容')}>添加</button>
+        <button onClick={this.asyncAddTodo('这是异步添加的内容')}>async添加</button>
         <h6>{store.desc}</h6>
         {store.todos.map((item, index) => (
           <div key={index}>{item}</div>

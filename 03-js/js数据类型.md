@@ -45,7 +45,7 @@ let a = {
     return 0;
   },
   toString() {
-    return "1";
+    return '1';
   },
   [Symbol.toPrimitive]() {
     return 2;
@@ -62,7 +62,7 @@ let a = {
 - 如果一方不是字符串或者数字，那么会将它转换为数字或者字符串
 
 ```js
-1 + "1"; // '11'
+1 + '1'; // '11'
 true + true; // 2
 4 + [1, 2, 3]; // "41,2,3"
 ```
@@ -75,7 +75,7 @@ true + true; // 2
 另外对于加法还需要注意这个表达式 'a' + + 'b'
 
 ```js
-"a" + +"b"; // -> "aNaN"
+'a' + +'b'; // -> "aNaN"
 ```
 
 因为 + 'b' 等于 NaN，所以结果为 "aNaN"，你可能也会在一些代码中看到过 + '1' 的形式来快速获取 number 类型。
@@ -83,7 +83,7 @@ true + true; // 2
 那么对于除了加法的运算符来说，只要其中一方是数字，那么另一方就会被转为数字
 
 ```js
-4 * "3"; // 12
+4 * '3'; // 12
 4 * []; // 0
 4 * [1, 2]; // NaN
 ```
@@ -99,7 +99,7 @@ let a = {
     return 0;
   },
   toString() {
-    return "1";
+    return '1';
   },
 };
 a > -1; // true
@@ -115,7 +115,7 @@ typeof 返回一个表示数据类型的字符串，返回结果包括：number�
 
 ```js
 typeof Symbol(); // symbol 有效
-typeof ""; // string 有效
+typeof ''; // string 有效
 typeof 1; // number 有效
 typeof 1n; // bigint 有效
 typeof true; // boolean 有效
@@ -149,7 +149,7 @@ constructor 作用和 instanceof 非常相似。但 constructor 检测 Object �
 Object.prototype.toString.call() 是最准确最常用的方式 返回一个字符串, 不能检测 NaN
 
 ```js
-Object.prototype.toString.call("").slice(7, -1); // String
+Object.prototype.toString.call('').slice(7, -1); // String
 Object.prototype.toString.call(1).slice(7, -1); // Number
 Object.prototype.toString.call(NaN).slice(7, -1); // Number
 Object.prototype.toString.call(1n).slice(7, -1); // BigInt

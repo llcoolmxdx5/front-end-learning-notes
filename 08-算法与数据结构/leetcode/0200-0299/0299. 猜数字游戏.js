@@ -50,7 +50,7 @@ var getHint = function (secret, guess) {
   return `${bulls}A${cows}B`;
 };
 
-console.assert(getHint("1807", "7810") === "1A3B", 1);
-console.assert(getHint("1123", "0111") === "1A1B", 2);
-console.assert(getHint("1", "0") === "0A0B", 3);
-console.assert(getHint("1", "1") === "1A0B", 4);
+console.assert(getHint('1807', '7810') === '1A3B', 1);
+console.assert(getHint('1123', '0111') === '1A1B', 2);
+console.assert(getHint('1', '0') === '0A0B', 3);
+console.assert(getHint('1', '1') === '1A0B', 4);

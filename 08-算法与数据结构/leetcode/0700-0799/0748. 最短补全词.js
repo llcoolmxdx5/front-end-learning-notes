@@ -5,7 +5,7 @@
  */
 var shortestCompletingWord = function (licensePlate, words) {
   let res;
-  const str = licensePlate.replace(/[0-9 ]/g, "").toLowerCase();
+  const str = licensePlate.replace(/[0-9 ]/g, '').toLowerCase();
   const originStr = new Array(26).fill(0);
   for (let i = 0, len = str.length; i < len; i++) {
     originStr[str[i].charCodeAt() - 97] += 1;
@@ -31,72 +31,67 @@ var shortestCompletingWord = function (licensePlate, words) {
 };
 
 console.assert(
-  shortestCompletingWord("AN87005", [
-    "participant",
-    "individual",
-    "start",
-    "exist",
-    "above",
-    "already",
-    "easy",
-    "attack",
-    "player",
-    "important",
-  ]) === "important",
+  shortestCompletingWord('AN87005', [
+    'participant',
+    'individual',
+    'start',
+    'exist',
+    'above',
+    'already',
+    'easy',
+    'attack',
+    'player',
+    'important',
+  ]) === 'important',
   0
 );
 console.assert(
-  shortestCompletingWord("1s3 PSt", ["step", "steps", "stripe", "stepple"]) ===
-    "steps",
+  shortestCompletingWord('1s3 PSt', ['step', 'steps', 'stripe', 'stepple']) === 'steps',
   1
 );
+console.assert(shortestCompletingWord('1s3 456', ['looks', 'pest', 'stew', 'show']) === 'pest', 2);
 console.assert(
-  shortestCompletingWord("1s3 456", ["looks", "pest", "stew", "show"]) ===
-    "pest",
-  2
-);
-console.assert(
-  shortestCompletingWord("Ah71752", [
-    "suggest",
-    "letter",
-    "of",
-    "husband",
-    "easy",
-    "education",
-    "drug",
-    "prevent",
-    "writer",
-    "old",
-  ]) === "husband",
+  shortestCompletingWord('Ah71752', [
+    'suggest',
+    'letter',
+    'of',
+    'husband',
+    'easy',
+    'education',
+    'drug',
+    'prevent',
+    'writer',
+    'old',
+  ]) === 'husband',
   3
 );
 console.assert(
-  shortestCompletingWord("OgEu755", [
-    "enough",
-    "these",
-    "play",
-    "wide",
-    "wonder",
-    "box",
-    "arrive",
-    "money",
-    "tax",
-    "thus",
-  ]) === "enough",
+  shortestCompletingWord('OgEu755', [
+    'enough',
+    'these',
+    'play',
+    'wide',
+    'wonder',
+    'box',
+    'arrive',
+    'money',
+    'tax',
+    'thus',
+  ]) === 'enough',
   4
 );
 console.assert(
-  shortestCompletingWord("iMSlpe4", [
-    "claim",
-    "consumer",
-    "student",
-    "camera",
-    "public",
-    "never",
-    "wonder",
-    "simple",
-    "thought",
-    "use",
-  ]) === "simple",
+  shortestCompletingWord('iMSlpe4', [
+    'claim',
+    'consumer',
+    'student',
+    'camera',
+    'public',
+    'never',
+    'wonder',
+    'simple',
+    'thought',
+    'use',
+  ]) === 'simple',
   5
 );

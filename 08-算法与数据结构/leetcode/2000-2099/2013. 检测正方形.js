@@ -32,14 +32,8 @@ class DetectSquares {
       if (col !== y) {
         // 根据对称性，这里可以不用取绝对值
         let d = col - y;
-        res +=
-          (colCnt.get(x) || 0) *
-          (yCnt.get(x + d) || 0) *
-          (colCnt.get(x + d) || 0);
-        res +=
-          (colCnt.get(x) || 0) *
-          (yCnt.get(x - d) || 0) *
-          (colCnt.get(x - d) || 0);
+        res += (colCnt.get(x) || 0) * (yCnt.get(x + d) || 0) * (colCnt.get(x + d) || 0);
+        res += (colCnt.get(x) || 0) * (yCnt.get(x - d) || 0) * (colCnt.get(x - d) || 0);
       }
     }
     return res;

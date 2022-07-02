@@ -41,7 +41,7 @@
  * @return {NestedInteger}
  */
 var deserialize = function (s) {
-  if (s[0] !== "[") {
+  if (s[0] !== '[') {
     return new NestedInteger(parseInt(s));
   }
   const stack = [];
@@ -50,13 +50,13 @@ var deserialize = function (s) {
   for (let i = 0; i < s.length; i++) {
     const str = s[i];
     switch (str) {
-      case "[":
+      case '[':
         stack.push(new NestedInteger());
         break;
-      case "-":
+      case '-':
         sign = true;
         break;
-      case ",":
+      case ',':
         console.log(curVal, stack);
         if (/[0-9]/.test(s[i - 1])) {
           stack.at(-1).add(new NestedInteger(sign ? -curVal : curVal));
@@ -64,7 +64,7 @@ var deserialize = function (s) {
         curVal = 0;
         sign = false;
         break;
-      case "]":
+      case ']':
         // 只有上一个字符是数字才加入新的数字，否则可能是 "[]"
         if (/[0-9]/.test(s[i - 1])) {
           stack.at(-1).add(new NestedInteger(sign ? -curVal : curVal));

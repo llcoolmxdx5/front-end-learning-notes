@@ -31,7 +31,7 @@ export default React.memo(MyComponent, areEqual);
 
 ```jsx
 const Child = (props) => {
-  console.log("子组件?");
+  console.log('子组件?');
   return <div>我是一个子组件</div>;
 };
 const ChildMemo = memo(Child);
@@ -65,11 +65,11 @@ interface ChildProps {
   onClick: Function;
 }
 const Child = ({ name, onClick }: ChildProps): JSX.Element => {
-  console.log("子组件?");
+  console.log('子组件?');
   return (
     <>
       <div>我是一个子组件，父级传过来的数据：{name}</div>
-      <button onClick={onClick.bind(null, "新的子组件name")}>改变name</button>
+      <button onClick={onClick.bind(null, '新的子组件name')}>改变name</button>
     </>
   );
 };
@@ -77,7 +77,7 @@ const ChildMemo = memo(Child);
 
 const Page = (props) => {
   const [count, setCount] = useState(0);
-  const [name, setName] = useState("Child组件");
+  const [name, setName] = useState('Child组件');
   return (
     <>
       <button
@@ -88,10 +88,7 @@ const Page = (props) => {
         加1
       </button>
       <p>count:{count}</p>
-      <ChildMemo
-        name={name}
-        onClick={useCallback((newName: string) => setName(newName), [])}
-      />
+      <ChildMemo name={name} onClick={useCallback((newName: string) => setName(newName), [])} />
       {/* useCallback((newName: string) => setName(newName),[]) */}
       {/* 这里使用了useCallback优化了传递给子组件的函数，只初始化一次这个函数，下次不产生新的函数 */}
     </>
@@ -108,13 +105,11 @@ interface ChildProps {
   onClick: Function;
 }
 const Child = ({ name, onClick }: ChildProps): JSX.Element => {
-  console.log("子组件?");
+  console.log('子组件?');
   return (
     <>
-      <div style={{ color: name.color }}>
-        我是一个子组件，父级传过来的数据：{name.name}
-      </div>
-      <button onClick={onClick.bind(null, "新的子组件name")}>改变name</button>
+      <div style={{ color: name.color }}>我是一个子组件，父级传过来的数据：{name.name}</div>
+      <button onClick={onClick.bind(null, '新的子组件name')}>改变name</button>
     </>
   );
 };
@@ -122,7 +117,7 @@ const ChildMemo = memo(Child);
 
 const Page = (props) => {
   const [count, setCount] = useState(0);
-  const [name, setName] = useState("Child组件");
+  const [name, setName] = useState('Child组件');
   return (
     <>
       <button
@@ -134,7 +129,7 @@ const Page = (props) => {
       </button>
       <p>count:{count}</p>
       <ChildMemo
-        name={{ name, color: name.indexOf("name") !== -1 ? "red" : "green" }}
+        name={{ name, color: name.indexOf('name') !== -1 ? 'red' : 'green' }}
         onClick={useCallback((newName: string) => setName(newName), [])}
       />
     </>

@@ -1,4 +1,4 @@
-import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
+import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
 
 /**
  * @param {number} a
@@ -8,10 +8,10 @@ import PriorityQueue from "../../datastructure/Queue/PriorityQueue";
  */
 var longestDiverseString = function (a, b, c) {
   const pq = new PriorityQueue((a, b) => a[1] > b[1]);
-  pq.offer(["a", a]);
-  pq.offer(["b", b]);
-  pq.offer(["c", c]);
-  let ans = "";
+  pq.offer(['a', a]);
+  pq.offer(['b', b]);
+  pq.offer(['c', c]);
+  let ans = '';
   while (pq.peek()[1]) {
     const [str, count] = pq.poll();
     if (ans[ans.length - 1] !== str) {
@@ -42,9 +42,9 @@ var longestDiverseString = function (a, b, c) {
 var longestDiverseString = function (a, b, c) {
   const res = [];
   const arr = [
-    [a, "a"],
-    [b, "b"],
-    [c, "c"],
+    [a, 'a'],
+    [b, 'b'],
+    [c, 'c'],
   ];
 
   while (true) {
@@ -68,8 +68,8 @@ var longestDiverseString = function (a, b, c) {
     }
   }
 
-  return res.join("");
+  return res.join('');
 };
 
-console.assert(longestDiverseString(1, 1, 7) === "ccaccbcc", 1);
-console.assert(longestDiverseString(2, 2, 1) === "aabbc", 2);
+console.assert(longestDiverseString(1, 1, 7) === 'ccaccbcc', 1);
+console.assert(longestDiverseString(2, 2, 1) === 'aabbc', 2);

@@ -36,9 +36,7 @@
 
    ```html
    [v-cloak] { display: none; }
-   <div v-cloak>
-     {{ message }}
-   </div>
+   <div v-cloak>{{ message }}</div>
    ```
 
 2. v-text v-html
@@ -80,17 +78,13 @@
    基于源数据多次渲染元素或模板块。此指令之值，必须使用特定语法 alias in expression ，为当前遍历的元素提供别名
 
    ```html
-   <div v-for="item in items">
-     {{ item.text }}
-   </div>
+   <div v-for="item in items">{{ item.text }}</div>
    <!-- 另外也可以为数组索引指定别名 (或者用于对象的键) -->
    <div v-for="(item, index) in items"></div>
    <div v-for="(val, key) in object"></div>
    <div v-for="(val, key, index) in object"></div>
    <!-- v-for 默认行为试着不改变整体，而是替换元素。迫使其重新排序的元素，你需要提供一个 key 的特殊属性 -->
-   <div v-for="item in items" :key="item.id">
-     {{ item.text }}
-   </div>
+   <div v-for="item in items" :key="item.id">{{ item.text }}</div>
    ```
 
 6. v-on
@@ -182,9 +176,9 @@
    </div>
    <script>
      var vm = new Vue({
-       el: "#app",
+       el: '#app',
        data: {
-         info: "猥琐发育,别浪",
+         info: '猥琐发育,别浪',
          intervalId: null,
        },
        methods: {
@@ -297,7 +291,7 @@
 
 ```js
 // 注册一个全局自定义指令 `v-focus`
-Vue.directive("focus", {
+Vue.directive('focus', {
   // 当被绑定的元素插入到 DOM 中时……
   inserted: function (el) {
     // 聚焦元素
@@ -349,8 +343,8 @@ filters: {// 私有局部过滤器，只能在 当前 VM 对象所控制的 View
 
 ```js
 // 在创建 Vue 实例之前全局定义过滤器
-Vue.filter("capitalize", function (value) {
-  if (!value) return "";
+Vue.filter('capitalize', function (value) {
+  if (!value) return '';
   value = value.toString();
   return value.charAt(0).toUpperCase() + value.slice(1);
 });
@@ -423,16 +417,15 @@ filterA 被定义为接收三个参数的过滤器函数。其中 message 的值
 </div>
 <script>
   // 定义一个名为 button-counter 的新组件
-  Vue.component("button-counter", {
+  Vue.component('button-counter', {
     data: function () {
       return {
         count: 0,
       };
     },
-    template:
-      '<button v-on:click="count++">You clicked me {{ count }} times.</button>',
+    template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>',
   });
-  new Vue({ el: "#components-demo" });
+  new Vue({ el: '#components-demo' });
 </script>
 ```
 
@@ -458,10 +451,10 @@ var ComponentC = {
   /* ... */
 };
 new Vue({
-  el: "#app",
+  el: '#app',
   components: {
-    "component-a": ComponentA,
-    "component-b": ComponentB,
+    'component-a': ComponentA,
+    'component-b': ComponentB,
   },
 });
 ```
@@ -474,7 +467,7 @@ var ComponentA = {
 };
 var ComponentB = {
   components: {
-    "component-a": ComponentA,
+    'component-a': ComponentA,
   },
   // ...
 };
@@ -483,7 +476,7 @@ var ComponentB = {
 或者如果你通过 Babel 和 webpack 使用 ES2015 模块，那么代码看起来更像：
 
 ```js
-import ComponentA from "./ComponentA.vue";
+import ComponentA from './ComponentA.vue';
 export default {
   components: {
     ComponentA,
@@ -503,9 +496,9 @@ export default {
 <blog-post title="Blogging with Vue"></blog-post>
 <blog-post title="Why Vue is so fun"></blog-post>
 <script>
-  Vue.component("blog-post", {
-    props: ["title"],
-    template: "<h3>{{ title }}</h3>",
+  Vue.component('blog-post', {
+    props: ['title'],
+    template: '<h3>{{ title }}</h3>',
   });
 </script>
 ```
@@ -515,19 +508,15 @@ export default {
 发现我们可以使用 v-bind 来动态传递 prop。这在你一开始不清楚要渲染的具体内容，比如从一个 API 获取博文列表的时候，是非常有用的
 
 ```html
-<blog-post
-  v-for="post in posts"
-  v-bind:key="post.id"
-  v-bind:title="post.title"
-></blog-post>
+<blog-post v-for="post in posts" v-bind:key="post.id" v-bind:title="post.title"></blog-post>
 <script>
   new Vue({
-    el: "#blog-post-demo",
+    el: '#blog-post-demo',
     data: {
       posts: [
-        { id: 1, title: "My journey with Vue" },
-        { id: 2, title: "Blogging with Vue" },
-        { id: 3, title: "Why Vue is so fun" },
+        { id: 1, title: 'My journey with Vue' },
+        { id: 2, title: 'Blogging with Vue' },
+        { id: 3, title: 'Why Vue is so fun' },
       ],
     },
   });
@@ -604,7 +593,7 @@ props: {
 可以为组件的 prop 指定验证要求，为了定制 prop 的验证方式，你可以为 props 中的值提供一个带有验证需求的对象，而不是一个字符串数组
 
 ```js
-Vue.component("my-component", {
+Vue.component('my-component', {
   props: {
     propA: Number, // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
     propB: [String, Number], // 多个可能的类型
@@ -623,14 +612,14 @@ Vue.component("my-component", {
       type: Object,
       default: function () {
         // 对象或数组默认值必须从一个工厂函数获取
-        return { message: "hello" };
+        return { message: 'hello' };
       },
     },
     propF: {
       // 自定义验证函数
       validator: function (value) {
         // 这个值必须匹配下列字符串中的一个
-        return ["success", "warning", "danger"].indexOf(value) !== -1;
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1;
       },
     },
   },
@@ -656,10 +645,10 @@ v-on 可用于监听 DOM 事件,还可用于组件之间的自定义事件,子�
 ```html
 <base-checkbox v-model="lovingVue"></base-checkbox>
 <script>
-  Vue.component("base-checkbox", {
+  Vue.component('base-checkbox', {
     model: {
-      prop: "checked",
-      event: "change",
+      prop: 'checked',
+      event: 'change',
     },
     props: {},
     template: ``,
@@ -676,10 +665,7 @@ v-on 可用于监听 DOM 事件,还可用于组件之间的自定义事件,子�
 然后父组件可以监听那个事件并根据需要更新一个本地的数据属性。
 
 ```html
-<text-document
-  v-bind:title="doc.title"
-  v-on:update:title="doc.title = $event"
-></text-document>
+<text-document v-bind:title="doc.title" v-on:update:title="doc.title = $event"></text-document>
 ```
 
 为了方便起见，我们为这种模式提供一个缩写，即 `.sync` 修饰符：`<text-document v-bind.sync="doc"></text-document>`
@@ -695,7 +681,7 @@ v-on 可用于监听 DOM 事件,还可用于组件之间的自定义事件,子�
 父组件向子组件传递数据是通过 prop 传递的，子组件传递数据给父组件是通过\$emit 触发事件来做到的。
 
 ```js
-Vue.component("child", {
+Vue.component('child', {
   data() {
     return {
       mymessage: this.message,
@@ -705,15 +691,15 @@ Vue.component("child", {
         <div>
             <input type="text" v-model="mymessage" @input="passData(mymessage)"> </div>
     `,
-  props: ["message"], //得到父组件传递过来的数据
+  props: ['message'], //得到父组件传递过来的数据
   methods: {
     passData(val) {
       //触发父组件中的事件
-      this.$emit("getChildData", val);
+      this.$emit('getChildData', val);
     },
   },
 });
-Vue.component("parent", {
+Vue.component('parent', {
   template: `
         <div>
             <p>this is parent compoent!</p>
@@ -722,7 +708,7 @@ Vue.component("parent", {
     `,
   data() {
     return {
-      message: "hello",
+      message: 'hello',
     };
   },
   methods: {
@@ -733,7 +719,7 @@ Vue.component("parent", {
   },
 });
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   template: `
         <div>
             <parent></parent>
@@ -755,7 +741,7 @@ var app = new Vue({
 如果采用第一种方法，我们必须让组件 A 通过 prop 传递消息给组件 B，组件 B 在通过 prop 传递消息给组件 C；要是组件 A 和组件 C 之间有更多的组件，那采用这种方式就很复杂了。Vue 2.4 开始提供了$attrs和$listeners 来解决这个问题，能够让组件 A 之间传递消息给组件 C。
 
 ```js
-Vue.component("C", {
+Vue.component('C', {
   template: `
         <div>
             <input type="text" v-model="$attrs.messagec" @input="passCData($attrs.messagec)"> </div>
@@ -763,11 +749,11 @@ Vue.component("C", {
   methods: {
     passCData(val) {
       //触发父组件A中的事件
-      this.$emit("getCData", val);
+      this.$emit('getCData', val);
     },
   },
 });
-Vue.component("B", {
+Vue.component('B', {
   data() {
     return {
       mymessage: this.message,
@@ -781,15 +767,15 @@ Vue.component("B", {
             <C v-bind="$attrs" v-on="$listeners"></C>
         </div>
     `,
-  props: ["message"], //得到父组件传递过来的数据
+  props: ['message'], //得到父组件传递过来的数据
   methods: {
     passData(val) {
       //触发父组件中的事件
-      this.$emit("getChildData", val);
+      this.$emit('getChildData', val);
     },
   },
 });
-Vue.component("A", {
+Vue.component('A', {
   template: `
         <div>
             <p>this is parent compoent!</p>
@@ -798,22 +784,22 @@ Vue.component("A", {
     `,
   data() {
     return {
-      message: "hello",
-      messagec: "hello c", //传递给c组件的数据
+      message: 'hello',
+      messagec: 'hello c', //传递给c组件的数据
     };
   },
   methods: {
     getChildData(val) {
-      console.log("这是来自B组件的数据");
+      console.log('这是来自B组件的数据');
     },
     //执行C子组件触发的事件
     getCData(val) {
-      console.log("这是来自C组件的数据：" + val);
+      console.log('这是来自C组件的数据：' + val);
     },
   },
 });
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   template: `
         <div>
             <A></A>
@@ -827,10 +813,10 @@ var app = new Vue({
 上面两种方式处理的都是父子组件之间的数据传递，而如果两个组件不是父子关系呢？这种情况下可以使用中央事件总线的方式。新建一个 Vue 事件 bus 对象，然后通过 bus.$emit触发事件，bus.$on 监听触发的事件。
 
 ```js
-Vue.component("brother1", {
+Vue.component('brother1', {
   data() {
     return {
-      mymessage: "hello brother1",
+      mymessage: 'hello brother1',
     };
   },
   template: `
@@ -841,11 +827,11 @@ Vue.component("brother1", {
     `,
   methods: {
     passData(val) {
-      bus.$emit("globalEvent", val); //触发全局事件globalEvent
+      bus.$emit('globalEvent', val); //触发全局事件globalEvent
     },
   },
 });
-Vue.component("brother2", {
+Vue.component('brother2', {
   template: `
         <div>
             <p>this is brother2 compoent!</p>
@@ -854,12 +840,12 @@ Vue.component("brother2", {
     `,
   data() {
     return {
-      mymessage: "hello brother2",
-      brothermessage: "",
+      mymessage: 'hello brother2',
+      brothermessage: '',
     };
   },
   mounted() {
-    bus.$on("globalEvent", (val) => {
+    bus.$on('globalEvent', (val) => {
       //绑定全局事件globalEvent
       this.brothermessage = val;
     });
@@ -867,7 +853,7 @@ Vue.component("brother2", {
 });
 var bus = new Vue(); //中央事件总线
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   template: `
         <div>
             <brother1></brother1>
@@ -882,8 +868,8 @@ var app = new Vue({
 父组件中通过 provider 来提供变量，然后在子组件中通过 inject 来注入变量。不论子组件有多深，只要调用了 inject 那么就可以注入 provider 中的数据。而不是局限于只能从当前父组件的 prop 属性来获取数据，只要在父组件的生命周期内，子组件都可以调用。
 
 ```js
-Vue.component("child", {
-  inject: ["for"], //得到父组件传递过来的数据
+Vue.component('child', {
+  inject: ['for'], //得到父组件传递过来的数据
   data() {
     return {
       mymessage: this.for,
@@ -895,7 +881,7 @@ Vue.component("child", {
         </div>
     `,
 });
-Vue.component("parent", {
+Vue.component('parent', {
   template: `
         <div>
             <p>this is parent compoent!</p>
@@ -903,16 +889,16 @@ Vue.component("parent", {
         </div>
     `,
   provide: {
-    for: "test",
+    for: 'test',
   },
   data() {
     return {
-      message: "hello",
+      message: 'hello',
     };
   },
 });
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   template: `
         <div>
             <parent></parent>
@@ -926,7 +912,7 @@ var app = new Vue({
 父组件通过 v-model 传递值给子组件时，会自动传递一个 value 的 prop 属性，在子组件中通过 this.\$emit(‘input’,val)自动修改 v-model 绑定的值
 
 ```js
-Vue.component("child", {
+Vue.component('child', {
   props: {
     value: String, //v-model会自动传递一个字段为value的prop属性
   },
@@ -937,7 +923,7 @@ Vue.component("child", {
   },
   methods: {
     changeValue() {
-      this.$emit("input", this.mymessage); //通过如此调用可以改变父组件上v-model绑定的值
+      this.$emit('input', this.mymessage); //通过如此调用可以改变父组件上v-model绑定的值
     },
   },
   template: `
@@ -946,7 +932,7 @@ Vue.component("child", {
         </div>
     `,
 });
-Vue.component("parent", {
+Vue.component('parent', {
   template: `
         <div>
             <p>this is parent compoent!</p>
@@ -956,12 +942,12 @@ Vue.component("parent", {
     `,
   data() {
     return {
-      message: "hello",
+      message: 'hello',
     };
   },
 });
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   template: `
         <div>
             <parent></parent>
@@ -973,7 +959,7 @@ var app = new Vue({
 #### 6.$parent和$children-父子组件通信
 
 ```js
-Vue.component("child", {
+Vue.component('child', {
   props: {
     value: String, //v-model会自动传递一个字段为value的prop属性
   },
@@ -993,7 +979,7 @@ Vue.component("child", {
         </div>
     `,
 });
-Vue.component("parent", {
+Vue.component('parent', {
   template: `
         <div>
             <p>this is parent compoent!</p>
@@ -1003,17 +989,17 @@ Vue.component("parent", {
     `,
   methods: {
     changeChildValue() {
-      this.$children[0].mymessage = "hello";
+      this.$children[0].mymessage = 'hello';
     },
   },
   data() {
     return {
-      message: "hello",
+      message: 'hello',
     };
   },
 });
 var app = new Vue({
-  el: "#app",
+  el: '#app',
   template: `
         <div>
             <parent></parent>
@@ -1100,9 +1086,7 @@ methods: {
 将 `<slot>` 元素作为承载分发内容的出口。它允许你像这样合成组件：
 
 ```html
-<navigation-link url="/profile">
-  Your Profile
-</navigation-link>
+<navigation-link url="/profile"> Your Profile </navigation-link>
 ```
 
 然后你在 `<navigation-link>` 的模板中可能会写为：
@@ -1140,9 +1124,7 @@ methods: {
 当你想在一个插槽中使用数据时，例如：
 
 ```html
-<navigation-link url="/profile">
-  Logged in as {{ user.name }}
-</navigation-link>
+<navigation-link url="/profile"> Logged in as {{ user.name }} </navigation-link>
 ```
 
 该插槽跟模板的其它地方一样可以访问相同的实例属性 (也就是相同的“作用域”)，而不能访问 `<navigation-link>` 的作用域。例如 url 是访问不到的：
@@ -1181,25 +1163,19 @@ methods: {
 现在当我在一个父级组件中使用 `<submit-button>` 并且不提供任何插槽内容时,`<submit-button></submit-button>`后备内容“Submit”将会被渲染：
 
 ```html
-<button type="submit">
-  Submit
-</button>
+<button type="submit">Submit</button>
 ```
 
 但是如果我们提供内容：
 
 ```html
-<submit-button>
-  Save
-</submit-button>
+<submit-button> Save </submit-button>
 ```
 
 则这个提供的内容将会被渲染从而取代后备内容：
 
 ```html
-<button type="submit">
-  Save
-</button>
+<button type="submit">Save</button>
 ```
 
 #### 具名插槽
@@ -1306,18 +1282,14 @@ methods: {
 <span>
   <slot>{{ user.lastName }}</slot>
 </span>
-<current-user>
-  {{ user.firstName }}
-</current-user>
+<current-user> {{ user.firstName }} </current-user>
 ```
 
 然而上述代码不会正常工作，因为只有 `<current-user>` 组件可以访问到 user 而我们提供的内容是在父级渲染的。为了让 user 在父级的插槽内容可用，我们可以将 user 作为一个 `<slot>` 元素的特性绑定上去：
 
 ```html
 <span>
-  <slot v-bind:user="user">
-    {{ user.lastName }}
-  </slot>
+  <slot v-bind:user="user"> {{ user.lastName }} </slot>
 </span>
 ```
 
@@ -1325,26 +1297,20 @@ methods: {
 
 ```html
 <current-user>
-  <template v-slot:default="slotProps">
-    {{ slotProps.user.firstName }}
-  </template>
+  <template v-slot:default="slotProps"> {{ slotProps.user.firstName }} </template>
 </current-user>
 ```
 
 在上述情况下，当被提供的内容只有默认插槽时，组件的标签才可以被当作插槽的模板来使用。这样我们就可以把 v-slot 直接用在组件上：
 
 ```html
-<current-user v-slot:default="slotProps">
-  {{ slotProps.user.firstName }}
-</current-user>
+<current-user v-slot:default="slotProps"> {{ slotProps.user.firstName }} </current-user>
 ```
 
 这种写法还可以更简单。就像假定未指明的内容对应默认插槽一样，不带参数的 v-slot 被假定对应默认插槽：
 
 ```html
-<current-user v-slot="slotProps">
-  {{ slotProps.user.firstName }}
-</current-user>
+<current-user v-slot="slotProps"> {{ slotProps.user.firstName }} </current-user>
 ```
 
 注意默认插槽的缩写语法不能和具名插槽混用，因为它会导致作用域不明确：
@@ -1353,9 +1319,7 @@ methods: {
 <!-- 无效，会导致警告 -->
 <current-user v-slot="slotProps">
   {{ slotProps.user.firstName }}
-  <template v-slot:other="otherSlotProps">
-    slotProps is NOT available here
-  </template>
+  <template v-slot:other="otherSlotProps"> slotProps is NOT available here </template>
 </current-user>
 ```
 
@@ -1363,37 +1327,27 @@ methods: {
 
 ```html
 <current-user>
-  <template v-slot:default="slotProps">
-    {{ slotProps.user.firstName }}
-  </template>
-  <template v-slot:other="otherSlotProps">
-    ...
-  </template>
+  <template v-slot:default="slotProps"> {{ slotProps.user.firstName }} </template>
+  <template v-slot:other="otherSlotProps"> ... </template>
 </current-user>
 ```
 
 作用域插槽的内部工作原理是将你的插槽内容包括在一个传入单个参数的函数里,这意味着 v-slot 的值实际上可以是任何能够作为函数定义中的参数的 JavaScript 表达式。所以在支持的环境下 (单文件组件或现代浏览器)，你也可以使用 ES2015 解构来传入具体的插槽 prop，如下:
 
 ```html
-<current-user v-slot="{ user }">
-  {{ user.firstName }}
-</current-user>
+<current-user v-slot="{ user }"> {{ user.firstName }} </current-user>
 ```
 
 这样可以使模板更简洁，尤其是在该插槽提供了多个 prop 的时候。它同样开启了 prop 重命名等其它可能，例如将 user 重命名为 person：
 
 ```html
-<current-user v-slot="{ user: person }">
-  {{ person.firstName }}
-</current-user>
+<current-user v-slot="{ user: person }"> {{ person.firstName }} </current-user>
 ```
 
 你甚至可以定义后备内容，用于插槽 prop 是 undefined 的情形：
 
 ```html
-<current-user v-slot="{ user = { firstName: 'Guest' } }">
-  {{ user.firstName }}
-</current-user>
+<current-user v-slot="{ user = { firstName: 'Guest' } }"> {{ user.firstName }} </current-user>
 ```
 
 ### 组件高级用法
@@ -1407,7 +1361,7 @@ methods: {
 当你使用 `Vue.component` 全局注册一个组件时，这个全局的 ID 会自动设置为该组件的 name 选项。
 
 ```js
-Vue.component("unique-name-of-my-component", {
+Vue.component('unique-name-of-my-component', {
   // ...
 });
 ```
@@ -1464,24 +1418,24 @@ template: '<div><stack-overflow></stack-overflow></div>'
   <component v-bind:is="currentTabComponent" class="tab"></component>
 </div>
 <script>
-  Vue.component("tab-home", {
-    template: "<div>Home component</div>",
+  Vue.component('tab-home', {
+    template: '<div>Home component</div>',
   });
-  Vue.component("tab-posts", {
-    template: "<div>Posts component</div>",
+  Vue.component('tab-posts', {
+    template: '<div>Posts component</div>',
   });
-  Vue.component("tab-archive", {
-    template: "<div>Archive component</div>",
+  Vue.component('tab-archive', {
+    template: '<div>Archive component</div>',
   });
   new Vue({
-    el: "#dynamic-component-demo",
+    el: '#dynamic-component-demo',
     data: {
-      currentTab: "Home",
-      tabs: ["Home", "Posts", "Archive"],
+      currentTab: 'Home',
+      tabs: ['Home', 'Posts', 'Archive'],
     },
     computed: {
       currentTabComponent: function () {
-        return "tab-" + this.currentTab.toLowerCase();
+        return 'tab-' + this.currentTab.toLowerCase();
       },
     },
   });
@@ -1504,11 +1458,11 @@ template: '<div><stack-overflow></stack-overflow></div>'
 在大型应用中，我们可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块。为了简化，Vue 允许你以一个工厂函数的方式定义你的组件，这个工厂函数会异步解析你的组件定义。Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染。
 
 ```js
-Vue.component("async-example", function (resolve, reject) {
+Vue.component('async-example', function (resolve, reject) {
   setTimeout(function () {
     // 向 `resolve` 回调传递组件定义
     resolve({
-      template: "<div>I am async!</div>",
+      template: '<div>I am async!</div>',
     });
   }, 1000);
 });
@@ -1517,11 +1471,11 @@ Vue.component("async-example", function (resolve, reject) {
 这个工厂函数会收到一个 `resolve` 回调，这个回调函数会在你从服务器得到组件定义的时候被调用。你也可以调用 `reject(reason)` 来表示加载失败。这里的 `setTimeout` 是为了演示用的，如何获取组件取决于你自己。一个推荐的做法是将异步组件和 `webpack` 的 `code-splitting` 功能一起配合使用
 
 ```js
-Vue.component("async-webpack-example", function (resolve) {
+Vue.component('async-webpack-example', function (resolve) {
   // 这个特殊的 `require` 语法将会告诉 webpack
   // 自动将你的构建代码切割成多个包，这些包
   // 会通过 Ajax 请求加载
-  require(["./my-async-component"], resolve);
+  require(['./my-async-component'], resolve);
 });
 ```
 
@@ -1529,9 +1483,9 @@ Vue.component("async-webpack-example", function (resolve) {
 
 ```js
 Vue.component(
-  "async-webpack-example",
+  'async-webpack-example',
   // 这个 `import` 函数会返回一个 `Promise` 对象。
-  () => import("./my-async-component")
+  () => import('./my-async-component')
 );
 ```
 
@@ -1541,7 +1495,7 @@ Vue.component(
 new Vue({
   // ...
   components: {
-    "my-component": () => import("./my-async-component"),
+    'my-component': () => import('./my-async-component'),
   },
 });
 ```
@@ -1557,8 +1511,8 @@ new Vue({
 ```
 
 ```js
-Vue.component("hello-world", {
-  template: "#hello-world-template",
+Vue.component('hello-world', {
+  template: '#hello-world-template',
 });
 ```
 
@@ -1614,7 +1568,7 @@ Vue.component("hello-world", {
 ```js
 var vm = new Vue({
   // 创建 Vue 实例，得到 ViewModel
-  el: "#app",
+  el: '#app',
   data: {
     isshow: false,
   },
@@ -1651,11 +1605,7 @@ var vm = new Vue({
 ```html
 <div id="app">
   <input type="button" value="切换动画" @click="isshow = !isshow" />
-  <transition
-    @before-enter="beforeEnter"
-    @enter="enter"
-    @after-enter="afterEnter"
-  >
+  <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
     <div v-if="isshow" class="show">OK</div>
   </transition>
 </div>
@@ -1722,15 +1672,15 @@ methods: {
 ```js
 // 创建 Vue 实例，得到 ViewModel
 var vm = new Vue({
-  el: "#app",
+  el: '#app',
   data: {
-    txt: "",
+    txt: '',
     list: [1, 2, 3, 4],
   },
   methods: {
     add() {
       this.list.push(this.txt);
-      this.txt = "";
+      this.txt = '';
     },
   },
 });

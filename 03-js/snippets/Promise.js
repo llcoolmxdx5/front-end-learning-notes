@@ -1,7 +1,7 @@
 // 先定义三个常量表示状态
-const PENDING = "pending";
-const FULFILLED = "fulfilled";
-const REJECTED = "rejected";
+const PENDING = 'pending';
+const FULFILLED = 'fulfilled';
+const REJECTED = 'rejected';
 
 // 新建 MyPromise 类
 class MyPromise {
@@ -63,10 +63,9 @@ class MyPromise {
   };
 
   then(onFulfilled, onRejected) {
-    const realOnFulfilled =
-      typeof onFulfilled === "function" ? onFulfilled : (value) => value;
+    const realOnFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (value) => value;
     const realOnRejected =
-      typeof onRejected === "function"
+      typeof onRejected === 'function'
         ? onRejected
         : (reason) => {
             throw reason;
@@ -115,7 +114,7 @@ class MyPromise {
     });
 
     // 为了链式调用这里直接 return promise2
-    return promise2
+    return promise2;
   }
 
   catch(onRejected) {
@@ -236,12 +235,10 @@ function resolvePromise(promise, x, resolve, reject) {
   // 如果 promise 和 x 指向同一对象，以 TypeError 为据因拒绝执行 promise
   // 这是为了防止死循环
   if (promise === x) {
-    return reject(
-      new TypeError("The promise and the return value are the same")
-    );
+    return reject(new TypeError('The promise and the return value are the same'));
   }
 
-  if (typeof x === "object" || typeof x === "function") {
+  if (typeof x === 'object' || typeof x === 'function') {
     // 这个坑是跑测试的时候发现的，如果x是null，应该直接resolve
     if (x === null) {
       return resolve(x);
@@ -257,7 +254,7 @@ function resolvePromise(promise, x, resolve, reject) {
     }
 
     // 如果 then 是函数
-    if (typeof then === "function") {
+    if (typeof then === 'function') {
       let called = false;
       // 将 x 作为函数的作用域 this 调用之
       // 传递两个回调函数作为参数，第一个参数叫做 resolvePromise ，第二个参数叫做 rejectPromise

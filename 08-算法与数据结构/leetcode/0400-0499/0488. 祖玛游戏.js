@@ -34,8 +34,8 @@ var findMinStep = function (board, hand) {
   return r === 6 ? -1 : r;
 };
 
-console.assert(findMinStep("WRRBBW", "RB") === -1, 1);
-console.assert(findMinStep("WWRRBBWW", "WRBRW") === 2, 2);
-console.assert(findMinStep("G", "GGGGG") === 2, 3);
-console.assert(findMinStep("RBYYBBRRB", "YRBGB") === 3, 4);
-console.assert(findMinStep("RRWWRRWWRR", "WW") === 2, 5);
+console.assert(findMinStep('WRRBBW', 'RB') === -1, 1);
+console.assert(findMinStep('WWRRBBWW', 'WRBRW') === 2, 2);
+console.assert(findMinStep('G', 'GGGGG') === 2, 3);
+console.assert(findMinStep('RBYYBBRRB', 'YRBGB') === 3, 4);
+console.assert(findMinStep('RRWWRRWWRR', 'WW') === 2, 5);

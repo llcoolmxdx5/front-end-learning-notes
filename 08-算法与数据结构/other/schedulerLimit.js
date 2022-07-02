@@ -37,11 +37,11 @@ const print = (msg) => {
   scheduler.add(() => timeout(1000)).then(() => console.log(msg));
 };
 
-print("1");
-print("2");
-print("3");
+print('1');
+print('2');
+print('3');
 setTimeout(() => {
-  print("4");
-  print("5");
-  print("6");
+  print('4');
+  print('5');
+  print('6');
 }, 2000);

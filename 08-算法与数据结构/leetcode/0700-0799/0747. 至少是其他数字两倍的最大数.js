@@ -12,7 +12,7 @@ var dominantIndex = function (nums) {
     if (value > first) {
       second = first;
       first = value;
-      ans = i
+      ans = i;
     } else if (value > second) {
       second = value;
     }
@@ -20,7 +20,7 @@ var dominantIndex = function (nums) {
   if (first / 2 >= second) {
     return ans;
   }
-  return -1
+  return -1;
 };
 
 console.assert(dominantIndex([3, 6, 1, 0]) === 1, 1);

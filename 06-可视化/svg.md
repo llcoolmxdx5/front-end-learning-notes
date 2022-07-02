@@ -1,9 +1,7 @@
 # svg
 
 ```html
-<svg width="500" height="500" style="background-color: #efefef;">
-  ....
-</svg>
+<svg width="500" height="500" style="background-color: #efefef;">....</svg>
 ```
 
 ## SVG 形状
@@ -73,10 +71,7 @@ rx 和 ry 属性可使矩形产生圆角。
 
 ```html
 <svg width="500" height="500" style="background-color: #efefef;">
-  <polygon
-    points="220,100 300,210 170,250"
-    style="fill:#cccccc; stroke:#000000; stroke-width:1"
-  />
+  <polygon points="220,100 300,210 170,250" style="fill:#cccccc; stroke:#000000; stroke-width:1" />
 </svg>
 ```
 
