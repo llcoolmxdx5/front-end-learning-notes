@@ -8,7 +8,7 @@ var myPow = function (x, n) {
 };
 
 var myPow = function (x, n) {
-  const quickMul = (number) => {
+  const quickMul = number => {
     if (number === 0) {
       return 1.0;
     }

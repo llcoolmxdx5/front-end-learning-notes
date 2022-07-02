@@ -25,7 +25,7 @@ console.assert(
     [1000, 1250],
     [2000, 3200],
   ]) === 3,
-  1
+  1,
 );
 console.assert(scheduleCourse([[1, 2]]) === 1, 2);
 console.assert(
@@ -33,7 +33,7 @@ console.assert(
     [3, 2],
     [4, 3],
   ]) === 0,
-  3
+  3,
 );
 console.assert(
   scheduleCourse([
@@ -45,7 +45,7 @@ console.assert(
     [10, 19],
     [4, 18],
   ]) === 4,
-  4
+  4,
 );
 console.assert(
   scheduleCourse([
@@ -53,5 +53,5 @@ console.assert(
     [2, 2],
     [1, 17],
   ]) === 3,
-  5
+  5,
 );

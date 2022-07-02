@@ -12,7 +12,7 @@ var trapRainWater = function (heightMap) {
   }
   let ans = 0;
   const pq = new PriorityQueue((a, b) => a.height - b.height < 0);
-  const visited = new Array(m).fill(0).map((_) => new Array(n).fill(false));
+  const visited = new Array(m).fill(0).map(_ => new Array(n).fill(false));
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
       if (i === 0 || i === m - 1 || j === 0 || j === n - 1) {
@@ -52,7 +52,7 @@ console.assert(
     [12, 13, 12, 12],
     [13, 13, 13, 13],
   ]) === 14,
-  3
+  3,
 );
 
 console.assert(
@@ -61,7 +61,7 @@ console.assert(
     [3, 2, 1, 3, 2, 4],
     [2, 3, 3, 2, 3, 1],
   ]) === 4,
-  1
+  1,
 );
 console.assert(
   trapRainWater([
@@ -71,5 +71,5 @@ console.assert(
     [3, 2, 2, 2, 3],
     [3, 3, 3, 3, 3],
   ]) === 10,
-  2
+  2,
 );

@@ -58,7 +58,7 @@ ReactDOM.render(
   <Router>
     <App />
   </Router>,
-  node
+  node,
 );
 ```
 
@@ -86,7 +86,7 @@ ReactDOM.render(
       </Route>
     </Switch>
   </Router>,
-  node
+  node,
 );
 ```
 
@@ -290,7 +290,7 @@ import { Link } from 'react-router-dom';
 允许访问组件的底层引用。
 
 ```js
-const refCallback = (node) => {
+const refCallback = node => {
   // node 指向最终挂载的 DOM 元素，在卸载时为 null
 };
 
@@ -734,7 +734,7 @@ createServer((req, res) => {
   const html = ReactDOMServer.renderToString(
     <StaticRouter location={req.url} context={context}>
       <App />
-    </StaticRouter>
+    </StaticRouter>,
   );
 
   // 如果使用 <Redirect>，context.url 将包含要重定向到的 URL
@@ -1171,7 +1171,7 @@ class Container extends React.Component {
   }
 
   render() {
-    return <MyComponent wrappedComponentRef={(c) => (this.component = c)} />;
+    return <MyComponent wrappedComponentRef={c => (this.component = c)} />;
   }
 }
 ```

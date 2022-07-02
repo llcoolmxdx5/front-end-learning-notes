@@ -4,11 +4,11 @@ const nest = <T extends Record<string | number, any>>(
   array: T[],
   idValue: string | null | number = null,
   idKey: string = 'id',
-  parentIdKey: string = 'parentId'
+  parentIdKey: string = 'parentId',
 ): Array<T & { children?: T[] }> => {
   return array
-    .filter((item) => item[parentIdKey] === idValue)
-    .map((item) => ({ ...item, children: nest(array, item[idKey]) }));
+    .filter(item => item[parentIdKey] === idValue)
+    .map(item => ({ ...item, children: nest(array, item[idKey]) }));
 };
 
 const comments: Array<{ id: number; parentId: null | number }> = [

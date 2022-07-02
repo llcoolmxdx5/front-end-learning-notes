@@ -88,7 +88,7 @@ function compileJS() {
             { test: /\.html$/, loader: 'string-loader' },
           ],
         },
-      })
+      }),
     )
     .pipe(dest('./dev/js/'));
 }
@@ -112,21 +112,21 @@ function startServer() {
           },
         }),
       ],
-    })
+    }),
   );
 }
 //监控文件的变化，当文件有变化时，同步到dev目录
 function watchFile() {
   // 生产模式不需要
-  watch('./src/**/*.js', (cb) => {
+  watch('./src/**/*.js', cb => {
     compileJS();
     cb();
   });
-  watch('./src/style/*.scss', (cb) => {
+  watch('./src/style/*.scss', cb => {
     compileCSS();
     cb();
   });
-  watch('./src/views/**/*.html', (cb) => {
+  watch('./src/views/**/*.html', cb => {
     copyHtml();
     compileJS();
     cb();
@@ -142,7 +142,7 @@ exports.default = series(
   remove,
   parallel(copyHtml, copyImages, copyLibs, compileJS, compileCSS, detailCompileCss),
   startServer,
-  watchFile
+  watchFile,
 );
 ```
 
@@ -213,7 +213,7 @@ function compileJS() {
             { test: /\.html$/, loader: 'string-loader' },
           ],
         },
-      })
+      }),
     )
     .pipe(rev())
     .pipe(dest('./dist/js/'))
@@ -232,7 +232,7 @@ function revCollector() {
 exports.default = series(
   remove,
   parallel(copyHtml, copyImages, copyLibs, compileJS, compileCSS, detailCompileCss),
-  revCollector
+  revCollector,
 );
 ```
 
@@ -374,7 +374,7 @@ gulp.task('init', function () {
         .pipe(
           load.babel({
             presets: ['@babel/env'],
-          })
+          }),
         )
         .pipe(gulp.dest('./dist'));
       done();
@@ -388,7 +388,7 @@ gulp.task('init', function () {
           .pipe(load.concat('main.min.js'))
           .pipe(load.uglify())
           .pipe(gulp.dest('./dist'));
-      })
+      }),
     );
     ```
 
@@ -404,7 +404,7 @@ gulp.task('init', function () {
           .pipe(
             load.babel({
               presets: ['@babel/env'],
-            })
+            }),
           )
           .pipe(gulp.dest('./dist'));
         res();
@@ -419,7 +419,7 @@ gulp.task('init', function () {
           .pipe(load.concat('main.min.js'))
           .pipe(load.uglify())
           .pipe(gulp.dest('./dist'));
-      })
+      }),
     );
     ```
 
@@ -436,7 +436,7 @@ gulp.task('init', function () {
         .pipe(
           load.babel({
             presets: ['@babel/env'],
-          })
+          }),
         )
         .pipe(gulp.dest('./dist'))
         .on('end', done);
@@ -450,7 +450,7 @@ gulp.task('init', function () {
           .pipe(load.concat('main.min.js'))
           .pipe(load.uglify())
           .pipe(gulp.dest('./dist'));
-      })
+      }),
     );
     ```
 
@@ -467,7 +467,7 @@ gulp.task('init', function () {
       .pipe(
         load.babel({
           presets: ['@babel/env'],
-        })
+        }),
       )
       .pipe(gulp.dest('./dist'));
   });
@@ -480,7 +480,7 @@ gulp.task('init', function () {
         .pipe(load.concat('main.min.js'))
         .pipe(load.uglify())
         .pipe(gulp.dest('./dist'));
-    })
+    }),
   );
   ```
 
@@ -642,7 +642,7 @@ gulp.task('init', function () {
       .pipe(
         load.babel({
           presets: ['@babel/env'],
-        })
+        }),
       )
       .pipe(load.concat('main.min.js'))
       .pipe(load.uglify())

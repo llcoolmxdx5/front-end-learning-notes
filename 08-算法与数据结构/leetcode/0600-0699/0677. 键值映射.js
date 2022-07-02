@@ -19,7 +19,7 @@ class MapSum1 {
   sum(prefix) {
     const { length } = prefix;
     let ans = 0;
-    [...this.map.keys()].forEach((key) => {
+    [...this.map.keys()].forEach(key => {
       if (key.slice(0, length) === prefix) {
         ans += this.map.get(key);
       }

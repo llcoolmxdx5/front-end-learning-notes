@@ -11,7 +11,7 @@
  * @return {string}
  */
 var tree2str = function (root) {
-  const dfs = (node) => {
+  const dfs = node => {
     if (!node) {
       return '';
     }

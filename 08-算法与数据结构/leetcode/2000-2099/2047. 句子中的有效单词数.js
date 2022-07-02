@@ -5,7 +5,7 @@
 var countValidWords = function (sentence) {
   const arr = sentence.split(' ');
   let count = 0;
-  const isValid = (str) => {
+  const isValid = str => {
     // 'a' 97, 'z' 122
     // '0' 48, '9' 57
     if (!str) return 0;

@@ -16,7 +16,7 @@ export default {
   },
   effects: {
     *asyncAdd(action, { put, call, select }) {
-      const a = yield select((state) => state.counter.number);
+      const a = yield select(state => state.counter.number);
       console.log(a);
       yield call(sleep, 1000);
       yield put({ type: 'add' });

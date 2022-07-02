@@ -5,7 +5,7 @@
 var findMinDifference = function (timePoints) {
   const arr = [];
   for (const timePoint of timePoints) {
-    const [hour, minute] = timePoint.split(':').map((str) => parseInt(str));
+    const [hour, minute] = timePoint.split(':').map(str => parseInt(str));
     arr.push(hour * 60 + minute);
   }
   const { length } = arr;

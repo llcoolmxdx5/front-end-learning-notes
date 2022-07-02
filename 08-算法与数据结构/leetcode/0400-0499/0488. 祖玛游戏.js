@@ -4,7 +4,7 @@
  * @return {number}
  */
 var findMinStep = function (board, hand) {
-  const combine = (board) => {
+  const combine = board => {
     for (let slow = (fast = 0); fast <= board.length; fast++) {
       if (board[slow] === board[fast]) continue;
       if (fast - slow > 2) {

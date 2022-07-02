@@ -109,8 +109,8 @@ let barChart = svg
   .data(dataset) //绑定数组
   .enter() // 指定选择集的enter部分
   .append('rect') // 添加足够数量的矩形
-  .attr('y', (d) => svgHeight - d) // d为数据集每一项的值, 取y坐标
-  .attr('height', (d) => d) // 设定高度
+  .attr('y', d => svgHeight - d) // d为数据集每一项的值, 取y坐标
+  .attr('height', d => d) // 设定高度
   .attr('width', barWidth - barPadding) // 设定宽度
   .attr('transform', (d, i) => {
     let translate = [barWidth * i, 0];
@@ -130,7 +130,7 @@ let text = svg
   .data(dataset)
   .enter()
   .append('text')
-  .text((d) => d)
+  .text(d => d)
   .attr('y', (d, i) => svgHeight - d - 2)
   .attr('x', (d, i) => barWidth * i)
   .attr('fill', '#A64C38');
@@ -192,8 +192,8 @@ let barChart = svg
   .data(dataset)
   .enter()
   .append('rect')
-  .attr('y', (d) => svgHeight - yScale(d))
-  .attr('height', (d) => yScale(d))
+  .attr('y', d => svgHeight - yScale(d))
+  .attr('height', d => yScale(d))
   .attr('width', barWidth - barPadding)
   .attr('transform', (d, i) => {
     let translate = [barWidth * i, 0];
@@ -312,7 +312,7 @@ let g = svg.append('g').attr('transform', 'translate(' + radius + ',' + radius +
 // D3提供了一些颜色比例尺，10就是10种颜色，20就是20种：
 let color = d3.scaleOrdinal(d3.schemeCategory10);
 
-let pie = d3.pie().value((d) => d.percentage);
+let pie = d3.pie().value(d => d.percentage);
 
 let path = d3.arc().outerRadius(radius).innerRadius(0);
 
@@ -321,15 +321,15 @@ let arc = g.selectAll('arc').data(pie(data)).enter().append('g');
 arc
   .append('path')
   .attr('d', path)
-  .attr('fill', (d) => color(d.data.percentage));
+  .attr('fill', d => color(d.data.percentage));
 
 let label = d3.arc().outerRadius(radius).innerRadius(0);
 
 arc
   .append('text')
-  .attr('transform', (d) => `translate(${label.centroid(d)})`)
+  .attr('transform', d => `translate(${label.centroid(d)})`)
   .attr('text-anchor', 'middle')
-  .text((d) => `${d.data.platform}:${d.data.percentage}%`);
+  .text(d => `${d.data.platform}:${d.data.percentage}%`);
 ```
 
 ### 9. 创建折线图
@@ -347,18 +347,18 @@ const api = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2019-03
  */
 document.addEventListener('DOMContentLoaded', function (event) {
   fetch(api)
-    .then((response) => response.json())
-    .then((data) => {
+    .then(response => response.json())
+    .then(data => {
       let parsedData = parseData(data);
       drawChart(parsedData);
     })
-    .catch((err) => console.log(err));
+    .catch(err => console.log(err));
 });
 
 /**
  * 将数据解析为键值对
  */
-parseData = (data) => {
+parseData = data => {
   let arr = [];
   for (let i in data.bpi) {
     arr.push({
@@ -372,7 +372,7 @@ parseData = (data) => {
 /**
  * 创建图表
  */
-drawChart = (data) => {
+drawChart = data => {
   let svgWidth = 600,
     svgHeight = 400;
   let margin = { top: 20, right: 20, bottom: 30, left: 50 };
@@ -389,17 +389,17 @@ drawChart = (data) => {
 
   let line = d3
     .line()
-    .x((d) => x(d.date))
-    .y((d) => y(d.value));
+    .x(d => x(d.date))
+    .y(d => y(d.value));
   x.domain(
     d3.extent(data, function (d) {
       return d.date;
-    })
+    }),
   );
   y.domain(
     d3.extent(data, function (d) {
       return d.value;
-    })
+    }),
   );
 
   g.append('g')

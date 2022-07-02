@@ -18,7 +18,7 @@ var subArrayRanges = function (nums) {
 };
 
 var subArrayRanges = function (nums) {
-  const maxSum = (nums) => {
+  const maxSum = nums => {
     let sum = 0;
     // 存储下标，这里先放个-1
     const stack = [-1];
@@ -36,7 +36,7 @@ var subArrayRanges = function (nums) {
     return sum;
   };
 
-  const minSum = (nums) => {
+  const minSum = nums => {
     let sum = 0;
     // 存储下标
     const stack = [-1];

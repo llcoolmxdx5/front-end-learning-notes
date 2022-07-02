@@ -12,7 +12,7 @@
  */
 var findTilt = function (root) {
   let ans = 0;
-  const dfs = (node) => {
+  const dfs = node => {
     if (!node) {
       return 0;
     }

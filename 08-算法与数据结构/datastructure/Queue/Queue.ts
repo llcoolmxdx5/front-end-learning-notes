@@ -4,7 +4,7 @@ export default class Queue<T = number> {
   private items: Map<number, T> = new Map();
 
   public enqueue(...args: T[]) {
-    args.forEach((item) => {
+    args.forEach(item => {
       this.items.set(this.count, item);
       this.count += 1;
     });
@@ -37,7 +37,7 @@ export default class Queue<T = number> {
       return '';
     }
     return Array.from({ length: this.size() }, (_, index) =>
-      this.items.get(this.lowestCount + index)
+      this.items.get(this.lowestCount + index),
     ).join(',');
   }
 }

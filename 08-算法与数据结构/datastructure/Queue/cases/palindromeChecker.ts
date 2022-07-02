@@ -6,7 +6,7 @@ const palindromeChecker = (aString: string) => {
     return false;
   }
   const dequeue = new Dequeue<string>();
-  aString.split('').forEach((item) => {
+  aString.split('').forEach(item => {
     dequeue.addFront(item);
   });
   while (dequeue.size() > 1) {

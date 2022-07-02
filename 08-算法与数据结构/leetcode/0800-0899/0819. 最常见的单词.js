@@ -22,7 +22,7 @@ var mostCommonWord = function (paragraph, banned) {
 
 console.assert(
   mostCommonWord('Bob hit a ball, the hit BALL flew far after it was hit.', ['hit']) === 'ball',
-  1
+  1,
 );
 
 console.assert(mostCommonWord('Bob. hIt, baLl', ['bob', 'hit']) === 'ball', 2);

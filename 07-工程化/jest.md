@@ -101,7 +101,7 @@ test.only("仅测试当前用例"，() => {
 
 ```js
 test('测试异步代码', () => {
-  return fetchData().then((data) => {
+  return fetchData().then(data => {
     expect(data.data).toEqual({ success: true });
   });
 });

@@ -45,6 +45,6 @@ function draw() {
   const div = document.createElement('div');
   div.innerHTML = html;
   document.body.appendChild(div);
-  document.querySelectorAll('td').forEach((td) => (td.style.padding = '15px'));
+  document.querySelectorAll('td').forEach(td => (td.style.padding = '15px'));
   setTimeout(insertCanvas, 1000);
 }

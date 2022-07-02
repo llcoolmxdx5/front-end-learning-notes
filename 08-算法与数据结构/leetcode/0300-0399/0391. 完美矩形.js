@@ -54,14 +54,14 @@ var isRectangleCover = function (rectangles) {
     maxY = Math.max(maxY, y2);
     sumArea += (x2 - x1) * (y2 - y1);
     const arr = [`${x1} ${y1}`, `${x1} ${y2}`, `${x2} ${y1}`, `${x2} ${y2}`];
-    arr.forEach((k) => (record.has(k) ? record.delete(k) : record.add(k)));
+    arr.forEach(k => (record.has(k) ? record.delete(k) : record.add(k)));
   }
 
   return (
     sumArea === (maxX - minX) * (maxY - minY) &&
     record.size === 4 &&
-    [`${minX} ${minY}`, `${minX} ${maxY}`, `${maxX} ${minY}`, `${maxX} ${maxY}`].every((k) =>
-      record.has(k)
+    [`${minX} ${minY}`, `${minX} ${maxY}`, `${maxX} ${minY}`, `${maxX} ${maxY}`].every(k =>
+      record.has(k),
     )
   );
 };
@@ -72,7 +72,7 @@ console.assert(
     [1, 1, 2, 2],
     [1, 1, 2, 2],
   ]) === false,
-  -1
+  -1,
 );
 
 console.assert(
@@ -90,7 +90,7 @@ console.assert(
     [5, 0, 6, 1],
     [4, 1, 5, 2],
   ]) === false,
-  0
+  0,
 );
 
 console.assert(
@@ -101,7 +101,7 @@ console.assert(
     [1, 3, 2, 4],
     [2, 3, 3, 4],
   ]) === true,
-  1
+  1,
 );
 console.assert(
   isRectangleCover([
@@ -110,7 +110,7 @@ console.assert(
     [3, 1, 4, 2],
     [3, 2, 4, 4],
   ]) === false,
-  2
+  2,
 );
 console.assert(
   isRectangleCover([
@@ -119,7 +119,7 @@ console.assert(
     [1, 3, 2, 4],
     [3, 2, 4, 4],
   ]) === false,
-  3
+  3,
 );
 console.assert(
   isRectangleCover([
@@ -128,7 +128,7 @@ console.assert(
     [1, 3, 2, 4],
     [2, 2, 4, 4],
   ]) === false,
-  4
+  4,
 );
 
 console.assert(
@@ -138,12 +138,12 @@ console.assert(
     [1, 1, 2, 2],
     [1, 1, 2, 2],
   ]) === false,
-  5
+  5,
 );
 console.assert(
   isRectangleCover([
     [0, 0, 1, 1],
     [1, 0, 1, 1],
   ]) === true,
-  6
+  6,
 );

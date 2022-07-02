@@ -5,7 +5,7 @@
  */
 var maxConsecutiveAnswers = function (answerKey, k) {
   const n = answerKey.length;
-  const maxConsecutiveChar = (char) => {
+  const maxConsecutiveChar = char => {
     let ans = 0;
     for (let left = 0, right = 0, sum = 0; right < n; right++) {
       sum += answerKey[right] !== char;

@@ -21,5 +21,5 @@ var toGoatLatin = function (sentence) {
 console.assert(
   toGoatLatin('The quick brown fox jumped over the lazy dog') ===
     'heTmaa uickqmaaa rownbmaaaa oxfmaaaaa umpedjmaaaaaa overmaaaaaaa hetmaaaaaaaa azylmaaaaaaaaa ogdmaaaaaaaaaa',
-  1
+  1,
 );

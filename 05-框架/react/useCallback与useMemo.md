@@ -30,18 +30,18 @@ export default React.memo(MyComponent, areEqual);
 每次父组件更新 `count` ，子组件都会更新。如下版本使用 `memo` ，`count` 变化子组件没有更新
 
 ```jsx
-const Child = (props) => {
+const Child = props => {
   console.log('子组件?');
   return <div>我是一个子组件</div>;
 };
 const ChildMemo = memo(Child);
 
-const Page = (props) => {
+const Page = props => {
   const [count, setCount] = useState(0);
   return (
     <>
       <button
-        onClick={(e) => {
+        onClick={e => {
           setCount(count + 1);
         }}
       >
@@ -75,13 +75,13 @@ const Child = ({ name, onClick }: ChildProps): JSX.Element => {
 };
 const ChildMemo = memo(Child);
 
-const Page = (props) => {
+const Page = props => {
   const [count, setCount] = useState(0);
   const [name, setName] = useState('Child组件');
   return (
     <>
       <button
-        onClick={(e) => {
+        onClick={e => {
           setCount(count + 1);
         }}
       >
@@ -115,13 +115,13 @@ const Child = ({ name, onClick }: ChildProps): JSX.Element => {
 };
 const ChildMemo = memo(Child);
 
-const Page = (props) => {
+const Page = props => {
   const [count, setCount] = useState(0);
   const [name, setName] = useState('Child组件');
   return (
     <>
       <button
-        onClick={(e) => {
+        onClick={e => {
           setCount(count + 1);
         }}
       >

@@ -8,7 +8,7 @@ var longestCommonPrefix = function (strs) {
   while (true) {
     const s = strs[0]?.[index];
     if (s === undefined) return res;
-    const flag = strs.every((item) => item[index] === s);
+    const flag = strs.every(item => item[index] === s);
     if (flag) {
       res += s;
       index += 1;

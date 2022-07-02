@@ -7,11 +7,11 @@ var complexNumberMultiply = function (num1, num2) {
   const [a, b] = num1
     .slice(0, num1.length - 1)
     .split('+')
-    .map((item) => parseInt(item));
+    .map(item => parseInt(item));
   const [c, d] = num2
     .slice(0, num2.length - 1)
     .split('+')
-    .map((item) => parseInt(item));
+    .map(item => parseInt(item));
   // console.log(a, b, c, d);
   return `${a * c - b * d}+${a * d + b * c}i`;
 };

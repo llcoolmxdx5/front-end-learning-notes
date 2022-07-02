@@ -1,7 +1,7 @@
 // `flattenObject`：以键的路径扁平化对象
 
 const flattenObject = (entry: Record<string, any>, obj: Record<string, any> = {}, key?: string) => {
-  Object.keys(entry).forEach((item) => {
+  Object.keys(entry).forEach(item => {
     let k1 = item;
     if (key !== undefined) {
       delete obj[key];
@@ -21,7 +21,7 @@ console.log(flattenObject({ a: { b: { c: 1 } }, d: 1 })); // { 'a.b.c': 1, d: 1 
 
 const unFlattenObject = (entry: Record<string, any>) => {
   const obj: Record<string, any> = {};
-  Object.keys(entry).forEach((item) => {
+  Object.keys(entry).forEach(item => {
     const keys = item.split('.');
     const { length } = keys;
     const key = keys[0];

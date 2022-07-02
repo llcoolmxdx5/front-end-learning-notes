@@ -10,7 +10,7 @@ var findMaximumXOR = function (nums) {
   const getArr = () => {
     const maxArr = [];
     const forArr = [];
-    uniqArr.forEach((item) => {
+    uniqArr.forEach(item => {
       if (item >= max) {
         maxArr.push(item);
       } else {
@@ -27,7 +27,7 @@ var findMaximumXOR = function (nums) {
   // console.log(uniqArr, maxArr);
   for (let index = 0; index < uniqArr.length; index++) {
     const element = uniqArr[index];
-    res = Math.max(res, ...maxArr.map((x) => x ^ element));
+    res = Math.max(res, ...maxArr.map(x => x ^ element));
   }
   // console.log(res);
   return res;

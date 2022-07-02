@@ -269,7 +269,7 @@ socket.connect(port, host, () => {
   socket.write('hello.');
 });
 
-socket.on('data', (msg) => {
+socket.on('data', msg => {
   console.log(msg.toString());
   say();
 });
@@ -288,7 +288,7 @@ const r1 = readline.createInterface({
 });
 
 function say() {
-  r1.question('请输入：', (inputMsg) => {
+  r1.question('请输入：', inputMsg => {
     if (inputMsg != 'bye') {
       socket.write(inputMsg + '\n');
     } else {
@@ -309,21 +309,21 @@ const server = new net.createServer();
 let clients = {};
 let clientName = 0;
 
-server.on('connection', (client) => {
+server.on('connection', client => {
   client.name = ++clientName;
   clients[client.name] = client;
 
-  client.on('data', (msg) => {
+  client.on('data', msg => {
     // console.log('客户端传来：' + msg);
     broadcast(client, msg.toString());
   });
 
-  client.on('error', (e) => {
+  client.on('error', e => {
     console.log('client error' + e);
     client.end();
   });
 
-  client.on('close', (data) => {
+  client.on('close', data => {
     delete clients[client.name];
     console.log(client.name + ' 下线了');
   });
@@ -372,7 +372,7 @@ server.listen(9000);
           ws.send(msg2);
           msg.value = '';
         },
-        false
+        false,
       );
     </script>
   </body>
@@ -388,12 +388,12 @@ ws.onopen = () => {
   ws.send('大家好');
 };
 
-ws.onmessage = (msg) => {
+ws.onmessage = msg => {
   const content = document.getElementById('content');
   content.innerHTML += msg.data + '<br/>';
 };
 
-ws.onerror = (err) => {
+ws.onerror = err => {
   console.log(err);
 };
 
@@ -411,11 +411,11 @@ const ws = new WebSocket.Server({ port: 8080 });
 let clients = {};
 let clientName = 0;
 
-ws.on('connection', (client) => {
+ws.on('connection', client => {
   client.name = ++clientName;
   clients[client.name] = client;
 
-  client.on('message', (msg) => {
+  client.on('message', msg => {
     broadcast(client, msg);
   });
 
@@ -469,7 +469,7 @@ function broadcast(client, msg) {
           msg.value = '';
           content.innerHTML += msg2 + '<br/>';
         },
-        false
+        false,
       );
 
       socket.on('message', function (msg) {
@@ -503,7 +503,7 @@ io.on('connection', function (socket) {
   //   console.log(msg);
   // })
 
-  socket.on('receive', (msg) => {
+  socket.on('receive', msg => {
     socket.broadcast.emit('message', msg);
   });
 });

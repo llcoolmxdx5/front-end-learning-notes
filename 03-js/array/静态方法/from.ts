@@ -10,18 +10,18 @@ import isIterable from '../utils/isIterable';
 function arrayFrom<T, U>(
   iterable: Iterable<T> | ArrayLike<T>,
   mapFn?: undefined,
-  thisArg?: any
+  thisArg?: any,
 ): T[];
 function arrayFrom<T, U>(
   iterable: Iterable<T> | ArrayLike<T>,
   mapFn: (v: T, k: number) => U,
-  thisArg?: any
+  thisArg?: any,
 ): U[];
 
 function arrayFrom<T, U>(
   iterable: Iterable<T> | ArrayLike<T>,
   mapFn?: (v: T, k: number) => U,
-  thisArg?: any
+  thisArg?: any,
 ) {
   const toStr = Object.prototype.toString;
   // 伪数组对象（拥有一个 length 属性和若干索引属性的任意对象）

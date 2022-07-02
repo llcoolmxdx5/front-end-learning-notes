@@ -19,7 +19,7 @@ var letterCombinations = function (digits) {
   const resp = [];
   const temp = [];
   const { length } = digits;
-  const backTrack = (start) => {
+  const backTrack = start => {
     if (temp.length === length) {
       resp.push(temp.join(''));
       return;

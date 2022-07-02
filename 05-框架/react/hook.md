@@ -111,7 +111,7 @@ function App() {
 
   useEffect(() => {
     timer = setInterval(() => {
-      setCount((prevCount) => prevCount + 1);
+      setCount(prevCount => prevCount + 1);
     }, 1000);
     return () => {
       document.title = 'componentWillUnmount';
@@ -156,7 +156,7 @@ function useUpdate(fn) {
 ```jsx
 const { Provider, Consumer } = React.createContext(null);
 function Bar() {
-  return <Consumer>{(color) => <div>{color}</div>}</Consumer>;
+  return <Consumer>{color => <div>{color}</div>}</Consumer>;
 }
 function Foo() {
   return <Bar />;
@@ -335,7 +335,7 @@ function App() {
     () => () => {
       console.log('Click happened');
     },
-    []
+    [],
   ); // 空数组代表无论什么情况下该函数都不会发生改变
   return <SomeComponent onClick={memoizedHandleClick}>Click Me</SomeComponent>;
 }
@@ -405,7 +405,7 @@ function MessageThread() {
   const handleSendClick = () => {
     setTimeout(showMessage, 3000);
   };
-  const handleMessageChange = (e) => {
+  const handleMessageChange = e => {
     setMessage(e.target.value);
   };
   return (
@@ -428,7 +428,7 @@ function MessageThread() {
   const handleSendClick = () => {
     setTimeout(showMessage, 3000);
   };
-  const handleMessageChange = (e) => {
+  const handleMessageChange = e => {
     latestMessage.current = e.target.value;
   };
 }
@@ -521,7 +521,7 @@ function useFriendStatus(friendID) {
 - 例如，一个返回 Date 值的自定义 Hook 可以通过格式化函数来避免不必要的 toDateString 函数调用：
 
   ```jsx
-  useDebugValue(date, (date) => date.toDateString());
+  useDebugValue(date, date => date.toDateString());
   ```
 
 ## React Hooks 不足

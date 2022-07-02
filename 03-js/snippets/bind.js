@@ -14,7 +14,7 @@ Function.prototype._bind = function (context, ...args) {
       // 4.绑定的函数也能 new, new 的时候会忽略掉提供的 this 指向
       this instanceof fBind ? this : context,
       // 3.可以传入参数
-      args.concat(bindArgs)
+      args.concat(bindArgs),
     );
   };
   // 5.new 出来的结果可以找到原有类的原型

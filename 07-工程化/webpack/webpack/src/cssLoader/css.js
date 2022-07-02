@@ -1,11 +1,11 @@
 // import "./css.less";
+import data from '../assets/data.csv';
+import json from '../assets/data.json5';
+import toml from '../assets/data.toml';
+import xml from '../assets/data.xml';
+import yaml from '../assets/data.yaml';
 import less from './css.less';
 import './global.less';
-import data from '../assets/data.csv';
-import xml from '../assets/data.xml';
-import toml from '../assets/data.toml';
-import yaml from '../assets/data.yaml';
-import json from '../assets/data.json5';
 
 console.log(data, 'data.csv');
 console.log(xml, 'data.xml');

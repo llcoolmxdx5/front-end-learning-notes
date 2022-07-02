@@ -3,7 +3,7 @@
  * @return {boolean}
  */
 var reorderedPowerOf2 = function (n) {
-  const isPowerOf2 = (num) => {
+  const isPowerOf2 = num => {
     if ((num & (num - 1)) === 0) {
       return true;
     }
@@ -33,7 +33,7 @@ var reorderedPowerOf2 = function (n) {
 };
 
 var reorderedPowerOf2 = function (n) {
-  const countDigits = (num) => {
+  const countDigits = num => {
     const cnt = new Array(10).fill(0);
     while (num) {
       cnt[num % 10] += 1;

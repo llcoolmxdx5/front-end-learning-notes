@@ -19,7 +19,7 @@ var maxAreaOfIsland = function (grid) {
           [x - 1, y],
           [x, y + 1],
           [x, y - 1],
-        ].forEach((item) => {
+        ].forEach(item => {
           const value = grid[item[0]]?.[item[1]] ?? 0;
           if (value) {
             queue.push(item);
@@ -52,5 +52,5 @@ console.assert(
     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
   ]) === 6,
-  1
+  1,
 );

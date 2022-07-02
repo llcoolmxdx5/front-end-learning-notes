@@ -1,5 +1,5 @@
-import { defaultEquals } from './utils';
 import Node from './Node';
+import { defaultEquals } from './utils';
 
 export default class LinkedList {
   constructor(equalsFn = defaultEquals) {

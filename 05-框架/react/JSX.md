@@ -71,7 +71,7 @@ class App extends React.Component {
         id: 'appRoot',
       },
       React.createElement('h1', { className: 'title' }, '欢迎进入React的世界'),
-      React.createElement('p', null, 'React.js 是一个构建页面 UI 的库')
+      React.createElement('p', null, 'React.js 是一个构建页面 UI 的库'),
     );
   }
 }

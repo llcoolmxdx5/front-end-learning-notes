@@ -7,7 +7,7 @@ var subsetsWithDup = function (nums) {
   const temp = [];
   nums.sort((a, b) => a - b);
   const set = new Set();
-  const backTrack = (start) => {
+  const backTrack = start => {
     if (!set.has(temp.join(','))) {
       resp.push([...temp]);
       set.add(temp.join(','));

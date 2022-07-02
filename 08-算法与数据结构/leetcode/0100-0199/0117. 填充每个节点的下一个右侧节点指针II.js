@@ -35,7 +35,7 @@ var connect = function (root) {
 
 let last = null,
   nextStart = null;
-const handle = (p) => {
+const handle = p => {
   if (last !== null) {
     last.next = p;
   }

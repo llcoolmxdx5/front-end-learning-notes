@@ -34,7 +34,7 @@ router.get('/info', function (req, res) {
     `<% if (user) { %>
     <h2><%= user.name %></h2>
   <% } %>`,
-    { user: { name: 'xiaoming' } }
+    { user: { name: 'xiaoming' } },
   );
   res.send(html);
 });
@@ -81,7 +81,7 @@ app.get(
   function (req, res, next) {
     // send a regular response
     res.send('regular');
-  }
+  },
 );
 // handler for the /user/:id path, which sends a special response
 app.get('/user/:id', function (req, res, next) {

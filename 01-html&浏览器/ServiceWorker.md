@@ -33,7 +33,7 @@ globalThis.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open('sw_demo').then(function (cache) {
       return cache.addAll(['/style.css', '/panda.jpg', './main.js']);
-    })
+    }),
   );
 });
 ```
@@ -44,22 +44,22 @@ globalThis.addEventListener('install', function (event) {
 globalThis.addEventListener('fetch', function (event) {
   console.log(event.request.url);
   event.respondWith(
-    caches.match(event.request).then((res) => {
+    caches.match(event.request).then(res => {
       return (
         res ||
         fetch(event.request)
-          .then((response) => {
+          .then(response => {
             const responseClone = response.clone();
-            caches.open('sw_demo').then((cache) => {
+            caches.open('sw_demo').then(cache => {
               cache.put(event.request, responseClone);
             });
             return response;
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
           })
       );
-    })
+    }),
   );
 });
 ```
@@ -82,9 +82,9 @@ globalThis.addEventListener('activate', function (event) {
             console.info('SW: deleting ' + cacheName);
             return caches.delete(cacheName);
           }
-        })
+        }),
       );
-    })
+    }),
   );
   return globalThis.clients.claim();
 });

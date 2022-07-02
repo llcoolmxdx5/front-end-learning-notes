@@ -268,7 +268,7 @@ c.on('ready', () => {
   EventEmitter.on('JS_PATH_CREATED', function () {
     var count = 0;
     for (let i = 0; i < uploadList.length; i += 1) {
-      c.put(uploadList[i].path, `${bucket}/${project}/${uploadList[i].name}`, (err) => {
+      c.put(uploadList[i].path, `${bucket}/${project}/${uploadList[i].name}`, err => {
         count++;
         if (!err) {
           console.log(`upload success ${uploadList[i].name}`);

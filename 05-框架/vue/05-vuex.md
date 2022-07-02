@@ -84,7 +84,7 @@ import { mapState } from 'vuex';
 export default {
   // ...
   computed: mapState({
-    count: (state) => state.count, // 箭头函数可使代码更简练
+    count: state => state.count, // 箭头函数可使代码更简练
     countAlias: 'count', // 传字符串参数 'count' 等同于 `state => state.count`
     countPlusLocalState(state) {
       // 为了能够使用 `this` 获取局部状态，必须使用常规函数
@@ -130,8 +130,8 @@ const store = new Vuex.Store({
     ],
   },
   getters: {
-    doneTodos: (state) => {
-      return state.todos.filter((todo) => todo.done);
+    doneTodos: state => {
+      return state.todos.filter(todo => todo.done);
     },
   },
 });
@@ -177,8 +177,8 @@ const store = new Vuex.Store({
    ```js
    getters: {
      // ...
-     getTodoById: (state) => (id) => {
-       return state.todos.find((todo) => todo.id === id);
+     getTodoById: state => id => {
+       return state.todos.find(todo => todo.id === id);
      };
    }
    ```

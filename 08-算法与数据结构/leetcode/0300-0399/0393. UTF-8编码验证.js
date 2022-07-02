@@ -4,7 +4,7 @@
  */
 var validUtf8 = function (data) {
   const n = data.length;
-  const getPrefix1Count = (num) => {
+  const getPrefix1Count = num => {
     const binary = num.toString(2);
     // console.log(binary);
     if (binary.length < 8) {

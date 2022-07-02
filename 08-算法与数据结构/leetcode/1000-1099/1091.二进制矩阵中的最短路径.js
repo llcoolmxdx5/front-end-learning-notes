@@ -27,7 +27,7 @@ var shortestPathBinaryMatrix = function (grid) {
         [row + 1, col],
         [row + 1, col + 1],
         [row + 1, col - 1],
-      ].forEach((item) => {
+      ].forEach(item => {
         const [a, b] = item;
         const v = grid[a]?.[b] ?? 1;
         // if (v === 1 || visited.has(`${a},${b}`)) return;
@@ -54,7 +54,7 @@ console.assert(
     [0, 1],
     [1, 0],
   ]) === 2,
-  1
+  1,
 );
 console.assert(
   shortestPathBinaryMatrix([
@@ -62,7 +62,7 @@ console.assert(
     [1, 1, 0],
     [1, 1, 0],
   ]) === 4,
-  2
+  2,
 );
 console.assert(
   shortestPathBinaryMatrix([
@@ -73,7 +73,7 @@ console.assert(
     [1, 1, 1, 1, 1, 0],
     [1, 1, 1, 1, 1, 0],
   ]) === 14,
-  3
+  3,
 );
 console.assert(
   shortestPathBinaryMatrix([
@@ -81,5 +81,5 @@ console.assert(
     [1, 1, 0],
     [1, 1, 0],
   ]) === -1,
-  4
+  4,
 );

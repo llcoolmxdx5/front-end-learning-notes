@@ -3,9 +3,9 @@
  * @return {string}
  */
 var longestNiceSubstring = function (s) {
-  const check = (str) => {
+  const check = str => {
     const set1 = new Set(str);
-    const set2 = new Set(str.split('').map((item) => item.toLowerCase()));
+    const set2 = new Set(str.split('').map(item => item.toLowerCase()));
     return set1.size === set2.size * 2;
   };
   let ans = '';

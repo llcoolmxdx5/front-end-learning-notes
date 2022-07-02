@@ -7,7 +7,7 @@ export function numToWord(num) {
     (acc, ref) => {
       return ref.num === num ? ref.word : acc;
     },
-    ''
+    '',
   );
 }
 
@@ -17,6 +17,6 @@ export function wordToNum(word) {
     (acc, ref) => {
       return ref.word === word && word.toLowerCase() ? ref.num : acc;
     },
-    -1
+    -1,
   );
 }

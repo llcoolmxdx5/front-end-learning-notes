@@ -6,7 +6,7 @@
 var findRadius = function (houses, heaters) {
   heaters.sort((a, b) => a - b);
   const { length } = heaters;
-  const binarySearch = (target) => {
+  const binarySearch = target => {
     let left = 0,
       right = length - 1;
     // 最小的供暖器都在目标房屋的右边

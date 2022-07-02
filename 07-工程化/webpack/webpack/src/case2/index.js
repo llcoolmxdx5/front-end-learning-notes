@@ -1,6 +1,6 @@
+import jpgSrc from '../assets/jpg.jpg';
 import pngSrc from '../assets/png.png';
 import txt from '../assets/txt.txt';
-import jpgSrc from '../assets/jpg.jpg';
 
 const png = document.createElement('img');
 png.src = pngSrc;

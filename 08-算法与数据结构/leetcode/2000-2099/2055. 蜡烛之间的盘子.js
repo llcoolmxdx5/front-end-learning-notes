@@ -68,7 +68,7 @@ console.assert(
     [2, 5],
     [5, 9],
   ]).join() === [2, 3].join(),
-  1
+  1,
 );
 console.assert(
   platesBetweenCandles('***|**|*****|**||**|*', [
@@ -78,5 +78,5 @@ console.assert(
     [5, 11],
     [15, 16],
   ]).join() === [9, 0, 0, 0, 0].join(),
-  2
+  2,
 );

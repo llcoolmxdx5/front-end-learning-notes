@@ -43,11 +43,11 @@ console.assert(
     'player',
     'important',
   ]) === 'important',
-  0
+  0,
 );
 console.assert(
   shortestCompletingWord('1s3 PSt', ['step', 'steps', 'stripe', 'stepple']) === 'steps',
-  1
+  1,
 );
 console.assert(shortestCompletingWord('1s3 456', ['looks', 'pest', 'stew', 'show']) === 'pest', 2);
 console.assert(
@@ -63,7 +63,7 @@ console.assert(
     'writer',
     'old',
   ]) === 'husband',
-  3
+  3,
 );
 console.assert(
   shortestCompletingWord('OgEu755', [
@@ -78,7 +78,7 @@ console.assert(
     'tax',
     'thus',
   ]) === 'enough',
-  4
+  4,
 );
 console.assert(
   shortestCompletingWord('iMSlpe4', [
@@ -93,5 +93,5 @@ console.assert(
     'thought',
     'use',
   ]) === 'simple',
-  5
+  5,
 );

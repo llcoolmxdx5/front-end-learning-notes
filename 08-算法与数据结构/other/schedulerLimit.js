@@ -5,7 +5,7 @@ class Scheduler {
   }
 
   add(task) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       task.resolve = resolve;
       if (this.working.length < this._max) {
         this.runTask(task);
@@ -25,15 +25,15 @@ class Scheduler {
   }
 }
 
-const timeout = (time) =>
-  new Promise((resolve) => {
+const timeout = time =>
+  new Promise(resolve => {
     setTimeout(resolve, time);
   });
 
 const scheduler = new Scheduler(2);
 
 // 实现一秒内最多打印 n 次
-const print = (msg) => {
+const print = msg => {
   scheduler.add(() => timeout(1000)).then(() => console.log(msg));
 };
 

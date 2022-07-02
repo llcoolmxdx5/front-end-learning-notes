@@ -56,7 +56,7 @@ const router = new VueRouter({
     { path: '/a', redirect: { name: 'foo' } }, //重定向的目标也可以是一个命名的路由
     {
       path: '/a',
-      redirect: (to) => {
+      redirect: to => {
         //甚至是一个方法，动态返回重定向目标
         // 方法接收 目标路由 作为参数
         // return 重定向的 字符串路径/路径对象
@@ -228,7 +228,7 @@ const router = new VueRouter({
        {
          path: '/search',
          component: SearchUser,
-         props: (route) => ({ query: route.query.q }),
+         props: route => ({ query: route.query.q }),
        },
      ],
    });

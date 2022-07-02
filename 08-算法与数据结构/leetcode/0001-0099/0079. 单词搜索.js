@@ -111,9 +111,9 @@ console.assert(
       ['S', 'F', 'C', 'S'],
       ['A', 'D', 'E', 'E'],
     ],
-    'ABCCED'
+    'ABCCED',
   ) === true,
-  1
+  1,
 );
 
 console.assert(
@@ -123,9 +123,9 @@ console.assert(
       ['S', 'F', 'C', 'S'],
       ['A', 'D', 'E', 'E'],
     ],
-    'SEE'
+    'SEE',
   ) === true,
-  2
+  2,
 );
 
 console.assert(
@@ -135,9 +135,9 @@ console.assert(
       ['S', 'F', 'C', 'S'],
       ['A', 'D', 'E', 'E'],
     ],
-    'ABCB'
+    'ABCB',
   ) === false,
-  3
+  3,
 );
 
 console.assert(
@@ -147,7 +147,7 @@ console.assert(
       ['S', 'F', 'E', 'S'],
       ['A', 'D', 'E', 'E'],
     ],
-    'ABCESEEEFS'
+    'ABCESEEEFS',
   ) === true,
-  4
+  4,
 );

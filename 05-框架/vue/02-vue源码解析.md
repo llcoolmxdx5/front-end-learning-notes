@@ -32,7 +32,7 @@ class KVue {
     if (!value || typeof value !== 'object') {
       return;
     }
-    Object.keys(value).forEach((key) => {
+    Object.keys(value).forEach(key => {
       this.defineReactive(value, key, value[key]);
     });
   }
@@ -90,7 +90,7 @@ class Dep {
   }
   // 通知所有监听器去更新视图
   notify() {
-    this.deps.forEach((dep) => {
+    this.deps.forEach(dep => {
       dep.update();
     });
   }
@@ -213,7 +213,7 @@ class Compile {
   }
   compileElement(el) {
     let childNodes = el.childNodes;
-    Array.from(childNodes).forEach((node) => {
+    Array.from(childNodes).forEach(node => {
       let text = node.textContent;
       // 表达式文本
       // 就是识别{{}}中的数据
@@ -232,7 +232,7 @@ class Compile {
   }
   compile(node) {
     let nodeAttrs = node.attributes;
-    Array.from(nodeAttrs).forEach((attr) => {
+    Array.from(nodeAttrs).forEach(attr => {
       // 规定:指令以 v-xxx 命名
       // 如 <span v-text="content"></span> 中指令为 v-text let attrName = attr.name // v-text
       let exp = attr.value; // content
@@ -270,7 +270,7 @@ class Compile {
   model(node, vm, exp) {
     this.update(node, vm, exp, 'model');
     let val = vm.exp;
-    node.addEventListener('input', (e) => {
+    node.addEventListener('input', e => {
       let newValue = e.target.value;
       vm[exp] = newValue;
       val = newValue;
@@ -322,7 +322,7 @@ class KVue {
     if (!value || typeof value !== 'object') {
       return;
     }
-    Object.keys(value).forEach((key) => {
+    Object.keys(value).forEach(key => {
       this.proxyData(key);
       this.defineReactive(value, key, value[key]);
     });
@@ -377,7 +377,7 @@ class Dep {
   }
   // 通知所有监听器去更新视图
   notify() {
-    this.deps.forEach((dep) => {
+    this.deps.forEach(dep => {
       dep.update();
     });
   }

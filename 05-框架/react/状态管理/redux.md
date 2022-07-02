@@ -26,13 +26,13 @@ Action 创建函数 就是生成 action 的方法。在 Redux 中的 action 创�
   ```js
   // actionCreators.js
   import { ADD, DEL } from './actionTypes';
-  const add_item = (data) => {
+  const add_item = data => {
     return {
       type: ADD,
       data,
     };
   };
-  const del_item = (id) => {
+  const del_item = id => {
     return {
       type: DEL,
       id,
@@ -84,7 +84,7 @@ const reducer = (state = defaultState, action) => {
       };
     case DEL:
       return {
-        list: state.list.filter((value) => value.id !== action.id),
+        list: state.list.filter(value => value.id !== action.id),
       };
     default:
       return state;
@@ -120,17 +120,17 @@ export default store;
 ```js
 import { connect } from 'react-redux';
 import { add_item, del_item } from './actionCreators';
-const mapState = (state) => {
+const mapState = state => {
   return {
     list: state.list,
   };
 };
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
-    addItem: (data) => {
+    addItem: data => {
       dispatch(add_item(data));
     },
-    delItem: (id) => {
+    delItem: id => {
       dispatch(del_item(id));
     },
   };
@@ -147,7 +147,7 @@ ReactDOM.render(
   <Provider store={store}>
     <App></App>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 ```
 

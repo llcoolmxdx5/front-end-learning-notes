@@ -14,26 +14,26 @@
 
 function reduce<T>(
   array: T[],
-  callbackfn: (previousValue: T, currentValue: T, currentIndex: T, array: T[]) => T
+  callbackfn: (previousValue: T, currentValue: T, currentIndex: T, array: T[]) => T,
   // initialValue?: undefined
 ): T;
 
 function reduce<T>(
   array: T[],
   callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T,
-  initialValue: T
+  initialValue: T,
 ): T;
 
 function reduce<T, U>(
   array: T[],
   callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U,
-  initialValue: U
+  initialValue: U,
 ): U;
 
 function reduce<T, U>(
   array: T[],
   callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U,
-  initialValue?: U
+  initialValue?: U,
 ) {
   let index = 0;
   let acc;

@@ -40,7 +40,7 @@ var nextGreaterElement = function (nums1, nums2) {
     stack.push(num);
   }
   // console.log(map, stack);
-  const res = nums1.map((v) => map.get(v));
+  const res = nums1.map(v => map.get(v));
   return res;
 };
 

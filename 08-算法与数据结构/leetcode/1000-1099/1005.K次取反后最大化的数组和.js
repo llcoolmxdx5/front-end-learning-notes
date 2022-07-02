@@ -40,14 +40,14 @@ var largestSumAfterKNegations = function (nums, k) {
     nums[i - 1] = -nums[i - 1];
   }
   let ans = 0;
-  nums.forEach((num) => (ans += num));
+  nums.forEach(num => (ans += num));
   return ans;
 };
 
 var largestSumAfterKNegations = function (nums, k) {
   // nums[i]的范围是-100~100，申请个201的正好够用
   const arr = new Array(201).fill(0);
-  nums.forEach((num) => {
+  nums.forEach(num => {
     arr[num + 100]++;
   });
 

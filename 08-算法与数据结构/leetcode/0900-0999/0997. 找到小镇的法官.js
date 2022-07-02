@@ -28,7 +28,7 @@ console.assert(
     [1, 3],
     [2, 3],
   ]) === 3,
-  2
+  2,
 );
 console.assert(
   findJudge(3, [
@@ -36,14 +36,14 @@ console.assert(
     [2, 3],
     [3, 1],
   ]) === -1,
-  3
+  3,
 );
 console.assert(
   findJudge(3, [
     [1, 2],
     [2, 3],
   ]) === -1,
-  4
+  4,
 );
 console.assert(
   findJudge(4, [
@@ -53,5 +53,5 @@ console.assert(
     [2, 4],
     [4, 3],
   ]) === 3,
-  5
+  5,
 );

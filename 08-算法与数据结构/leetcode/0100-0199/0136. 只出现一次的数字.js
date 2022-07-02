@@ -4,7 +4,7 @@
  */
 var singleNumber = function (nums) {
   const set = new Set();
-  nums.forEach((item) => {
+  nums.forEach(item => {
     if (set.has(item)) {
       set.delete(item);
     } else {
@@ -16,7 +16,7 @@ var singleNumber = function (nums) {
 
 var singleNumber = function (nums) {
   const map = new Map();
-  nums.forEach((item) => {
+  nums.forEach(item => {
     map.set(item, (map.get(item) ?? 0) + 1);
   });
   for (let [key, value] of map.entries()) {
@@ -28,7 +28,7 @@ var singleNumber = function (nums) {
 
 var singleNumber = function (nums) {
   let single = 0;
-  nums.forEach((item) => {
+  nums.forEach(item => {
     single ^= item;
   });
   return single;

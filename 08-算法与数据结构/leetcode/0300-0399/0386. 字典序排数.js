@@ -4,7 +4,7 @@
  */
 var lexicalOrder = function (n) {
   const ans = [];
-  const dfs = (cur) => {
+  const dfs = cur => {
     if (cur > n) return;
     ans.push(cur);
     for (let i = 0; i <= 9; i++) {

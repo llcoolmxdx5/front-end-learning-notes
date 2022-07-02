@@ -33,7 +33,7 @@ console.assert(
     [7, 2],
     [1, 10],
   ]) === 4,
-  0
+  0,
 );
 console.assert(
   numberOfWeakCharacters([
@@ -41,7 +41,7 @@ console.assert(
     [10, 4],
     [4, 3],
   ]) === 1,
-  1
+  1,
 );
 console.assert(
   numberOfWeakCharacters([
@@ -49,7 +49,7 @@ console.assert(
     [6, 3],
     [3, 6],
   ]) === 0,
-  1
+  1,
 );
 console.assert(
   numberOfWeakCharacters([
@@ -60,5 +60,5 @@ console.assert(
     [7, 5],
     [7, 10],
   ]) === 2,
-  2
+  2,
 );

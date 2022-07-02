@@ -1,5 +1,5 @@
-import { defaultEquals } from './utils';
 import LinkedList from './LinkedList';
+import { defaultEquals } from './utils';
 
 const Compare = {
   LESS_THAN: -1,

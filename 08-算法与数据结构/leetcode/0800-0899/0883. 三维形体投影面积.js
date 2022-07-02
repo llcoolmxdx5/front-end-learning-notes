@@ -31,7 +31,7 @@ console.assert(
     [1, 2],
     [3, 4],
   ]) === 17,
-  1
+  1,
 );
 console.assert(projectionArea([[2]]) === 5, 2);
 console.assert(
@@ -39,5 +39,5 @@ console.assert(
     [1, 0],
     [0, 2],
   ]) === 8,
-  3
+  3,
 );

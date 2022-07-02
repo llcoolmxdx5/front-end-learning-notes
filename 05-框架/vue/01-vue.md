@@ -845,7 +845,7 @@ Vue.component('brother2', {
     };
   },
   mounted() {
-    bus.$on('globalEvent', (val) => {
+    bus.$on('globalEvent', val => {
       //绑定全局事件globalEvent
       this.brothermessage = val;
     });
@@ -1016,7 +1016,7 @@ vue1.0 中提供了这种方式，但 vue2.0 中没有，但很多开源软件�
 
 ```js
 function broadcast(componentName, eventName, params) {
-  this.$children.forEach((child) => {
+  this.$children.forEach(child => {
     var name = child.$options.componentName;
     if (name === componentName) {
       child.$emit.apply(child, [eventName].concat(params));
@@ -1485,7 +1485,7 @@ Vue.component('async-webpack-example', function (resolve) {
 Vue.component(
   'async-webpack-example',
   // 这个 `import` 函数会返回一个 `Promise` 对象。
-  () => import('./my-async-component')
+  () => import('./my-async-component'),
 );
 ```
 

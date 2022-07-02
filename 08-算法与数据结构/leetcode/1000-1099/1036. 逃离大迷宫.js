@@ -54,8 +54,8 @@ console.assert(
       [1, 0],
     ],
     [0, 0],
-    [0, 2]
+    [0, 2],
   ) === false,
-  1
+  1,
 );
 console.assert(isEscapePossible([], [0, 0], [999999, 999999]) === true, 2);

@@ -36,5 +36,5 @@ console.assert(maxSumOfThreeSubarrays([1, 2, 1, 2, 6, 7, 5, 1], 2).join() === [0
 
 console.assert(
   maxSumOfThreeSubarrays([1, 2, 1, 2, 1, 2, 1, 2, 1], 2).join() === [0, 2, 4].join(),
-  2
+  2,
 );

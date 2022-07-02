@@ -31,7 +31,7 @@ var maximumRequests = function (n, requests) {
         cnt[to] -= 1;
       }
       // console.log(comb, cnt);
-      if (cnt.every((item) => item === 0)) {
+      if (cnt.every(item => item === 0)) {
         return i;
       }
     }
@@ -48,7 +48,7 @@ console.assert(
     [2, 0],
     [3, 4],
   ]) === 5,
-  1
+  1,
 );
 
 console.assert(
@@ -57,7 +57,7 @@ console.assert(
     [1, 2],
     [2, 1],
   ]) === 3,
-  2
+  2,
 );
 
 // console.assert(

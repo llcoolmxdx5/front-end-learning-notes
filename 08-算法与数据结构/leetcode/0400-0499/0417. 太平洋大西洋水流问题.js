@@ -23,7 +23,7 @@ var pacificAtlantic = function (heights) {
           [r - 1, c],
           [r, c - 1],
           [r, c + 1],
-        ].forEach((item) => {
+        ].forEach(item => {
           const [a, b] = item;
           if ([undefined, 1].includes(array[a]?.[b])) {
             return;
@@ -78,5 +78,5 @@ console.assert(
       [3, 1],
       [4, 0],
     ].join(),
-  1
+  1,
 );

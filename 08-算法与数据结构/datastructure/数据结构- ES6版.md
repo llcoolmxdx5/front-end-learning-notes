@@ -329,7 +329,7 @@ const l = new LinkedList();
 
 // 添加节点
 const values = ['A', 'B', 'C'];
-values.forEach((value) => l.push(value));
+values.forEach(value => l.push(value));
 
 console.log(l);
 console.log(l.pop());

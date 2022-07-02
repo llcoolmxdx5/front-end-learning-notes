@@ -3,7 +3,7 @@
  * @return {number[]}
  */
 var sortedSquares = function (nums) {
-  return nums.map((x) => x ** 2).sort((a, b) => a - b);
+  return nums.map(x => x ** 2).sort((a, b) => a - b);
 };
 
 var sortedSquares = function (nums) {

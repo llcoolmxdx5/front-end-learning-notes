@@ -21,7 +21,7 @@ function hotPotato(elementsList, num) {
 }
 
 const { eliminated, winner } = hotPotato(['John', 'Jack', 'Camilla', 'Ingrid', 'Carl'], 7);
-eliminated.forEach((item) => {
+eliminated.forEach(item => {
   console.log(`${item}被淘汰了`);
 });
 console.log(`胜利者是${winner}`);

@@ -63,7 +63,7 @@ swc
       transform: {},
     },
   })
-  .then((output) => {
+  .then(output => {
     output.code; // transformed code
     output.map; // source map (in string)
   });

@@ -4,7 +4,7 @@
  */
 var rotate = function (matrix) {
   const n = matrix.length;
-  const loop = (start) => {
+  const loop = start => {
     const arr = [];
     for (let i = start; i < n - start; i++) {
       arr.push(matrix[i][n - 1 - start]);

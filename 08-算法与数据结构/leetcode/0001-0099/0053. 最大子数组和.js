@@ -56,7 +56,7 @@ var maxSubArray = function (nums) {
     return Math.max(
       maxSubArraySum(nums, left, mid),
       maxSubArraySum(nums, mid + 1, right),
-      maxCrossingSum(nums, left, mid, right)
+      maxCrossingSum(nums, left, mid, right),
     );
   };
   let len = nums.length;

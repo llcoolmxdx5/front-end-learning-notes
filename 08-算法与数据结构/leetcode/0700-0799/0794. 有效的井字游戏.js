@@ -3,7 +3,7 @@
  * @return {boolean}
  */
 var validTicTacToe = function (board) {
-  const win = (p) => {
+  const win = p => {
     for (let i = 0; i < 3; ++i) {
       if (p === board[0][i] && p === board[1][i] && p === board[2][i]) {
         return true;

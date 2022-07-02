@@ -7,8 +7,8 @@ var findWords = function (words) {
   const secondSet = new Set('asdfghjkl'.split('')); // 9
   const thirdSet = new Set('zxcvbnm'.split('')); // 7
   const resp = [];
-  words.forEach((word) => {
-    [firstSet, secondSet, thirdSet].some((set) => {
+  words.forEach(word => {
+    [firstSet, secondSet, thirdSet].some(set => {
       if (new Set([...set, ...word.toLowerCase().split('')]).size === set.size) {
         resp.push(word);
         return true;
@@ -41,7 +41,7 @@ var findWords = function (words) {
 
 console.assert(
   findWords(['Hello', 'Alaska', 'Dad', 'Peace']).join() === ['Alaska', 'Dad'].join(),
-  1
+  1,
 );
 
 console.assert(findWords(['omk']).join() === [].join(), 2);

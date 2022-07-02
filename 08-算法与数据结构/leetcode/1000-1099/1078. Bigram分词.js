@@ -19,14 +19,14 @@ var findOcurrences = function (text, first, second) {
 console.assert(
   findOcurrences('alice is a good girl she is a good student', 'a', 'good').join() ===
     ['girl', 'student'].join(),
-  1
+  1,
 );
 console.assert(
   findOcurrences('alice is aa good girl she is a good student', 'a', 'good').join() ===
     ['student'].join(),
-  2
+  2,
 );
 console.assert(
   findOcurrences('we will we will rock you', 'we', 'will').join() === ['we', 'rock'].join(),
-  3
+  3,
 );

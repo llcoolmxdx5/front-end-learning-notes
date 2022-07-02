@@ -3,7 +3,7 @@
  * @return {number}
  */
 var dayOfYear = function (date) {
-  const [year, month, day] = date.split('-').map((item) => parseInt(item));
+  const [year, month, day] = date.split('-').map(item => parseInt(item));
   let ans = day;
   const arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   for (let i = 0; i < month - 1; i++) {

@@ -45,7 +45,7 @@ var solve = function (board) {
     }
   }
   // console.log(visited, v2);
-  [...v2].forEach((item) => {
+  [...v2].forEach(item => {
     if (visited.has(item)) {
       return;
     }
@@ -106,7 +106,7 @@ console.log(
     ['X', 'X', 'O', 'X'],
     ['X', 'O', 'X', 'X'],
     ['X', 'O', 'X', 'X'],
-  ])
+  ]),
 );
 /* [
   [ 'X', 'X', 'X', 'X' ],

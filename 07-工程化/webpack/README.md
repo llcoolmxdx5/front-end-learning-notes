@@ -1031,10 +1031,10 @@ function getComponent() {
       element.innerHTML = _.join(['Hello', 'webpack'], ' ');
       return element;
     })
-    .catch((error) => 'An error occurred while loading the component');
+    .catch(error => 'An error occurred while loading the component');
 }
 
-getComponent().then((component) => {
+getComponent().then(component => {
   document.body.appendChild(component);
 });
 ```
@@ -1249,7 +1249,7 @@ webpack 命令行 环境配置 的 --env 参数，可以允许你传入任意数
 对于我们的 webpack 配置，有一个必须要修改之处。通常，module.exports 指向配置对象。要使用 env 变量，你必须将 module.exports 转换成一个函数:
 
 ```js
-module.exports = (env) => {
+module.exports = env => {
   return {
     // 根据命令行参数 env 来设置不同环境的 mode
     mode: env.production ? 'production' : 'development',
@@ -1626,10 +1626,10 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service- worker.js')
-      .then((registration) => {
+      .then(registration => {
         console.log('SW registered: ', registration);
       })
-      .catch((registrationError) => {
+      .catch(registrationError => {
         console.log('SW registration failed: ', registrationError);
       });
   });
@@ -1747,7 +1747,7 @@ npm install --save @babel/polyfill
 
 ```js
 import '@babel/polyfill';
-console.log(Array.from([1, 2, 3], (x) => x + x));
+console.log(Array.from([1, 2, 3], x => x + x));
 ```
 
 注意，这种方式优先考虑正确性，而不考虑 bundle 体积大小。为了安全和可靠， polyfill/shim 必须运行于所有其他代码之前，而且需要同步加载，或者说，需要在所有 polyfill/shim 加载之后，再去加载所有应用程序代码。 社区中存在许多误解，即 现代浏览器“不需要”polyfill，或者 polyfill/shim 仅用于添加缺失功能 - 实际上，它们通常用于修复损坏实现(repair broken implementation)，即使是在最现代的浏览器中，也会出现这种情况。 因此，最佳实践仍然是，不加选择地和同步地加载所有 polyfill/shim，尽管这会导致额外的 bundle 体积成本。
@@ -1961,7 +1961,7 @@ yarn run webpack
 
 ```js
 // src/HomeList
-const HomeList = (num) => {
+const HomeList = num => {
   let str = '<ul>';
   for (let i = 0; i < num; i++) {
     str += '<li>item ' + i + '</li>';
@@ -1977,7 +1977,7 @@ export default HomeList;
 // src/index.js
 import HomeList from './HomeList';
 
-import('nav/Header').then((Header) => {
+import('nav/Header').then(Header => {
   const body = document.createElement('div');
   body.appendChild(Header.default());
   document.body.appendChild(body);
@@ -2029,7 +2029,7 @@ Promise.all([import('nav/Header'), import('home/HomeList')]).then(
   ([{ default: Header }, { default: HomeList }]) => {
     document.body.appendChild(Header());
     document.body.innerHTML += HomeList(4);
-  }
+  },
 );
 ```
 
@@ -2506,7 +2506,7 @@ class CopyrightWebpackPlugin {
     });
 
     // compile 同步钩子，不需要callback
-    compiler.hooks.compile.tap('CopyrightWebpackPlugin', (compilation) => {
+    compiler.hooks.compile.tap('CopyrightWebpackPlugin', compilation => {
       console.log('同步钩子');
     });
   }
@@ -2547,7 +2547,7 @@ module.exports = {
 ```js
 class CopyrightWebpackPlugin {
   apply(compiler) {
-    compiler.hooks.compile.tap('CopyrightWebpackPlugin', (compilation) => {
+    compiler.hooks.compile.tap('CopyrightWebpackPlugin', compilation => {
       // 打断点
       debugger;
       console.log('同步钩子');
@@ -2572,7 +2572,7 @@ const parser = require('@babel/parser'); // 分析抽象语法树
 const traverse = require('@babel/traverse').default;
 
 // ************ 入口文件分析 **************
-const moduleAnalyses = (filename) => {
+const moduleAnalyses = filename => {
   // 读取文件
   const content = fs.readFileSync(filename, 'utf-8');
 
@@ -2629,7 +2629,7 @@ const parser = require('@babel/parser'); // 分析抽象语法树
 const traverse = require('@babel/traverse').default;
 
 // ************ 入口文件分析 **************
-const moduleAnalyses = (filename) => {
+const moduleAnalyses = filename => {
   // 读取文件
   const content = fs.readFileSync(filename, 'utf-8');
 
@@ -2675,7 +2675,7 @@ const moduleAnalyses = (filename) => {
 // console.log(moduleInfo)
 
 // ************ 依赖图谱 **************
-const makeDependenciesGraph = (entry) => {
+const makeDependenciesGraph = entry => {
   // 首先在依赖图谱中插入入口文件的分析
   const entryModule = moduleAnalyses(entry);
   const graphArray = [entryModule];
@@ -2696,7 +2696,7 @@ const makeDependenciesGraph = (entry) => {
 
   // 依键值对的形式重新组合数据
   const graph = {};
-  graphArray.forEach((item) => {
+  graphArray.forEach(item => {
     graph[item.filename] = {
       dependencies: item.dependencies,
       code: item.code,
@@ -2719,7 +2719,7 @@ const parser = require('@babel/parser'); // 分析抽象语法树
 const traverse = require('@babel/traverse').default;
 
 // ************ 入口文件分析 **************
-const moduleAnalyses = (filename) => {
+const moduleAnalyses = filename => {
   // 读取文件
   const content = fs.readFileSync(filename, 'utf-8');
 
@@ -2765,7 +2765,7 @@ const moduleAnalyses = (filename) => {
 // console.log(moduleInfo)
 
 // ************ 依赖图谱 *****************
-const makeDependenciesGraph = (entry) => {
+const makeDependenciesGraph = entry => {
   // 首先在依赖图谱中插入入口文件的分析
   const entryModule = moduleAnalyses(entry);
   const graphArray = [entryModule];
@@ -2786,7 +2786,7 @@ const makeDependenciesGraph = (entry) => {
 
   // 依键值对的形式重新组合数据
   const graph = {};
-  graphArray.forEach((item) => {
+  graphArray.forEach(item => {
     graph[item.filename] = {
       dependencies: item.dependencies,
       code: item.code,
@@ -2799,7 +2799,7 @@ const makeDependenciesGraph = (entry) => {
 // console.log(graphInfo)
 
 // ************ 生成代码 *****************
-const generateCode = (entry) => {
+const generateCode = entry => {
   // 依赖树是一个对象，需要解析成字符串
   const graph = JSON.stringify(makeDependenciesGraph(entry));
 

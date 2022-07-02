@@ -6,7 +6,7 @@
 var goodDaysToRobBank = function (security, time) {
   const ans = [];
   const { length } = security;
-  const judge = (middle) => {
+  const judge = middle => {
     for (let i = middle - time; i < middle; i++) {
       if (security[i] < security[i + 1]) {
         return false;

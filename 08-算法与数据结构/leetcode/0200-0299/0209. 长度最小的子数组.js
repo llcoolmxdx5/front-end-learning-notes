@@ -30,7 +30,7 @@ var minSubArrayLen = function (target, nums) {
   for (let i = 1; i < n + 1; i++) {
     const s = target + sums[i - 1];
     // const bound = bisect.bisect_left(sums, s);
-    const bound = sums.findIndex((v) => v === s); // 二分查找
+    const bound = sums.findIndex(v => v === s); // 二分查找
     // console.log(bound);
     if (bound !== sums.length && bound > -1) {
       ans = Math.min(ans, bound - (i - 1));

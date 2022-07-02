@@ -4,7 +4,7 @@
  */
 var reverseOnlyLetters = function (s) {
   const { length } = s;
-  const isLetter = (str) => {
+  const isLetter = str => {
     return /[a-zA-Z]/.test(str);
   };
   let left = 0;

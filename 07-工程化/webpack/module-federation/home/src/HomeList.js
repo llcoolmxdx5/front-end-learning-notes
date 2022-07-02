@@ -1,4 +1,4 @@
-const HomeList = (num) => {
+const HomeList = num => {
   let str = '<ul>';
   for (let i = 0; i < num; i++) {
     str += '<li>item ' + i + '</li>';

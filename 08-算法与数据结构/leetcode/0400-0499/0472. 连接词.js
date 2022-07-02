@@ -17,7 +17,7 @@ var findAllConcatenatedWordsInADict = function (words) {
     }
     return false;
   };
-  return words.filter((word) => dfs(word, 0));
+  return words.filter(word => dfs(word, 0));
 };
 
 var findAllConcatenatedWordsInADict = function (words) {
@@ -42,7 +42,7 @@ var findAllConcatenatedWordsInADict = function (words) {
     }
     return dp[length];
   }
-  return words.filter((word) => {
+  return words.filter(word => {
     if (exists(word)) {
       return true;
     }
@@ -61,7 +61,7 @@ console.log(
     'hippopotamuses',
     'rat',
     'ratcatdogcat',
-  ])
+  ]),
 );
 // ["catsdogcats","dogcatsdog","ratcatdogcat"]
 

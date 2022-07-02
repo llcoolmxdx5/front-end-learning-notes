@@ -1,5 +1,5 @@
 import dva from 'dva';
-import { Router, Route, Switch } from 'dva/router';
+import { Route, Router, Switch } from 'dva/router';
 import Counter from './pages/Counter';
 
 // 1. Initialize

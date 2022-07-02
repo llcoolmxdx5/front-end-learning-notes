@@ -66,9 +66,9 @@ console.assert(
     [
       [1, 1],
       [1, 0],
-    ]
+    ],
   ).join() === [1, 0].join(),
-  1
+  1,
 );
 
 console.assert(
@@ -81,7 +81,7 @@ console.assert(
     [
       [0, 8],
       [8, 1],
-    ]
+    ],
   ).join() === [1, 0].join(),
-  2
+  2,
 );

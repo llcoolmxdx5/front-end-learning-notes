@@ -4,7 +4,7 @@
  * @return {number[]}
  */
 var searchRange = function (nums, target) {
-  const binarySearch = (type) => {
+  const binarySearch = type => {
     let left = 0,
       right = nums.length - 1;
     while (left <= right) {

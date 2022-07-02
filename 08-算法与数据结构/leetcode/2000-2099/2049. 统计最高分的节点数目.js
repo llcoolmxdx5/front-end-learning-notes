@@ -25,10 +25,10 @@ var countHighestScoreNodes = function (parents) {
   }
   let ans = 0;
   let maxScore = 0;
-  const help = (count) => {
+  const help = count => {
     return Math.max(count, 1);
   };
-  const dfs = (node) => {
+  const dfs = node => {
     if (node === null) {
       return 0;
     }

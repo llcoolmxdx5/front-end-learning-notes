@@ -5,7 +5,7 @@
 var subsets = function (nums) {
   const stack = [],
     ans = [];
-  const backTrack = (start) => {
+  const backTrack = start => {
     ans.push([...stack]);
     for (let index = start; index < nums.length; index++) {
       const element = nums[index];

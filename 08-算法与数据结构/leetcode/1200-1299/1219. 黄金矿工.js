@@ -80,7 +80,7 @@ console.assert(
     [5, 8, 7],
     [0, 9, 0],
   ]) === 24,
-  1
+  1,
 );
 console.assert(
   getMaximumGold([
@@ -90,7 +90,7 @@ console.assert(
     [0, 3, 0],
     [9, 0, 20],
   ]) === 28,
-  2
+  2,
 );
 console.assert(
   getMaximumGold([
@@ -100,5 +100,5 @@ console.assert(
     [1, 0, 1, 0, 1],
     [1, 1, 1, 1, 1],
   ]) === 19,
-  3
+  3,
 );

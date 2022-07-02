@@ -4,7 +4,7 @@
  * @return {boolean}
  */
 var backspaceCompare = function (s, t) {
-  const getString = (str) => {
+  const getString = str => {
     const stack = [];
     for (let index = 0; index < str.length; index++) {
       if (str[index] !== '#') {

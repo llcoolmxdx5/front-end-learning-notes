@@ -4,7 +4,7 @@
  */
 var trailingZeroes = function (n) {
   let count = 0;
-  const getCount = (num) => {
+  const getCount = num => {
     while (num) {
       if (num % 5 === 0) {
         count += 1;

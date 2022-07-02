@@ -7,7 +7,7 @@
  */
 var knightProbability = function (n, k, row, column) {
   const dp = Array.from({ length: k + 1 }, () =>
-    Array.from({ length: n }, () => new Array(n).fill(0))
+    Array.from({ length: n }, () => new Array(n).fill(0)),
   );
   for (let step = 0; step <= k; step++) {
     for (let i = 0; i < n; i++) {

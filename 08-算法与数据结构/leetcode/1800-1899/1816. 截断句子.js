@@ -9,5 +9,5 @@ var truncateSentence = function (s, k) {
 
 console.assert(
   truncateSentence('What is the solution to this problem', 4) === 'What is the solution',
-  1
+  1,
 );

@@ -19,24 +19,24 @@
 
 const ws = new WebSocket('ws://localhost:8080');
 // 初始化事件函数
-const initEventHandle = (wsUrl) => {
+const initEventHandle = wsUrl => {
   ws.onclose = () => {
     reconnect(wsUrl);
   };
-  ws.onerror = (err) => {
+  ws.onerror = err => {
     reconnect(wsUrl);
   };
   ws.onopen = () => {
     heartCheck.reset().start(); // 心跳检测重置
   };
-  ws.onmessage = (msg) => {
+  ws.onmessage = msg => {
     heartCheck.reset().start(); // 拿到任何消息都说明当前连接是正常的
     console.log(msg.data);
     ws.send('msg');
   };
 };
 // 实例websocket
-const createWebSocket = (url) => {
+const createWebSocket = url => {
   try {
     if ('WebSocket' in window) {
       ws = new WebSocket(url);

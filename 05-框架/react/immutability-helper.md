@@ -120,7 +120,7 @@ setData((data) => {
 
 ```tsx
 const [data, setData] = useState<any[]>([1, 2]);
-setData((data) => {
+setData(data => {
   // data 值为 [1,2,3,4]
   return update(data, {
     // $push的参数必须是一个数组
@@ -133,7 +133,7 @@ setData((data) => {
 
 ```tsx
 const [data, setData] = useState<any[]>([3, 4]);
-setData((data) => {
+setData(data => {
   // data 值为 [1,2,3,4]
   return update(data, {
     // $unshift的参数必须是一个数组
@@ -147,7 +147,7 @@ setData((data) => {
 ```tsx
 const [data, setData] = useState<any[]>([3, 4]);
 
-setData((data) => {
+setData(data => {
   // data 值为 [3,6,5]
   return update(data, {
     // $splice的参数必须是一个二维数组
@@ -200,7 +200,7 @@ const [data, setData] = useState<any[]>([
 ]);
 
 // 将sex从对象中删除
-setData((data) => {
+setData(data => {
   return update(data, {
     0: {
       user: {
@@ -227,7 +227,7 @@ const [data, setData] = useState<any[]>([
   },
 ]);
 
-setData((data) => {
+setData(data => {
   return update(data, {
     0: {
       user: {
@@ -256,7 +256,7 @@ const [data, setData] = useState<any[]>([
   },
 ]);
 
-setData((data) => {
+setData(data => {
   return update(data, {
     0: {
       user: {

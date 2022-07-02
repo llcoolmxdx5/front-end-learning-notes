@@ -22,7 +22,7 @@
 function forEach<T>(
   arr: T[],
   callbackfn: (value: T, index: number, array: T[]) => void,
-  thisArg?: any
+  thisArg?: any,
 ): void {
   const self = thisArg ?? globalThis;
   let index = 0;

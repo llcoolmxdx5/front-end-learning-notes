@@ -32,7 +32,7 @@ class MyPromise {
   onRejectedCallbacks = [];
 
   // 更改成功后的状态
-  resolve = (value) => {
+  resolve = value => {
     // 只有状态是等待，才执行状态修改
     if (this.status === PENDING) {
       // 状态修改为成功
@@ -48,7 +48,7 @@ class MyPromise {
   };
 
   // 更改失败后的状态
-  reject = (reason) => {
+  reject = reason => {
     // 只有状态是等待，才执行状态修改
     if (this.status === PENDING) {
       // 状态成功为失败
@@ -63,11 +63,11 @@ class MyPromise {
   };
 
   then(onFulfilled, onRejected) {
-    const realOnFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (value) => value;
+    const realOnFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
     const realOnRejected =
       typeof onRejected === 'function'
         ? onRejected
-        : (reason) => {
+        : reason => {
             throw reason;
           };
 
@@ -124,16 +124,16 @@ class MyPromise {
 
   finally(fn) {
     return this.then(
-      (value) => {
+      value => {
         return MyPromise.resolve(fn?.()).then(() => {
           return value;
         });
       },
-      (error) => {
+      error => {
         return MyPromise.resolve(fn?.()).then(() => {
           throw error;
         });
-      }
+      },
     );
   }
 
@@ -145,7 +145,7 @@ class MyPromise {
     }
 
     // 转成常规方式
-    return new MyPromise((resolve) => {
+    return new MyPromise(resolve => {
       resolve(parameter);
     });
   }
@@ -169,40 +169,40 @@ class MyPromise {
 
       promiseList.forEach((promise, index) => {
         MyPromise.resolve(promise).then(
-          (value) => {
+          value => {
             count += 1;
             result[index] = value;
             if (count === length) {
               resolve(result);
             }
           },
-          (reason) => {
+          reason => {
             reject(reason);
-          }
+          },
         );
       });
     });
   }
 
-  static allSettled = (promiseList) => {
-    return new MyPromise((resolve) => {
+  static allSettled = promiseList => {
+    return new MyPromise(resolve => {
       const length = promiseList.length;
       const result = [];
 
       for (let i = 0; i < length; i++) {
         MyPromise.resolve(promiseList[i]).then(
-          (value) => {
+          value => {
             result[i] = {
               status: FULFILLED,
               value,
             };
           },
-          (reason) => {
+          reason => {
             result[i] = {
               status: REJECTED,
               reason,
             };
-          }
+          },
         );
       }
       return resolve(result);
@@ -218,12 +218,12 @@ class MyPromise {
       } else {
         for (let i = 0; i < length; i++) {
           MyPromise.resolve(promiseList[i]).then(
-            (value) => {
+            value => {
               return resolve(value);
             },
-            (reason) => {
+            reason => {
               return reject(reason);
-            }
+            },
           );
         }
       }
@@ -263,7 +263,7 @@ function resolvePromise(promise, x, resolve, reject) {
         then.call(
           x,
           // 如果 resolvePromise 以值 y 为参数被调用，则运行 [[Resolve]](promise, y)
-          (y) => {
+          y => {
             // 如果 resolvePromise 和 rejectPromise 均被调用，
             // 或者被同一参数调用了多次，则优先采用首次调用并忽略剩下的调用
             // 实现这条需要前面加一个变量called
@@ -272,11 +272,11 @@ function resolvePromise(promise, x, resolve, reject) {
             resolvePromise(promise, y, resolve, reject);
           },
           // 如果 rejectPromise 以据因 r 为参数被调用，则以据因 r 拒绝 promise
-          (r) => {
+          r => {
             if (called) return;
             called = true;
             reject(r);
-          }
+          },
         );
       } catch (error) {
         // 如果调用 then 方法抛出了异常 e：

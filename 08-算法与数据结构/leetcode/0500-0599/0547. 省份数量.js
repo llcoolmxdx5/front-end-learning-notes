@@ -7,7 +7,7 @@ import UnionFind from '../../algorithms/unionFind';
 var findCircleNum = function (isConnected) {
   const visited = new Set();
   const m = isConnected.length;
-  const dfs = (i) => {
+  const dfs = i => {
     for (let j = 0; j < m; j++) {
       if (isConnected[i][j] === 1 && !visited.has(j)) {
         visited.add(j);
@@ -65,7 +65,7 @@ console.assert(
     [1, 1, 0],
     [0, 0, 1],
   ]) === 2,
-  1
+  1,
 );
 console.assert(
   findCircleNum([
@@ -73,7 +73,7 @@ console.assert(
     [0, 1, 0],
     [0, 0, 1],
   ]) == 3,
-  2
+  2,
 );
 
 console.assert(
@@ -83,5 +83,5 @@ console.assert(
     [0, 1, 1, 1],
     [1, 0, 1, 1],
   ]) === 1,
-  3
+  3,
 );

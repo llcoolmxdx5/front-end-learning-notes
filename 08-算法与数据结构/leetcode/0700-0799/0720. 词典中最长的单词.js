@@ -89,7 +89,7 @@ console.assert(
     'ca',
     'cat',
   ]) === 'latte',
-  3
+  3,
 );
 console.assert(
   longestWord([
@@ -115,5 +115,5 @@ console.assert(
     'x',
     'o',
   ]) === 'e',
-  4
+  4,
 );

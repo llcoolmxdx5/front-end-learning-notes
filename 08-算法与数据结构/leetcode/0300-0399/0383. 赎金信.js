@@ -14,7 +14,7 @@ var canConstruct = function (ransomNote, magazine) {
       arr[magazine[i].charCodeAt() - 97] += 1;
     }
   }
-  return !arr.some((num) => num < 0);
+  return !arr.some(num => num < 0);
 };
 
 console.assert(canConstruct('a', 'b') === false, 1);

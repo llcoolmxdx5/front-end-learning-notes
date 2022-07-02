@@ -38,7 +38,7 @@ describe('Array.from', () => {
   });
 
   test('在 Array.from 中使用箭头函数', () => {
-    expect(arrayFrom([1, 2, 3], (x) => x + x)).toEqual([2, 4, 6]);
+    expect(arrayFrom([1, 2, 3], x => x + x)).toEqual([2, 4, 6]);
     expect(arrayFrom({ length: 5 }, (v, i) => i)).toEqual([0, 1, 2, 3, 4]);
   });
 
@@ -48,7 +48,7 @@ describe('Array.from', () => {
 
     expect(range(0, 4)).toEqual([0, 1, 2, 3, 4]);
     expect(range(1, 10, 2)).toEqual([1, 3, 5, 7, 9]);
-    expect(range('A'.charCodeAt(0), 'D'.charCodeAt(0)).map((x) => String.fromCharCode(x))).toEqual([
+    expect(range('A'.charCodeAt(0), 'D'.charCodeAt(0)).map(x => String.fromCharCode(x))).toEqual([
       'A',
       'B',
       'C',

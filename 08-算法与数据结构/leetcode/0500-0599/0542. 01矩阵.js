@@ -6,7 +6,7 @@ var updateMatrix = function (mat) {
   const m = mat.length,
     n = mat[0].length;
   const row = new Array(m).fill(0);
-  const arr = row.map((_) => new Array(n).fill(0));
+  const arr = row.map(_ => new Array(n).fill(0));
   const queue = [];
   const seen = new Set();
   mat.forEach((item, i) => {
@@ -40,7 +40,7 @@ console.log(
     [0, 0, 0],
     [0, 1, 0],
     [0, 0, 0],
-  ])
+  ]),
 ); // [[0,0,0],[0,1,0],[0,0,0]]
 
 console.log(
@@ -48,7 +48,7 @@ console.log(
     [0, 0, 0],
     [0, 1, 0],
     [1, 1, 1],
-  ])
+  ]),
 ); // [[0,0,0],[0,1,0],[1,2,1]]
 
 console.log(updateMatrix([[0], [0], [0], [0], [0]])); // [[0],[0],[0],[0],[0]]
@@ -65,7 +65,7 @@ console.log(
     [1, 0, 0, 0, 1, 1, 1, 1, 0, 1], // 7
     [1, 1, 1, 1, 1, 1, 1, 0, 1, 0], // 8
     [1, 1, 1, 1, 0, 1, 0, 0, 1, 1], // 9
-  ])
+  ]),
 );
 /**
  * [[1,0,1,1,0,0,1,0,0,1],[0,1,1,0,1,0,1,0,1,1],[0,0,1,0,1,0,0,1,0,0],[1,0,1,0,1,1,1,1,1,1],[0,1,0,1,1,0,0,0,0,1],

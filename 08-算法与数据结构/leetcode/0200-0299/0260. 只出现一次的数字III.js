@@ -4,7 +4,7 @@
  */
 var singleNumber = function (nums) {
   const map = new Map();
-  nums.forEach((x) => map.set(x, 1 + (map.get(x) ?? 0)));
+  nums.forEach(x => map.set(x, 1 + (map.get(x) ?? 0)));
   const resp = [];
   for (let [key, value] of map.entries()) {
     if (value === 1) {

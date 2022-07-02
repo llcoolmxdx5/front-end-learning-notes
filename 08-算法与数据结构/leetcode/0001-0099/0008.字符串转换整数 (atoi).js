@@ -20,7 +20,7 @@ var myAtoi = function (s) {
    * @param {string} str
    * @return {number}
    */
-  const getType = (str) => {
+  const getType = str => {
     if (str === ' ') return 0;
     if (str === '+' || str === '-') return 1;
     if (str.charCodeAt() >= 48 && str.charCodeAt() <= 57) return 2;

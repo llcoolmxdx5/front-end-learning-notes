@@ -34,13 +34,13 @@ console.assert(
       [8, 10],
       [15, 18],
     ].join(),
-  1
+  1,
 );
 console.assert(
   merge([
     [1, 4],
     [4, 5],
   ]).join() === [[1, 5]].join(),
-  2
+  2,
 );
 merge([[0, 0]]);

@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "description": "front-end-learning-notes",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc --build tsconfig.json",
-    "dev": "nodemon --watch src/**/**/*.ts --exec \"tsc\" --build tsconfig.json",
-    "prettier": "prettier --write ."
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/llcoolmxdx5/front-end-learning-notes.git"
   },
+  "bugs": {
+    "url": "https://github.com/llcoolmxdx5/front-end-learning-notes/issues"
+  },
+  "homepage": "https://github.com/llcoolmxdx5/front-end-learning-notes#readme",
   "keywords": [
     "leetcode",
     "react",
@@ -25,6 +23,12 @@
   "private": true,
   "author": "",
   "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc --build tsconfig.json",
+    "dev": "nodemon --watch src/**/**/*.ts --exec \"tsc\" --build tsconfig.json",
+    "prettier": "prettier --write ."
+  },
   "devDependencies": {
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -35,7 +39,11 @@
     "lerna": "^4.0.0",
     "lint-staged": "^10.5.4",
     "nodemon": "^2.0.7",
+    "prettier-plugin-organize-imports": "^3.0.0",
     "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "prettier": "^2.7.1"
   },
   "husky": {
     "hooks": {
@@ -48,12 +56,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "bugs": {
-    "url": "https://github.com/llcoolmxdx5/front-end-learning-notes/issues"
-  },
-  "homepage": "https://github.com/llcoolmxdx5/front-end-learning-notes#readme",
-  "dependencies": {
-    "prettier": "^2.7.1"
   }
 }

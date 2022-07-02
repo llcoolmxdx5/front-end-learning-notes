@@ -6,7 +6,7 @@ var permute = function (nums) {
   const { length } = nums;
   const result = [];
   const temp = [];
-  const backtrack = (used) => {
+  const backtrack = used => {
     if (temp.length === length) {
       result.push([...temp]);
       return;

@@ -74,7 +74,7 @@ when(
   },
   () => {
     console.log('when ');
-  }
+  },
 );
 ```
 
@@ -89,10 +89,10 @@ reaction(
   () => {
     return store.result;
   },
-  (result) => {
+  result => {
     // 第一个函数的返回值作为第二个函数的参数
     console.log(result);
-  }
+  },
 );
 ```
 
@@ -215,7 +215,7 @@ class AppStore {
     this.todos.push(todo);
   }
   @action.bound async asynnAddTodo(todo) {
-    await new Promise((res) => {
+    await new Promise(res => {
       setTimeout(() => {
         res();
       }, 1000);
@@ -261,7 +261,7 @@ import store from '../store';
 @inject('store')
 @observer
 class Home extends Component {
-  addTodo = (item) => {
+  addTodo = item => {
     return () => {
       store.addTodo(item);
     };
@@ -273,7 +273,7 @@ class Home extends Component {
   //     }, 1000);
   //   }
   // }
-  asyncAddTodo = (item) => {
+  asyncAddTodo = item => {
     return () => {
       store.addTodo(item);
     };

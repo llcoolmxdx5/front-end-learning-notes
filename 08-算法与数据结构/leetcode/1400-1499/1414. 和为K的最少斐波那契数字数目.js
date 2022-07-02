@@ -19,7 +19,7 @@ var findMinFibonacciNumbers = function (k) {
     5702887, 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296,
     433494437, 701408733,
   ];
-  const findMax = (target) => {
+  const findMax = target => {
     let left = 0;
     let right = fibonacciNumbers.length;
     while (left < right) {

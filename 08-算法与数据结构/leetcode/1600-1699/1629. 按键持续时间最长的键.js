@@ -23,5 +23,5 @@ var slowestKey = function (releaseTimes, keysPressed) {
 console.assert(slowestKey((releaseTimes = [9, 29, 49, 50]), (keysPressed = 'cbcd')) === 'c', 1);
 console.assert(
   slowestKey((releaseTimes = [12, 23, 36, 46, 62]), (keysPressed = 'spuda')) === 'a',
-  2
+  2,
 );

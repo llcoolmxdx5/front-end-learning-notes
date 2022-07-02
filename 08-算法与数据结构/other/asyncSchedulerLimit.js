@@ -6,7 +6,7 @@ class Scheduler {
   }
 
   add(task) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       task.resolve = resolve;
       if (this.working.length < this._max) {
         this.runTask(task);
@@ -31,8 +31,8 @@ class Scheduler {
   }
 }
 
-const timeout = (time) =>
-  new Promise((resolve) => {
+const timeout = time =>
+  new Promise(resolve => {
     setTimeout(resolve, time);
   });
 

@@ -16,7 +16,7 @@ var preorder = function (root) {
     return [];
   }
   res.push(root.val);
-  root.children.forEach((item) => {
+  root.children.forEach(item => {
     res.push(...preorder(item));
   });
   // console.log(res);

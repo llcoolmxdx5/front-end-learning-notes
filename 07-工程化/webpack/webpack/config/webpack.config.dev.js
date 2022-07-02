@@ -38,7 +38,7 @@ const config = {
                */
               importLoaders: 2,
               modules: {
-                mode: (path) => {
+                mode: path => {
                   if (/global\.((le|c)ss)$/.test(path)) {
                     return 'global';
                   }

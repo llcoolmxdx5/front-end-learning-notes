@@ -65,9 +65,9 @@ console.assert(
       [10, 11, 16, 20],
       [23, 30, 34, 60],
     ],
-    3
+    3,
   ) === true,
-  1
+  1,
 );
 
 console.assert(
@@ -77,9 +77,9 @@ console.assert(
       [10, 11, 16, 20],
       [23, 30, 34, 60],
     ],
-    13
+    13,
   ) === false,
-  2
+  2,
 );
 
 console.assert(searchMatrix([[0]], 0) === true, 3);

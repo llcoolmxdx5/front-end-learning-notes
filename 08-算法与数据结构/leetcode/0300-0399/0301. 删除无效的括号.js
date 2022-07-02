@@ -3,7 +3,7 @@
  * @return {string[]}
  */
 var removeInvalidParentheses = function (s) {
-  const isValid = (str) => {
+  const isValid = str => {
     let count = 0;
     for (let i = 0; i < str.length; i++) {
       if (str[i] === '(') {

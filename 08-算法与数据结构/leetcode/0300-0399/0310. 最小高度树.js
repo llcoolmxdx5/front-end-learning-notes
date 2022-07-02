@@ -40,7 +40,7 @@ var findMinHeightTrees = function (n, edges) {
     }
   }
 
-  return res.map((v, i) => (v === min ? i : -1)).filter((v) => v > -1);
+  return res.map((v, i) => (v === min ? i : -1)).filter(v => v > -1);
 };
 
 var findMinHeightTrees = function (n, edges) {
@@ -87,7 +87,7 @@ console.assert(
     [1, 2],
     [1, 3],
   ]).join() === [1].join(),
-  1
+  1,
 );
 
 console.assert(
@@ -98,5 +98,5 @@ console.assert(
     [3, 4],
     [5, 4],
   ]).join() === [3, 4].join(),
-  2
+  2,
 );

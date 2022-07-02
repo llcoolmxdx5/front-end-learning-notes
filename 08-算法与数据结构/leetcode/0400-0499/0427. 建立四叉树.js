@@ -54,7 +54,7 @@ var construct = function (grid) {
       dfs(startX, x, startY, y),
       dfs(startX, x, y, endY),
       dfs(x, endX, startY, y),
-      dfs(x, endX, y, endY)
+      dfs(x, endX, y, endY),
     );
   };
   return dfs(0, n, 0, n);
@@ -71,6 +71,6 @@ console.log(
       [0, 0, 0, 0, 0, 0, 1, 1],
       [1, 1, 1, 1, 1, 1, 0, 0],
       [1, 1, 1, 1, 1, 1, 0, 0],
-    ])
-  )
+    ]),
+  ),
 );

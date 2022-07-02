@@ -21,7 +21,7 @@ var wordBreak = (s, wordDict) => {
 
 var wordBreak = function (s, wordDict) {
   const set = new Set(wordDict);
-  const maxWordLength = Math.max(...wordDict.map((x) => x.length));
+  const maxWordLength = Math.max(...wordDict.map(x => x.length));
   const { length } = s;
   const dp = new Array(length + 1).fill(false);
   dp[0] = true;

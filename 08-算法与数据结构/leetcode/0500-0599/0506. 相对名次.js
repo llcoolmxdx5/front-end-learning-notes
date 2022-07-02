@@ -18,17 +18,17 @@ var findRelativeRanks = function (score) {
         map.set(item, `${index + 1}`);
       }
     });
-  return score.map((i) => map.get(i));
+  return score.map(i => map.get(i));
 };
 
 console.assert(
   findRelativeRanks([5, 4, 3, 2, 1]).join() ===
     ['Gold Medal', 'Silver Medal', 'Bronze Medal', '4', '5'].join(),
-  1
+  1,
 );
 
 console.assert(
   findRelativeRanks([10, 3, 8, 9, 4]).join() ===
     ['Gold Medal', '5', 'Bronze Medal', 'Silver Medal', '4'].join(),
-  2
+  2,
 );

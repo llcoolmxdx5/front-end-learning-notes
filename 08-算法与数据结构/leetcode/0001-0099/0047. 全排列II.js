@@ -7,7 +7,7 @@ var permuteUnique = function (nums) {
   const temp = [];
   const resp = [];
   const set = new Set();
-  const backTrack = (used) => {
+  const backTrack = used => {
     if (temp.length === length && !set.has(temp.join(','))) {
       resp.push([...temp]);
       set.add(temp.join(','));
@@ -31,7 +31,7 @@ var permuteUnique = function (nums) {
   const temp = [];
   const resp = [];
   nums.sort((a, b) => a - b);
-  const backTrack = (used) => {
+  const backTrack = used => {
     if (temp.length === length) {
       resp.push([...temp]);
       return;

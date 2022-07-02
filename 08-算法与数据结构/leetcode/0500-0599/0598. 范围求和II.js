@@ -21,7 +21,7 @@ console.assert(
     [2, 2],
     [3, 3],
   ]) === 4,
-  1
+  1,
 );
 
 console.assert(maxCount(3, 3, []) === 9, 2);

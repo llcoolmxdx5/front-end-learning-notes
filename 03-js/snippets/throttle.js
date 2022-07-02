@@ -170,7 +170,7 @@ export function debounce(func, wait, options) {
 export const throttle = (fn, wait, options = { leading: true, trailing: false, maxWait: wait }) =>
   debounce(fn, wait, options);
 
-const print = throttle((msg) => {
+const print = throttle(msg => {
   console.log(msg);
 }, 500);
 

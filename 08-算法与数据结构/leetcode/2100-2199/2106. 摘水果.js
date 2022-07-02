@@ -73,9 +73,9 @@ console.assert(
       [8, 6],
     ],
     5,
-    4
+    4,
   ) === 9,
-  1
+  1,
 );
 console.assert(
   maxTotalFruits(
@@ -88,9 +88,9 @@ console.assert(
       [10, 9],
     ],
     5,
-    4
+    4,
   ) === 14,
-  2
+  2,
 );
 console.assert(
   maxTotalFruits(
@@ -100,8 +100,8 @@ console.assert(
       [8, 5],
     ],
     3,
-    2
+    2,
   ) === 0,
-  3
+  3,
 );
 console.assert(maxTotalFruits([[200000, 10000]], 200000, 200000) === 10000, 4);

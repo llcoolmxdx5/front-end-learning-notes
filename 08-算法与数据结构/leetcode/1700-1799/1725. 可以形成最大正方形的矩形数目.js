@@ -24,7 +24,7 @@ console.assert(
     [5, 12],
     [16, 5],
   ]) === 3,
-  1
+  1,
 );
 console.assert(
   countGoodRectangles([
@@ -33,5 +33,5 @@ console.assert(
     [4, 3],
     [3, 7],
   ]) === 3,
-  2
+  2,
 );

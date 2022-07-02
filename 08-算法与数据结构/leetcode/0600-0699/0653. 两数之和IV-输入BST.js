@@ -14,7 +14,7 @@
 var findTarget = function (root, k) {
   const set = new Set();
   let ans = false;
-  const dfs = (node) => {
+  const dfs = node => {
     if (!node) {
       return;
     }

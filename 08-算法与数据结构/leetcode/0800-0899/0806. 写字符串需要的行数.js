@@ -24,9 +24,9 @@ console.assert(
       10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
       10, 10, 10,
     ],
-    'abcdefghijklmnopqrstuvwxyz'
+    'abcdefghijklmnopqrstuvwxyz',
   ).join() === [3, 60].join(),
-  1
+  1,
 );
 
 console.assert(
@@ -35,7 +35,7 @@ console.assert(
       4, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
       10, 10,
     ],
-    'bbbcccdddaaa'
+    'bbbcccdddaaa',
   ).join() === [2, 4].join(),
-  2
+  2,
 );

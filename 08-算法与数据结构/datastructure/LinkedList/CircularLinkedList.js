@@ -1,6 +1,6 @@
-import { defaultEquals } from './utils';
-import Node from './Node';
 import LinkedList from './LinkedList';
+import Node from './Node';
+import { defaultEquals } from './utils';
 
 // 循环链表
 export default class CircularLinkedList extends LinkedList {

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import { connect } from 'dva';
+import React, { useEffect } from 'react';
 
 const Counter = ({ number, dispatch }) => {
   useEffect(() => {

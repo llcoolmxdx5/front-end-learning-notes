@@ -26,15 +26,15 @@ var findRestaurant = function (list1, list2) {
 console.assert(
   findRestaurant(
     ['Shogun', 'Tapioca Express', 'Burger King', 'KFC'],
-    ['Piatti', 'The Grill at Torrey Pines', 'Hungry Hunter Steakhouse', 'Shogun']
+    ['Piatti', 'The Grill at Torrey Pines', 'Hungry Hunter Steakhouse', 'Shogun'],
   ).join() === ['Shogun'].join(),
-  1
+  1,
 );
 
 console.assert(
   findRestaurant(
     ['Shogun', 'Tapioca Express', 'Burger King', 'KFC'],
-    ['KFC', 'Shogun', 'Burger King']
+    ['KFC', 'Shogun', 'Burger King'],
   ).join() === ['Shogun'].join(),
-  2
+  2,
 );
