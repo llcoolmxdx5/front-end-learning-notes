@@ -2321,3 +2321,524 @@ new ForkTsCheckerWebpackPlugin({
   },
 },
 ```
+
+## Loader 原理
+
+### 小案例
+
+创建一个可以将 字符串 `reck` 替换为 `luna` 的简单 `loader`
+
+```js
+// 新建一个loader /loaders/replaceLoader.js
+
+// 这里不可以使用箭头函数
+module.exports = function (source) {
+  return source.replace("reck", "luna");
+};
+
+// 使用
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: path.resolve(__dirname, "/loaders/replaceLoader.js"),
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
+### 获取参数
+
+```js
+const loaderUtils = require("loader-utils");
+
+module.exports = function (source) {
+  // 参数会被放在 this.query 里面
+  const { name } = this.query;
+
+  // 有的时候 options 可能不是对象而是字符串，我们可以借助 loader-utils
+  const loaderUtils = require("loader-utils");
+  const { name } = loaderUtils.getOptions(this);
+
+  return source.replace("reck", name);
+};
+
+// 使用
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: path.resolve(__dirname, "/loaders/replaceLoader.js"),
+            options: {
+              name: "luna",
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
+### 丰富反馈内容
+
+借助 `this.callback`：
+
+```js
+this.callback(
+  err: Error | null,
+  content: string | Buffer,
+  sourceMap?: sourceMap,
+  meta?: any
+)
+```
+
+```js
+const loaderUtils = require("loader-utils");
+
+module.exports = function (source) {
+  const { name } = loaderUtils.getOptions(this);
+  const result = source.replace("reck", name);
+
+  this.callback(null, result, sourceMap, meta);
+};
+```
+
+### resolveLoader
+
+作用是寻找 loader 时可以直接去我们自定义的文件夹内去寻找。
+
+```js
+// 使用
+module.exports = {
+  resolveLoader: {
+    modules: ["node_modules", "./loaders"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: "replaceLoader2",
+          },
+          {
+            loader: path.resolve(__dirname, "/loaders/replaceLoader.js"),
+            options: {
+              name: "luna",
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
+### 异步处理
+
+```js
+const loaderUtils = require("loader-utils");
+
+module.exports = function (source) {
+  const { name } = loaderUtils.getOptions(this);
+  const callback = this.async();
+
+  setTimeout(() => {
+    const result = source.replace("reck", name);
+    callback(null, result);
+  }, 1000);
+};
+```
+
+```js
+const loaderUtils = require("loader-utils");
+
+module.exports = function (source) {
+  const { name } = loaderUtils.getOptions(this);
+  const result = source.replace("reck", name);
+
+  this.callback(null, result, sourceMap, meta);
+};
+```
+
+> loader 还可以做哪些工作呢？比如 给代码添加 try catch，本地化，替换中英文
+
+## Plugin 原理
+
+### 简单 Plugin
+
+```js
+// /plugins/copyright-webpack-plugin.js
+
+class CopyrightWebpackPlugin {
+  constructor(options) {
+    console.log(options); // { name: 'reck' }
+  }
+
+  // compiler 是 webpack 的一个实例，存放着配置等所有的东西
+  apply(compiler) {
+    /**
+     * hooks       是钩子
+     * emit        将打包好的文件放到输出目录之前（异步钩子）
+     * compilation 和本次打包相关的东西
+     */
+    compiler.hooks.emit.tapAsync(
+      "CopyrightWebpackPlugin",
+      (compilation, cb) => {
+        // 增加一个 txt 文件
+        compilation.assets["copyright.txt"] = {
+          /**
+           * source 文本内容
+           * size   文本字节大小
+           */
+          source: function () {
+            return "copyright by reck_luna";
+          },
+          size: function () {
+            return 22;
+          },
+        };
+
+        // 必须回调
+        cb();
+      }
+    );
+
+    // compile 同步钩子，不需要callback
+    compiler.hooks.compile.tap("CopyrightWebpackPlugin", (compilation) => {
+      console.log("同步钩子");
+    });
+  }
+}
+
+module.exports = CopyrightWebpackPlugin;
+```
+
+```js
+// /webpack.config.js
+
+const CopyrightWebpackPlugin = require("/plugins/copyright-webpack-plugin.js");
+
+module.exports = {
+  plugins: [
+    new CopyrightWebpackPlugin({
+      name: "reck",
+    }),
+  ],
+};
+```
+
+### Node 调试
+
+```json
+// package.json
+{
+  "script": {
+    "debug": "node --inspect --inspect-brk node_modules/webpack/bin/webpack.js",
+    "build": "webpack"
+  }
+}
+```
+
+- `--inspect` 开启 Node 调试
+- `--inspect-brk` 在代码第一行添加一个 debug 命令
+
+```js
+class CopyrightWebpackPlugin {
+  apply(compiler) {
+    compiler.hooks.compile.tap("CopyrightWebpackPlugin", (compilation) => {
+      // 打断点
+      debugger;
+      console.log("同步钩子");
+    });
+  }
+}
+
+module.exports = CopyrightWebpackPlugin;
+```
+
+打开控制台的 Node 图标，就进入了 Node 调试
+
+## Bundler 源码编写
+
+### 入口文件分析
+
+```js
+const fs = require("fs");
+const path = require("path");
+const babel = require("@babel/core");
+const parser = require("@babel/parser"); // 分析抽象语法树
+const traverse = require("@babel/traverse").default;
+
+// ************ 入口文件分析 **************
+const moduleAnalyses = (filename) => {
+  // 读取文件
+  const content = fs.readFileSync(filename, "utf-8");
+
+  //分析抽象语法树
+  const ast = parser.parse(content, {
+    sourceType: "module",
+  });
+
+  // 分析依赖
+  let dependencies = {};
+  traverse(ast, {
+    // 第一个语法是抽象语法树
+    ImportDeclaration({ node }) {
+      // 获取依赖的相对路径
+      const value = node.source.value;
+      const dirname = path.dirname(filename);
+      const newFile = `./${path.join(dirname, value)}`;
+
+      // key: 将相对路径 value: 绝对路径
+      dependencies[value] = newFile;
+    },
+  });
+
+  // 将 ES6 语法转译为 浏览器可以执行的语法
+  const { code } = babel.transformFromAst(ast, null, {
+    // 需要安装 @babel/preset-env
+    presets: ["@babel/preset-env"],
+  });
+
+  /**
+   * filename     // 入口文件
+   * dependencies // 依赖关系
+   * code         // 打包后的代码
+   */
+  return {
+    filename,
+    dependencies,
+    code,
+  };
+};
+
+const moduleInfo = moduleAnalyses("./src/index.js");
+
+console.log(moduleInfo);
+```
+
+### 依赖图谱
+
+```js
+const fs = require("fs");
+const path = require("path");
+const babel = require("@babel/core");
+const parser = require("@babel/parser"); // 分析抽象语法树
+const traverse = require("@babel/traverse").default;
+
+// ************ 入口文件分析 **************
+const moduleAnalyses = (filename) => {
+  // 读取文件
+  const content = fs.readFileSync(filename, "utf-8");
+
+  //分析抽象语法树
+  const ast = parser.parse(content, {
+    sourceType: "module",
+  });
+
+  // 分析依赖
+  let dependencies = {};
+  traverse(ast, {
+    // 第一个语法是抽象语法树
+    ImportDeclaration({ node }) {
+      // 获取依赖的相对路径
+      const value = node.source.value;
+      const dirname = path.dirname(filename);
+      const newFile = `./${path.join(dirname, value)}`;
+
+      // key: 将相对路径 value: 绝对路径
+      dependencies[value] = newFile;
+    },
+  });
+
+  // 将 ES6 语法转译为 浏览器可以执行的语法
+  const { code } = babel.transformFromAst(ast, null, {
+    // 需要安装 @babel/preset-env
+    presets: ["@babel/preset-env"],
+  });
+
+  /**
+   * filename     // 入口文件
+   * dependencies // 依赖关系
+   * code         // 打包后的代码
+   */
+  return {
+    filename,
+    dependencies,
+    code,
+  };
+};
+
+// const moduleInfo = moduleAnalyses('./src/index.js')
+// console.log(moduleInfo)
+
+// ************ 依赖图谱 **************
+const makeDependenciesGraph = (entry) => {
+  // 首先在依赖图谱中插入入口文件的分析
+  const entryModule = moduleAnalyses(entry);
+  const graphArray = [entryModule];
+
+  /**
+   * 循环入口文件的依赖并将其添加到 graphArray 中，因为 graphArray 是动态的，
+   * graphArray.length 也是动态的，所以可以进入下一轮循环
+   */
+  for (let i = 0; i < graphArray.length; i++) {
+    const item = graphArray[i];
+    const { dependencies } = item;
+    if (dependencies) {
+      for (let j in dependencies) {
+        graphArray.push(moduleAnalyses(dependencies[j]));
+      }
+    }
+  }
+
+  // 依键值对的形式重新组合数据
+  const graph = {};
+  graphArray.forEach((item) => {
+    graph[item.filename] = {
+      dependencies: item.dependencies,
+      code: item.code,
+    };
+  });
+  return graph;
+};
+
+const graphInfo = makeDependenciesGraph("./src/index.js");
+console.log(graphInfo);
+```
+
+### 生成可用代码
+
+```js
+const fs = require("fs");
+const path = require("path");
+const babel = require("@babel/core");
+const parser = require("@babel/parser"); // 分析抽象语法树
+const traverse = require("@babel/traverse").default;
+
+// ************ 入口文件分析 **************
+const moduleAnalyses = (filename) => {
+  // 读取文件
+  const content = fs.readFileSync(filename, "utf-8");
+
+  //分析抽象语法树
+  const ast = parser.parse(content, {
+    sourceType: "module",
+  });
+
+  // 分析依赖
+  let dependencies = {};
+  traverse(ast, {
+    // 第一个语法是抽象语法树
+    ImportDeclaration({ node }) {
+      // 获取依赖的相对路径
+      const value = node.source.value;
+      const dirname = path.dirname(filename);
+      const newFile = `./${path.join(dirname, value)}`;
+
+      // key: 将相对路径 value: 绝对路径
+      dependencies[value] = newFile;
+    },
+  });
+
+  // 将 ES6 语法转译为 浏览器可以执行的语法
+  const { code } = babel.transformFromAst(ast, null, {
+    // 需要安装 @babel/preset-env
+    presets: ["@babel/preset-env"],
+  });
+
+  /**
+   * filename     // 入口文件
+   * dependencies // 依赖关系
+   * code         // 打包后的代码
+   */
+  return {
+    filename,
+    dependencies,
+    code,
+  };
+};
+
+// const moduleInfo = moduleAnalyses('./src/index.js')
+// console.log(moduleInfo)
+
+// ************ 依赖图谱 *****************
+const makeDependenciesGraph = (entry) => {
+  // 首先在依赖图谱中插入入口文件的分析
+  const entryModule = moduleAnalyses(entry);
+  const graphArray = [entryModule];
+
+  /**
+   * 循环入口文件的依赖并将其添加到 graphArray 中，因为 graphArray 是动态的，
+   * graphArray.length 也是动态的，所以可以进入下一轮循环
+   */
+  for (let i = 0; i < graphArray.length; i++) {
+    const item = graphArray[i];
+    const { dependencies } = item;
+    if (dependencies) {
+      for (let j in dependencies) {
+        graphArray.push(moduleAnalyses(dependencies[j]));
+      }
+    }
+  }
+
+  // 依键值对的形式重新组合数据
+  const graph = {};
+  graphArray.forEach((item) => {
+    graph[item.filename] = {
+      dependencies: item.dependencies,
+      code: item.code,
+    };
+  });
+  return graph;
+};
+
+// const graphInfo = makeDependenciesGraph('./src/index.js')
+// console.log(graphInfo)
+
+// ************ 生成代码 *****************
+const generateCode = (entry) => {
+  // 依赖树是一个对象，需要解析成字符串
+  const graph = JSON.stringify(makeDependenciesGraph(entry));
+
+  /**
+   * 依赖树每个模块对应的代码都需要 require/modules 对象，所以需要自己来构建
+   */
+  return `
+    (function (graph) {
+      function require (module) {
+        // require 需要引用相对路径，所以创建 localRequire
+        function localRequire (relativePath) {
+          return require(graph[module].dependencies[relativePath])
+        }
+
+        // 没有 exports 对象，需要手动创建
+        // 切记，这里的 分号 是必须有的
+        var exports = {};
+        (function (require, exports, code) {
+          // 执行代码
+          eval(code)
+        })(localRequire, exports, graph[module].code)
+
+        // 导出后别的依赖，才能进行引用
+        return exports
+      }
+      require('${entry}')
+    })(${graph})
+  `;
+};
+
+const code = generateCode("./src/index.js");
+console.log(code);
+```

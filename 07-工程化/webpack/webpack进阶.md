@@ -49,11 +49,6 @@ Babel 是一个工具链，主要用于将 ECMAScript 2015+ 版本的代码转�
 import 或 require 语句会转换为 **webpack_require**
 异步导入会转换为 require.ensure（在 Webpack 4 中会使用 Promise 封装）
 
-## 比较
-
-**gulp 是任务执行器(task runner)**：就是用来自动化处理常见的开发任务，例如项目的检查(lint)、构建(build)、测试(test)
-**webpack 是打包器(bundler)**：帮助你取得准备用于部署的 JavaScript 和样式表，将它们转换为适合浏览器的可用格式。例如，JavaScript 可以压缩、拆分 chunk 和懒加载，
-
 ## 编写一个 loader
 
 ### 同步 loader
@@ -95,8 +90,6 @@ module.exports = function (content, map, meta) {
 };
 ```
 
-### "Raw" loader
-
 ### this.callback
 
 有时候我们不止要 return 一个 resource，还可能要返回多个结果，就需要用到 callback。
@@ -132,8 +125,6 @@ this.callback(
 ```
 
 第一个参数是错误，第二个是结果，第三个是 sourcemap，第四个可以是任何内容（比如元数据）
-
-## 编写一个 plugin
 
 ## Webpack 优化
 
@@ -383,7 +374,7 @@ entry: {
 
 webpack 将根据以下条件自动拆分代码块：
 
-1. 会被共享的代码块或者 node_mudules 文件夹中的代码块
+1. 会被共享的代码块或者 node_modules 文件夹中的代码块
 1. 体积大于 30KB 的代码块（在 gz 压缩前）
 1. 按需加载代码块时的并行请求数量不超过 5 个
 1. 加载初始页面时的并行请求数量不超过 3 个
@@ -419,8 +410,6 @@ webpack 将根据以下条件自动拆分代码块：
   }
 ```
 
-。
-
 ### UglifyJSPlugin
 
 基本上脚手架都包含了该插件,该插件会分析 JS 代码语法树，理解代码的含义，从而做到去掉无效代码、去掉日志输入代码、缩短变量名等优化。
@@ -442,79 +431,6 @@ plugins: [
     },
   }),
 ];
-```
-
-### CSS 样式处理
-
-1. css-loader: 处理 css 文件
-2. style-loader: 把 js 中 import 导入的样式文件代码，打包到 js 文件中，运行 js 文件时，将样式自动插入到<style>标签中
-3. mini-css-extract-plugin: 把 js 中 import 导入的样式文件代码，打包成一个实际的 css 文件，结合 html-webpack-plugin，在 dist/index.html 中以 link 插入 css 文件；默认将 js 中 import 的多个 css 文件，打包时合成一个
-
-```bash
-yarn add mini-css-extract-plugin -D
-yarn add css-loader -D
-yarn add optimize-css-assets-webpack-plugin -D
-```
-
-ExtractTextPlugin 从 bundle 中提取文本（CSS）到单独的文件，PurifyCSSPlugin 纯化 CSS（其实用处没多大）
-
-css-loader 用法：
-
-```js
-module.exports = {
-    module: {
-      rules: [
-       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-       }
-      ]
-    },
-    plugins: [
-      ...,
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
-    ]
-  };
-```
-
-style-loader 用法：
-
-```js
-module.exports = {
-    module: {
-      rules: [
-       {
-        test: /\.css$/i,
-       use: [
-          //执行顺序，从有向左
-          { loader: "style-loader" },
-          { loader: "css-loader" }
-        ]
-    },
-    plugins: [
-      ...,
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
-    ]
-  };
-```
-
-css 压缩优化：
-
-```js
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
-// 。。。
-
-optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({})],
-  }
-
 ```
 
 ### DefinePlugin
@@ -628,150 +544,6 @@ module.exports = {
     }),
   ],
 };
-```
-
-### 压缩图片资源
-
-图像占了页面大小的一半以上。虽然它们不像 JavaScript 那样重要(例如，它们不会阻塞呈现)，但它们仍然占用了很大一部分带宽。在 webpack 中可以使用 url-loader、svg-url-loader 和 image-webpack-loader 来优化它们。
-
-#### url-loader
-
-参见：项目 webpack-css
-
-url-loader 可以将小型静态文件内联到应用程序中。如果不进行配置，它将把接受一个传递的文件，将其放在已编译的包旁边，并返回该文件的 url。但是，如果指定 limit 选项，它将把小于这个限制的文件编码为 Base64 数据的 url 并返回这个 url，这会将图像内联到 JavaScript 代码中，从而可以减少一个 HTTP 请求。
-
-```js
-// webpack.config.js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(jpe?g|png|gif)$/,
-        loader: "url-loader",
-        options: {
-          // Inline files smaller than 10 kB (10240 bytes)
-          limit: 10 * 1024,
-        },
-      },
-    ],
-  },
-};
-```
-
-```js
-// Home.js
-import logo from "../assets/images/logo.png";
-```
-
-注意：需要在增大代码体积和减少 HTTP 请求数之前进行权衡。
-
-#### svg-url-loader
-
-svg-url-loader 的工作原理与 url-loader 类似 — 只是它使用的是 URL 编码而不是 Base64 编码来编码文件。这对 SVG 图像很有用 — 因为 SVG 文件只是纯文本，这种编码更高效。
-
-```js
-// webpack.config.js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.svg$/,
-        loader: "svg-url-loader",
-        options: {
-          // Inline files smaller than 10 kB (10240 bytes)
-          limit: 10 * 1024,
-          // Remove the quotes from the url
-          // (they’re unnecessary in most cases)
-          noquotes: true,
-        },
-      },
-    ],
-  },
-};
-```
-
-注意: svg-url-loader 有一些选项可以改进 Internet Explorer 的支持，但会使其他浏览器的内联更加糟糕。如果需要支持此浏览器，请应用 iesafe: true 选项。
-
-#### image-webpack-loader
-
-image-webpack-loader 可支持 JPG、PNG、GIF 和 SVG 图像的压缩。
-这个加载器不嵌入图像到应用程序，所以它必须与 url-loader 和 svg-url-loader 成对工作。为了避免将其复制粘贴到两个规则中(一个用于 JPG/PNG/GIF 图像，另一个用于 SVG 图像)，我们通过 enforce: 'pre' 将这个加载器设为一个单独的规则：
-
-```js
-// webpack.config.js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(jpe?g|png|gif|svg)$/,
-        loader: "image-webpack-loader",
-        // This will apply the loader before the other ones
-        enforce: "pre",
-      },
-    ],
-  },
-};
-```
-
-#### 压缩图片
-
-参考：https://www.npmjs.com/package/image-webpack-loader
-
-```js
-yarn add image-webpack-loader --dev
-```
-
-```js
-//添加loader
-module: {
-    rules: [
-          {
-            test: /\.(png|jpg|gif)$/i,
-            use: [
-              {
-                loader: 'url-loader',
-                options: {
-                  limit: 100,
-                },
-              },
-               {
-                loader: 'image-webpack-loader',
-                options: {
-                  pngquant: {
-                    quality: [0.25, 0.60],
-                    speed: 4
-                  },
-                },
-              },
-            ],
-          }
-    ]
-    ...
-}
-
-```
-
-### 使用 Tree Shaking
-
-参考:https://webpack.js.org/guides/tree-shaking/
-
-tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码(dead-code)。它依赖于 ES2015 模块语法的 静态结构 特性，例如 import 和 export。这个术语和概念实际上是由 ES2015 模块打包工具 rollup 普及起来的。
-
-webpack 2 正式版本内置支持 ES2015 模块（也叫做 harmony modules）和未使用模块检测能力。新的 webpack 4 正式版本扩展了此检测能力，通过 package.json 的 "sideEffects" 属性作为标记，向 compiler 提供提示，表明项目中的哪些文件是 "pure(纯的 ES2015 模块)"，由此可以安全地删除文件中未使用的部分。
-
-### test & include & exclude
-
-减小文件搜索范围，从而提升速度
-示例
-
-```js
-{
-    test: /\.css$/,
-    include: [
-      path.resolve(__dirname, "app/styles"),
-      path.resolve(__dirname, "vendor/styles")
-    ]
-  }
 ```
 
 ## Webpack HMR 原理解析
