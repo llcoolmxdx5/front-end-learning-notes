@@ -1840,128 +1840,272 @@ module.exports = {
 
 ## 模块联邦
 
-2.9.1 什么是模块联邦
+### 什么是模块联邦
+
 多个独立的构建可以组成一个应用程序，这些独立的构建之间不应该存在依赖关系， 因此可以单独开发和部署它们。
+
 这通常被称作微前端，但并不仅限于此。
-Webpack5 模块联邦让 Webpack 达到了线上 Runtime 的效果，让代码直接在项目
-间利用 CDN 直接共享，不再需要本地安装 Npm 包、构建再发布了!
-我们知道 Webpack 可以通过 DLL 或者 Externals 做代码共享时 Common Chunk， 但不同应用和项目间这个任务就变得困难了，我们几乎无法在项目之间做到按需热插 拔。
-NPM 方式共享模块 想象一下正常的共享模块方式，对，就是 NPM。
-如下图所示，正常的代码共享需要将依赖作为 Lib 安装到项目，进行 Webpack 打包 构建再上线，如下图:
-img
-对于项目 Home 与 Search，需要共享一个模块时，最常见的办法就是将其抽成通用
-依赖并分别安装在各自项目中。
-虽然 Monorepo 可以一定程度解决重复安装和修改困难的问题，但依然需要走本地 编译。
 
- UMD 方式共享模块
-真正 Runtime 的方式可能是 UMD 方式共享代码模块，即将模块用 Webpack UMD
-模式打包，并输出到其他项目中。这是非常普遍的模块共享方式:
-img
-对于项目 Home 与 Search，直接利用 UMD 包复用一个模块。但这种技术方案问题
-也很明显，就是包体积无法达到本地编译时的优化效果，且库之间容易冲突。
-微前端方式共享模块
-微前端:micro-frontends (MFE) 也是最近比较火的模块共享管理方式，微前端就是 要解决多项目并存问题，多项目并存的最大问题就是模块共享，不能有冲突。
-img
-由于微前端还要考虑样式冲突、生命周期管理，所以本文只聚焦在资源加载方式上。 微前端一般有两种打包方式:
+Webpack5 模块联邦让 Webpack 达到了线上 Runtime 的效果，让代码直接在项目间利用 CDN 直接共享，不再需要本地安装 Npm 包、构建再发布了!
 
-1. 子应用独立打包，模块更解耦，但无法抽取公共依赖等。
-2. 整体应用一起打包，很好解决上面的问题，但打包速度实在是太慢了，不具备水
-平扩展能力。
-模块联邦方式
-终于提到本文的主角了，作为 Webpack5 内置核心特性之一的 Federated Module:
-img
-从图中可以看到，这个方案是直接将一个应用的包应用于另一个应用，同时具备整体 应用一起打包的公共依赖抽取能力。
-2.9.2 应用案例
-本案例模拟三个应用:Nav、Search 及 Home。每个应用都是独立的，又通过模块
-联邦联系到了一起。
-1、Nav 导航 src/header.js
+我们知道 Webpack 可以通过 DLL 或者 Externals 做代码共享时 Common Chunk， 但不同应用和项目间这个任务就变得困难了，我们几乎无法在项目之间做到按需热插拔。
 
-  src/index.js
-webpack.config.js
-  import Header from './Header'
-const div = document.createElement('div') div.appendChild(Header()) document.body.appendChild(div)
-  const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {
-  ModuleFederationPlugin
-} = require('webpack').container
-module.exports = {
-mode: 'production', entry: './src/index.js', plugins: [
-    new HtmlWebpackPlugin(),
-    new ModuleFederationPlugin({
-// 模块联邦名字
-name: 'nav',
-// 外部访问的资源名字 filename: 'remoteEntry.js', // 引用的外部资源列表
-remotes: {},
-// 暴露给外部资源列表
-exposes: {
-'./Header': './src/Header.js', },
-// 共享模块，如lodash
-      shared: {},
-    }),
-] }
+#### NPM 方式共享模块
+
+平时大家开发想必对npm也会十分的熟悉，像我们如果想把某一块功能某一组件做成共用的，可以让其他应用进行使用的，一般就把他做成一个npm包然后发布上去，其他需要用到的应用进行下载安装就能用了。
+
+```txt
+A应用 <- npm library -> B应用
+```
+
+虽然说这种方式在一定的程度上是实现了代码的共用，跨项目之间的安装即使用，但是npm的方式存在一个巨大的问题就是当npm包更新后，怎样让各个子应用也实现更新呢？只能是使用到的相关项目进行一次重新构建然后发布上线，这样才能在正式线上用到最新的代码。这也就是走本地编译带来的缺陷。
+
+#### UMD 方式共享模块
+
+UMD方式可以说的是真正的runtime方式使用公共模块，就像我们平时使用jQuery、lodash一样，通过直接引用他们的cdn，然后直接在项目中进行使用。而且当他们发布更新时候我们也可以做到更新。
+
+```txt
+A应用 <- cdn library -> B应用
+```
+
+对于项目 Home 与 Search，直接利用 UMD 包复用一个模块。但这种技术方案问题也很明显，就是包体积无法达到本地编译时的优化效果，且库之间容易冲突。
+
+#### 微前端方式共享模块
+
+微前端也是目前前端领域相当火的一个趋势，在处理大型项目应用、历史项目重构兼容等场景时候相当有用也是未来的一个发展趋向，它主要解决了多项目并存、代码隔离、与语言框架无关。
+
+微前端基座下面可以有 n 个子应用，每个子应用都是可以单独构建的，他们之间是相互独立的，都可以引入对应的公共模块 common ，微前端有两种构建方式
+
+1. 每个子应用单独进行构建，这样无法抽离出公共的代码，每个子应用都会有一份 common 的代码；
+2. 可以进行整体的打包但是这样如果子应用规模庞大那构建速度是很慢的，没法扩展微前端的子应用规模
+
+```txt
+    基座 common
+    /     /   \
+   /     /     \
+应用1   应用2   应用3
+```
+
+#### 模块联邦方式
+
+终于到了本文的主角了 webpack5 新特性模块联邦，webpack5 内置的这个功能比较完美的解决上面几种共享模式下的问题，既可以做到打包发布模块供给后，消费者能够实时保持同步，也可以进行代码构建时候的优化，他可以在一个应用中直接导出使用另外一个应用的模块，
+
+```txt
+A: a1, a2, b2 
+B: b1, b2, c2
+B import a1, a2
+```
+
+B应用 作为模块消费方（host），直接 import 应用A 中的模块，A应用 作为模块提供方（remote）
+
+### 应用案例
+
+本案例模拟三个应用:Nav、Search 及 Home。每个应用都是独立的，又通过模块联邦联系到了一起。
+
+#### Nav 导航
+
+```js
+// src/header.js
 const Header = () => {
-const header = document.createElement('h1') header.textContent = '公共头部内容'
-return header
-}
-export default Header
+  const header = document.createElement("h1");
+  header.textContent = "公共头部内容";
+  return header;
+};
 
-应用 webpack 运行服务:
-  [felix] nav $ npx webpack serve --port 3003
-2、Home 首页 src/HomeList
- const HomeList = (num) => {
-  let str = '<ul>'
-  for (let i = 0; i < num; i++) {
-    str += '<li>item ' + i + '</li>'
-  }
-  str += '</ul>'
-return str }
-export default HomeList
- src/index.js
-  import HomeList from './HomeList' import('nav/Header').then((Header) => {
-const body = document.createElement('div') body.appendChild(Header.default()) document.body.appendChild(body) document.body.innerHTML += HomeList(5)
-})
-webpack.config.js
- const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {
-  ModuleFederationPlugin
-} = require('webpack').container
+export default Header;
+```
+
+```js
+// src/index.js
+import Header from "./header";
+
+const div = document.createElement("div");
+div.appendChild(Header());
+document.body.appendChild(div);
+```
+
+```js
+// webpack.config.js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
+
+/**
+ * @type {import('webpack').Configuration}
+ */
 module.exports = {
-mode: 'production', entry: './src/index.js', plugins: [
+  mode: "production",
+  entry: "./src/index.js",
+  plugins: [
     new HtmlWebpackPlugin(),
     new ModuleFederationPlugin({
-name: "home",
-filename: "remoteEntry.js",
-  
-应用 webpack 运行服务:
-3、search 搜索 src/index
-  [felix] nav $ npx webpack serve --port 3001
-  Promise.all([import('nav/Header'), import('home/HomeList')]) .then(([{
-    default: Header
-  }, {
-    default: HomeList
-  }]) => {
-document.body.appendChild(Header())
-document.body.innerHTML += HomeList(4) })
-webpack.config.js
- remotes: {
-nav: "nav@<http://localhost:3003/remoteEntry.js>",
-}, exposes: {
-'./HomeList': './src/HomeList.js', },
+      // 模块联邦名字
+      name: "nav",
+      // 外部访问的资源名字
+      filename: "remoteEntry.js",
+      // 引用的外部资源列表
+      remotes: {},
+      // 暴露给外部资源列表
+      exposes: {
+        "./Header": "./src/header.js",
+      },
+      // 共享模块，如lodash
       shared: {},
     }),
-] }
- const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {
-  ModuleFederationPlugin
-} = require('webpack').container
+  ],
+};
+```
+
+配置 script : `"webpack": "webpack serve --port 3001"`
+
+应用 nav 运行服务
+
+```bash
+yarn run webpack
+```
+
+#### Home 首页
+
+```js
+// src/HomeList
+const HomeList = (num) => {
+  let str = "<ul>";
+  for (let i = 0; i < num; i++) {
+    str += "<li>item " + i + "</li>";
+  }
+  str += "</ul>";
+  return str;
+};
+
+export default HomeList;
+```
+
+```js
+// src/index.js
+import HomeList from "./HomeList";
+
+import("nav/Header").then((Header) => {
+  const body = document.createElement("div");
+  body.appendChild(Header.default());
+  document.body.appendChild(body);
+  document.body.innerHTML += HomeList(5);
+});
+```
+
+```js
+// webpack.config.js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
+
+/**
+ * @type {import('webpack').Configuration}
+ */
 module.exports = {
-mode: 'production', entry: './src/index.js', plugins: [
+  mode: "production",
+  entry: "./src/index.js",
+  plugins: [
     new HtmlWebpackPlugin(),
     new ModuleFederationPlugin({
-name: 'search',
-filename: 'remoteEntry.js',
+      name: "home",
+      filename: "remoteEntry.js",
+      remotes: {
+        nav: "nav@http://localhost:3001/remoteEntry.js",
+      },
+      exposes: {
+        "./HomeList": "./src/HomeList.js",
+      },
+      shared: {},
+    }),
+  ],
+};
 
-应用 webpack 运行服务:
+```
+
+配置 script : `"webpack": "webpack serve --port 3002"`
+
+应用 home 运行服务
+
+```bash
+yarn run webpack
+```
+
+#### search 搜索
+
+```js
+// src/index.js
+Promise.all([import("nav/Header"), import("home/HomeList")]).then(
+  ([{ default: Header }, { default: HomeList }]) => {
+    document.body.appendChild(Header());
+    document.body.innerHTML += HomeList(4);
+  }
+);
+```
+
+```js
+// webpack.config.js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
+
+/**
+ * @type {import('webpack').Configuration}
+ */
+module.exports = {
+  mode: "production",
+  entry: "./src/index.js",
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new ModuleFederationPlugin({
+      name: "search",
+      filename: "remoteEntry.js",
+      remotes: {
+        nav: "nav@http://localhost:3001/remoteEntry.js",
+        home: "home@http://localhost:3002/remoteEntry.js",
+      },
+      exposes: {},
+      shared: {},
+    }),
+  ],
+};
+
+```
+
+配置 script : `"webpack": "webpack serve --port 3003"`
+
+应用 search 运行服务
+
+```bash
+yarn run webpack
+```
+
+### 效果
+
+导航 port 3001
+
+```txt
+公共头部内容
+```
+
+home port 3002
+
+```txt
+公共头部内容
+item 0
+item 1
+item 2
+item 3
+item 4
+```
+
+search port 3003
+
+```txt
+公共头部内容
+item 0
+item 1
+item 2
+item 3
+```
+
+通过上面的学习我们知道模块联邦其实可以当作是 webpack5 将需要导出来的组件打包成一个运行时的文件，然后在其他项目可以进行运行时的动态加载，加载的过程是异步的，执行的时候是同步的。根据这个特性我们可以实现一个中心化组件模块中心，然后对外进行模块的分发
 
 ## 提升构建性能
 
