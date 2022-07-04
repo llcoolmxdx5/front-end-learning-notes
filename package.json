@@ -18,7 +18,9 @@
   ],
   "workspaces": [
     "03-js/array",
-    "05-框架/react/dva-demo"
+    "05-框架/react/dva-demo",
+    "07-工程化/webpack/*",
+    "07-工程化/webpack/module-federation/*"
   ],
   "private": true,
   "author": "",
