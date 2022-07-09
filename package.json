@@ -19,6 +19,7 @@
   "workspaces": [
     "03-js/array",
     "05-框架/react/dva-demo",
+    "05-框架/vue/vite-vue",
     "07-工程化/webpack/*",
     "07-工程化/webpack/module-federation/*"
   ],
@@ -33,8 +34,8 @@
   },
   "devDependencies": {
     "@types/node": "^15.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^7.25.0",
     "eslint-config-google": "^0.14.0",
     "husky": "^4.0.0",

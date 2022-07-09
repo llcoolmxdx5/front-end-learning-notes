@@ -2,6 +2,7 @@
   "packages": [
     "03-js/array",
     "05-框架/react/dva-demo",
+    "05-框架/vue/vite-vue",
     "07-工程化/webpack/*",
     "07-工程化/webpack/module-federation/*"
   ],

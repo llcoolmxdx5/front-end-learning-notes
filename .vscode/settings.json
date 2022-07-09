@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["bezier", "grayscale", "gulpfile"]
+  "recommendations": ["Vue.volar"],
+  "cSpell.words": ["bezier", "grayscale", "gulpfile", "Vite"]
 }
