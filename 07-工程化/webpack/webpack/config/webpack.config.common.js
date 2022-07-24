@@ -157,11 +157,22 @@ const config = {
   ],
   optimization: {
     splitChunks: {
+      chunks: 'all',
       cacheGroups: {
-        vendor: {
+        library: {
+          test: /[\\/]node_modules\/(react|react-router|react-dom)[\\/]/,
+          priority: 1,
+          reuseExistingChunk: true,
+        },
+        defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
         },
       },
     },
