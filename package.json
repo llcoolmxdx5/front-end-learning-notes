@@ -23,7 +23,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --build tsconfig.json",
     "dev": "nodemon --watch src/**/**/*.ts --exec \"tsc\" --build tsconfig.json",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/node": "^15.0.1",
