@@ -26,6 +26,11 @@ const routes: RouteRecordRaw[] = [
         name: 'reactive',
         component: () => import('../cases/reactive.vue'),
       },
+      {
+        path: 'to',
+        name: 'to',
+        component: () => import('../cases/to.vue'),
+      },
     ],
   },
   {
