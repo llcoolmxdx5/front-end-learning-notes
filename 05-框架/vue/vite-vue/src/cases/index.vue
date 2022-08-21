@@ -2,6 +2,7 @@
   <div class="con">
     <router-link to="/case/base">base</router-link>
     <router-link to="/case/ref">ref</router-link>
+    <router-link to="/case/reactive">reactive</router-link>
   </div>
   <router-view></router-view>
 </template>
