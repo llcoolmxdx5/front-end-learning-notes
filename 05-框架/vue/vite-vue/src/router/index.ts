@@ -41,6 +41,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'watch',
         component: () => import('../cases/watch.vue'),
       },
+      {
+        path: 'lifeCycle',
+        name: 'lifeCycle',
+        component: () => import('../cases/lifeCycle.vue'),
+      },
     ],
   },
   {
