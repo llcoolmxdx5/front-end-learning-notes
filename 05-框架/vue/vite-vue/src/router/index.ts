@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
-const routes: RouteRecordRaw[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'index',
@@ -35,6 +35,11 @@ const routes: RouteRecordRaw[] = [
         path: 'computed',
         name: 'computed',
         component: () => import('../cases/computed.vue'),
+      },
+      {
+        path: 'watch',
+        name: 'watch',
+        component: () => import('../cases/watch.vue'),
       },
     ],
   },
