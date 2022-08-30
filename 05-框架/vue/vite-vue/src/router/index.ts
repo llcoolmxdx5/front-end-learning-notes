@@ -46,6 +46,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'lifeCycle',
         component: () => import('../cases/lifeCycle.vue'),
       },
+      {
+        path: 'css',
+        name: 'css',
+        component: () => import('../cases/css.vue'),
+      },
     ],
   },
   {
