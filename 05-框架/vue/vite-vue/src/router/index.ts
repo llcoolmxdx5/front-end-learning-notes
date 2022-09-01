@@ -51,6 +51,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'css',
         component: () => import('../cases/css.vue'),
       },
+      {
+        path: 'layout',
+        name: 'layout',
+        component: () => import('../cases/Layout/index.vue'),
+      },
     ],
   },
   {
