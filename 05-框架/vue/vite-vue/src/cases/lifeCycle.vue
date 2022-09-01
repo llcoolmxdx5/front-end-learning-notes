@@ -91,3 +91,29 @@ onErrorCaptured((err, instance, info) => {
   return false
 })
 </script>
+
+<!--
+  mount
+  root onBeforeMount,
+  mid onBeforeMount,
+  child onBeforeMount,
+  child onMounted,
+  mid onMounted,
+  root onMounted
+
+  update
+  root onBeforeUpdate,
+  mid onBeforeUpdate,
+  child onBeforeUpdate,
+  child onUpdated,
+  mid onUpdated,
+  root onUpdated
+
+  unmount
+  root onBeforeUnmount,
+  mid onBeforeUnmount,
+  child onBeforeUnmount,
+  child onUnmounted,
+  mid onUnmounted,
+  root onUnmounted
+-->
