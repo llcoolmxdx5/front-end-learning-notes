@@ -3,6 +3,12 @@
     <p class="b">b</p>
     <p class="c">c</p>
   </div>
+  <ElCard class="box-card">深度选择器 影响到子组件，可以使用 :deep() 这个伪类</ElCard>
+  <ElCard class="box-card">
+    默认情况下，作用域样式不会影响到 &lt;slot/> 渲染出来的内容，因为它们被认为是父组件所持有并传递进来的
+    使用 :slotted 伪类以明确地将插槽内容作为选择器的目标
+  </ElCard>
+  <ElCard class="box-card">如果想让其中一个样式规则应用到全局, 可以使用 :global 伪类来实现</ElCard>
 </template>
 
 <script setup lang="ts">

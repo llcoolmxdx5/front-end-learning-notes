@@ -1,0 +1,7 @@
+.box-card {
+  min-width: 200px;
+  max-width: 480px;
+  display: inline-flex;
+  flex-direction: column;
+  margin: 8px;
+}

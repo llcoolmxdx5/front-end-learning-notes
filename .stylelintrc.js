@@ -1,11 +1,17 @@
 module.exports = {
   extends: [
-    require.resolve('stylelint-config-standard'),
-    require.resolve('stylelint-config-css-modules'),
+    'stylelint-config-standard',
+    'stylelint-config-css-modules',
+    'stylelint-config-recommended-vue',
   ],
-  plugins: [require.resolve('stylelint-order')],
+  plugins: ['stylelint-order'],
   ignoreFiles: ['node_modules', '**/*.tsx', '**/*.jsx'],
-  customSyntax: require.resolve('postcss-less'),
+  overrides: [
+    {
+      files: '**/*.less',
+      customSyntax: 'postcss-less',
+    },
+  ],
   rules: {
     'color-function-notation': 'legacy',
   },

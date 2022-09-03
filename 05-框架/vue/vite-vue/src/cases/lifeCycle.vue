@@ -5,6 +5,26 @@
   </div>
   <ErrorChild v-if="!errorMsg"></ErrorChild>
   {{ errorMsg }}
+  <ElCard class="box-card" header="lifeCycle">
+    <ul>
+      <li v-for="item in lifeCycle">{{ item }}</li>
+    </ul>
+  </ElCard>
+  <ElCard class="box-card" header="mount">
+    <ul>
+      <li v-for="item in mount">{{ item }}</li>
+    </ul>
+  </ElCard>
+  <ElCard class="box-card" header="update">
+    <ul>
+      <li v-for="item in update">{{ item }}</li>
+    </ul>
+  </ElCard>
+  <ElCard class="box-card" header="unmount">
+    <ul>
+      <li v-for="item in unmount">{{ item }}</li>
+    </ul>
+  </ElCard>
 </template>
 
 <script setup lang="ts">
@@ -25,12 +45,51 @@ import ErrorChild from './ErrorChild.vue'
 
 const el = ref<HTMLDivElement>()
 
+const mount = [
+  'root onBeforeMount',
+  'mid onBeforeMount',
+  'child onBeforeMount',
+  'child onMounted',
+  'mid onMounted',
+  'root onMounted'
+]
+
+const update = [
+  'root onBeforeUpdate',
+  'mid onBeforeUpdate',
+  'child onBeforeUpdate',
+  'child onUpdated',
+  'mid onUpdated',
+  'root onUpdated'
+]
+
+const unmount = [
+  'root onBeforeUnmount',
+  'mid onBeforeUnmount',
+  'child onBeforeUnmount',
+  'child onUnmounted',
+  'mid onUnmounted',
+  'root onUnmounted'
+]
+
 const count = ref(0)
 const errorMsg = ref('')
 
 setTimeout(() => {
   count.value++
 }, 500)
+
+const lifeCycle = [
+  'onBeforeMount',
+  'onMounted',
+  'onBeforeUpdate',
+  'onUpdated',
+  'onBeforeUnmount',
+  'onUnmounted',
+  'onActivated',
+  'onDeactivated',
+  'onErrorCaptured'
+]
 
 onBeforeMount(() => {
   // 注册一个钩子，在组件被挂载之前被调用。
@@ -91,29 +150,3 @@ onErrorCaptured((err, instance, info) => {
   return false
 })
 </script>
-
-<!--
-  mount
-  root onBeforeMount,
-  mid onBeforeMount,
-  child onBeforeMount,
-  child onMounted,
-  mid onMounted,
-  root onMounted
-
-  update
-  root onBeforeUpdate,
-  mid onBeforeUpdate,
-  child onBeforeUpdate,
-  child onUpdated,
-  mid onUpdated,
-  root onUpdated
-
-  unmount
-  root onBeforeUnmount,
-  mid onBeforeUnmount,
-  child onBeforeUnmount,
-  child onUnmounted,
-  mid onUnmounted,
-  root onUnmounted
--->
