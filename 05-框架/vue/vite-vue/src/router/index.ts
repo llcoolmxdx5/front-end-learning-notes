@@ -61,6 +61,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'TreeList',
         component: () => import('../cases/TreeList.vue'),
       },
+      {
+        path: 'componentIs',
+        name: 'componentIs',
+        component: () => import('../cases/componentIs.vue'),
+      },
     ],
   },
   {
