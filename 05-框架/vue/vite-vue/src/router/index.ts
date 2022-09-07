@@ -76,6 +76,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'suspense',
         component: () => import('../cases/suspense.vue'),
       },
+      {
+        path: 'teleport',
+        name: 'teleport',
+        component: () => import('../cases/teleport.vue'),
+      },
     ],
   },
   {
