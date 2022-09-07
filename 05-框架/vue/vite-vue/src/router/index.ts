@@ -86,6 +86,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'keepAlive',
         component: () => import('../cases/keepAlive.vue'),
       },
+      {
+        path: 'transition',
+        name: 'transition',
+        component: () => import('../cases/transition.vue'),
+      },
     ],
   },
   {
