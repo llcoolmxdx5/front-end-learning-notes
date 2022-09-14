@@ -96,6 +96,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'provide',
         component: () => import('../cases/provide.vue'),
       },
+      {
+        path: 'directives',
+        name: 'directives',
+        component: () => import('../cases/directives/index.vue'),
+      },
     ],
   },
   {
