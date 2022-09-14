@@ -91,6 +91,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'transition',
         component: () => import('../cases/transition.vue'),
       },
+      {
+        path: 'provide',
+        name: 'provide',
+        component: () => import('../cases/provide.vue'),
+      },
     ],
   },
   {
