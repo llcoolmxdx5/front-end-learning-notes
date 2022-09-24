@@ -14,7 +14,7 @@ var maxSlidingWindow = function (nums, k) {
   return res;
 };
 
-import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
+import PriorityQueue from './Queue/PriorityQueue';
 
 var maxSlidingWindow = function (nums, k) {
   const priorityQueue = new PriorityQueue((a, b) => a[0] > b[0]);

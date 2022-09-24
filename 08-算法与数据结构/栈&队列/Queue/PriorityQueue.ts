@@ -1,3 +1,4 @@
+/** 默认小顶堆 */
 export default class PriorityQueue<T = number> {
   private heap: T[] = [];
   private compare: (a: T, b: T) => boolean;

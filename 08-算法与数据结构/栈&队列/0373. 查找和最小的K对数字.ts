@@ -1,4 +1,4 @@
-import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
+import PriorityQueue from './Queue/PriorityQueue';
 
 function kSmallestPairs(nums1: number[], nums2: number[], k: number): [number, number][] {
   // 大顶堆

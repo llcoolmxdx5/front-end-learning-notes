@@ -1,4 +1,4 @@
-import UnionFind from '../../algorithms/unionFind';
+import UnionFind from './unionFind';
 
 /**
  * @param {number[][]} isConnected

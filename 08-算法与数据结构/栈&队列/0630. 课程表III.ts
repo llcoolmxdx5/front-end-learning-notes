@@ -1,4 +1,4 @@
-import PriorityQueue from '../../datastructure/Queue/PriorityQueue';
+import PriorityQueue from './Queue/PriorityQueue';
 
 var scheduleCourse = function (courses: number[][]) {
   const arr = courses.sort((a, b) => a[1] - b[1]);
