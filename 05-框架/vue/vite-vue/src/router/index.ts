@@ -101,6 +101,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'directives',
         component: () => import('../cases/directives/index.vue'),
       },
+      {
+        path: 'globalProperties',
+        name: 'globalProperties',
+        component: () => import('../cases/globalProperties.vue'),
+      },
     ],
   },
   {
