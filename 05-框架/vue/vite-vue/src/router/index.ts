@@ -106,6 +106,11 @@ export const routes: RouteRecordRaw[] = [
         name: 'globalProperties',
         component: () => import('../cases/globalProperties.vue'),
       },
+      {
+        path: 'nextTick',
+        name: 'nextTick',
+        component: () => import('../cases/nextTick.vue'),
+      },
     ],
   },
   {
