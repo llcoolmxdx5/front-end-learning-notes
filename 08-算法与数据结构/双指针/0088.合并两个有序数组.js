@@ -6,44 +6,44 @@
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
 // 替换后排序 复杂度 O((m+n)log(m+n))
-// var merge = function (nums1, m, nums2, n) {
-//   nums1.splice(m, n, ...nums2);
-//   nums1.sort((a, b) => a - b);
-//   console.log(nums1);
-// };
+var merge = function (nums1, m, nums2, n) {
+  nums1.splice(m, n, ...nums2);
+  nums1.sort((a, b) => a - b);
+  console.log(nums1);
+};
 
 // 双指针 临时变量 O(m+n)
-// var merge = function (nums1, m, nums2, n) {
-//   const arr = [];
-//   let i = 0,
-//     j = 0;
-//   while (i + j < m + n) {
-//     // console.log(nums1[i], nums2[j], i, j);
-//     if (i === m) {
-//       arr.push(nums2[j]);
-//       j++;
-//       continue
-//     }
-//     if (nums2[j] === undefined) {
-//       arr.push(nums1[i]);
-//       i++;
-//       continue
-//     }
-//     if (nums1[i] < nums2[j]) {
-//       arr.push(nums1[i]);
-//       i++;
-//     } else {
-//       arr.push(nums2[j]);
-//       j++;
-//     }
-//   }
-//   // console.log(arr);
-//   for (let index = 0; index < arr.length; index++) {
-//     const element = arr[index];
-//     nums1[index] = element
-//   }
-//   // console.log(nums1);
-// };
+var merge = function (nums1, m, nums2, n) {
+  const arr = [];
+  let i = 0,
+    j = 0;
+  while (i + j < m + n) {
+    // console.log(nums1[i], nums2[j], i, j);
+    if (i === m) {
+      arr.push(nums2[j]);
+      j++;
+      continue;
+    }
+    if (nums2[j] === undefined) {
+      arr.push(nums1[i]);
+      i++;
+      continue;
+    }
+    if (nums1[i] < nums2[j]) {
+      arr.push(nums1[i]);
+      i++;
+    } else {
+      arr.push(nums2[j]);
+      j++;
+    }
+  }
+  // console.log(arr);
+  for (let index = 0; index < arr.length; index++) {
+    const element = arr[index];
+    nums1[index] = element;
+  }
+  // console.log(nums1);
+};
 
 // 双指针 后向
 var merge = function (nums1, m, nums2, n) {
