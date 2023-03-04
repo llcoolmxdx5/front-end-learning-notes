@@ -3,5 +3,6 @@ packages:
   - '05-框架/react/dva-demo'
   - '05-框架/react/vis'
   - '05-框架/vue/vite-vue'
+  - '05-框架/umi/*'
   - '07-工程化/webpack/*'
   - '07-工程化/webpack/module-federation/*'
