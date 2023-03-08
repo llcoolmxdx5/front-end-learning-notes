@@ -1,3 +1,5 @@
+import './global.less';
+
 console.log('mobile');
 
 const setRem = () => {
